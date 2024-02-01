@@ -22,6 +22,7 @@ namespace HotelBooking.Model
         public int RoomTyepId { get; set; }
         public string ImagePath { get; set; }
         public int BranchId { get; set; }
+        public byte[] ImageData { get; set; }
         //public IFormFile roomTypeImage { get; set; }
         //public List<IFormFile> Files { get; set; }
     }

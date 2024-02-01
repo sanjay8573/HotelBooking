@@ -120,7 +120,7 @@ namespace HotelBooking.Repository.Implementation
             int rtnVal = 0;
             if (model != null) {
 
-             StaffLogin stf= _context.StaffLogin.Where(p => p.LoginName == model.Username && p.Password == model.Password).SingleOrDefault<StaffLogin>();
+             StaffLogin stf= _context.StaffLogin.Where(p => p.LoginName == model.Username && p.Password.ToLower() == model.Password.ToLower()).SingleOrDefault<StaffLogin>();
                 if (stf != null)
                 {
                     rtnVal = stf.StaffId;

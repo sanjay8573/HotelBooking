@@ -11,6 +11,6 @@ namespace HotelBooking.Repository.Interface
         int AddModule(ModuleMaster ModuleMasterEntity);
         int UpdateModule(ModuleMaster ModuleMasterEntity);
         void DeleteModule(int moduleId);
-        IEnumerable<VM_Module> GetAllModuleWithsRights();
+        IEnumerable<VM_Module> GetAllModuleWithsRights(int branchId);
     }
 }

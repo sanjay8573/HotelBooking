@@ -47,10 +47,10 @@ namespace HotelBooking.Controllers
 
         }
         [HttpGet]
-        [Route("api/Module/GetModulesWithRights")]
-        public IEnumerable<VM_Module> GetModulesWithRights()
+        [Route("api/Module/GetModulesWithRights/{branchId}")]
+        public IEnumerable<VM_Module> GetModulesWithRights(int branchId)
         {
-            return _Module.GetAllModuleWithsRights(); ;
+            return _Module.GetAllModuleWithsRights(branchId); ;
         }
          
     }

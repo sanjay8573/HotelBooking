@@ -23,10 +23,10 @@ namespace HotelBooking.Controllers
             _roles = new RoleRepository();
         }
         [HttpGet]
-        [Route("api/Roles/GetRoles")]
-        public IEnumerable<RoleMaster> GetRoles()
+        [Route("api/Roles/GetRoles/{branchId}")]
+        public IEnumerable<RoleMaster> GetRoles(int branchId)
         {
-            return _roles.GetAllRoles();
+            return _roles.GetAllRoles(branchId);
         }
 
         [HttpPost]
@@ -38,10 +38,17 @@ namespace HotelBooking.Controllers
 
         }
         [HttpGet]
-        [Route("api/Roles/GetRoles/{roleid}")]
-        public RoleMaster GetRoles(int roleid)
+        [Route("api/Roles/GetModuleWithsRightsRoleWise/{roleid}")]
+        public RoleMaster GetModuleWithsRightsRoleWise(int roleid)
         {
             return _roles.GetAllModuleWithsRights(roleid);
         }
+
+        //[HttpGet]
+        //[Route("api/Roles/GetAllModuleWithsRights/{branchId}")]
+        //public RoleMaster GetAllModuleWithsRights(int branchId)
+        //{
+        //    return _roles.GetAllModuleWithsRights(branchId);
+        //}
     }
 }

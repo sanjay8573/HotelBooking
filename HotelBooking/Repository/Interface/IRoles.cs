@@ -5,7 +5,7 @@ namespace HotelBooking.Repository.Interface
 {
     public interface IRoles
     {
-        IEnumerable<RoleMaster> GetAllRoles();
+        IEnumerable<RoleMaster> GetAllRoles(int branchId);
 
         RoleMaster GetRoleById(int roleId);
         int AddRoles(RoleMaster roleEntity);

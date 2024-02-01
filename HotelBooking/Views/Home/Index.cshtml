@@ -1,26 +1,108 @@
-﻿<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="aspnetTitle">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-    </section>
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
-            a broad range of clients, including browsers and mobile devices. ASP.NET Web API
-            is an ideal platform for building RESTful applications on the .NET Framework.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301870">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301871">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301872">Learn more &raquo;</a></p>
-        </section>>
+﻿@model HotelBooking.Model.UserLoginResponse
+
+<!--Statistics cards Starts-->
+<div class="row">
+    <div class="col-xl-3 col-lg-6 col-md-6 col-12">
+        <div class="card gradient-blackberry">
+            <div class="card-body">
+                <div class="card-block pt-2 ">
+                    <div class="media">
+                        <div class="media-body white text-left">
+                            <h3 class="font-large-1 mb-0">10</h3>
+                            <span>Bookings</span>
+                        </div>
+                        <div class="media-right white text-right"> <i class="ft-list font-large-1"></i> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</main>
+    <div class="col-xl-3 col-lg-6 col-md-6 col-12">
+        <div class="card gradient-ibiza-sunset">
+            <div class="card-body">
+                <div class="card-block pt-2 ">
+                    <div class="media">
+                        <div class="media-body white text-left">
+                            <h3 class="font-large-1 mb-0">100.00</h3>
+                            <span>TODAY'S REVENUE</span>
+                        </div>
+                        <div class="media-right white text-right"> <i class="fa fa-dollar font-large-1"></i> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-md-6 col-12">
+        <div class="card gradient-green-tea">
+            <div class="card-body">
+                <div class="card-block pt-2 ">
+                    <div class="media">
+                        <div class="media-body white text-left">
+                            <h3 class="font-large-1 mb-0">14</h3>
+                            <span>ROOMS</span>
+                        </div>
+                        <div class="media-right white text-right"> <i class="ft-home font-large-1"></i> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-md-6 col-12">
+        <div class="card gradient-pomegranate">
+            <div class="card-body">
+                <div class="card-block pt-2 ">
+                    <div class="media">
+                        <div class="media-body white text-left">
+                            <h3 class="font-large-1 mb-0">2</h3>
+                            <span>GUESTS</span>
+                        </div>
+                        <div class="media-right white text-right"> <i class="ft-users font-large-1"></i> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Administration Details</h4>
+            </div>
+            <div class="card-body">
+                <div class="card-block">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Username</th>
+                                <th>Password</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Ritesh</td>
+                                <td>Kumar</td>
+                                <td>Ritesh@test.com</td>
+                                <td>...............</td>
+                            </tr>
+                            <tr>
+                                <td>Munish</td>
+                                <td>Sharma</td>
+                                <td>Munish@test.com</td>
+                                <td>...............</td>
+                            </tr>
+                            <tr>
+                                <td>Sanjay </td>
+                                <td>Test</td>
+                                <td>Sanjay@test.com</td>
+                                <td>...............</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

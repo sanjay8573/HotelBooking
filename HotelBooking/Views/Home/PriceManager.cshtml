@@ -1,0 +1,153 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<HotelBooking.Model.PriceManager>
+@{
+    ViewBag.Title = "PriceManager";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Price Manager <small>Lists</small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Price Manager</small> </span></div>
+            <div class="widget-content padded text-center">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12 pull-right">
+                            <button type="button" class="allbtnin  form-group" onclick="location.href='@Url.Action("AddPrice","Home")'"> +ADD</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 pull-left">
+                            <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-left text-left">
+                                @using (Html.BeginForm("PriceManager", "Home", FormMethod.Get, new { id = "form1" }))
+                                {
+                                    <div id="pro_pag2">
+                                        Show @* @Html.DropDownList("PageSize", new SelectList(new Dictionary<string, int> { { "5", 5 }, { "10", 10 }, { "20", 20 } }, "Key", "Value"), new { @class = "onlyinput", id = "RTpagesize" })*@
+                                        @Html.DropDownList("pSize", (IEnumerable<SelectListItem>)ViewBag.pSize, new { @class = "onlyinput" }) Records
+                                    </div>
+                                }
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
+                                Search
+                                <input type="text" id="txtUserName" class="onlyinput" placeholder="Search" runat="server">
+                            </div>
+                        </div>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th width="3%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">#</a></th>
+                                    <th width="10%" align="left" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Name</a></th>
+                                    <th width="10%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Mon</a></th>
+                                    <th width="10%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Tue</a></th>
+                                    <th width="10%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Wed</a></th>
+                                    <th width="10%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Thu</a></th>
+                                    <th width="10%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Fri</a></th>
+                                    <th width="10%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Sat</a></th>
+                                    <th width="10%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Sun</a></th>
+                                    <th width="15%" colspan="2" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Action</a></th>
+                                </tr>
+
+                                @if (Model != null)
+                                {
+                                    var i = 1;
+                                    foreach (var ps in Model)
+                                    {
+
+                                        <tr>
+                                            <td align="center" valign="middle">@i</td>
+                                            <td align="left" valign="middle">@ps.Title</td>
+                                            <td align="left" valign="middle">@ps.SUN</td>
+                                            <td align="left" valign="middle">@ps.MON</td>
+                                            <td align="left" valign="middle">@ps.TUE</td>
+                                            <td align="left" valign="middle">@ps.WED</td>
+                                            <td align="left" valign="middle">@ps.THUR</td>
+                                            <td align="left" valign="middle">@ps.FRI</td>
+                                            <td align="left" valign="middle">@ps.SAT</td>
+                                            <td align="left" valign="middle"><a href="href=" @Url.Action("Delete", "Sales", new { PriceManagerId = ps.PriceManageId }) "" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
+                                            <td align="left" valign="middle"><a href="href=" @Url.Action("Delete", "Sales", new { PriceManagerId = ps.PriceManageId }) "" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
+
+                                        </tr>
+                                    }
+                                }
+                                <tr>
+
+                                    <td colspan="11">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <span class="float-left restextpagin">@(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</span>
+                                            <select name="paginatonselect" id="" class="paginatonselect pull-right">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                            </select>
+                                            <div class="pagination pull-right">
+                                                @Html.PagedListPager(Model, page => Url.Action("PriceManager", new { page, pageSize = @Model.PageSize }))
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="psDiv" style="display:none">
+    <a class="btn btn-primary" href="@Url.Action("AddPrice","Home")">Add Service</a>
+    <table id="psTable" class="table table-bordered table-striped">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Sun</th>
+            <th scope="col">Mon</th>
+            <th scope="col">Tue</th>
+            <th scope="col">Wed</th>
+            <th scope="col">Thu</th>
+            <th scope="col">Fri</th>
+            <th scope="col">Sat</th>
+            <th scope="colgroup">View</th>
+            <th scope="colgroup">Edit</th>
+            <th scope="colgroup">Delete</th>
+
+        </tr>
+        @if (Model != null)
+        {
+            var i = 1;
+            foreach (var ps in Model)
+            {
+                <tr>
+
+                    <td>@i</td>
+                    <td>@ps.Title</td>
+                    <td>@ps.SUN</td>
+                    <td>@ps.MON</td>
+                    <td>@ps.TUE</td>
+                    <td>@ps.WED</td>
+                    <td>@ps.THUR</td>
+                    <td>@ps.FRI</td>
+                    <td>@ps.SAT</td>
+                    <td><input type="checkbox" asp-for="@ps.isActive" checked="@ps.isActive" /></td>
+                    <td><a class="btn btn-info" href="@Url.Action("Delete","Sales",new { PriceManagerId = ps.PriceManageId })">View</a></td>
+                    <td><button type="button" class="btn btn-secondary" onclick="addQuantity(this); ">Edit</button></td>
+                    <td><button type="button" class="btn btn-danger" onclick="minusQuantity(this); ">Deleet</button></td>
+
+
+                </tr>
+                i++;
+            }
+        }
+    </table>
+</div>
+
+<script type="text/javascript">
+    $("#pSize").change(function () {
+        var form = $(event.target).parents('form');
+
+        $("#form1").submit();
+    });
+
+</script>

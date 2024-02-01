@@ -1,5 +1,8 @@
-﻿namespace HotelBooking.Model
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace HotelBooking.Model
 {
+    [Table("Designation")]
     public class Designation
     {
         public int Id { get; set; }

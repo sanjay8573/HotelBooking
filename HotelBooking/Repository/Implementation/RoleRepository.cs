@@ -52,14 +52,24 @@ namespace HotelBooking.Repository.Implementation
             }
         }
 
-        public IEnumerable<RoleMaster> GetAllRoles()
+        public IEnumerable<RoleMaster> GetAllRoles(int branchId)
         {
-            return _context.Roles.ToArray();
+            return _context.Roles.Where(b=>b.BranchId== branchId).ToArray();
         }
 
         public RoleMaster GetRoleById(int roleId)
         {
-            return _context.Roles.Where(b => b.Id == roleId).SingleOrDefault();
+            RoleMaster rm= new RoleMaster();
+            try
+            {
+                rm= _context.Roles.Where(b => b.Id == roleId).SingleOrDefault();
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
+            return rm;
         }
 
         public int UpdateRole(RoleMaster roleEntity)
@@ -82,5 +92,12 @@ namespace HotelBooking.Repository.Implementation
             RM = _context.Roles.Where(r=>r.Id== roleId).SingleOrDefault();
             return RM;
         }
+        //public IEnumerable<RoleMaster> GetAllModuleWithsRightsAll(int branchId)
+        //{
+
+           
+        //  return _context.Roles.Where(r => r.BranchId== branchId).ToArray();
+             
+        //}
     }
 }

@@ -1,0 +1,147 @@
+﻿@model HotelBooking.Model.PriceManager
+
+
+
+
+@using (Html.BeginForm("SaveSpecialPrice", "Home", FormMethod.Post, new { id = "msform" }))
+{
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left table-responsive">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left" style="margin-top: 15px;">
+
+                @Html.HiddenFor(model => model.RoomTypeId)
+                @Html.HiddenFor(model => model.RoomTypeTitle)
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                    <label for="edit-mail" class="form-required">Title</label>
+
+                    @Html.TextBoxFor(model => model.Title, new { @class = "full-width", placeholder = "Title" })
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                    <label for="edit-mail" class="form-required">Date Range</label>
+                    <input type="datetime-local" id="daytime" class="full-width" name="daytime">
+
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
+                    <label for="edit-mail" class="form-required">Mon</label>
+
+                    @Html.TextBoxFor(model => model.MON, new { @class = "full-width" })
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
+                    <label for="edit-mail" class="form-required">Tue</label>
+                    @Html.TextBoxFor(model => model.TUE, new { @class = "full-width" })
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
+                    <label for="edit-mail" class="form-required">Wed</label>
+                    @Html.TextBoxFor(model => model.WED, new { @class = "full-width" })
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
+                    <label for="edit-mail" class="form-required">Thu</label>
+                    @Html.TextBoxFor(model => model.THUR, new { @class = "full-width" })
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
+                    <label for="edit-mail" class="form-required">Fri</label>
+                    @Html.TextBoxFor(model => model.FRI, new { @class = "full-width" })
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
+                    <label for="edit-mail" class="form-required">Sat</label>
+                    @Html.TextBoxFor(model => model.SAT, new { @class = "full-width" })
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
+                    <label for="edit-mail" class="form-required">San</label>
+                    @Html.TextBoxFor(model => model.SUN, new { @class = "full-width" })
+                </div>
+            </div>
+
+
+        </div>
+        <input type="button" name="SUBMIT" class="prev action-button" value="Save12">
+        <div class="row">
+            <hr>
+
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 pull-left">
+                    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-left text-left">
+                        Show
+                        <select id="ddlEngine" class="onlyinput" runat="server">
+                            <option selected="selected">10</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                        </select>
+                        Intries
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
+                        Search
+                        <input type="text" id="txtUserName" class="onlyinput" placeholder="Search" runat="server">
+                    </div>
+                </div>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th width="3%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">#</a></th>
+                            <th width="10%" align="left" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Date Range</a></th>
+                            <th width="10%" align="left" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Title</a></th>
+                            <th width="10%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Mon</a></th>
+                            <th width="10%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Tue</a></th>
+                            <th width="10%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Wed</a></th>
+                            <th width="10%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Thu</a></th>
+                            <th width="10%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Fri</a></th>
+                            <th width="10%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Sat</a></th>
+                            <th width="10%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Sun</a></th>
+                            <th width="5%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Action</a></th>
+                        </tr>
+                        <tr>
+                            <td align="center" valign="middle">1</td>
+                            <td align="left" valign="middle">28/02/2024 to 30/12/2024</td>
+                            <td align="left" valign="middle">Christmas</td>
+                            <td align="left" valign="middle">100.00</td>
+                            <td align="left" valign="middle">100.00</td>
+                            <td align="left" valign="middle">100.00</td>
+                            <td align="left" valign="middle">100.00</td>
+                            <td align="left" valign="middle">100.00</td>
+                            <td align="left" valign="middle">100.00</td>
+                            <td align="left" valign="middle">100.00</td>
+                            <td align="left" valign="middle"><a href="#" class="closebtn deletebtn"><i class="fa fa-trash-o"></i></a></td>
+                        </tr>
+                        <tr>
+                            <td align="center" valign="middle">1</td>
+                            <td align="left" valign="middle">28/02/2024 to 30/12/2024</td>
+                            <td align="left" valign="middle">Christmas</td>
+                            <td align="left" valign="middle">100.00</td>
+                            <td align="left" valign="middle">100.00</td>
+                            <td align="left" valign="middle">100.00</td>
+                            <td align="left" valign="middle">100.00</td>
+                            <td align="left" valign="middle">100.00</td>
+                            <td align="left" valign="middle">100.00</td>
+                            <td align="left" valign="middle">100.00</td>
+                            <td align="left" valign="middle"><a href="#" class="closebtn deletebtn"><i class="fa fa-trash-o"></i></a></td>
+                        </tr>
+                        <tr>
+                            <td colspan="11">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <span class="float-left restextpagin">Showing 1 to 4 of 4 entries</span>
+                                    <select name="paginatonselect" id="" class="paginatonselect pull-right">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                    </select>
+                                    <div class="pagination pull-right"> <a href="#">«</a> <a href="#">1</a> <a href="#" class="active">2</a> <a href="#">3</a> <a href="#">»</a> </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+        }

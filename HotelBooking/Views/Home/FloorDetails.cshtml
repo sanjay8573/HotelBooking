@@ -1,0 +1,43 @@
+﻿@model IEnumerable<HotelBooking.Model.Floor>
+@{
+    ViewBag.Title = "Floor Details";
+}
+
+<h2>Floor Details</h2>
+
+<div id="flrsTable">
+    <a class="btn btn-primary" href="@Url.Action("Floor","Home")">Add Floor</a>
+    <table id="floorTable" class="table table-bordered table-striped">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Floor Number</th>
+            <th scope="col">Description</th>
+            <th scope="col">Active</th>
+            <th scope="colgroup">View</th>
+            <th scope="colgroup">Edit</th>
+            <th scope="colgroup">Delete</th>
+
+        </tr>
+        @if (Model != null)
+        {
+            var i = 1;
+            foreach (var fl in Model)
+            {
+                <tr>
+
+                    <td>@i</td>
+                    <td>@fl.FloorNumber</td>
+                    <td>@fl.Description</td>
+                    <td><input type="checkbox" asp-for="@fl.isActive" checked="@fl.isActive" /></td>
+                    <td><a class="btn btn-info" href="@Url.Action("Delete","Sales",new { FloorId = fl.FloorId })">View</a></td>
+                    <td><button type="button" class="btn btn-secondary" onclick="addQuantity(this); ">Edit</button></td>
+                    <td><button type="button" class="btn btn-danger" onclick="minusQuantity(this); ">Deleet</button></td>
+
+
+                </tr>
+                i++;
+            }
+        }
+    </table>
+</div>
+

@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewBag.Title = "AddPrice";
+}
+
+<div class="row" id="panel" style="display: block;">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left" style="margin-top: 15px;">
+                <form id="msform">
+                    <label for="edit-mail" class="form-required">Room Type</label>
+                    <select id="RoomType" class="form-required full-width" required=required name="RoomType">
+                        @if (ViewBag.RTComboModel != null)
+                        {
+                            foreach (var item in ViewBag.RTComboModel)
+                            {
+                                if (item.Text != null)
+                                {
+                                    <option value="@item.Value">
+                                        @item.Text
+                                    </option>
+
+                                }
+                            }
+                        }
+                    </select>
+                </form>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                <div class="tab-container box tabclr">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item"><a href="#regularprice" id="regularpriceLink" data-toggle="tab" class="nav-link active" style="border-right: solid 1px #f5f7fa;" aria-expanded="true">Regular Price</a></li>
+                        <li class="nav-item"><a href="#specialprice" id="specialpriceLink" data-toggle="tab" class="nav-link" style="border-right: solid 1px #f5f7fa;" aria-expanded="false">Special Price</a></li>
+                    </ul>
+                    <div class="tab-content tabclrcontent">
+                        <div class="tab-pane active" id="regularprice" aria-expanded="true">
+                            <div class="row" id="regularpriceDIV">
+
+
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="specialprice" aria-expanded="false">
+                            <!--<h4 class="tabheading"><i class="fa fa-address-card" aria-hidden="true"></i> Account Details</h4>-->
+                            <div class="row" id="specialpriceDIV">
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#regularpriceDIV").load("/Home/_RegularPrice");
+        $("#regularpriceLink").click(function () {
+            $("#regularpriceDIV").load("/Home/_RegularPrice");
+        });
+
+        $("#specialpriceLink").click(function () {
+            $("#specialpriceDIV").load("/Home/_SpecialPrice");
+        });
+
+    });
+</script>
+      
+

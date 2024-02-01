@@ -19,7 +19,7 @@ namespace HotelBooking.Repository.Implementation
 
         public IEnumerable<Amenities> GetAmenities(int BranchId)
         {
-            return _context.Amenities.Where(i=>i.CompanyId==BranchId).ToArray();
+            return _context.Amenities.Where(i=>i.BranchId==BranchId).ToArray();
         }
         public bool AddAmenities(Amenities AmenitiesEntity)
         {

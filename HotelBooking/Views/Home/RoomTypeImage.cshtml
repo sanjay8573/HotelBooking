@@ -1,0 +1,98 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<HotelBooking.Model.RoomeTypeImages>
+@{
+    ViewBag.Title = "RoomTypeImage";
+}
+
+
+
+<body>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card widget-container">
+                <div class="heading"> <i class="fa fa-bar-chart-o"></i>Room Types image  <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Room Types</small> </span></div>
+
+            </div>
+        </div>
+    </div>
+    @using (Html.BeginForm("AddRoomTypeImage", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+
+        <div class="tab-pane" id="roomtypeImages" aria-expanded="false">
+            <!--<h4 class="tabheading"><i class="fa fa-address-card" aria-hidden="true"></i> Account Details</h4>-->
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left table-responsive">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Image</label>
+                                <input type="file" id="RTImageData" name="RTImageData" class=" full-width">
+                                <input type="hidden" id="RoomTypeId" name="RoomTypeId" value="@ViewBag.RoomTypeId" />
+                            </div>
+                            <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">&nbsp;</label>
+                                <button type="submit" class="moreaddbtn form-group pull-left"> Save</button>
+                                <!--<input type="button" name="AddMore" class="prev action-button" value="Add More" runat="server">-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <hr />
+    <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
+            <table id="RoomTypeTable" class="table table-bordered">
+                <tr>
+                    <th align="center" valign="middle" bgcolor="#003556" class="clrwhit">#</th>
+                    <th align="center" valign="middle" bgcolor="#003556" class="clrwhit">Image Name</th>
+                    <th align="center" valign="middle" bgcolor="#003556" class="clrwhit">Image</th>
+                </tr>
+                @if (Model != null)
+                {
+                    var i = 1;
+                    foreach (var rt in Model)
+                    {
+                        <tr>
+
+                            <td>@i</td>
+                            <td>@rt.ImageName</td>
+                            @{
+                                String img64 = Convert.ToBase64String(rt.ImageData);
+                                String img64Url = string.Format("data:image/jpeg;base64,{0}", img64); //imagetype can be e.g. gif, jpeg, png etc.
+                            }
+
+                            <td> <img style="width:50px" src="@img64Url" /></td>
+
+
+                        </tr>
+                        i++;
+                    }
+                    <tr>
+                        <td colspan="8">
+                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <span class="float-left restextpagin">
+                                    <span class="float-left restextpagin">Showing Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount </span>
+                                </span>
+
+                                <select name="pageselect" id="pageselect" class="paginatonselect pull-right">
+
+
+                                    <option value="1">1</option>
+
+
+                                </select>
+                                @*@Html.DropDownList("pc")*@
+                                <div class="pagination pull-right">
+                                    @Html.PagedListPager(Model, page => Url.Action("RoomType", new { page, pageSize = @Model.PageSize }))
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</body>

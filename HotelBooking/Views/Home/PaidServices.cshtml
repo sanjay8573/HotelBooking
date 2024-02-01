@@ -1,0 +1,96 @@
+﻿@*@model IEnumerable<HotelBooking.Model.PaidServices>*@
+@using PagedList.Mvc
+@model PagedList.IPagedList<HotelBooking.Model.PaidServices>
+@{
+    ViewBag.Title = "PaidServices";
+}
+
+<div class="row" id="paidservices">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading" id="ListHeaderDiv"> <i class="fa fa-bar-chart-o"></i>Paid Services <small>Lists</small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Paid Services</small> </span></div>
+            <div class="widget-content padded text-center">
+                <div class="row" id="addbuttondiv">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12 pull-right">
+                            <button type="button" class="allbtnin  form-group" onclick='location.href="@Url.Action("AddPaidServices","Home")"'>+ADD</button>
+                           
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="display:block">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 pull-left">
+                            <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-left text-left">
+                                @using (Html.BeginForm("PaidServices", "Home", FormMethod.Get, new { id = "form1" }))
+                                {
+                                    <div id="pro_pag2" style="width:100%">
+                                        Show 
+                                        @Html.DropDownList("pSize", (IEnumerable<SelectListItem>)ViewBag.pSize, new { @class = "onlyinput" }) Records
+                                    </div>
+                                }
+                            </div>
+                            
+                        </div>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th width="3%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">#</a></th>
+                                    <th width="40%" align="left" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Title</a></th>
+                                    <th width="40%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Status</a></th>
+                                    <th width="10%" colspan="2" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Action</a></th>
+                                </tr>
+                                @if (Model != null)
+                                {
+                                    var i = 1;
+                                    foreach (var ps in Model)
+                                    {
+                                        <tr>
+                                            <td align="center" valign="middle">@i</td>
+                                            <td align="left" valign="middle">@ps.Title</td>
+                                            <td align="left" valign="middle"><input type="checkbox" asp-for="@ps.isActive" checked="@ps.isActive" /></td>
+                                            <td width="5%" align="left" valign="middle"><a href="#" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
+                                            <td width="5%" align="left" valign="middle"><a href="#" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
+                                        </tr>
+
+                                        i++;
+                                    }
+                                }
+                                <tr>
+                                    <td colspan="5">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <span class="float-left restextpagin">@(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount </span>
+                                            <select name="paginatonselect" id="" class="paginatonselect pull-right">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                            </select>
+                                            <div class="pagination pull-right">
+                                                @Html.PagedListPager(Model, page => Url.Action("GetAmenities", new { page }))
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    
+   
+        $("#pSize").change(function () {
+       
+
+        $("#form1").submit();
+    });
+        
+</script>

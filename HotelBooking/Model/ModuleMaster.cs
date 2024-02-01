@@ -9,6 +9,7 @@ namespace HotelBooking.Model
         public string ModuleName { get; set; }
         public string ModuleDescription { get; set; }
         public bool isDeleted { get; set; } = false;
+        public int BranchId { get; set; }
         //public List<Rights> ModuleRights { get; set; }
         //public ModuleMaster() {
         //    ModuleRights = new List<Rights>();

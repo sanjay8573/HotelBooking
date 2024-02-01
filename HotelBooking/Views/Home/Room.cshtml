@@ -1,0 +1,133 @@
+﻿
+@using PagedList.Mvc
+@model PagedList.IPagedList<HotelBooking.Model.Room>
+@{
+    ViewBag.Title = "Room";
+    var rmn = ViewBag.RoomNumber;
+}
+
+<div class="row" id="Roomform">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i> Room Form</div>
+            <div class="widget-content padded text-center">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive pull-left">
+                        @using (Html.BeginForm("SaveRoom", "Home", FormMethod.Post, new { id = "msform" }))
+                        {
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Floor</label>
+                                @Html.DropDownList("FloorComboModel")
+
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 pull-left">
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 pull-left">
+                                    <label for="edit-mail" class="form-required">Room Type</label>
+                                    @Html.DropDownList("RTComboModel")
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 pull-left">
+                                    <label for="edit-mail" class="form-required">Room Number</label>
+
+                                    @Html.TextBox("RoomNumber", null, new { @class = "full-width", @data_val = "true", @data_val_required = "Room Number is required" })
+                                </div>
+
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <input type="submit" name="SUBMIT" class="prev action-button pull-right" value="Save">
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Room <small>Lists</small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Room</small> </span></div>
+            <div class="widget-content padded text-center">
+
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 pull-left">
+                            <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-left text-left">
+                                @using (Html.BeginForm("Room", "Home", FormMethod.Get, new { id = "form1" }))
+                                {
+                                    <div id="pro_pag2">
+                                        Show @* @Html.DropDownList("PageSize", new SelectList(new Dictionary<string, int> { { "5", 5 }, { "10", 10 }, { "20", 20 } }, "Key", "Value"), new { @class = "onlyinput", id = "RTpagesize" })*@
+                                        @Html.DropDownList("pSize", (IEnumerable<SelectListItem>)ViewBag.pSize, new { @class = "onlyinput" }) Records
+                                    </div>
+                                }
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
+                                Search
+                                <input type="text" id="txtUserName" class="onlyinput" placeholder="Search" runat="server">
+                            </div>
+                        </div>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th width="3%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">#</a></th>
+                                    <th width="20%" align="left" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Room Number</a></th>
+                                    <th width="20%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Room Type</a></th>
+                                    <th width="20%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Floor Number</a></th>
+                                    <th colspan="4" width="20%" align="center" valign="middle" bgcolor="#003556" style="color:white"><a href="#">Action</a></th>
+
+                                </tr>
+                                @if (Model != null)
+                                {
+                                    var i = 1;
+                                    foreach (var rm in Model)
+                                    {
+                                        <tr>
+                                            <td align="center" valign="middle">@i</td>
+                                            <td align="left" valign="middle">@rm.RoomNumber</td>
+                                            <td align="left" valign="middle">@rm.RoomTypeName</td>
+                                            <td align="left" valign="middle">@rm.FloorName</td>
+
+                                            <td align="left" valign="middle"><a href="Housekeeping.html" class="housekeeping"><i class="fa fa-home"></i> Housekeeping</a></td>
+                                            <td align="left" valign="middle"><a href="#" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
+                                            <td align="left" valign="middle"><a href="#" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+
+                                <tr>
+                                    <td colspan="8">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                           
+                                                <span class="float-left restextpagin">Showing Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount </span>
+                                          
+                                            <select name="paginatonselect" id="" class="paginatonselect pull-right">
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                            </select>
+                                            <div class="pagination pull-right">
+                                                @Html.PagedListPager(Model, page => Url.Action("Room", new { page, pageSize = @Model.PageSize }))
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script type="text/javascript">
+            $("#pSize").change(function () {
+                var form = $(event.target).parents('form');
+
+                $("#form1").submit();
+            });
+           
+        </script>

@@ -1,0 +1,502 @@
+.onp-sociallocker, .onp-sociallocker .onp-sociallocker-text, .onp-sociallocker .onp-sociallocker-timer {
+	font: normal normal 400 13px/23px Arial, Helvetica, sans-serif;
+	color: #111
+}
+.onp-sociallocker {
+	position: relative!important;
+	background-color: #f9f9f9;
+	padding: 25px;
+	margin: 20px auto;
+	max-width: 650px
+}
+.onp-sociallocker p {
+	margin: 0
+}
+.onp-sociallocker .onp-sociallocker-text {
+	text-align: center
+}
+.onp-sociallocker-text .onp-sociallocker-strong {
+	font-size: 16px;
+	font-weight: 700;
+	display: inline-block
+}
+.onp-sociallocker-buttons {
+	text-align: center
+}
+.onp-sociallocker-text+.onp-sociallocker-buttons {
+	margin-top: 5px
+}
+.onp-sociallocker-button-inner-wrap {
+	height: 40px;
+	min-width: 120px;
+	padding: 10px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box
+}
+.onp-social-button {
+	min-width: 104px
+}
+.onp-facebook-button, .onp-google-button, .onp-twitter-tweet {
+	width: 104px
+}
+.onp-sociallocker-button-overlay {
+	width: 100%;
+	border-bottom: 0
+}
+.onp-sociallocker-button-inner-wrap {
+	position: relative
+}
+.onp-sociallocker-button {
+	display: inline-block;
+	vertical-align: top;
+	text-align: left
+}
+.onp-sociallocker.onp-sociallocker-no-counters .onp-sociallocker-button {
+	text-align: center
+}
+.onp-sociallocker-button-overlay {
+	position: absolute;
+	top: 0;
+	left: 0
+}
+.onp-sociallocker-button {
+	margin: 10px 5px 0;
+	background-color: #f2f2f2
+}
+.onp-social-button {
+	overflow: hidden;
+	padding: 1px;
+	position: relative;
+	width: 100%;
+	top: -5px
+}
+.onp-sociallocker-opera .fb-like {
+	position: relative;
+	top: -2px
+}
+.onp-sociallocker-button-facebook-like .fb-like span {
+	vertical-align: top!important;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box
+}
+.onp-facebook-share-button {
+	line-height: 1%
+}
+.onp-sociallocker-vertical .onp-facebook-share-button span {
+	top: 1px
+}
+.onp-facebook-share-button-overlay {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-color: rgba(255,255,255,0);
+	cursor: pointer
+}
+.onp-facebook-share-button-overlay:hover {
+	background-color: rgba(255,255,255,.1)
+}
+.onp-sociallocker-button .fb-like iframe, .onp-sociallocker-button .fb-like span {
+	height: 22px
+}
+.onp-sociallocker-button .fb-like span {
+	overflow: hidden;
+	padding: 0 1px
+}
+.onp-sociallocker-button-unsupported {
+	font-size: 10px;
+	text-align: center;
+	line-height: 13px
+}
+.onp-sociallocker-button-overlay * {
+	position: absolute;
+	width: 100%;
+	top: 0;
+	left: 0
+}
+.onp-sociallocker-overlay-back, .onp-sociallocker-overlay-front {
+	height: 100%;
+	top: 0;
+	left: 0;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box
+}
+.onp-sociallocker-flip .onp-sociallocker-button-overlay {
+	display: block;
+	transform-origin: bottom;
+	transform-style: preserve-3d;
+	transition: transform .3s ease;
+	transform: translate(0);
+	-webkit-transform-origin: bottom;
+	-webkit-transform-style: preserve-3d;
+	-webkit-transition: -webkit-transform .3s ease;
+	-webkit-transform: translateY(0) rotateX(0);
+	-moz-transform-origin: bottom;
+	-moz-transform-style: preserve-3d;
+	-moz-transition: -moz-transform .3s ease;
+	-moz-transform: translate(0)
+}
+.onp-sociallocker-flip .onp-sociallocker-overlay-back {
+	transform: rotateX(-180deg) translateZ(4px);
+	-webkit-transform: rotateX(-180deg) translateZ(4px);
+	-moz-transform: rotateX(-180deg) translateZ(4px)
+}
+.onp-sociallocker-flip .onp-sociallocker-overlay-header {
+	height: 4px;
+	transform-origin: top;
+	transform: rotateX(-90deg);
+	-webkit-transform-origin: top;
+	-webkit-transform: rotateX(-90deg);
+	-moz-transform-origin: top;
+	-moz-transform: rotateX(-90deg)
+}
+.onp-sociallocker-touch .onp-sociallocker-button-overlay {
+	cursor: pointer
+}
+.onp-sociallocker-flip-hover .onp-sociallocker-button-overlay, .onp-sociallocker-no-touch .onp-sociallocker-flip:hover .onp-sociallocker-button-overlay {
+	display: block!important;
+	transform: translateY(4px) rotateX(-105deg);
+	-webkit-transform: translateY(4px) rotateX(-105deg);
+	-moz-transform: translateY(4px) rotateX(-105deg)
+}
+.onp-sociallocker-flip:hover .onp-sociallocker-overlay-back {
+	border-top: 2px solid #eee
+}
+.onp-sociallocker-secrets .fb-like iframe, .onp-sociallocker-secrets .fb-like span {
+	width: 118px!important
+}
+.onp-sociallocker-secrets {
+	padding: 20px;
+	margin: 100px auto 15px;
+	border: 0;
+	background-color: transparent
+}
+.onp-sociallocker-secrets .onp-sociallocker-inner-wrap {
+	/*border: 3px solid #fefefe;
+	background-color: #f7f7f7;*/
+	padding: 30px;
+	background-color: rgba(0,0,0,0.5);
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+        -webkit-box-shadow: inset 1px 1px 0 0 rgb(49 49 49 / 50%), inset -1px -1px 0 0 rgba(0,0,0,0.5);
+    -moz-box-shadow: inset 1px 1px 0 0 rgba(255,255,255,0.5), inset -1px -1px 0 0 rgba(0,0,0,0.5);
+    box-shadow: inset 1px 1px 0 0 rgb(49 49 49 / 50%), inset -1px -1px 0 0 rgba(0,0,0,0.5);
+}
+.onp-sociallocker-secrets .onp-sociallocker-outer-wrap {
+	/*border: 1px solid #e6e6e6;*/
+	-moz-box-shadow: 0 0 40px rgba(0,0,0,.08);
+	-webkit-box-shadow: 0 0 40px rgba(0,0,0,.08);
+	box-shadow: 0 0 40px rgba(0,0,0,.08)
+}
+.onp-sociallocker-secrets .onp-sociallocker-text, .onp-sociallocker-secrets .onp-sociallocker-timer, .onp-sociallocker-secrets .onp-sociallocker-timer * {
+	-webkit-text-shadow: 1px 1px 2px #fff;
+	-moz-text-shadow: 1px 1px 2px #fff;
+	text-shadow: 1px 1px 2px #fff
+}
+.onp-sociallocker-secrets .onp-sociallocker-text .onp-sociallocker-strong:after, .onp-sociallocker-secrets .onp-sociallocker-text .onp-sociallocker-strong:before {
+	content: " ";
+	display: inline-block;
+	width: 11px;
+	height: 14px;
+	margin: 0 9px;/*background: url(//designssave.com/wp-content/plugins/sociallocker-next-premium/assets/css/../img/lock-icon.png) 0 2px no-repeat*/
+}
+.onp-sociallocker-secrets .onp-sociallocker-button .onp-sociallocker-overlay-icon {
+	height: 34px;
+	width: 44px;
+	background-image: url(../images/social-icons.png);
+	background-repeat: no-repeat;
+	background-position-y: 50%;
+	position: absolute;
+}
+@media screen and (max-width:500px) {
+.onp-sociallocker-secrets .onp-sociallocker-text .onp-sociallocker-strong:after, .onp-sociallocker-secrets .onp-sociallocker-text .onp-sociallocker-strong:before {
+	display: none
+}
+}
+.onp-sociallocker-secrets .onp-sociallocker-text .onp-sociallocker-strong:after {
+	margin-left: 10px
+}
+.onp-sociallocker-secrets .onp-sociallocker-button {
+	padding: 4px;
+	background: rgba(253, 253, 253);
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-inner-wrap, .onp-sociallocker-secrets .onp-sociallocker-button-overlay {
+	height: 34px;
+	min-width: 170px
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-inner-wrap {
+	/*padding: 7px;*/
+	-moz-box-shadow: inset 0 0 6px rgba(0,0,0,.25);
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.25);
+	box-shadow: inset 0 0 6px rgba(0,0,0,.25);
+}
+.onp-sociallocker-secrets .onp-sociallocker-button .onp-sociallocker-overlay-line {
+	position: absolute;
+	left: 41px;
+	top: 7px;
+	height: 21px;
+	width: 0;
+	border-left: 1px solid rgba(0,0,0,.11);
+	border-right: 1px solid rgba(255,255,255,.16)
+}
+.onp-sociallocker-secrets .onp-sociallocker-button .onp-sociallocker-overlay-text {
+	font-size: 14px;
+	font-family: Arial, Helvetica, sans-serif;
+	line-height: 34px;
+	color: #fff;
+	text-align: center;
+	position: static;
+	padding-left: 42px;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	text-shadow: 0 -1px 1px rgba(0,0,0,.15)
+}
+.onp-sociallocker-secrets .onp-sociallocker-button .onp-sociallocker-overlay-back, .onp-sociallocker-secrets .onp-sociallocker-button .onp-sociallocker-overlay-header {
+	background: #eaeaea
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-twitter .onp-sociallocker-overlay-front {
+	background-color: #399ff0;
+	background-position: 0 -102px
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-twitter .onp-sociallocker-overlay-icon {
+	background-position: 0 50%
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-twitter .onp-sociallocker-overlay-back {
+	background: #24b1e5
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-twitter .onp-sociallocker-overlay-header {
+	background: #368acd
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-facebook .onp-sociallocker-overlay-front {
+	background-color: #46629e;
+	background-position: 0 0
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-facebook .onp-sociallocker-overlay-icon {
+	background-position: -45px 50%
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-facebook .onp-sociallocker-overlay-back {
+	background: #46629e
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-facebook .onp-sociallocker-overlay-header {
+	background-color: #314775
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-google .onp-sociallocker-overlay-front {
+	background-color: #dd4b39;
+	background-position: 0 -68px
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-google .onp-sociallocker-overlay-icon {
+	background-position: -90px 50%
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-google .onp-sociallocker-overlay-back {
+	background: #dd4b39
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-google .onp-sociallocker-overlay-header {
+	background-color: #cf1700
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-yahoo .onp-sociallocker-overlay-front {
+	background-color: #811e8a;
+	background-position: 0 -68px
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-yahoo .onp-sociallocker-overlay-icon {
+	background-position: -181px 50%
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-yahoo .onp-sociallocker-overlay-back {
+	background: #811e8a
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-yahoo .onp-sociallocker-overlay-header {
+	background-color: #6e0078
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-windows .onp-sociallocker-overlay-front {
+	background-color: #00adef;
+	background-position: 0 -68px
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-windows .onp-sociallocker-overlay-icon {
+	background-position: -224px 50%
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-windows .onp-sociallocker-overlay-back {
+	background: #00adef
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-windows .onp-sociallocker-overlay-header {
+	background-color: #0098d2
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-linkedin .onp-sociallocker-overlay-front {
+	background-color: #286b8d;
+	background-position: 0 -34px
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-linkedin .onp-sociallocker-overlay-icon {
+	background-position: -135px 50%
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-linkedin .onp-sociallocker-overlay-back {
+	background: #286b8d
+}
+.onp-sociallocker-secrets .onp-sociallocker-button-linkedin .onp-sociallocker-overlay-header {
+	background-color: #19465d
+}
+.onp-sociallocker-secrets .onp-sociallocker-cross {
+	top: 28px;
+	right: 28px
+}
+.onp-sociallocker-secrets .onp-sociallocker-timer {
+	right: 30px;
+	bottom: 28px;
+	color: #777
+}
+.form input {
+	font-family: "Roboto", sans-serif;
+	outline: 0;
+	background: #ffffff;
+	border: solid 1px #c3c3c3;
+	width: 100%;
+	margin: 15px 0 0px;
+	padding: 15px;
+	box-sizing: border-box;
+	font-size: 14px;
+}
+.form button {
+	font-family: "Roboto", sans-serif;
+	text-transform: uppercase;
+	outline: 0;
+	background: #003556;
+	width: 100%;
+	border: 0;
+	margin-top: 15px;
+	padding: 15px;
+	color: #FFFFFF;
+	font-size: 14px;
+	-webkit-transition: all 0.3 ease;
+	transition: all 0.3 ease;
+	cursor: pointer;
+}
+.form .message {
+	margin: 15px 0 0;
+	color: #b3b3b3;
+	font-size: 12px;
+	text-align: center;
+}
+.form .message a {
+	color: #00adef;
+	text-decoration: none;
+	font-weight: bold;
+}
+.addsocial {
+	border: 3px solid #fefefe;
+	background-color: #f7f7f7;
+	padding-bottom: 10px;
+}
+.popup-body {
+	position: relative;
+	padding: 0px;
+}
+/*-----------------------Mobile Social Start-----------------------------------*/
+
+.addmobsocial {
+	padding-bottom: 0px !important;
+}
+.mobsocial-icons {
+	margin-bottom: 0px
+}
+.mobsocial-icons ul {
+	margin: 0;
+	padding: 0;
+	list-style: none
+}
+.mobsocial-icons ul li {
+	display: inline
+}
+.mobsocial-icons ul li a {
+	display: inline-block;
+	margin: 5px;
+	border-radius: 4px;
+	/*border: 1px solid rgba(255,254,254,.07);*/
+	line-height: 40px;
+	width: 40px;
+	height: 40px;
+	text-align: center;
+	font-size: 16px
+}
+.mobsocial-icons ul li a:hover {
+	color: #fff
+}
+.facebook a {
+	color: #4867aa;
+	border: solid 1px #4867aa;
+}
+.facebook a:hover {
+	background: #4867aa
+}
+.twitter a {
+	color: #1da1f2;
+	border: solid 1px #1da1f2;
+}
+.twitter a:hover {
+	background: #1da1f2
+}
+.google-plus a {
+	color: #dd4d42;
+	border: solid 1px #dd4d42;
+}
+.google-plus a:hover {
+	background: #dd4d42
+}
+.linkedin a {
+	color: #007bb6;
+	border: solid 1px #007bb6;
+}
+.linkedin a:hover {
+	background: #007bb6
+}
+.yahoo a {
+	color: #90269a;
+	border: solid 1px #90269a;
+}
+.yahoo a:hover {
+	background: #90269a
+}
+.window a {
+	color: #00adef;
+	border: solid 1px #00adef;
+}
+.window a:hover {
+	background: #00adef
+}
+
+.btn {
+    position: relative;
+    height: 20px;
+    box-sizing: border-box;
+    padding: 1px 8px 1px 6px;
+    background-color: #1b95e0;
+    color: #fff;
+    border-radius: 3px;
+    font-weight: 500;
+    cursor: pointer;
+}
+#count, .btn, .btn .label, .btn-o, .count-o {
+    display: inline-block;
+    vertical-align: top;
+    zoom: 1;
+}
+
+@media (max-width: 767px){
+.hidden-xs {
+    display: none!important;
+}}
+/*.hidden-xs {
+    display: block!important;
+}*/
+
+/*--------------------Mobile Social End-----------------------------------*/
+
+@media(max-width:767px) {
+.largedevice {
+	display: none;
+}
+}
+@media(min-width:768px) {
+.smalldevice {
+	display: none;
+}
+}

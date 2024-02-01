@@ -102,6 +102,13 @@ namespace HotelBooking.Context
             set;
         }
 
+        public DbSet<HouseKeeping> HouseKeeping
+        {
+            get;
+            set;
+        }
+
+
 
     }
 }

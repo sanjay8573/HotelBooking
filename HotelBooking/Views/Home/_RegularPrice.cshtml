@@ -1,0 +1,66 @@
+﻿@model HotelBooking.Model.PriceManager
+
+
+
+
+@using (Html.BeginForm("SaveRegularPrice", "Home", FormMethod.Post, new { id = "msform" }))
+{
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left table-responsive">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left" style="margin-top: 15px;">
+
+                @Html.HiddenFor(model => model.RoomTypeId)
+                @Html.HiddenFor(model => model.RoomTypeTitle)
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
+                    <label for="edit-mail" class="form-required">Title</label>
+
+                    @Html.TextBoxFor(model => model.Title, new { @class = "full-width", placeholder = "Title" })
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
+                    <label for="edit-mail" class="form-required">Mon</label>
+
+                    @Html.TextBoxFor(model => model.MON, new { @class = "full-width", placeholder = "100.00" })
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
+                    <label for="edit-mail" class="form-required">Tue</label>
+                    @Html.TextBoxFor(model => model.TUE, new { @class = "full-width", placeholder = "100.00" })
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
+                    <label for="edit-mail" class="form-required">Wed</label>
+                    @Html.TextBoxFor(model => model.WED, new { @class = "full-width", placeholder = "100.00" })
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
+                    <label for="edit-mail" class="form-required">Thu</label>
+                    @Html.TextBoxFor(model => model.THUR, new { @class = "full-width", placeholder = "100.00" })
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
+                    <label for="edit-mail" class="form-required">Fri</label>
+                    @Html.TextBoxFor(model => model.FRI, new { @class = "full-width", placeholder = "100.00" })
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
+                    <label for="edit-mail" class="form-required">Sat</label>
+                    @Html.TextBoxFor(model => model.SAT, new { @class = "full-width", placeholder = "100.00" })
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
+                    <label for="edit-mail" class="form-required">San</label>
+                    @Html.TextBoxFor(model => model.SUN, new { @class = "full-width", placeholder = "100.00" })
+                    @Html.HiddenFor(model => model.BranchId)
+                </div>
+            </div>
+
+
+        </div>
+        <input type="submit"  class="prev action-button" onclick="setRoomype();" value="Save" runat="server" >
+    </div>
+    <script>
+        function setRoomype() {
+            var id = $("#RoomType").val();
+            const rtName = $("#RoomType option:selected").text().replace(/[\n\r]+/g, ' ').trim();
+            $("#RoomTypeId").val(id);
+            $("#RoomTypeTitle").val(`${ rtName }`);
+        }
+    </script>
+}

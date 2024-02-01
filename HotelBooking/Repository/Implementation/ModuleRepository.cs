@@ -67,17 +67,17 @@ namespace HotelBooking.Repository.Implementation
             }
             return result;
         }
-        public IEnumerable<VM_Module> GetAllModuleWithsRights()
+        public IEnumerable<VM_Module> GetAllModuleWithsRights(int branchId)
         {
             List<VM_Module> VMM = new List<VM_Module>();
-            IEnumerable<ModuleMaster> m1 = _context.ModuleMaster.ToArray();
+            IEnumerable<ModuleMaster> m1 = _context.ModuleMaster.Where(m=>m.BranchId== branchId).ToArray();
             foreach (ModuleMaster mm in m1)
             {
                 VM_Module v = new VM_Module();
                 v.ModuleId = mm.Id;
                 v.Name = mm.ModuleName;
                 v.Description = mm.ModuleDescription;
-                IEnumerable<Rights> r = _context.Rights.ToArray().Where(m => m.ModuleId == mm.Id);
+                IEnumerable<Rights> r = _context.Rights.ToArray().Where(m => m.ModuleId == mm.Id && m.BranchId== branchId);
                 v.ModuleRights = r.ToList();
                 VMM.Add(v);
 

@@ -1,0 +1,61 @@
+﻿@model HotelBooking.Model.Amenities
+@{
+    ViewBag.Title = "AddAmenities";
+}
+
+
+
+<body>
+
+    <div class="row" id="Amenityform">
+        <div class="col-sm-12">
+            <div class="card widget-container">
+                <div class="heading"> <i class="fa fa-bar-chart-o"></i> Amenity Form</div>
+                
+                    <div class="widget-content padded text-center">
+                        <div class="row">
+                            <div class="col-md-10 col-lg-10 col-sm-12 col-xs-12 table-responsive pull-left">
+                                <form id="msform" runat="server" action="/home/SaveAmenities" method="post" enctype = "multipart/form-data" style=" margin:0px auto;">
+
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                                        <label for="edit-mail" class="form-required">Name</label>
+
+                                        @Html.TextBoxFor(model => model.Title, new { @class = "full-width", placeholder = "Name" })
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                                        <label for="edit-mail" class="form-required">Image</label>
+                                        <input type="file" id="amenityImage" name="amenityImage" class="full-width" />
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                        <label for="edit-mail" class="form-required">Discription</label>
+                                        @Html.TextAreaFor(model => model.Description, new { @class = "full-width", placeholder = "Description", rows = "4" })
+
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                                        <label for="edit-mail" class="form-required">&nbsp;</label>
+                                        
+                                        <ul class="unstyled">
+                                            <li>
+                                                <input class="styled-checkbox" id="styled-checkbox-2" type="checkbox" value="value2" checked="">
+                                                <label for="styled-checkbox-2">Active</label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    @Html.HiddenFor(model => model.BranchId)
+                                    @Html.HiddenFor(model => model.DateCreated)
+
+                                    <input type="submit" name="SUBMIT" class="prev action-button" value="Save" runat="server">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+              
+                </div>
+        </div>
+    </div>
+    
+
+    
+
+</body>
