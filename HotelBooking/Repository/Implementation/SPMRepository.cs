@@ -35,7 +35,7 @@ namespace HotelBooking.Repository.Implementation
             }
             else
             {
-                SPM tmpPM = _context.SpecialPrice.Where(r => r.RoomTypeId == SPMEntity.RoomTypeId && r.isActive == true).SingleOrDefault<SPM>();
+                SPM tmpPM = _context.SpecialPrice.Where(r => r.RoomTypeId1 == SPMEntity.RoomTypeId1 && r.isActive1 == true).SingleOrDefault<SPM>();
                 if (tmpPM != null && tmpPM.SpecialPriceManageId > 0)
                 {
                     
@@ -87,7 +87,7 @@ namespace HotelBooking.Repository.Implementation
 
         public IEnumerable<SPM> GetSpecialPrices(int BranchId)
         {
-            return _context.SpecialPrice.Where(i => i.BranchId == BranchId).ToArray();
+            return _context.SpecialPrice.Where(i => i.BranchId1 == BranchId).ToArray();
         }
         private int UpdateSpecialPrice(SPM SPMEntity)
         {
@@ -95,17 +95,17 @@ namespace HotelBooking.Repository.Implementation
             var tmpPM = _context.SpecialPrice.Find(SPMEntity.SpecialPriceManageId);
             if (tmpPM != null)
             {
-                tmpPM.Title = SPMEntity.Title;
+                tmpPM.Title1 = SPMEntity.Title1;
                 tmpPM.DateRange = SPMEntity.DateRange;
-                tmpPM.SUN = SPMEntity.SUN;
-                tmpPM.MON = SPMEntity.MON;
-                tmpPM.TUE = SPMEntity.TUE;
-                tmpPM.WED = SPMEntity.WED;
-                tmpPM.THUR = SPMEntity.THUR;
-                tmpPM.FRI = SPMEntity.FRI;
-                tmpPM.SAT =     SPMEntity.SAT;
-                tmpPM.RoomTypeId =  SPMEntity.RoomTypeId;
-                tmpPM.isActive =   SPMEntity.isActive;
+                tmpPM.SUN1 = SPMEntity.SUN1;
+                tmpPM.MON1 = SPMEntity.MON1;
+                tmpPM.TUE1 = SPMEntity.TUE1;
+                tmpPM.WED1 = SPMEntity.WED1;
+                tmpPM.THUR1 = SPMEntity.THUR1;
+                tmpPM.FRI1 = SPMEntity.FRI1;
+                tmpPM.SAT1 =     SPMEntity.SAT1;
+                tmpPM.RoomTypeId1 =  SPMEntity.RoomTypeId1;
+                tmpPM.isActive1 =   SPMEntity.isActive1;
 
                 _context.SaveChanges();
                 rtnVal = tmpPM.SpecialPriceManageId;

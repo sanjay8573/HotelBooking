@@ -7,8 +7,8 @@ namespace HotelBooking.Repository.Interface
     {
         bool SaveRoom(Room entityRoom);
         Room GetRoom(int roomId);
-        IEnumerable<Room> GetRooms(int roomTypeId);
-
+        IEnumerable<Room> GetRooms(int branchId);
+        IEnumerable<Room> GetRoomsByRoomTypeId(int branchId, int RoomTypeId);
         bool DeleteRoom(int roomId);
     }
 }

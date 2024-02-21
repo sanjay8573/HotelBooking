@@ -1,0 +1,545 @@
+﻿@model HotelBooking.Model.Booking
+    @using HotelBooking.Model
+@{
+    ViewBag.Title = "AddBooking";
+}
+
+@{ 
+    IEnumerable<PriceResponse>  allN = Model.AllNights.Select(x =>
+         new PriceResponse
+         {
+             roomTypeId = x.RoomTypeId,
+             Amount = x.PerNightCost,
+             Date = x.Date,
+             BookingCostId=x.BookingCostId,
+             Tax=decimal.Parse(x.Tax),
+             TaxAmount=x.TaxAmount
+
+         }
+        );
+
+    IEnumerable<PaidServices> ediTPS = ViewBag.PS;
+
+}
+<div class="row" id="AddBooking">
+    <div class="col-sm-12" id="BookingFirstPage">
+        <div class="card widget-container">
+            <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
+                    <label for="edit-mail" class="form-required">Guest</label>
+                    <select name="categories" id="Selguest" class="full-width freetrial">
+                        <option selected="selected" value="1">Select Guest</option>
+                        <option value="2">Jhon Rick</option>
+                        <option value="3">Anand Chy</option>
+                    </select>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
+                    <label for="edit-mail" class="form-required">Booking Type</label>
+                    <select name="categories" id="SelBtype" class="full-width freetrial">
+                        <option selected="selected" value="1">Select Booking Type</option>
+                        <option value="2">Room Booking</option>
+                        <option value="3">Hall Booking</option>
+                    </select>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
+                    <label for="edit-mail" class="form-required">Room</label>
+                    <select id="RoomType" required=required name="RoomType">
+                        @if (ViewBag.RTComboModel != null)
+                        {
+                            foreach (var item in ViewBag.RTComboModel)
+                            {
+                                if (item.Text != null)
+                                {
+                                    <option value="@item.Value" selected="@item.Selected">
+                                        @item.Text
+                                    </option>
+
+                                }
+                            }
+                        }
+                    </select>
+                    @Html.HiddenFor(model => model.BookingId)
+                    @Html.HiddenFor(model => model.BookingNumber)
+                    @Html.HiddenFor(model => model.BranchId)
+                    @Html.HiddenFor(model => model.PaidServices)
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 p-0 pull-left" style="margin-top: 15px;">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                        <label for="edit-mail" class="form-required">Adults</label>
+                        <div class="number" id="nAdult">
+                            <span class="minus">-</span>
+                            <input type="text" value="@Model.Adult" />
+                            <span class="plus">+</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                        <label for="edit-mail" class="form-required">Child</label>
+                        <div class="number" id="nChild">
+                            <span class="minus">-</span>
+                            <input type="text" value="@Model.Child" />
+                            <span class="plus">+</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 p-0 pull-left" style="margin-top: 15px;">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                        <label for="edit-mail" class="form-required">Check In</label>
+                        <input type="text" id="Addbookingdatepickerinn" value="@Model.CheckIn"  class="full-width allinputgo" placeholder="Check In" autocomplete="off">
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                        <label for="edit-mail" class="form-required">Check Out</label>
+                        <input type="text" id="Addbookingdatepickerout" value="@Model.Checkout"  class="full-width allinputgo" placeholder="Check Out" autocomplete="off">
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left" style="margin-top: 15px;">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="trthbgclr" width="22%" align="left" valign="middle">Number Of Rooms</td>
+                                <td width="78%" align="left" valign="middle">@Model.NoOfRooms</td>
+                            </tr>
+                            <tr>
+                                <td class="trthbgclr" align="left" valign="middle">Adults</td>
+                                <td align="left" valign="middle" id="nOfA">@Model.Adult</td>
+                            </tr>
+                            <tr>
+                                <td class="trthbgclr" align="left" valign="middle">child's</td>
+                                <td align="left" valign="middle" id="nOfC">@Model.Child</td>
+                            </tr>
+                            <tr>
+                                <td class="trthbgclr" align="left" valign="middle">Nights</td>
+                                <td align="left" valign="middle" id="nOn">@Model.Nights</td>
+                            </tr>
+                            <tr>
+                                <td class="trthbgclr" align="left" valign="middle">Price Per Nights</td>
+                                <td align="left" valign="middle">
+                                    <div id="ppn">
+                                        @Html.Partial("_PricePerNights", allN)
+                                       
+                                    </div>
+                                    @*<div id="ppn"></div>*@
+                                   
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="trthbgclr" align="left" valign="middle">Amount</td>
+                                <td align="right" valign="middle"><strong>$</strong><strong id="totAmt">0.00</strong></td>
+                            </tr>
+                            <tr>
+                                <td class="trthbgclr" align="left" valign="middle">Taxes</td>
+                                <td align="left" valign="middle">
+                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <tbody>
+                                            <tr>
+                                                <td align="left">1</td>
+                                                <td align="left">Good and Services Tax (GST)</td>
+                                                <td align="right"><span id="txPct">18.00</span><span>%</span></td>
+                                                <td align="right"><strong>$</strong><strong id="taxVal">@Model.TotalTax</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td align="left" colspan="3"><strong>Total Tax</strong></td>
+                                                <td align="right"><strong>$</strong><strong id="taxTotal">@Model.TotalTax</strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="trthbgclr" align="left" valign="middle">Paid Services</td>
+                                <td align="left" valign="middle">
+                                    <div id="paidservices">
+                                        @if (ediTPS != null)
+                                        {
+                                            @Html.Partial("_PaidServices", ediTPS)
+                                        }
+                                                  }
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="trthbgclr" align="left" valign="middle">Total Amount</td>
+                                <td align="right" valign="middle"><strong>$</strong><strong id="gTot">@Model.TotalAmount</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="col-12 col-lg-12 col-md-12 col-sm-12 p-0" style="display:none">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
+                            <label for="edit-mail" class="form-required">Show Rooms</label>
+                            <select name="categories" id="categories" class="full-width freetrial">
+                                <option selected="selected" value="1">All</option>
+                                <option value="2">Standerd</option>
+                                <option value="3">Dilux</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
+                            <label for="edit-mail" class="form-required">Time Range</label>
+                            <select name="categories" id="categories" class="full-width freetrial">
+                                <option selected="selected" value="1">Month</option>
+                                <option value="2">Jan</option>
+                                <option value="3">Feb</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
+                            <label for="edit-mail" class="form-required">&nbsp;</label>
+                            <ul class="unstyled">
+                                <li>
+                                    <input class="styled-checkbox" id="styled-checkbox-2" type="checkbox" value="value2" checked="">
+                                    <label for="styled-checkbox-2">Auto Cell Width</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                        <input type="button" name="SUBMIT" class="prev action-button pull-right" onclick="GotoNextPage()" value="Next" runat="server">
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+    
+</div>
+<div class="row" id="BookingNextPage" style="display:none">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td width="22%" align="left" colspan="2" valign="middle" style="font-size: 17px; font-weight: 600; color: #003556;">Make Reservation</td>
+                        </tr>
+                        <tr>
+                            <td class="trthbgclr" width="22%" align="left" valign="middle">Details</td>
+                            <td width="78%" align="left" valign="middle" id="bkDetail">Exutive 1 Night Booking From 01/03/2024 to 02/03/2024</td>
+                        </tr>
+                        <tr>
+                            <td class="trthbgclr" align="left" valign="middle">Total Amount</td>
+                            <td align="left" valign="middle" ><strong>$</strong><strong id="gTotal1">0.00</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="trthbgclr" align="left" valign="middle">Coupon</td>
+                            <td align="left" valign="middle">
+                                <input type="text" class="pull-left" id="BK-CPNCODE" placeholder="Coupon Code">
+                                <input type="button" name="SUBMIT" class="prev action-button pull-left" value="Apply" runat="server" onclick="AppyCoupon();" style="margin: 5px 15px;">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="trthbgclr" align="left" valign="middle">Coupon Applied</td>
+                            <td align="left" valign="middle">-<strong>$</strong><strong id="BK-DISC">-0.00</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="trthbgclr" align="left" valign="middle">Amount Payable</td>
+                            <td align="left" valign="middle"><strong>$</strong><strong id="BK-PayAMT">0.00</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left" style="margin-top: 15px;">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                        <input type="button" name="SUBMIT" class="prev action-button pull-right" onclick="SaveBooking();" value="Book" runat="server">
+                    </div>
+                </div>
+                </form>
+        </div>
+        </div>
+</div>
+    
+
+<script>
+                function SaveBooking() {
+                    const GuestName = $("#Selguest option:selected").text();
+                    const GuestID = $("#Selguest option:selected").val();
+
+                    const bTypeName = $("#SelBtype option:selected").text();
+                    const BtypeID = $("#SelBtype option:selected").val();
+                    const RoomType = $("#RoomType option:selected").text().trim();
+                    const RoomTypeId = $("#RoomType option:selected").val();
+
+                    const Adults = $("#nOfA").text();
+                    const KID = $("#nOfC").text();
+
+                    const CIN = $("#Addbookingdatepickerinn").val();
+                    const COUT = $("#Addbookingdatepickerout").val()
+                    const NIGHTS = $("#nOn").text();
+                    
+                    const Amount = $("#gTotal1").text();
+                    
+                    const Taxes = $("#taxVal").text();
+
+                    const TotalAmount = $("#BK-PayAMT").text(); 
+                    const couponCode = $("#BK-CPNCODE").val();
+                    const CouponAmount = $("#BK-DISC").text();
+                    const ps = '9,10,12';// removeDuplicates(selectedPS).toString();
+                    const BookingId = $("#BookingId").val();
+                    const branchId = $("#BranchId").val();
+                    const BookingNumber = $("#BookingNumber").val();
+                   
+                    const Bookingitem = {
+
+                        GuestName: GuestName,
+                        GuestID: parseInt(GuestID),
+                        BookingTypeName: bTypeName,
+                        BookingTypeId: parseInt(BtypeID),
+                        RoomTypeId: parseInt(RoomTypeId),
+                        RoomTypeName: RoomType,
+                        Adult: parseInt(Adults),
+                        Child: parseInt(KID),
+                        CheckIn: CIN,
+                        Checkout: COUT,
+                        NoOfRooms: 1,
+                        Nights: NIGHTS,
+                        TotalAmount: parseFloat(TotalAmount).toFixed(2),
+                        TotalTax: parseFloat(Taxes).toFixed(2),
+                        isActive: true,
+                        branchId: parseInt(branchId),
+                        BookingId: parseInt(BookingId),
+                        CouponCode: couponCode,
+                        CouponAmount: parseFloat(CouponAmount).toFixed(2),
+                        PaidServices: ps,
+                        BookingNumber: BookingNumber,
+                        APyableAmount: parseFloat(TotalAmount).toFixed(2),
+                        AllNights: []
+                    };
+                    userObj.forEach(item => {
+                        BookingCost = {
+                            BookingId: parseInt(BookingId),
+                            BookingCostId:parseInt(item.BookingCostId),
+                            RoomTypeId: parseInt(RoomTypeId),
+                            Date: item.Date,
+                            PerNightCost: item.Amount.toFixed(2),
+                            Tax: item.Tax,
+                            TaxAmount: parseFloat(parseFloat(item.Amount * item.Tax))
+                        }
+                        Bookingitem.AllNights.push(BookingCost);
+                    });
+                    console.log(Bookingitem);
+                    
+                    fetch('/BookingInterface/SaveBooking', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(Bookingitem)
+                    })
+                        //.then(response => response.json())
+                        .then(() => {
+                            //console.log(response.json)
+                            $.toast({
+                                heading: 'Success',
+                                text: 'Booking Success ',
+                                icon: 'success',
+                                loader: false,        // Change it to false to disable loader
+                                position: 'top-right',
+                                loaderBg: '#9EC600'  // To change the background
+                            });
+                            //Toast.setPlacement(TOAST_PLACEMENT.TOP_RIGHT);
+                            //Toast.create("Success", "Testing", TOAST_STATUS.SUCCESS, 10000);
+                        })
+                        .catch(error => {
+                            $.toast({
+                                autoDismiss: true,
+                                heading: 'Error',
+                                text: 'Error on Boooking',
+                                icon: 'warning',
+                                position: 'top-right',
+                                loader: false,        // Change it to false to disable loader
+                                loaderBg: '#9EC600'  // To change the background
+                            });
+                        });
+                   
+                }
+                function AppyCoupon() {
+
+                    const couponCode = $("#BK-CPNCODE").val();
+                    //const CCBaseURI = 'BookingInterface';
+
+                    $.post("/BookingInterface/ApplyCoupon", { BranchId: 3, couponCode: couponCode }, function (data) {
+                        _displayDiscount(data);
+                    });
+
+
+                }
+                function _displayDiscount(tempData) {
+                    console.log(tempData);
+                    let pamt;
+                    let tmpAmt = $("#BK-PayAMT").text();
+                    let DiscountAmount = tempData;
+                    if (tempData > 0) {
+
+                        $("#BK-DISC").text(Number(tempData).toFixed(2));
+                        tmpAmt = tmpAmt - DiscountAmount;
+                        //pamt = formatter.format(tmpAmt);
+
+                        $("#BK-PayAMT").text(Number(tmpAmt).toFixed(2));
+                    }
+                    else {
+
+                        //pamt = formatter.format(totamt);
+                        $("#BK-PayAMT").text(Number(tmpAmt).toFixed(2));
+                    }
+
+
+                }
+                function GotoNextPage() {
+
+                    var bkDetails = $("#RoomType option:selected").text() + " 1 Nights Booking from " + $("#Addbookingdatepickerinn").val() + " To " + $("#Addbookingdatepickerout").val();
+                    var gtptal1 = $("#gTot").text();
+                    $("#BookingFirstPage").css("display", "none");
+                    $("#BookingNextPage").css("display", "block");
+
+                    $("#bkDetail").text(bkDetails);
+                    $("#gTotal1").text(Number(gtptal1).toFixed(2));
+                    $("#BK-PayAMT").text(Number(gtptal1).toFixed(2));
+
+
+                }
+                var dataList = [];
+                function calculateGtotal(chkId) {
+                    console.log('Testing calcuation for ' + chkId);
+                    var gTotal = $("#gTot").text();
+                    console.log('Current Total ' + gTotal);
+
+                    $('input[type=checkbox]').each(function () {
+
+                        if (this.name == "CHK_PS_BK" && this.id == chkId) {
+                            if (this.checked) {
+
+                                //assign set value to hidden field
+                                console.log('CHECKED' + this.id + "   " + this.value);
+
+                                gTotal = Number(gTotal) + Number(this.value);
+                            } else {
+
+                                gTotal = Number(gTotal) - Number(this.value);
+                                console.log('UNCHECKED' + gTotal);
+                                console.log('UNCHECKED' + this.id + "   " + this.value);
+                            }
+                        }
+
+                    });
+
+                    console.log('Final Total' + gTotal);
+                    $("#gTot").text(gTotal.toFixed(2));
+                }
+                $(function () {
+                    var userObj;
+                    console.log("On Load ===="+userObj);
+
+                    function divLoaded() {
+                        $("#totAmt").text($("#TotalCostForNights").val());
+                        var tottalAmount = $("#totAmt").text();
+                        var taxpercentage = $("#txPct").text();
+                        var totaltax = ((Number(tottalAmount) * Number(taxpercentage)) / 100).toFixed(2);
+                        $("#taxVal").text(totaltax);
+                        $("#taxTotal").text(totaltax);
+                        console.log(taxpercentage + "  " + totaltax);
+                        var totAmount = $("#totAmt").text();
+                        var totTax = $("#taxTotal").text();
+                        var gTotalAmount = ((Number(totAmount) + Number(totTax)));
+                        console.log(" Grand Total  " + gTotalAmount);
+                        $("#gTot").text(gTotalAmount.toFixed(2));
+                        
+                    };
+                    $("#Addbookingdatepickerinn").datepicker({
+                        dateFormat: "dd-mm-yy",
+                        duration: "fast",
+                        minDate: 0,
+                        disabledDates: [new Date()],
+                        onSelect: function (selected) {
+                            var minDate = $(this).datepicker('getDate');
+                            minDate.setDate(minDate.getDate() + 1); //add one day
+                            $('#Addbookingdatepickerout').datepicker('option', 'minDate', minDate);
+
+
+
+                        }
+                    });
+
+
+
+                    $("#Addbookingdatepickerout").datepicker({
+                        dateFormat: "dd-mm-yy"
+                        , duration: "fast",
+                        onSelect: function (selected) {
+                            var maxDate = $(this).datepicker('getDate');
+                            var minDate = $("#Addbookingdatepickerinn").datepicker('getDate');
+                            var fdate = minDate.getDate(); //add one day
+                            var todate = maxDate.getDate();
+                            var todalNight = parseInt(todate) - parseInt(fdate);
+                            $('#nOn').text(todalNight);
+                            var RoomTypeId = $("#RoomType").val();
+                            var cin = $("#Addbookingdatepickerinn").val();
+                            var cout = $("#Addbookingdatepickerout").val();
+
+                            console.log(RoomTypeId + "  " + cin + "   " + cout);
+                            $("#ppn").load("/BookingInterface/_PricePerNight?RoomTypeId=" + RoomTypeId + "&cinDate=" + cin + "&coutDate=" + cout);
+
+                            console.log("....1");
+                            setTimeout(divLoaded, 100);
+                            $("#paidservices").load("/BookingInterface/_PaidServices?RoomTypeId=" + RoomTypeId);
+                            
+                           
+                            
+                        }
+                    });
+                });
+
+
+</script>
+            <script>
+                $(document).ready(function () {
+
+                    console.log(" On Ready   " + $("#PaidServices").val());
+
+                    //on Edit checked paid services selected
+
+                    $('input[type=checkbox]').each(function () {
+                        var selectedPS = $("#PaidServices").val();
+                        if (this.name == "CHK_PS_BK") {
+
+                            if (selectedPS.includes(this.id)) {
+                                this.checked = true;
+                            }
+                            
+                        }
+
+                    });
+
+
+                    $('.minus').click(function () {
+
+                        var $input = $(this).parent().find('input');
+                        var dd = $(this).parent().attr('id');
+                        var count = parseInt($input.val()) - 1;
+                        count = count < 1 ? 1 : count;
+                        $input.val(count);
+                        console.log(dd);
+                        if (dd == 'nAdult') {
+                            $("#nOfA").text(count);
+                        } else {
+                            $("#nOfC").text(count);
+                        }
+
+
+                        $input.change();
+                        return false;
+                    });
+                    $('.plus').click(function () {
+                        var $input = $(this).parent().find('input');
+                        var dd = $(this).parent().attr('id');
+                        var count = parseInt($input.val()) + 1;
+                        $input.val(count);
+                        $input.change();
+                        console.log(dd);
+                        if (dd == 'nAdult') {
+                            $("#nOfA").text(count);
+                        } else {
+                            $("#nOfC").text(count);
+                        }
+                        return false;
+                    });
+                });
+            </script>
+            
+
+

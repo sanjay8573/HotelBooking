@@ -28,7 +28,7 @@
                                                 {
                                                     if (item.Text != null)
                                                     {
-                                                        <option value="@item.Value">
+                                                        <option value="@item.Value" selected="@item.Selected">
                                                             @item.Text
                                                         </option>
 
@@ -48,6 +48,7 @@
                                     @Html.HiddenFor(model => model.PriceTypeId);
                                     @Html.HiddenFor(model => model.PriceType);
                                     @Html.HiddenFor(model => model.BranchId);
+                                    @Html.HiddenFor(model => model.PaidServiceId);
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                     <label for="edit-mail" class="form-required">Price</label>
@@ -58,20 +59,21 @@
                                     <label for="edit-mail" class="form-required">Status</label>
                                     <ul class="unstyled">
                                         <li>
-                                            <input class="styled-checkbox" id="styled-checkbox-2" type="checkbox" value="@Model.isActive" checked="@Model.isActive">
+                                            <input class="styled-checkbox" id="styled-checkbox-2" name="CHK_ACTIVE" type="checkbox" checked="@Model.isActive">
 
                                             <label for="styled-checkbox-2">Active</label>
                                         </li>
 
                                     </ul>
+                                    @Html.HiddenFor(model => model.isActive);
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                     <label for="edit-mail" class="form-required">Discription</label>
-                                    @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                     <label for="edit-mail" class="form-required">Short Discription</label>
-                                    @Html.TextBoxFor(model => model.ShortDescription, new { @class = "form-control" })
+                                    @Html.TextAreaFor(model => model.ShortDescription, new { @class = "form-control" })
 
                                 </div>
                                 <input type="submit" name="SUBMIT" class="prev action-button" onclick="addDatatoModel();" value="Save" runat="server">
@@ -93,7 +95,18 @@
 
             $("#RoomTypeId").val($("#RoomType").val());
 
+            $('input[type=checkbox]').each(function () {
+
+
+                if (this.name == "CHK_ACTIVE") {
+                    $('#isActive').val(this.checked);
+
+                }
+            });
+
         }
+
+        
     </script>
 
 </body>

@@ -130,5 +130,10 @@ namespace HotelBooking.Repository.Implementation
             return rtnVal;
 
         }
+
+        public IEnumerable<StaffTier> GetStaffTiers(int branchId)
+        {
+            return _context.StaffTier.Where(s => s.BranchId== branchId && s.isDeleted == false);
+        }
     }
 }

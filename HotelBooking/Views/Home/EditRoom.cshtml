@@ -1,0 +1,108 @@
+﻿@model HotelBooking.Model.Room
+@{
+    ViewBag.Title = "EditRoom";
+}
+
+<div class="row" id="editRoomform">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>  Room Amendmend  </div>
+            <div class="widget-content padded text-center">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive pull-left">
+                        @using (Html.BeginForm("SaveEditedRoom", "Home", FormMethod.Post, new { id = "msform", enctype = "multipart/form-data" }))
+                        {
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Floor</label>
+                                @Html.DropDownList("FloorComboModel")
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 pull-left">
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 pull-left">
+                                    <label for="edit-mail" class="form-required">Room Type</label>
+                                    @Html.DropDownList("RTComboModel")
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 pull-left">
+                                    <label for="edit-mail" class="form-required">Room Number</label>
+                                    @Html.TextBoxFor(model => model.RoomNumber, new { @class = "full-width", @data_val_required = "Room Number is required" })
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 pull-left">
+                                    <label for="edit-mail" class="form-required">&nbsp;</label>
+
+                                    <ul class="unstyled">
+                                        <li>
+                                            <input class="styled-checkbox" id="CHK_ACTIVE" type="checkbox" name="CHK_ACTIVE">
+                                            <label for="CHK_ACTIVE">Active</label>
+                                        </li>
+                                    </ul>
+                                </div>
+                                @Html.HiddenFor(model => model.BranchId)
+                                @Html.HiddenFor(model => model.RoomId)
+                                @Html.HiddenFor(model => model.RoomTypeId)
+                                @Html.HiddenFor(model => model.RoomTypeName)
+                                @Html.HiddenFor(model => model.floor)
+                                @Html.HiddenFor(model => model.FloorName)
+                                @Html.HiddenFor(model => model.isActive)
+                            </div>
+
+
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <input type="submit" name="SUBMIT" class="prev action-button pull-right" onclick="UdpateActiveValue();" value="Save" runat="server">
+                            </div>
+                        }
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+
+
+        $('input[type=checkbox]').each(function () {
+            if (this.name == "CHK_ACTIVE") {
+
+                const ic = $('#isActive').val();
+                
+                if (ic == 'True') {
+                    $('#CHK_ACTIVE').prop('checked', true)
+                   
+                }
+
+            }
+        });
+    });
+    function UdpateActiveValue() {
+
+        const rmdata = $('#RTComboModel').find(":selected").val();
+        var rmArr = rmdata.split('~');
+        var rtId = rmArr[0];
+        var rtTypeName = rmArr[1];
+       
+        const flId = $('#FloorComboModel').find(":selected").val();
+        var seltext = $('#FloorComboModel').find(":selected").text();
+        var arr = seltext.split('-');
+        var flNo = arr[0];
+        var floorName = arr[1];
+        $('#RoomTypeId').val(rtId);
+        $('#RoomTypeName').val(rtTypeName);
+        $('#floor').val(flId);
+        $('#FloorName').val(floorName);
+
+
+        $('input[type=checkbox]').each(function () {
+
+
+            if (this.name == "CHK_ACTIVE") {
+                console.log(this.checked);
+                $('#isActive').val(this.checked);
+
+            }
+        });
+
+    }
+</script>

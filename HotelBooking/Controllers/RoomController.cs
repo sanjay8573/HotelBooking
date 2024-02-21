@@ -25,6 +25,13 @@ namespace HotelBooking.Controllers
             return _room.GetRooms(BranchId);
         }
 
+        [HttpGet]
+        [Route("api/Room/GetRoomsByRoomTypeId/{BranchId}")]
+        public IEnumerable<Room> GetRoomsByRoomTypeId(int BranchId,int RoomTypeId)
+        {
+            return _room.GetRoomsByRoomTypeId(BranchId, RoomTypeId);
+        }
+
         [HttpPost]
         [Route("api/Room/AddRoom/{BranchId}")]
         public bool AddRoom(Room roomEntity)
@@ -34,7 +41,7 @@ namespace HotelBooking.Controllers
 
         [HttpDelete]
         [Route("api/Room/DeleteRoom/{BranchId}/{RoomId}")]
-        public void DeletePrice(int RoomId)
+        public void DeleteRoom(int RoomId)
         {
             _room.DeleteRoom(RoomId);
         }

@@ -10,5 +10,7 @@ namespace HotelBooking.Repository.Interface
 
         int UpdatePrice(PriceManager PMEntity);
         void Deleteprice(int pmid);
+      
+       
     }
 }

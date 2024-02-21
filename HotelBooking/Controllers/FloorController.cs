@@ -32,5 +32,12 @@ namespace HotelBooking.Controllers
         {
             return _floor.AddFloor(FloorEntity);
         }
+
+        [HttpPost]
+        [Route("api/Floor/DelFloor/{BranchId}")]
+        public void DelFloor(int FloorId)
+        {
+             _floor.DeleteFloor(FloorId);
+        }
     }
 }

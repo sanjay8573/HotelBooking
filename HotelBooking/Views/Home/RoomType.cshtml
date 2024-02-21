@@ -66,8 +66,8 @@
                                             <td align="left" valign="middle">@rt.ShortCode</td>
 
                                             <td align="left" valign="middle"><a href="@Url.Action("Delete","Sales",new { @RoomTypeId = rt.RoomTypeId })" class="viewbtn"><i class="fa fa-eye"></i> View</a></td>
-                                            <td align="left" valign="middle"><a href="#" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
-                                            <td align="left" valign="middle"><a href="#" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
+                                            <td align="left" valign="middle"><a href="@Url.Action("AddRoomType","Home",new { @RoomTypeId = rt.RoomTypeId })" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
+                                            <td align="left" valign="middle"><a href="@Url.Action("DelRoomType","Home",new { @RoomTypeId = rt.RoomTypeId })" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
                                             <td align="left" valign="middle"><a href="@Url.Action("RoomTypeImage","Home",new { @RoomTypeId = rt.RoomTypeId })" class="viewbtn"><i class="fa fa-eye"></i> Add Images</a></td>
 
                                         </tr>
@@ -82,16 +82,10 @@
                                                 <span class="float-left restextpagin">Showing Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount </span>
                                             </span>
 
-                                            <select name="pageselect" id="pageselect" class="paginatonselect pull-right">
-
-
-                                                <option value="1">1</option>
-
-
-                                            </select>
+                                           
                                             @*@Html.DropDownList("pc")*@
                                             <div class="pagination pull-right">
-                                                @Html.PagedListPager(Model, page => Url.Action("RoomType", new { page, pageSize = @Model.PageSize }))
+                                                @Html.PagedListPager(Model, page => Url.Action("RoomType", new { page, pageSize = @Model.PageSize }), PagedListRenderOptions.ClassicPlusFirstAndLast)
                                             </div>
                                         </div>
                                     </td>

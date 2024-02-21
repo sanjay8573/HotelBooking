@@ -71,7 +71,7 @@ namespace HotelBooking.Repository.Implementation
                 var pmEntity = _context.PriceManager.Find(pmid);
                 if (pmEntity != null)
                 {
-                    _context.PriceManager.Remove(pmEntity);
+                    pmEntity.isDeleted = true;
                     _context.SaveChanges();
                 }
             }
@@ -112,5 +112,7 @@ namespace HotelBooking.Repository.Implementation
 
             return rtnVal;
         }
+
+        
     }
 }

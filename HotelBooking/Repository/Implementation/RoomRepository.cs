@@ -29,7 +29,7 @@ namespace HotelBooking.Repository.Implementation
                 var RoomEntity = _context.Rooms.Find(roomId);
                 if (RoomEntity != null)
                 {
-                    _context.Rooms.Remove(RoomEntity);
+                    RoomEntity.isDeleted = true;
                     _context.SaveChanges();
                      rtnVal = true;
                    
@@ -55,6 +55,11 @@ namespace HotelBooking.Repository.Implementation
             return _context.Rooms.Where(r=>r.BranchId== branchId).ToArray();  
         }
 
+        public IEnumerable<Room> GetRoomsByRoomTypeId(int branchId,int RoomTypeId)
+        {
+            return _context.Rooms.Where(r => r.BranchId == branchId && r.RoomTypeId==RoomTypeId).ToArray();
+        }
+
         public bool SaveRoom(Room entityRoom)
         {
             bool rtnVal = false;
@@ -66,7 +71,8 @@ namespace HotelBooking.Repository.Implementation
                     tmpEntity.RoomTypeId = entityRoom.RoomTypeId;
                     tmpEntity.RoomTypeName = entityRoom.RoomTypeName;
                     tmpEntity.floor = entityRoom.floor;
-                    tmpEntity.RoomNumber = entityRoom.RoomNumber;
+                    tmpEntity.FloorName = entityRoom.FloorName;
+                    tmpEntity.isActive = entityRoom.isActive;
                     _context.SaveChanges();
                     
                 }

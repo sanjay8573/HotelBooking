@@ -1,0 +1,223 @@
+﻿@model HotelBooking.Model.VM_BookingDetails
+@{
+    ViewBag.Title = "BookingProcess";
+}
+@{ 
+
+    
+}
+<div class="row" id="panel" style="display: block;">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 pull-left">
+                <div >
+                    Booking Ref# : @ViewBag.BookingRef
+
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="margin-top: 15px;">
+                <form id="msform">
+                    <label for="edit-mail" class="form-required">Booling Status</label>
+                    <select id="bkStatus" class="form-required" required name="BkStatus">
+                        @if (ViewBag.bkStatus != null)
+                        {
+                            foreach (var item in ViewBag.BkStatus)
+                            {
+                                if (item.Text != null)
+                                {
+                                    <option value="@item.Value" selected="@item.Selected">
+                                        @item.Text
+                                    </option>
+
+                                }
+                            }
+                        }
+                    </select>
+                </form>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12" style="margin-top: 15px;">
+                <form id="msform">
+                    <label for="edit-mail" class="form-required">Payment Status</label>
+                    <select id="pmtStatus" class="form-required " required name="pmtStatus">
+                        @if (ViewBag.pmtStatus != null)
+                        {
+                            foreach (var item in ViewBag.pmtStatus)
+                            {
+                                if (item.Text != null)
+                                {
+                                    <option value="@item.Value" selected="@item.Selected">
+                                        @item.Text
+                                    </option>
+
+                                }
+                            }
+                        }
+                    </select>
+                </form>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                <div class="tab-container box tabclr">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item"><a href="#11" id="BookingDetailsLink" data-toggle="tab" class="nav-link active " style="border-right: solid 1px #f5f7fa;" aria-expanded="true">Details</a></li>
+                        <li class="nav-item"><a href="#22" id="BookingPaymentLink" data-toggle="tab" class="nav-link" style="border-right: solid 1px #f5f7fa;" aria-expanded="false">Payment</a></li>
+                        <li class="nav-item"><a href="#33" id="AllocateRoomLink" data-toggle="tab" class="nav-link" style="border-right: solid 1px #f5f7fa;" aria-expanded="false">Room Allocation</a></li>
+                    </ul>
+                    <div class="tab-content tabclrcontent">
+                        <div class="tab-pane active" id="11" aria-expanded="true">
+                            <div class="row" id="BookingDetailsDIV">
+                                @Html.Partial("_BookingDetails", Model.BookedNiths)
+
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="22" aria-expanded="false">
+
+                            <div class="row" id="BookingPaymentDIV">
+
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="33" aria-expanded="false">
+                            
+                            <div class="row" id="AllocateRoomDIV">
+
+                            </div>
+                        </div>
+                        <input type="hidden" id="SelectedTab" value="@ViewBag.SelectedTab" />
+                        <input type="hidden" id="BookingId" value="@Model.BookingId" />
+                        <input type="hidden" id="BranchId" value="@ViewBag.BranchId" />
+                        <input type="hidden" id="TotalPrice" value="@Model.TotalPrice" />
+                        <input type="hidden" id="Amountpaid" value="@Model.Amountpaid" />
+                        <input type="hidden" id="AmountPending" value="@Model.AmountPending" />
+                        <input type="hidden" id="RoomTypeId" value="@Model.RoomTypeId" />
+                        <input type="hidden" id="RoomTypeName" value="" />
+                        
+                        <input type="hidden" id="GuestId" value="@Model.GuestId" />
+                        <input type="hidden" id="GuestName" value="@Model.GuestName" />
+                        <input type="hidden" id="cinDate" value="@Model.CheckIn" />
+                        <input type="hidden" id="coutDate" value="@Model.CheckOut" />
+
+
+
+                    </div>
+                 </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var BranchId = $("#BranchId").val();
+        var BookingId = $("#BookingId").val();
+       
+        $("#BookingDetailsLink").click(function () {
+            console.log("test1.......");
+            $("#regularpriceDIV").load("/BookingInterface/_BookingDetails?BranchId=" + BranchId + "&BookingId=" + BookingId);
+          
+
+        });
+
+        $("#BookingPaymentLink").click(function () {
+            console.log("test2.......");
+           
+            $("#BookingPaymentDIV").load("/BookingInterface/_Payments?BranchId=" + BranchId + "&BookingId=" + BookingId);
+           
+
+
+        });
+        $("#AllocateRoomLink").click(function () {
+            console.log("test3.......");
+            const RoomTypeId = $("#RoomTypeId").val();
+            $("#AllocateRoomDIV").load("/BookingInterface/_AllocateRooms?BookingId=" + BookingId + "&RoomTypeId="+RoomTypeId);
+           
+
+
+        });
+
+        /*
+        var seletedTab = $("#SelectedTab").val();
+        if (seletedTab == "1") {
+            $("#regularpriceLink").click();
+        }
+        else {
+            $("#specialpriceLink").click();
+        }*/
+
+        $("#bkStatus").change(function () {
+            var BranchId = $("#BranchId").val();
+            var BookingId = $("#BookingId").val();
+            var selected = this.value;
+            console.log(selected + "   " + BranchId + "   " + BookingId);
+            $.ajax({
+                type: "POST",
+                url: "/BookingInterface/UpdateBookingStatus",
+                dataType: "text",
+                async: false,
+                data: JSON.stringify({ BookingId: BookingId, status: selected }),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    console.log(data);
+                    $.toast({
+                        heading: 'Success',
+                        text: 'Booking Status updated Successfully ',
+                        icon: 'success',
+                        loader: false,        // Change it to false to disable loader
+                        position: 'top-right',
+                        loaderBg: '#9EC600'  // To change the background
+                    });
+                },
+                error: function (textStatus, errorThrown) {
+                    $.toast({
+                        autoDismiss: true,
+                        heading: 'Error',
+                        text: 'Error on Updating Boooking Status',
+                        icon: 'warning',
+                        position: 'top-right',
+                        loader: false,        // Change it to false to disable loader
+                        loaderBg: '#9EC600'  // To change the background
+                    });
+                }
+            });
+        });
+
+        $("#pmtStatus").change(function () {
+            var BranchId = $("#BranchId").val();
+            var BookingId = $("#BookingId").val();
+            var selected = this.value;
+            if (selected != "Select") {
+                console.log(selected + "   " + BranchId + "   " + BookingId);
+                $.ajax({
+                    type: "POST",
+                    url: "/BookingInterface/UpdatePaymentStatus",
+                    dataType: "text",
+                    async: false,
+                    data: JSON.stringify({ BookingId: BookingId, status: selected }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        console.log(data);
+                        $.toast({
+                            heading: 'Success',
+                            text: 'Payment Status updated Successfully ',
+                            icon: 'success',
+                            loader: false,        // Change it to false to disable loader
+                            position: 'top-right',
+                            loaderBg: '#9EC600'  // To change the background
+                        });
+                    },
+                    error: function (textStatus, errorThrown) {
+                        $.toast({
+                            autoDismiss: true,
+                            heading: 'Error',
+                            text: 'Error on Updating payment Status',
+                            icon: 'warning',
+                            position: 'top-right',
+                            loader: false,        // Change it to false to disable loader
+                            loaderBg: '#9EC600'  // To change the background
+                        });
+                    }
+                });
+            }
+        });
+
+    });
+</script>

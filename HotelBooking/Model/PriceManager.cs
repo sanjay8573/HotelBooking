@@ -21,6 +21,7 @@ namespace HotelBooking.Model
         public decimal FRI { get; set; }
         public decimal SAT { get; set; }
         public bool isActive { get; set; }
+        public bool isDeleted { get; set; }
         public int BranchId { get; set; }
 
     }

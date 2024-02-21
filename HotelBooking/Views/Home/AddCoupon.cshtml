@@ -1,0 +1,220 @@
+﻿@model HotelBooking.Model.Coupon
+@{
+    ViewBag.Title = "AddCoupon";
+}
+
+<div class="row" id="AddCoupon">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i> Coupon Management Form</div>
+            <div class="widget-content padded text-center">
+                <div class="row">
+                    <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 table-responsive pull-left">
+                        @using (Html.BeginForm("SaveCoupon", "Home", FormMethod.Post, new { id = "msform", enctype = "multipart/form-data" }))
+                        {
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Offer Title</label>
+
+                                @Html.TextBoxFor(m => m.Title, new { @class = "full-width", placeholder = "Title" })
+                                @Html.HiddenFor(model => model.CouponId)
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Discription</label>
+
+                                @Html.TextAreaFor(m => m.Description, new { @class = "full-width", placeholder = "Description", id = "checkoutmessage" })
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Select Offer Image</label>
+                                <input type="file" id="cpImage" name="cpImage" class="full-width">
+
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Offer Image</label>
+                                @{
+                                    if (Model != null && Model.CouponId > 0)
+                                    {
+                                        String img64 = Model.ImageData != null && Model.ImageData.Length > 0 ? Convert.ToBase64String(Model.ImageData) : "";
+                                        String img64Url = string.Format("data:image/jpeg;base64,{0}", img64); //imagetype can be e.g. gif, jpeg, png etc.
+                                        <img style="width:50px" src="@img64Url" />
+                                    }
+                                }
+
+
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Coupon Period</label>
+
+                                @Html.TextBoxFor(m => m.CouponPeriod, new { @class = "full-width", placeholder = "Coupon Period " })
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Coupon Code</label>
+                                @Html.TextBoxFor(m => m.CouponCode, new { @class = "full-width", placeholder = "Coupon Code " })
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Coupon Value</label>
+                                @Html.TextBoxFor(m => m.CouponValue, new { @class = "full-width", placeholder = "Coupon Value " })
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Minimum Amount</label>
+                                @Html.TextBoxFor(m => m.MinimumAmount, new { @class = "full-width", placeholder = "Minimum Amount " })
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Maximum Amount</label>
+                                @Html.TextBoxFor(m => m.MaximumAmount, new { @class = "full-width", placeholder = "Maximum Amount " })
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Include Room Type</label>
+
+                                <ul class="unstyled">
+                                    @foreach (var item1 in ViewBag.RTModel)
+                                    {
+                                        <li>
+
+                                            <input class="styled-checkbox" type="checkbox" value="@item1.RoomTypeId" name="CHK_RT" id="@item1.RoomTypeId" />
+
+
+                                            <label for="@item1.RoomTypeId">@Html.Raw(@item1.Title)</label>
+                                        </li>
+                                    }
+                                    @Html.HiddenFor(model => model.IncludedRoomType)
+                                </ul>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Applied To(Tier)</label>
+
+                                <ul class="unstyled">
+                                    @foreach (var item1 in ViewBag.StaffModel)
+                                    {
+                                        <li>
+
+                                            <input class="styled-checkbox" type="checkbox" value="@item1.StaffTierId" name="CHK_STF" id="@item1.StaffTierTitle" />
+
+
+                                            <label for="@item1.StaffTierTitle">@Html.Raw(@item1.StaffTierTitle)</label>
+                                        </li>
+                                    }
+                                    @Html.HiddenFor(model => model.IncludedTier)
+                                </ul>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Limit Per User</label>
+                                @Html.TextBoxFor(m => m.LimitPerUser, new { @class = "full-width", placeholder = "Limit Per User" })
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Limit Per Coupon</label>
+                                @Html.TextBoxFor(m => m.LimitPerCoupon, new { @class = "full-width", placeholder = "Limit Per Coupon" })
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Paid Services</label>
+                                <ul class="unstyled">
+                                    @foreach (var item in ViewBag.PSModel)
+                                    {
+                                        <li>
+
+                                            <input class="styled-checkbox" type="checkbox" value="@item.PaidServiceId" name="CHK_PS" id="@item.Title" />
+
+
+                                            <label for="@item.Title">@Html.Raw(@item.Title)</label>
+                                        </li>
+                                    }
+                                    @Html.HiddenFor(model => model.PaidServices)
+                                    @Html.HiddenFor(model => model.BranchId)
+                                </ul>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <input class="styled-checkbox" type="checkbox"  value="@Model.isActive" name="CHK_ACTIVE" id="CHK_ACTIVE" />
+
+
+                                <label for="CHK_ACTIVE">Active</label>
+                                @Html.HiddenFor(model => model.isActive)
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <input type="submit" name="SUBMIT" class="prev action-button" onclick="UdpateSelectedValues();" value="Save" runat="server" checked="">
+
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+       
+        var PSSelected = $('#PaidServices').val().split(",");
+        var RTSelected = $('#IncludedRoomType').val().split(",");
+        var STFSelected = $('#IncludedTier').val().split(",");
+         
+        $('input[type=checkbox]').each(function () {
+            
+            if (this.name == "CHK_PS") {
+               
+                if (PSSelected.includes(''+this.value+'')) {
+                    this.checked = true;
+                }
+                
+            }
+            if (this.name == "CHK_RT") {
+                if (RTSelected.includes('' + this.value + '')) {
+                    this.checked = true;
+                }
+            }
+            if (this.name == "CHK_STF") {
+                if (STFSelected.includes('' + this.value + '')) {
+                    this.checked = true;
+                }
+            }
+            if (this.name == "CHK_ACTIVE") {
+                
+                const ic =$('#isActive').val();
+                console.log(ic+ "  21 " + 'False');
+                if (ic == 'True') {
+                    $('#CHK_ACTIVE').prop('checked', true)
+                    console.log(ic + "  2 " + this.value);
+                } 
+               
+            }
+        });
+    });
+    function UdpateSelectedValues(arg) {
+        var abcRT = ""
+        var abcPS = ""
+        var abcSTF = ""
+            //Iterating the collection of checkboxes which checked marked
+            $('input[type=checkbox]').each(function () {
+                console.log(this.name)
+                if (this.name == "CHK_PS") {
+                    if (this.checked) {
+                        abcPS = abcPS + $(this).val() + ","
+                        //assign set value to hidden field
+                        $('#PaidServices').val(abcPS.substring(0, abcPS.length - 1));
+                    }
+                }
+                if (this.name == "CHK_RT") {
+                    if (this.checked) {
+                        abcRT = abcRT + $(this).val() + ","
+                        //assign set value to hidden field
+                        $('#IncludedRoomType').val(abcRT.substring(0, abcRT.length - 1));
+                    }
+                }
+                if (this.name == "CHK_STF") {
+                    if (this.checked) {
+                        abcSTF = abcSTF + $(this).val() + ","
+                        //assign set value to hidden field
+                        $('#IncludedTier').val(abcSTF.substring(0, abcSTF.length - 1));
+                    }
+                }
+
+                if (this.name == "CHK_ACTIVE") {
+                        $('#sActive').val(this.checked);
+                   
+                }
+            });
+
+
+        
+
+
+        }
+</script>

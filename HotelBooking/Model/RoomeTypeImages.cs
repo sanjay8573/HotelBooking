@@ -15,6 +15,8 @@ namespace HotelBooking.Model
         public string ImageContentType { get; set; }
         public byte [] ImageData { get; set; }
         public  int BranchId { get; set; }
+        public bool isActive { get; set; }
+        public bool isDeleted { get; set; }
     }
     public class FileViewModel
     {

@@ -22,20 +22,15 @@
                         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 pull-left">
                                 <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-left text-left">
-                                    Show
-                                    <select id="ddlEngine" class="onlyinput" runat="server">
-                                        <option selected="selected">10</option>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                    </select>
-                                    Intries
+                                    @using (Html.BeginForm("GetAmenities", "Home", FormMethod.Get, new { id = "form1" }))
+                                    {
+                                        <div id="pro_pag2">
+                                            Show @* @Html.DropDownList("PageSize", new SelectList(new Dictionary<string, int> { { "5", 5 }, { "10", 10 }, { "20", 20 } }, "Key", "Value"), new { @class = "onlyinput", id = "RTpagesize" })*@
+                                            @Html.DropDownList("pSize", (IEnumerable<SelectListItem>)ViewBag.pSize, new { @class = "onlyinput" }) Records
+                                        </div>
+                                    }
                                 </div>
-                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
-                                    Search
-                                    <input type="text" id="txtUserName" class="onlyinput" placeholder="Search" runat="server">
-                                </div>
+                              
                             </div>
                             <table id="RoomTypeTable" class="table table-bordered" ">
                                 <tr>
@@ -44,9 +39,8 @@
                                     <th width="5%" align="center" valign="middle" bgcolor="#003556" class="clrwhit">Active</th>
 
 
-                                    <th width="5%" align="center" valign="middle" bgcolor="#003556" class="clrwhit">View</th>
-                                    <th width="5%" align="center" valign="middle" bgcolor="#003556" class="clrwhit">Edit</th>
-                                    <th width="5%" align="center" valign="middle" bgcolor="#003556" class="clrwhit">Delete</th>
+                                    <th width="8%" colspan="3"  align="center" valign="middle" bgcolor="#003556" class="clrwhit">Action</th>
+                                   
                                 </tr>
                                 @if (Model != null)
                                 {
@@ -60,8 +54,8 @@
                                             @*<td>@rt.IsActive</td>*@
                                             <td align="center" valign="middle"><input type="checkbox" asp-for="@rt.IsActive" checked="@rt.IsActive" /></td>
                                             <td align="center" valign="middle"><a class="viewbtn" href="@Url.Action("Delete","Sales",new { @AmenitisId = rt.AmenitiesId })"><i class="fa fa-eye"></i> View</a></td>
-                                            <td align="center" valign="middle"><a href="#" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
-                                            <td align="center" valign="middle"><a href="#" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
+                                            <td align="center" valign="middle"><a href="@Url.Action("AddAmenities","Home",new { @AmenitisId = rt.AmenitiesId })" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
+                                            <td align="center" valign="middle"><a href="@Url.Action("DelAmenity","Home",new { @AmenitisId = rt.AmenitiesId })" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
 
                                         </tr>
                                         i++;
@@ -73,7 +67,7 @@
                                                
                                                 <div class="pagination pull-right" style="display:inline-block; vertical-align:middle;">
                                                   
-                                                    @Html.PagedListPager(Model, page => Url.Action("GetAmenities", new { page }))
+                                                    @Html.PagedListPager(Model, page => Url.Action("GetAmenities", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
                                                    
                                                 </div>
                                             </div>
@@ -88,4 +82,11 @@
         </div>
     </div>
 
-    
+    <script type="text/javascript">
+        $("#pSize").change(function () {
+            var form = $(event.target).parents('form');
+
+            $("#form1").submit();
+        });
+
+    </script>    

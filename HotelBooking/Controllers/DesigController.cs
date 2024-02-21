@@ -20,10 +20,10 @@ namespace HotelBooking.Desig
             _Desig = new DesignationRepository();
         }
         [HttpGet]
-        [Route("api/Desig/GetAllDesignation")]
-        public IEnumerable<Designation> GetAllDesignation()
+        [Route("api/Desig/GetAllDesignation/{BranchId}")]
+        public IEnumerable<Designation> GetAllDesignation(int BranchId)
         {
-            return _Desig.getAllDesignation();
+            return _Desig.getAllDesignation(BranchId);
         }
         [HttpGet]
         [Route("api/Desig/GetDesignation/{id}")]

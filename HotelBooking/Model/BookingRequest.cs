@@ -29,7 +29,7 @@ namespace HotelBooking.Model
         public decimal PayableAmount { get; set; }
         public string CouponCode { get; set; }
         public decimal CouponAmount { get; set; }
-
+        public string BookingNumber { get; set; }
         public int BranchId { get; set; }
 
         public List<BookingCost> AllNights { get; set; }

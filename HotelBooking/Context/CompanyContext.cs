@@ -53,6 +53,7 @@ namespace HotelBooking.Context
             get;
             set;
         }
+        
         public DbSet<RoomeTypeImages> RoomeTYpeImages
         {
             get;
@@ -107,6 +108,14 @@ namespace HotelBooking.Context
             get;
             set;
         }
+
+        public DbSet<BookingPayments> BookingPayments
+        {
+            get;
+            set;
+        }
+
+
 
 
 

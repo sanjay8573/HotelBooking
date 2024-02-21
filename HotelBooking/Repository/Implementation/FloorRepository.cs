@@ -54,7 +54,22 @@ namespace HotelBooking.Repository.Implementation
 
         public void DeleteFloor(int Floorid)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var tmpflr = _context.Floors.Find(Floorid);
+                if (tmpflr != null)
+                {
+                    
+                    tmpflr.isDeleted =  true;
+                    _context.SaveChanges();
+                    
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public IEnumerable<Floor> GetAllFloors(int BranchId)

@@ -196,16 +196,39 @@ pre[class*="language-"] {
     font-size: 13px;
 }
 
-/*--------------------Start pagination-----------------------------------*/
-.pagination-container {
-    display: inline-block;
-    margin: 0px 0;
-    text-align: right;
+.full-width {
+    width: 100% !important;
 }
+.ddselect {
+    padding: 13px 15px;
+    border: 1px solid #ccc;
+    border-radius: 0px;
+    margin-bottom: 10px;
+    /* width: 100%; */
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #5d5d5d;
+    font-size: 13px;
+}
+.allinputgo {
+    padding: 13px 15px;
+    border: 1px solid #ccc;
+    border-radius: 0px;
+    margin-bottom: 0px;
+    width: 85%;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #5d5d5d;
+    font-size: 13px;
+}
+
+
+
+/*--------------------Start pagination-----------------------------------*/
+
 .pagination {
-    display: inline-block;
+    /*display: inline-block;*/
 	    margin: 0px 0;
-        text-align:right;
 }
 
 .pagination a {
@@ -216,7 +239,7 @@ pre[class*="language-"] {
     border: 1px solid #ddd;
 }
 
-.pagination-container pagination a.active {
+.pagination a.active {
     background-color: #4CAF50;
     color: white;
     border: 1px solid #4CAF50;
@@ -563,6 +586,25 @@ pre[class*="language-"] {
     cursor: pointer;
 }
 
+.addextraamountordiscountbtn {
+    font-family: "Roboto", sans-serif;
+    text-transform: none;
+    outline: 0;
+    background: #003556;
+    width: auto;
+    border: 0;
+	border-radius: 5px;
+    margin-top: 0px;
+    padding: 8px 13px;
+    color: #FFFFFF;
+    font-size: 14px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    cursor: pointer;
+}
+
+.bdrtab{border: solid 1px #003556;}
+
 .moreaddbtn {
     font-family: "Roboto", sans-serif;
     outline: 0;
@@ -584,7 +626,7 @@ pre[class*="language-"] {
 .allheadingin {
     height: auto;
     padding: 0px;
-    color: #1f1f62;
+    color: #003556;
     font-size: 18px;
     width: 100%;
     line-height: 18px;
@@ -603,6 +645,11 @@ pre[class*="language-"] {
     font-family: Arial, Helvetica, sans-serif;
     color: #5d5d5d;
     font-size: 13px;
+}
+
+.trthbgclr {
+    background-color: #003556;
+	color: #FFF;
 }
 
 .trth {background-color: #dff0d8;}
@@ -666,7 +713,7 @@ pre[class*="language-"] {
 }
 
 .pagination {
-    display: inline-block;
+    /*display: inline-block ;*/
     margin: 0px 0;
 }
 
@@ -896,3 +943,33 @@ pre[class*="language-"] {
 }
 
 /*-----------------------------------Start Checkbox-----------------------------*/
+
+
+
+.number{
+			margin:0px;
+	text-align: left;
+		}
+.number span {cursor:pointer; }
+.minus, .plus{
+			/*width:20px;
+			height:20px;*/
+			background:#f2f2f2;
+			border-radius:4px;
+			padding:13px 15px;
+	    margin: 0px 2px;
+			border:1px solid #ddd;
+      display: inline-block;
+      vertical-align: middle;
+	font-size: 22px;
+      text-align: center;
+		}
+
+.number input{padding: 13px 15px;
+	border-radius:4px !important;
+	text-align: center;
+	width: 60px;
+}
+
+
+

@@ -17,5 +17,6 @@ namespace HotelBooking.Model
         public string ShortDescription { get; set; }
         public bool isActive { get; set; }
         public int BranchId { get; set; }
+        public bool isDeleted { get; set; }
     }
 }

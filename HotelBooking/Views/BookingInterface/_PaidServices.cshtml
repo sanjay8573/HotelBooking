@@ -1,0 +1,21 @@
+﻿@model IEnumerable<HotelBooking.Model.PaidServices>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tbody>
+        @if (Model != null)
+        {
+            var i = 1;
+            foreach (var ps in Model)
+            {
+                <tr>
+                    <td align="left">@i</td>
+                    <td align="left">@ps.Title</td>
+                    <td align="left"><input type="checkbox" id="@ps.PaidServiceId" onclick="calculateGtotal('@ps.PaidServiceId');" name="CHK_PS_BK" value="@ps.Price"></td>
+                    <td align="left">@ps.PriceType</td>
+                    <td align="right"> <span>$</span><span>@ps.Price</span> </td>
+
+                </tr>
+                i++;
+            }
+        }
+     </tbody>
+</table>

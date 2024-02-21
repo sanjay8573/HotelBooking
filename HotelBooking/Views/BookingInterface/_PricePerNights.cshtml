@@ -1,0 +1,33 @@
+﻿@model IEnumerable<HotelBooking.Model.PriceResponse>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tbody>
+        <tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Price</th>
+        </tr>
+        @if (Model != null)
+        {
+            var i = 1;
+            decimal totalAmount = decimal.Parse("0");
+            foreach (var p in Model)
+            {
+                <tr>
+                    <td>@i</td>
+                    <td>@p.Date</td>
+                    <td align="right">$ @p.Amount</td>
+                    <input type="hidden" id="BookingCostId" value="@p.BookingCostId" />
+                </tr>
+                i++;
+                totalAmount = totalAmount + p.Amount;
+            }
+            <input type="hidden" id="TotalCostForNights" value="@totalAmount" />
+           
+        }
+    </tbody>
+</table>
+<script>
+    userObj = @Html.Raw(Json.Encode(Model));
+                    console.log("inside PW"+userObj);
+</script>

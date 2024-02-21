@@ -67,5 +67,40 @@ namespace HotelBooking.Controllers
             return _bk.AddBookedRoom(bookedRoomEntity);
         }
 
+        [HttpPost]
+        [Route("api/Booking/GetBookingDetails/{BranchId}")]
+        public VM_BookingDetails GetBookingDetails(int branchId,int BookingId)
+        {
+            return _bk.GetBookingDetails(branchId,BookingId);
+        }
+
+        [HttpPost]
+        [Route("api/Booking/GetBookingPayments/{BranchId}")]
+        public IEnumerable<BookingPayments> GetBookingPayments(int branchId, int BookingId)
+        {
+            return _bk.GetAllBookingPayments(branchId, BookingId);
+        }
+
+        [HttpPost]
+        [Route("api/Booking/AddBookingPayments/{BranchId}")]
+        public bool AddBookingPayments(BookingPayments bkpEntity)
+        {
+            return _bk.AddBookingPayment(bkpEntity);
+        }
+
+        [HttpPost]
+        [Route("api/Booking/updateBookingStatus/{BranchId}")]
+        public bool updateBookingStatus(int Branchid,int BookingId,string BookingStatus)
+        {
+            return _bk.UpdateBookingStatus(Branchid,BookingId,BookingStatus);
+        }
+
+        [HttpPost]
+        [Route("api/Booking/updatePaymentStatus/{BranchId}")]
+        public bool updatePaymentStatus(int Branchid, int BookingId, string PaymentStatus)
+        {
+            return _bk.UpdatePaymentStatus(Branchid, BookingId, PaymentStatus);
+        }
+
     }
 }

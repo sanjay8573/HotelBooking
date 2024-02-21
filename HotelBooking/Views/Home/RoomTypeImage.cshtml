@@ -44,55 +44,66 @@
     <hr />
     <div class="row">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
-            <table id="RoomTypeTable" class="table table-bordered">
-                <tr>
-                    <th align="center" valign="middle" bgcolor="#003556" class="clrwhit">#</th>
-                    <th align="center" valign="middle" bgcolor="#003556" class="clrwhit">Image Name</th>
-                    <th align="center" valign="middle" bgcolor="#003556" class="clrwhit">Image</th>
-                </tr>
-                @if (Model != null)
-                {
-                    var i = 1;
-                    foreach (var rt in Model)
+
+            <div id="demo" class="carousel slide" data-ride="carousel">
+                <ul class="carousel-indicators">
+                    @if (Model != null)
                     {
-                        <tr>
+                        int k = 0;
 
-                            <td>@i</td>
-                            <td>@rt.ImageName</td>
-                            @{
-                                String img64 = Convert.ToBase64String(rt.ImageData);
-                                String img64Url = string.Format("data:image/jpeg;base64,{0}", img64); //imagetype can be e.g. gif, jpeg, png etc.
-                            }
-
-                            <td> <img style="width:50px" src="@img64Url" /></td>
-
-
-                        </tr>
-                        i++;
+                        foreach (var rt in Model)
+                        {
+                        if (k == 0) {<li data-target="#demo" data-slide-to="@k" class="active"></li> }
+                         else { <li data-target="#demo" data-slide-to=""></li>}
+                            
+                            
+                        }
                     }
-                    <tr>
-                        <td colspan="8">
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                <span class="float-left restextpagin">
-                                    <span class="float-left restextpagin">Showing Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount </span>
-                                </span>
-
-                                <select name="pageselect" id="pageselect" class="paginatonselect pull-right">
 
 
-                                    <option value="1">1</option>
 
+                </ul>
+                <div class="carousel-inner" role="listbox">
+                    @{int i = 0;}
+                    @if (Model != null)
+                    {
 
-                                </select>
-                                @*@Html.DropDownList("pc")*@
-                                <div class="pagination pull-right">
-                                    @Html.PagedListPager(Model, page => Url.Action("RoomType", new { page, pageSize = @Model.PageSize }))
-                                </div>
+                        foreach (var rt in Model)
+                        {
+                            i++;
+                            var active = i == 1 ? "active" : "";
+                            <div class="carousel-item @active">
+
+                                @{
+                                    String img641 = Convert.ToBase64String(rt.ImageData);
+                                    String img64Url1 = string.Format("data:image/jpeg;base64,{0}", img641); //imagetype can be e.g. gif, jpeg, png etc.
+                                }
+                                <img style="width:80%;height:80%" src="@img64Url1" alt="">
                             </div>
-                        </td>
-                    </tr>
-                }
-            </table>
+                        }
+                    }
+                </div>
+                <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </a>
+                <a class="carousel-control-next" href="#demo" data-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+
+                </a>
+            </div>
+           
         </div>
     </div>
+    <script type="text/javascript">
+    $("#pSize").change(function () {
+        var form = $(event.target).parents('form');
+
+        $("#form1").submit();
+    });
+    $("#pc").change(function () {
+
+
+        $("#form1").submit();
+    });
+    </script>
 </body>

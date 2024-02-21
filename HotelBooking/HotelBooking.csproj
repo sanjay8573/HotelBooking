@@ -187,6 +187,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Context\BookingContext.cs" />
     <Compile Include="Context\CompanyContext.cs" />
     <Compile Include="Context\DeptContext.cs" />
     <Compile Include="Context\ErrContext.cs" />
@@ -195,6 +196,7 @@
     <Compile Include="Controllers\AmenitiesController.cs" />
     <Compile Include="Controllers\BookedRoomController.cs" />
     <Compile Include="Controllers\BookingController.cs" />
+    <Compile Include="Controllers\BookingInterfaceController.cs" />
     <Compile Include="Controllers\BranchController.cs" />
     <Compile Include="Controllers\CompanyInfoController.cs" />
     <Compile Include="Controllers\CouponController.cs" />
@@ -203,6 +205,7 @@
     <Compile Include="Controllers\FloorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HouseKeepingController.cs" />
+    <Compile Include="Controllers\HRController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ModuleController.cs" />
     <Compile Include="Controllers\PaidServicesController.cs" />
@@ -227,6 +230,7 @@
     <Compile Include="Model\BookedRoom.cs" />
     <Compile Include="Model\Booking.cs" />
     <Compile Include="Model\BookingCost.cs" />
+    <Compile Include="Model\BookingPayments.cs" />
     <Compile Include="Model\BookingRequest.cs" />
     <Compile Include="Model\Branch.cs" />
     <Compile Include="Model\CheckOutRequest.cs" />
@@ -252,13 +256,16 @@
     <Compile Include="Model\Room.cs" />
     <Compile Include="Model\RoomeTypeImages.cs" />
     <Compile Include="Model\RoomType.cs" />
+    <Compile Include="Model\SpecialPrice.cs" />
     <Compile Include="Model\SPM.cs" />
     <Compile Include="Model\Staff.cs" />
     <Compile Include="Model\StaffLogin.cs" />
     <Compile Include="Model\StaffProfile.cs" />
+    <Compile Include="Model\StaffTier.cs" />
     <Compile Include="Model\Team.cs" />
     <Compile Include="Model\TNC.cs" />
     <Compile Include="Model\UserLoginResponse.cs" />
+    <Compile Include="Model\VM_BookingDetails.cs" />
     <Compile Include="Model\VM_Module.cs" />
     <Compile Include="Model\VM_Roles.cs" />
     <Compile Include="Model\VM_Staff.cs" />
@@ -341,9 +348,11 @@
     <Content Include="css\bootstrap-colorpicker.css" />
     <Content Include="css\chartist.min.css" />
     <Content Include="css\css.css" />
+    <Content Include="css\Datepicker.css" />
     <Content Include="css\font-awesome.min-old.css" />
     <Content Include="css\font-awesome.min.css" />
     <Content Include="css\froala_editor.pkgd.min.css" />
+    <Content Include="css\jquery.toast.css" />
     <Content Include="css\login-new.css" />
     <Content Include="css\perfect-scrollbar.min.css" />
     <Content Include="css\prism.min.css" />
@@ -388,8 +397,10 @@
     <Content Include="JS\customizer.js" />
     <Content Include="JS\dashboard1.js" />
     <Content Include="JS\froala_editor.pkgd.min.js" />
+    <Content Include="JS\jquery.toast.js" />
     <Content Include="JS\jquery-3.2.1.min.js" />
     <Content Include="JS\jquery-3.3.1.js" />
+    <Content Include="JS\jquery-ui.min.js" />
     <Content Include="JS\jquery.matchHeight-min.js" />
     <Content Include="JS\notification-sidebar.js" />
     <Content Include="JS\pace.min.js" />
@@ -480,6 +491,24 @@
     <Content Include="Views\Home\_SpecialPrice.cshtml" />
     <Content Include="Views\UnProHome\Login.cshtml" />
     <Content Include="Views\Home\RegularPrice.cshtml" />
+    <Content Include="Views\Home\Coupons.cshtml" />
+    <Content Include="Views\Home\AddCoupon.cshtml" />
+    <Content Include="Views\Home\AddRoom.cshtml" />
+    <Content Include="Views\Home\EditRoom.cshtml" />
+    <Content Include="Views\Home\_SpecialPriceGrid.cshtml" />
+    <Content Include="Views\BookingInterface\Bookings.cshtml" />
+    <Content Include="Views\BookingInterface\AddBooking.cshtml" />
+    <Content Include="Views\BookingInterface\_PricePerNights.cshtml" />
+    <Content Include="Views\BookingInterface\_PaidServices.cshtml" />
+    <Content Include="Views\BookingInterface\BookingProcess.cshtml" />
+    <Content Include="Views\BookingInterface\_BookingDetails.cshtml" />
+    <Content Include="Views\BookingInterface\_Payments.cshtml" />
+    <Content Include="Views\BookingInterface\_AllocateRooms.cshtml" />
+    <Content Include="Views\BookingInterface\BookedRoom.cshtml" />
+    <Content Include="Views\BookingInterface\Checkout.cshtml" />
+    <Content Include="Views\HR\Employees.cshtml" />
+    <Content Include="Views\HR\Designation.cshtml" />
+    <Content Include="Views\HR\Dept.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -48,9 +48,9 @@
                                         <tr>
                                             <td align="center" valign="middle">@i</td>
                                             <td align="left" valign="middle">@ps.Title</td>
-                                            <td align="left" valign="middle"><input type="checkbox" asp-for="@ps.isActive" checked="@ps.isActive" /></td>
-                                            <td width="5%" align="left" valign="middle"><a href="#" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
-                                            <td width="5%" align="left" valign="middle"><a href="#" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
+                                            <td align="left" valign="middle">@ps.isActive</td>
+                                            <td width="5%" align="left" valign="middle"><a href="@Url.Action("AddPaidServices","Home",new { @PaidServiceId = ps.PaidServiceId })" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
+                                            <td width="5%" align="left" valign="middle"><a href="@Url.Action("DelPaidServices","Home",new { @PaidServiceId = ps.PaidServiceId })" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
                                         </tr>
 
                                         i++;
@@ -60,14 +60,9 @@
                                     <td colspan="5">
                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                             <span class="float-left restextpagin">@(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount </span>
-                                            <select name="paginatonselect" id="" class="paginatonselect pull-right">
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                            </select>
+                                            
                                             <div class="pagination pull-right">
-                                                @Html.PagedListPager(Model, page => Url.Action("GetAmenities", new { page }))
+                                                @Html.PagedListPager(Model, page => Url.Action("PaidServices", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
                                             </div>
                                         </div>
                                     </td>

@@ -10,6 +10,6 @@ namespace HotelBooking.Repository.Interface
         bool AddCoupon(Coupon CouponEntity);
 
         CouponResponse ApplyCoupon(string  couponCode);
-        void DeleteAmenities(int couponid);
+        void DeleteCoupon(int couponid);
     }
 }

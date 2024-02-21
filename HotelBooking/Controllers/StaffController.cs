@@ -49,26 +49,7 @@ namespace HotelBooking.Controllers
         }
         
         [HttpPost]
-        //[Route("api/Staff/Login")]
-        //public bool Login(LoginRequestModel LR)
-        //{
-           
-        //    StaffProfile SP= new StaffProfile();
-        //    int sid = validateStaff(LR);
-        //    Staff s = _istaff.GetStaff(sid);
-        //    SP.StaffName = s.StaffName;
-        //    SP.NickName = s.NickName;
-        //    SP.Email = s.Email;
-        //    SP.Roles=_iRoles.GetRoleById(s.PrimaryRoleID).Roles;
-            
-        //    //return ViewPage(new
-        //    //{
-        //    //    Id = s.Id,
-        //    //    Username = s.StaffName,
-        //    //    email = s.Email
-        //    //});
-        //    return true; 
-        //}
+        
         private int validateStaff(LoginRequestModel lr)
         {
             int rtnVal= 0;
@@ -77,6 +58,13 @@ namespace HotelBooking.Controllers
                 rtnVal=_istaff.ValidateLogin(lr);
             }
             return rtnVal;
+        }
+
+        [HttpGet]
+        [Route("api/Staff/GetStaffTier/{branchid}")]
+        public IEnumerable<StaffTier> GetStaffTier(int branchid)
+        {
+            return _istaff.GetStaffTiers(branchid);
         }
 
     }

@@ -12,7 +12,7 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12 pull-right">
-                            <button type="button" class="allbtnin  form-group" onclick="location.href='@Url.Action("AddPrice","Home")'"> +ADD</button>
+                            <button type="button" class="allbtnin  form-group" onclick="location.href='@Url.Action("AddPrice","Home", new {@PriceManagerId = 0, tab=1 })'"> +ADD</button>
                         </div>
                     </div>
                 </div>
@@ -57,15 +57,15 @@
                                         <tr>
                                             <td align="center" valign="middle">@i</td>
                                             <td align="left" valign="middle">@ps.Title</td>
-                                            <td align="left" valign="middle">@ps.SUN</td>
                                             <td align="left" valign="middle">@ps.MON</td>
                                             <td align="left" valign="middle">@ps.TUE</td>
                                             <td align="left" valign="middle">@ps.WED</td>
                                             <td align="left" valign="middle">@ps.THUR</td>
                                             <td align="left" valign="middle">@ps.FRI</td>
                                             <td align="left" valign="middle">@ps.SAT</td>
-                                            <td align="left" valign="middle"><a href="href=" @Url.Action("Delete", "Sales", new { PriceManagerId = ps.PriceManageId }) "" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
-                                            <td align="left" valign="middle"><a href="href=" @Url.Action("Delete", "Sales", new { PriceManagerId = ps.PriceManageId }) "" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
+                                            <td align="left" valign="middle">@ps.SUN</td>
+                                            <td align="left" valign="middle"><a href="@Url.Action("AddPrice", "Home", new {@PriceManagerId = ps.PriceManageId, tab=1 })" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
+                                            <td align="left" valign="middle"><a href="@Url.Action("DelPrice", "Home", new { @PriceManageId = ps.PriceManageId })" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
 
                                         </tr>
                                     }
@@ -75,14 +75,9 @@
                                     <td colspan="11">
                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                             <span class="float-left restextpagin">@(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</span>
-                                            <select name="paginatonselect" id="" class="paginatonselect pull-right">
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                            </select>
+                                           
                                             <div class="pagination pull-right">
-                                                @Html.PagedListPager(Model, page => Url.Action("PriceManager", new { page, pageSize = @Model.PageSize }))
+                                                @Html.PagedListPager(Model, page => Url.Action("PriceManager", new { page, pageSize = @Model.PageSize }), PagedListRenderOptions.ClassicPlusFirstAndLast)
                                             </div>
                                         </div>
                                     </td>

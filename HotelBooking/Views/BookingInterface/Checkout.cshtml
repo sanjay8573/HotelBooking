@@ -1,0 +1,80 @@
+﻿@model HotelBooking.Model.VM_BookingDetails
+@{
+    ViewBag.Title = "Checkout";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Checkout <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Checkout</small> </span></div>
+            <div class="widget-content padded text-center">
+
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-right">
+                            <button type="button" class="addextraamountordiscountbtn  form-group" onclick="myFunction()"> +Add Extra Amount or Discount</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 table-responsive">
+                        <div class="tab-container box bdrtab">
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item"><a href="#Invoice" id="Invoice1" class="nav-link active" data-toggle="tab">Invoice</a></li>
+                                <li class="nav-item"><a href="#Payments" id="Payments1" class="nav-link" data-toggle="tab">Payments</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="Invoice">
+                                    <!--<h4 class="tabheading"><i class="fa fa-address-card" aria-hidden="true"></i> Account Details</h4>-->
+                                    <form id="msform" runat="server" action="" method="get" style=" margin:0px auto;">
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                                <div class="col-lg-4 col-md-4 col-sm-6 pull-left">
+                                                    <input type="text" id="txtUserName" class="full-width" placeholder="Comapny Name" runat="server">
+                                                </div>
+                                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12 pull-left">
+                                                    <button type="submit" class="allbtnin full-width">GO</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="tab-pane" id="Payments">
+                                    <div class="row" id="BookingPaymentCoutDIV">
+
+                                    </div>
+                                </div>
+                                <input type="hidden" id="BookingId" value="@Model.BookingId" />
+                                <input type="hidden" id="BranchId" value="@ViewBag.BranchId" />
+                                <input type="hidden" id="TotalPrice" value="@Model.TotalPrice" />
+                                <input type="hidden" id="Amountpaid" value="@Model.Amountpaid" />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+       
+        $("#Payments1").click(function () {
+            var BranchId = $("#BranchId").val();
+            var BookingId = $("#BookingId").val();
+            console.log(BranchId + " " + BookingId);
+            console.log("Actvating/loading payment details");
+            $("#BookingPaymentCoutDIV").load("/BookingInterface/_Payments?BranchId=" + BranchId + "&BookingId=" + BookingId);
+
+
+        });
+
+
+    });
+
+</script>
+
+

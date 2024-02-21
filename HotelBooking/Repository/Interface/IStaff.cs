@@ -11,5 +11,8 @@ namespace HotelBooking.Repository.Interface
         int SetupStaffLogin(StaffLogin stfLogin);
         int ValidateLogin(LoginRequestModel model);
 
+        IEnumerable<StaffTier> GetStaffTiers(int branchId);
+
+
     }
 }

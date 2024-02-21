@@ -24,6 +24,8 @@ namespace HotelBooking.Model
         public decimal AdditionalPersonPrice { get; set; }
         public decimal ExtraBedPrice {get; set; }
         public int BranchId { get; set; }
+        public bool isActive { get; set; }
+        public bool isDeleted { get; set; }
         [NotMapped] public List<Amenities> AmenitiesData { get; set;}
 
     }

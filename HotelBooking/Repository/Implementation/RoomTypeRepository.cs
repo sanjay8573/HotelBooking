@@ -55,12 +55,25 @@ namespace HotelBooking.Repository.Implementation
 
         public void DeleteRoomType(Int32 RoomTypeid)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var rtEntity = _context.RoomType.Find(RoomTypeid);
+                if (rtEntity != null)
+                {
+                    rtEntity.isDeleted = true;
+                    _context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public IEnumerable<RoomType> GetRoomTypes(Int32 BranchId)
         {
-            return _context.RoomType.Where(i => i.BranchId == BranchId).ToArray();
+            return _context.RoomType.Where(i => i.BranchId == BranchId && i.isDeleted==false).ToArray();
         }
 
         public int UpdateRoomType(RoomType RoomTypeEntity)
@@ -83,7 +96,10 @@ namespace HotelBooking.Repository.Implementation
                 tmpAmnt.BasePrice = RoomTypeEntity.BasePrice;
                 tmpAmnt.ExtraBedPrice = RoomTypeEntity.ExtraBedPrice;
                 tmpAmnt.BranchId = RoomTypeEntity.BranchId;
-                
+                tmpAmnt.IsExtraBed = RoomTypeEntity.IsExtraBed;
+                tmpAmnt.isActive = RoomTypeEntity.isActive;
+                tmpAmnt.isDeleted = RoomTypeEntity.isDeleted;
+
                 _context.SaveChanges();
                 rtnVal = tmpAmnt.RoomTypeId;
             }

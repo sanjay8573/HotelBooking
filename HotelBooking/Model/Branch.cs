@@ -34,6 +34,8 @@ namespace HotelBooking.Model
 
         public string AltBankName { get; set; }
         public string AltBankAcNumber { get; set; }
-       
+        public bool isActive { get; set; }
+        public bool isDeleted { get; set; }
+
     }
 }

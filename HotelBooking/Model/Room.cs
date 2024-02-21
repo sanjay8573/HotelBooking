@@ -14,5 +14,7 @@ namespace HotelBooking.Model
         public int floor { get; set; }
         public string FloorName { get; set; }
         public int BranchId { get; set; }
+        public bool isActive { get; set; }
+        public bool isDeleted { get; set; }
     }
 }

@@ -15,6 +15,8 @@
         public string Day { get; set; }
         public decimal Amount { get; set; }
         public decimal Tax { get; set; }
+        public decimal TaxAmount { get; set; }
+        public int BookingCostId { get; set; }
 
 
     }

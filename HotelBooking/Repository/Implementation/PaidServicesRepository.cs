@@ -67,7 +67,7 @@ namespace HotelBooking.Repository.Implementation
                 var tmpEntity = _context.PaidServices.Find(paidserviceid);
                 if (tmpEntity != null)
                 {
-                    _context.PaidServices.Remove(tmpEntity);
+                    tmpEntity.isDeleted = true;
                     _context.SaveChanges();
                 }
             }

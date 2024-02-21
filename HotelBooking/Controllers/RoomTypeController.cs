@@ -33,5 +33,13 @@ namespace HotelBooking.Controllers
             return _rt.AddRoomType(RoomTypeEntity);
         }
 
+
+        [Route("api/RoomType/DeleteRoomtype/{BranchId}/{RoomTypeId}")]
+        [HttpDelete]
+        public void DeleteRoomtype(int BranchId, int RoomTypeId)
+        {
+            _rt.DeleteRoomType(RoomTypeId);
+        }
+
     }
 }

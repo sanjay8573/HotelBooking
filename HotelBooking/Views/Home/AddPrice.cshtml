@@ -10,14 +10,14 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left" style="margin-top: 15px;">
                 <form id="msform">
                     <label for="edit-mail" class="form-required">Room Type</label>
-                    <select id="RoomType" class="form-required full-width" required=required name="RoomType">
+                    <select id="RoomType" class="form-required full-width" required name="RoomType">
                         @if (ViewBag.RTComboModel != null)
                         {
                             foreach (var item in ViewBag.RTComboModel)
                             {
                                 if (item.Text != null)
                                 {
-                                    <option value="@item.Value">
+                                    <option value="@item.Value" selected="@item.Selected">
                                         @item.Text
                                     </option>
 
@@ -46,6 +46,9 @@
 
                             </div>
                         </div>
+                        <input type="hidden" id="SelectedTab" value="@ViewBag.SelectedTab" />
+                        <input type="hidden" id="PriceManageId" value="@ViewBag.PriceManageId" />
+                       
 
                     </div>
                 </div>
@@ -56,14 +59,34 @@
 </div>
 <script>
     $(document).ready(function () {
-        $("#regularpriceDIV").load("/Home/_RegularPrice");
+        var PriceManageId = $("#PriceManageId").val();
         $("#regularpriceLink").click(function () {
-            $("#regularpriceDIV").load("/Home/_RegularPrice");
+            if (PriceManageId > 0) {
+                $("#regularpriceDIV").load("/Home/_RegularPrice?PriceManageId=" + PriceManageId);
+            } else {
+                $("#regularpriceDIV").load("/Home/_RegularPrice");
+            }
+           
         });
 
         $("#specialpriceLink").click(function () {
-            $("#specialpriceDIV").load("/Home/_SpecialPrice");
+            if (PriceManageId > 0) {
+                $("#specialpriceDIV").load("/Home/_SpecialPrice?SpecialPriceManageId=" + PriceManageId);
+            } else {
+                $("#specialpriceDIV").load("/Home/_SpecialPrice");
+            }
+            
+            
         });
+
+
+        var seletedTab = $("#SelectedTab").val();
+        if (seletedTab == "1") {
+            $("#regularpriceLink").click();
+        }
+        else {
+            $("#specialpriceLink").click();
+        }
 
     });
 </script>

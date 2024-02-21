@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Web.UI.WebControls;
 using System.Xml;
 
 namespace HotelBooking.Repository.Implementation
@@ -82,7 +83,7 @@ namespace HotelBooking.Repository.Implementation
             {
                 BookingId = bookingRequestEntity.BookingId,
                 BookingDate = DateTime.Now,
-                BookingNumber = gererateBookingNumber(),
+                BookingNumber= bookingRequestEntity.BookingNumber,
                 GuestId = bookingRequestEntity.GuestId,
                 GuestName = bookingRequestEntity.GuestName,
                 BookingTypeId = bookingRequestEntity.BookingTypeId,
@@ -111,6 +112,7 @@ namespace HotelBooking.Repository.Implementation
                 var tmpEntity = _context.Booking.Find(bookingEntity.BookingId);
                 if (tmpEntity != null)
                 {
+                    tmpEntity.BookingNumber = bookingEntity.BookingNumber;
                     tmpEntity.BookingTypeName=bookingEntity.BookingTypeName;
                     tmpEntity.RoomTypeId = bookingEntity.RoomTypeId;
                     tmpEntity.GuestId = bookingEntity.GuestId;
@@ -141,6 +143,7 @@ namespace HotelBooking.Repository.Implementation
             {
                 try
                 {
+                    bookingEntity.BookingNumber = gererateBookingNumber();
                     _context.Booking.Add(bookingEntity);
                     _context.SaveChanges();
                     BookingId = bookingEntity.BookingId;
@@ -246,9 +249,16 @@ namespace HotelBooking.Repository.Implementation
         public IEnumerable<PriceResponse> GetPricesForNight(PriceRequest req)
         {
             List<DateTime> allDates = new List<DateTime>();
+            int yy = int.Parse(req.CheckInDate.Substring(6, 4));
+            int dd = int.Parse(req.CheckInDate.Substring(0, 2));
+            int mm = int.Parse(req.CheckInDate.Substring(3, 2));
 
-            DateTime startDate = new DateTime(int.Parse(req.CheckInDate.Substring(6, 4)), int.Parse(req.CheckInDate.Substring(0, 2)), int.Parse(req.CheckInDate.Substring(3, 2)));
-            DateTime endDate = new DateTime(int.Parse(req.CheckOutDate.Substring(6, 4)), int.Parse(req.CheckOutDate.Substring(0, 2)), int.Parse(req.CheckOutDate.Substring(3, 2)));
+            int yy1 = int.Parse(req.CheckOutDate.Substring(6, 4));
+            int dd1 = int.Parse(req.CheckOutDate.Substring(0, 2));
+            int mm1 = int.Parse(req.CheckOutDate.Substring(3, 2));
+
+            DateTime startDate = new DateTime(yy,mm,dd);
+            DateTime endDate = new DateTime(yy1, mm1, dd1);
 
             for (DateTime date = startDate; date < endDate; date = date.AddDays(1))
             {
@@ -358,7 +368,7 @@ namespace HotelBooking.Repository.Implementation
         private decimal GetSpecialRate(DateTime rDate,int RoomTypeId)
         {
             decimal rtnVal=0;
-            SPM sPM = _context.SpecialPrice.Where(c => c.RoomTypeId == RoomTypeId && c.isActive==true).SingleOrDefault<SPM>();
+            SPM sPM = _context.SpecialPrice.Where(c => c.RoomTypeId1 == RoomTypeId && c.isActive1==true).SingleOrDefault<SPM>();
             string[] dates = sPM.DateRange.Split('~') ;
             int sDay = int.Parse(dates[0].Substring(3, 2));
             int sMonth = int.Parse(dates[0].Substring(0, 2));
@@ -379,7 +389,25 @@ namespace HotelBooking.Repository.Implementation
 
         private string gererateBookingNumber()
         {
-            return Guid.NewGuid().ToString().GetHashCode().ToString("x");
+            Random res = new Random();
+
+            String str = "abcdefghijklmnopqrstuvwxyz0123456789";
+            int size = 8;
+
+            // Initializing the empty string 
+            String randomstring = "";
+
+            for (int i = 0; i < size; i++)
+            {
+
+                // Selecting a index randomly 
+                int x = res.Next(str.Length);
+
+                // Appending the character at the  
+                // index to the random alphanumeric string. 
+                randomstring = randomstring + str[x];
+            }
+            return randomstring.ToUpper();
         }
 
         public IEnumerable<Room> GetAllRooms(int roomTypeId)
@@ -424,7 +452,7 @@ namespace HotelBooking.Repository.Implementation
 
         System.Collections.Generic.IEnumerable<Booking> IBooking.GetAllBooking(int BranchId)
         {
-            throw new System.NotImplementedException();
+            return _context.Booking.Where(b => b.BranchId == BranchId).ToArray();
         }
 
         System.Collections.Generic.IEnumerable<BookingCost> IBooking.GetAllBookingsCost(int bookingid)
@@ -432,14 +460,100 @@ namespace HotelBooking.Repository.Implementation
             throw new System.NotImplementedException();
         }
 
-        System.Collections.Generic.IEnumerable<PriceResponse> IBooking.GetPricesForNight(PriceRequest req)
+        public bool AddBookingPayment(BookingPayments bkpEntity)
         {
-            throw new System.NotImplementedException();
+            _context.BookingPayments.Add(bkpEntity);
+            _context.SaveChanges();
+            return true;
+        }
+        public IEnumerable<BookingPayments> GetAllBookingPayments(int BranchId, int BookingId)
+        {
+            return _context.BookingPayments.Where(b => b.BranchId == BranchId && b.BookingId == BookingId).ToArray();
+
+        }
+        public  BookingPayments GetBookingPayment(int BookingPaymentId)
+        {
+           return  _context.BookingPayments.Where(b => b.BookingPaymentId == BookingPaymentId).SingleOrDefault();
+        }
+        public void DeleteBookingPayment(int BookingPaymentId)
+        {
+            try
+            {
+                var tmpEntity = _context.BookingPayments.Find(BookingPaymentId);
+                if (tmpEntity != null)
+                {
+                    tmpEntity.isDeleted = true;
+                    _context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
-        System.Collections.Generic.IEnumerable<Room> IBooking.GetAllRooms(int roomTypeId)
+        public VM_BookingDetails GetBookingDetails(int BranchId, int BookingId)
         {
-            throw new System.NotImplementedException();
+            VM_BookingDetails VMB = new VM_BookingDetails();
+
+            // get booking details
+            Booking b = GetBooking(BookingId);
+            VMB.BookingRef = b.BookingNumber;
+            VMB.BookingDate = b.BookingDateTime;
+            VMB.BookingId = b.BookingId;
+            VMB.CheckIn = b.CheckIn;
+            VMB.CheckOut = b.Checkout;
+            VMB.BookingStatus = b.BookingStatus;
+            VMB.PaymnentStatus = b.PaymentStatus;
+            VMB.Audlts = b.Adult.ToString();
+            VMB.Child = b.Child.ToString();
+            VMB.Nights = b.Nights.ToString();
+            VMB.Room = b.RoomTypeName;
+            VMB.RoomTypeId = b.RoomTypeId;
+            VMB.GuestId = b.GuestId;
+            VMB.GuestName = b.GuestName;
+            //Branch
+            Branch br = _context.Branch.Where(br1 => br1.Id == BranchId).SingleOrDefault();
+            //Compaany
+            Company c = _context.Company.Where(cm => cm.Id == br.CompanyId).SingleOrDefault();
+            VMB.CompanyName = c.Name;
+            VMB.CompanyAddress = br.Address;
+            VMB.CompanyPhone = br.Phone1;
+            VMB.CompanyEmail = br.EmailID;
+
+            PriceRequest pr = new PriceRequest();
+            pr.CheckInDate = b.CheckIn;
+            pr.CheckOutDate = b.Checkout;
+            pr.roomTypeId = b.RoomTypeId;
+            IEnumerable<PriceResponse> _PR = GetPricesForNight(pr);
+            decimal RoomCost = _PR.Select(t => t.Amount).Sum();
+            VMB.BookedNiths = _PR;
+            IEnumerable<BookingPayments> _BP = GetAllBookingPayments(br.Id, b.BookingId);
+
+            decimal PaidAmount = _BP.Select(t => t.paymentAmount).Sum();
+            VMB.TotalPrice = b.TotalAmount;
+            VMB.Amountpaid = PaidAmount;
+            VMB.AmountPending = (b.TotalAmount - PaidAmount);
+
+
+            return VMB;
+        }
+
+
+        public bool UpdateBookingStatus(int BranchId,int Bookingid, string bookingStatus)
+        {
+            Booking bk = _context.Booking.Find(Bookingid);
+            bk.BookingStatus = bookingStatus.ToUpper();
+            _context.SaveChanges();
+            return true;
+        }
+        public bool UpdatePaymentStatus(int BranchId, int Bookingid, string paymentStatus)
+        {
+            Booking bk = _context.Booking.Find(Bookingid);
+            bk.PaymentStatus = paymentStatus.ToUpper();
+            _context.SaveChanges();
+            return true;
         }
     }
     

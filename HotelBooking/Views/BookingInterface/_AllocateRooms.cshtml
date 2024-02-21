@@ -1,0 +1,109 @@
+﻿<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="widget-content padded text-center">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="row">
+                            <form id="msform">
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 full-width pull-left" style="margin-top: 15px;">
+
+                                    <select id="RoomType" required=required name="RoomType">
+                                        @if (ViewBag.RMComboModel != null)
+                                        {
+                                            foreach (var item in ViewBag.RMComboModel)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="btnAllocateRoom">Save</button>
+                                </div>
+                                </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+
+        
+        $("#btnAllocateRoom").on("click", function () {
+            console.log("Allocating Rooms.....");
+            const pmtType = $("#RoomType option:selected").text().replace(/[\n\r]+/g, ' ').trim();;
+            var rmTxtAryy = pmtType.split("-");
+            const RoomId = $("#RoomType option:selected").val();
+            const rmTxtAryy1 = rmTxtAryy[0].split("~");;
+            const RoomNumber = rmTxtAryy1[1];
+            const CustomerName = $("#GuestName").val();
+           
+            const RoomTypeId = $("#RoomTypeId").val();
+            const RoomTypeName = rmTxtAryy1[0].replace(/[\n\r]+/g, ' ').trim();;
+           
+            const CheckIn = $("#cinDate").val();
+            const CheckOut = $("#coutDate").val();
+            const BookingId = $("#BookingId").val();
+            const BranchId = $("#BranchId").val();
+            const BookedRoomitem = {
+                BookingId: parseInt(BookingId),
+                RoomId: parseInt(RoomId),
+                CustomerName: CustomerName,
+                RoomTypeId: parseInt(RoomTypeId),
+                RoomTypeName: RoomTypeName,
+                CheckIn: CheckIn,
+                CheckOut: CheckOut,
+                RoomNumber: RoomNumber,
+                BranchId: parseInt(BranchId),
+                isActive: 1
+            };
+
+
+            fetch('/BookingInterface/SaveAllocatedRoom', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(BookedRoomitem)
+            })
+            .then(() => {
+
+                    $.toast({
+                        heading: 'Success',
+                        text: 'Room Allocated Successfully ',
+                        icon: 'success',
+                        loader: false,        // Change it to false to disable loader
+                        position: 'top-right',
+                        loaderBg: '#9EC600'  // To change the background
+                    });
+                $("#AllocateRoomLink").click();
+                })
+           .catch(error => {
+                    $.toast({
+                        autoDismiss: true,
+                        heading: 'Error',
+                        text: 'Error on Allocating Room',
+                        icon: 'warning',
+                        position: 'top-right',
+                        loader: false,        // Change it to false to disable loader
+                        loaderBg: '#9EC600'  // To change the background
+                    });
+                });
+
+
+        });
+       
+
+    });
+</script>

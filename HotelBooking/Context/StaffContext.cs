@@ -33,7 +33,11 @@ namespace HotelBooking.Context
             set;
         }
 
-
+        public DbSet<StaffTier> StaffTier
+        {
+            get;
+            set;
+        }
 
     }
  }

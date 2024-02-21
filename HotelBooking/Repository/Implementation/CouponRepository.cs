@@ -37,12 +37,16 @@ namespace HotelBooking.Repository.Implementation
                     tmpEntity.CouponValue = CouponEntity.CouponValue;
                     tmpEntity.MinimumAmount = CouponEntity.MinimumAmount;
                     tmpEntity.MaximumAmount = CouponEntity.MaximumAmount;
-                    tmpEntity.Includeduser = CouponEntity.Includeduser;
+                    tmpEntity.IncludedTier = CouponEntity.IncludedTier;
                     tmpEntity.Excludeduser = CouponEntity.Excludeduser;
                     tmpEntity.IncludedRoomType = CouponEntity.IncludedRoomType;
                     tmpEntity.ExcludedRoomType = CouponEntity.ExcludedRoomType;
                     tmpEntity.PaidServices = CouponEntity.PaidServices;
                     tmpEntity.isActive = CouponEntity.isActive;
+                    if (CouponEntity.ImageData.Length>0)
+                    {
+                        tmpEntity.ImageData = CouponEntity.ImageData;
+                    }
                     _context.SaveChanges();
 
                 }
@@ -71,34 +75,26 @@ namespace HotelBooking.Repository.Implementation
         public CouponResponse ApplyCoupon(string couponCode="XXXX")
         {
             CouponResponse rtnVal = new CouponResponse();
-            Coupon[] amtl = _context.Coupon.Select(x => new Coupon()
+            rtnVal = _context.Coupon.Select(x => new CouponResponse()
             {
                 CouponId=x.CouponId,
                 CouponCode=x.CouponCode,
                 CouponValue=x.CouponValue
-            }).ToArray();
-            foreach(Coupon amt in amtl)
-            {
-                if (amt.CouponCode.ToUpper()== couponCode.ToUpper())
-                {
-                    rtnVal.CouponId = amt.CouponId;
-                    rtnVal.CouponCode = amt.CouponCode;
-                    rtnVal.CouponValue = amt.CouponValue;
-                }
-            }
+            }).Where(c=>c.CouponCode.ToUpper() == couponCode.ToUpper()).SingleOrDefault();
+            
             
            
             return rtnVal;
         }
 
-        public void DeleteAmenities(int couponid)
+        public void DeleteCoupon(int couponid)
         {
             try
             {
                 var tmpEntity = _context.Coupon.Find(couponid);
                 if (tmpEntity != null)
                 {
-                    _context.Coupon.Remove(tmpEntity);
+                    tmpEntity.IsDeleted = true;
                     _context.SaveChanges();
                 }
             }
@@ -111,7 +107,7 @@ namespace HotelBooking.Repository.Implementation
 
         public IEnumerable<Coupon> GetAllCoupon(int BranchId)
         {
-           return _context.Coupon.Where(b => b.BranchId == BranchId).ToArray();
+           return _context.Coupon.Where(b => b.BranchId == BranchId && b.IsDeleted==false).ToArray();
         }
     }
 }

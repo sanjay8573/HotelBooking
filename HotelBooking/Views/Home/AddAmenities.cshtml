@@ -15,17 +15,29 @@
                     <div class="widget-content padded text-center">
                         <div class="row">
                             <div class="col-md-10 col-lg-10 col-sm-12 col-xs-12 table-responsive pull-left">
-                                <form id="msform" runat="server" action="/home/SaveAmenities" method="post" enctype = "multipart/form-data" style=" margin:0px auto;">
+                                <form id="msform" runat="server" action="/home/SaveAmenities" method="post" enctype="multipart/form-data" style=" margin:0px auto;">
 
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
                                         <label for="edit-mail" class="form-required">Name</label>
 
                                         @Html.TextBoxFor(model => model.Title, new { @class = "full-width", placeholder = "Name" })
+                                        @Html.HiddenFor(model => model.AmenitiesId)
                                     </div>
 
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
-                                        <label for="edit-mail" class="form-required">Image</label>
+                                        <label for="edit-mail" class="form-required">Upload a Image</label>
                                         <input type="file" id="amenityImage" name="amenityImage" class="full-width" />
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                                        <label for="edit-mail" class="form-required">Image</label>
+                                        @{
+                                            if (Model != null && Model.AmenitiesId > 0)
+                                            {
+                                                String img64 = Model.imageData != null && Model.imageData.Length > 0 ? Convert.ToBase64String(Model.imageData) : "";
+                                                String img64Url = string.Format("data:image/jpeg;base64,{0}", img64); //imagetype can be e.g. gif, jpeg, png etc.
+                                                <img style="width:30px;height:30px" src="@img64Url" />
+                                            }
+                                        }
                                     </div>
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                         <label for="edit-mail" class="form-required">Discription</label>
@@ -34,18 +46,19 @@
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
                                         <label for="edit-mail" class="form-required">&nbsp;</label>
-                                        
+
                                         <ul class="unstyled">
                                             <li>
-                                                <input class="styled-checkbox" id="styled-checkbox-2" type="checkbox" value="value2" checked="">
-                                                <label for="styled-checkbox-2">Active</label>
+                                                <input class="styled-checkbox" id="CHK_ACTIVE" type="checkbox" name="CHK_ACTIVE"  >
+                                                <label for="CHK_ACTIVE">Active</label>
                                             </li>
                                         </ul>
                                     </div>
                                     @Html.HiddenFor(model => model.BranchId)
                                     @Html.HiddenFor(model => model.DateCreated)
+                                    @Html.HiddenFor(model => model.IsActive)
 
-                                    <input type="submit" name="SUBMIT" class="prev action-button" value="Save" runat="server">
+                                    <input type="submit" name="SUBMIT" class="prev action-button" onclick="UdpateActiveValue();" value="Save" runat="server">
                                 </form>
                             </div>
                         </div>
@@ -55,7 +68,37 @@
         </div>
     </div>
     
+    <script>
+    $(document).ready(function () {
 
+       
+
+        $('input[type=checkbox]').each(function () {
+            if (this.name == "CHK_ACTIVE") {
+
+                const ic =$('#IsActive').val();
+                console.log(ic+ "  21 " + 'False');
+                if (ic == 'True') {
+                    $('#CHK_ACTIVE').prop('checked', true)
+                    console.log(ic + "  2 " + this.value);
+                }
+
+            }
+        });
+    });
+    function UdpateActiveValue(arg) {
+     
+            $('input[type=checkbox]').each(function () {
+                
+
+                if (this.name == "CHK_ACTIVE") {
+                        $('#IsActive').val(this.checked);
+
+                }
+            });
+
+        }
+    </script>
     
 
 </body>

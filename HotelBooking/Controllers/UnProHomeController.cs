@@ -14,9 +14,9 @@ namespace HotelBooking.Controllers
         // GET: UnProHome
         public ActionResult Index()
         {
-            if (Session != null && Session.Keys.Count > 0) { 
-                ViewBag.ErrorMessage = Session["ErrorMessage"].ToString();
-                }
+            //if (Session != null && Session.Keys.Count > 0) { 
+            //    ViewBag.ErrorMessage = Session["ErrorMessage"].ToString();
+            //    }
             LoginRequestModel lrm= new LoginRequestModel();
             return View("login",lrm);
         }

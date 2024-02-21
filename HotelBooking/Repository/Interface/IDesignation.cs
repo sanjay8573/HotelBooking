@@ -7,7 +7,7 @@ namespace HotelBooking.Repository.Interface
     {
 
 
-        IEnumerable<Designation> getAllDesignation();
+        IEnumerable<Designation> getAllDesignation(int BranchId);
         Designation getDesignationById(int DesigId);
         
         int AddDesignation(Designation DesignationEntity);

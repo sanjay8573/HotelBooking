@@ -19,7 +19,7 @@ namespace HotelBooking.Repository.Implementation
 
         public IEnumerable<Amenities> GetAmenities(int BranchId)
         {
-            return _context.Amenities.Where(i=>i.BranchId==BranchId).ToArray();
+            return _context.Amenities.Where(i=>i.BranchId==BranchId && i.isDeleted==false).ToArray();
         }
         public bool AddAmenities(Amenities AmenitiesEntity)
         {
@@ -59,6 +59,12 @@ namespace HotelBooking.Repository.Implementation
             if(tmpAmnt!= null) {
                 tmpAmnt.Title = AmenitiesEntity.Title;
                 tmpAmnt.Description = AmenitiesEntity.Description;
+                tmpAmnt.Code = AmenitiesEntity.Code;
+                tmpAmnt.IsActive = AmenitiesEntity.IsActive;
+                if (AmenitiesEntity.imageData.Length > 0)
+                {
+                    tmpAmnt.imageData = AmenitiesEntity.imageData;
+                }
                 _context.SaveChanges();
                 rtnVal = tmpAmnt.AmenitiesId;
             }
@@ -73,7 +79,7 @@ namespace HotelBooking.Repository.Implementation
                 var AmenitiesEntity = _context.Amenities.Find(Amenitiesid);
                 if (AmenitiesEntity != null)
                 {
-                    _context.Amenities.Remove(AmenitiesEntity);
+                    AmenitiesEntity.isDeleted= true;
                     _context.SaveChanges();
                 }
             }

@@ -13,6 +13,7 @@ namespace HotelBooking.Model
         public string Code { get; set; }
         public byte[] imageData { get; set; }
         public bool IsActive { get; set; }=false;
+        public bool isDeleted { get; set; } = false;
         public DateTime? DateCreated { get; set; }
         
        
