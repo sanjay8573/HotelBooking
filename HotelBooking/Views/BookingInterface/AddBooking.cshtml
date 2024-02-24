@@ -27,10 +27,20 @@
             <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
                     <label for="edit-mail" class="form-required">Guest</label>
-                    <select name="categories" id="Selguest" class="full-width freetrial">
-                        <option selected="selected" value="1">Select Guest</option>
-                        <option value="2">Jhon Rick</option>
-                        <option value="3">Anand Chy</option>
+                    <select name="Selguest" id="Selguest" class="full-width freetrial">
+                        @if (ViewBag.GSComboModel != null)
+                        {
+                            foreach (var item in ViewBag.GSComboModel)
+                            {
+                                if (item.Text != null)
+                                {
+                                    <option value="@item.Value" selected="@item.Selected">
+                                        @item.Text
+                                    </option>
+
+                                }
+                            }
+                        }
                     </select>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">

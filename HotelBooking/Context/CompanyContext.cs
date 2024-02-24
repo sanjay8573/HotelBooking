@@ -114,7 +114,21 @@ namespace HotelBooking.Context
             get;
             set;
         }
-
+        public DbSet<Guests> Guests
+        {
+            get;
+            set;
+        }
+        public DbSet<BookingDocuments> BookingDocuments
+        {
+            get;
+            set;
+        }
+        public DbSet<DocumentType> DocumentType
+        {
+            get;
+            set;
+        }
 
 
 

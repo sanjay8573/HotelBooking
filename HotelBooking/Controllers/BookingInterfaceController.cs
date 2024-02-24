@@ -77,9 +77,10 @@ namespace HotelBooking.Controllers
         {
             if (Session.Keys.Count != 0)
             {
-                //bookingId = 2;
+                
                 int branchId = int.Parse(Session["BranchId"].ToString());
                 RoomTypeController RTC = new RoomTypeController();
+                GuestsController _gs = new GuestsController();
                 BookingController _bk = new BookingController();
                 Booking bk = new Booking();
                
@@ -113,6 +114,21 @@ namespace HotelBooking.Controllers
                     ViewBag.PS = ps;
 
                 }
+                IEnumerable<Guests> gst = new List<Guests>();
+                gst = _gs.GetAllGuests(branchId).Where(d => d.isDeleted == false && d.isActive == true); ;
+                List<SelectListItem> AllGuest = new List<SelectListItem>();
+                AllGuest.Add(new SelectListItem { Text = "Select a Guest", Value = "0" });
+                foreach (Guests item in gst)
+                {
+                    bool slt = false;
+                    if (bookingId > 0)
+                    {
+                        if (item.GuestId == bk.GuestId)
+                            slt = true;
+                    }
+                    AllGuest.Add(new SelectListItem { Text = item.Name.Trim(), Value = item.GuestId.ToString(), Selected = slt });
+                }
+                ViewBag.GSComboModel = AllGuest;
 
 
                 return View(bk);
@@ -153,23 +169,26 @@ namespace HotelBooking.Controllers
                                           .Cast<BookingStatus>();
             IEnumerable<PaymentStatus> pmtStatus = Enum.GetValues(typeof(PaymentStatus))
                                          .Cast<PaymentStatus>();
-
+            BookingController _bc = new BookingController();
+            VM_BookingDetails VMB = _bc.GetBookingDetails(branchId, BookingId);
+            
             ViewBag.bkStatus = from bk in bkStatus
                                select new SelectListItem
                                      {
                                          Text = bk.ToString(),
-                                         Value = bk.ToString()
+                                         Value = bk.ToString(),
+                                         Selected=(bk.ToString()==VMB.BookingStatus)
                                      };
 
             ViewBag.pmtStatus = from bk in pmtStatus
                                 select new SelectListItem
                                {
                                    Text = bk.ToString(),
-                                   Value = bk.ToString()
-                               };
+                                   Value = bk.ToString(),
+                                    Selected = (bk.ToString() == VMB.PaymnentStatus)
+                                };
 
-            BookingController _bc = new BookingController();
-            VM_BookingDetails VMB = _bc.GetBookingDetails(branchId, BookingId);
+            
 
 
 
@@ -239,6 +258,39 @@ namespace HotelBooking.Controllers
             ViewBag.RMComboModel = Roomitems;
 
             return PartialView("_AllocateRooms");
+
+        }
+
+        public PartialViewResult _Documents(int BookingId, int noPax,int noRooms, int? page, int? pSize)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            int? DefaultPageSize = 10;
+            if (pSize != null)
+            {
+                DefaultPageSize = pSize;
+            }
+            int pageNumber = page ?? 1;
+
+            DocumentController DC = new DocumentController();
+            IEnumerable<DocumentType> DocTypeList = DC.GetDocumentTypes(branchId);
+
+            List<SelectListItem> avlDocs = new List<SelectListItem>();
+            avlDocs.Add(new SelectListItem { Text = "Select Document Type", Value = "0",Selected=true });
+            foreach (DocumentType item in DocTypeList)
+            {
+                bool slt = false;
+
+                avlDocs.Add(new SelectListItem { Text = item.DocumentTypeName.Trim(), Value = item.DocumentTypeId.ToString(), Selected = slt });
+            }
+            ViewBag.DocsComboModel = avlDocs;
+            
+            VM_DocumentResponse vM_DocumentResponse = new VM_DocumentResponse();
+            vM_DocumentResponse.BookingId = BookingId;                    
+            vM_DocumentResponse.Pax = noPax;
+            vM_DocumentResponse.Rooms = noRooms;
+            vM_DocumentResponse.Documents = DC.GetDocuments(BookingId).ToPagedList(pageNumber, (int)DefaultPageSize); ;
+
+            return PartialView("_Documents", vM_DocumentResponse);
 
         }
 
@@ -368,6 +420,177 @@ namespace HotelBooking.Controllers
             {
                 return RedirectToAction("index", "unProHome");
             }
+        }
+
+        public ActionResult Guests(int? page, int? pSize = 2)
+        {
+            if (Session.Keys.Count > 0)
+            {
+                int? DefaultPageSize = 10;
+                if (pSize != null)
+                {
+                    DefaultPageSize = pSize;
+                }
+
+                int pageNumber = page ?? 1;
+
+                int branchId = int.Parse(Session["BranchId"].ToString());
+
+                GuestsController _bm = new GuestsController();
+                IEnumerable<Guests> GS = _bm.GetAllGuests(branchId);
+
+                
+                
+                ViewBag.pSize = new List<SelectListItem>()
+                    {
+                        new SelectListItem() { Value="2", Text= "2" },
+                        new SelectListItem() { Value="5", Text= "5" },
+                        new SelectListItem() { Value="10", Text= "10" },
+                        new SelectListItem() { Value="15", Text= "15" },
+                        new SelectListItem() { Value="20", Text= "20" },
+                     };
+
+                IPagedList<Guests> gslist = GS.ToPagedList(pageNumber, (int)DefaultPageSize);
+                return View(gslist);
+            }
+            else
+            {
+                return RedirectToAction("index", "unProHome");
+            }
+        }
+        public ActionResult AddGuest(int GuestId = 0)
+        {
+            if (Session.Keys.Count != 0)
+            {
+                //bookingId = 2;
+                int branchId = int.Parse(Session["BranchId"].ToString());
+               
+               GuestsController _pg = new GuestsController();
+                Guests bk = new Guests();
+
+                if (GuestId > 0)
+                {
+                    bk = _pg.GetGuest(branchId,GuestId);
+
+                }
+                bk.BranchId = branchId;
+             
+                ViewBag.StaticCountry = new List<SelectListItem>()
+                    {
+                       new SelectListItem() { Value="0", Text= "Select Country"  },
+                        new SelectListItem() { Value="India", Text= "India", Selected=(bk.country=="India") },
+                        new SelectListItem() { Value="USA", Text= "USA", Selected=(bk.country=="USA") },
+                        new SelectListItem() { Value="UK", Text= "UK" , Selected=(bk.country=="UK")},
+                        new SelectListItem() { Value="Canada", Text= "Canada" , Selected=(bk.country=="Canada")},
+                        new SelectListItem() { Value="France", Text= "France", Selected=(bk.country=="France") },
+                     };
+
+
+
+
+                return View(bk);
+            }
+            else
+            {
+                return RedirectToAction("index", "unProHome");
+            }
+        }
+        public ActionResult SaveGuest(Guests guestEntity)
+        {
+
+            if (Session.Keys.Count != 0)
+            {
+                int branchId = int.Parse(Session["BranchId"].ToString());
+                guestEntity.BranchId = branchId;
+                GuestsController _bk = new GuestsController();
+                bool rtn= _bk.AddGuest(guestEntity);
+                return RedirectToAction("Guests");
+            }
+            else
+            {
+                return RedirectToAction("index", "unProHome");
+            }
+        }
+        public ActionResult MakeVIP(int GuestId)
+        {
+
+            if (Session.Keys.Count != 0)
+            {
+                int branchId = int.Parse(Session["BranchId"].ToString());
+              
+                GuestsController _bk = new GuestsController();
+                _bk.SetAsVip(branchId,GuestId);
+                return RedirectToAction("Guests");
+            }
+            else
+            {
+                return RedirectToAction("index", "unProHome");
+            }
+        }
+
+        public ActionResult DelGuest(int GuestId)
+        {
+
+            if (Session.Keys.Count != 0)
+            {
+                int branchId = int.Parse(Session["BranchId"].ToString());
+
+                GuestsController _bk = new GuestsController();
+                _bk.DeleteGuest(branchId, GuestId);
+                return RedirectToAction("Guests");
+            }
+            else
+            {
+                return RedirectToAction("index", "unProHome");
+            }
+        }
+        public ActionResult SaveBookingDocuments()
+        {
+            if (Session.Keys.Count > 0)
+            {
+                int branchId = int.Parse(Session["BranchId"].ToString());
+                DocumentController _dc = new DocumentController();
+                int BookingId = int.Parse(Request.Form["BookingId"].ToString());
+                string BookingRef = Request.Form["BookingRef1"].ToString();
+                if (Request.Files.Count > 0)
+                {
+                    
+                    for (int i=0;i< Request.Files.Count; i++)
+                    {
+                        BookingDocuments bd = new BookingDocuments();
+                        string _DocTypeid = "DocSelType" + i.ToString();
+                        string _DocTypeName = "DocTypeName" + i.ToString();
+                        string _PaxId= "Pax"+ i.ToString();
+
+
+                        string DocTypeId = Request.Form[_DocTypeid].ToString();
+                        string DocTypeName= Request.Form[_DocTypeName].ToString();
+                        string PaxName= Request.Form[_PaxId].ToString();
+                        string fileName = "DocFile" + i.ToString();
+                        HttpPostedFileBase postedFile = Request.Files[fileName];
+                        byte[] bytes;
+                        using (BinaryReader br = new BinaryReader(postedFile.InputStream))
+                        {
+                            bytes = br.ReadBytes(postedFile.ContentLength);
+                        }
+                        bd.DocumentName = DocTypeName;
+                        bd.DocumentData = bytes;
+                        bd.BookingId = BookingId;
+                        bd.DocumentTypeId = int.Parse(DocTypeId);
+                        bd.PaxName = PaxName;
+                        bd.isActive = true;
+                       _dc.AddDocuments(bd);
+                    }
+                }
+               
+                Session["BranchId"] = branchId;
+                return RedirectToAction("BookingProcess", new { BookingId= BookingId, BookingRef= BookingRef });
+            }
+            else
+            {
+                return RedirectToAction("index", "unProHome");
+            }
+
         }
     }
 }

@@ -278,6 +278,7 @@ namespace HotelBooking.Repository.Implementation
                         Tax = 0.18M,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
+                        TaxAmount=(PM.MON * 18/100),
                         Amount = PM.MON
                     };
                     ListpResp.Add(p);
@@ -291,6 +292,7 @@ namespace HotelBooking.Repository.Implementation
                         Tax = 0.18M,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
+                        TaxAmount = (PM.TUE * 18 / 100),
                         Amount = PM.TUE
                     };
                     ListpResp.Add(p);
@@ -304,6 +306,7 @@ namespace HotelBooking.Repository.Implementation
                         Tax = 0.18M,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
+                        TaxAmount = (PM.WED * 18 / 100),
                         Amount = PM.WED
                     };
                     ListpResp.Add(p);
@@ -317,6 +320,7 @@ namespace HotelBooking.Repository.Implementation
                         Tax = 0.18M,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
+                        TaxAmount = (PM.THUR * 18 / 100),
                         Amount = PM.THUR
                     };
                     ListpResp.Add(p);
@@ -329,6 +333,7 @@ namespace HotelBooking.Repository.Implementation
                         Tax = 0.18M,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
+                        TaxAmount = (PM.FRI * 18 / 100),
                         Amount = PM.FRI
                     };
                     ListpResp.Add(p);
@@ -341,6 +346,7 @@ namespace HotelBooking.Repository.Implementation
                         Tax = 0.18M,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
+                        TaxAmount = (PM.SAT * 18 / 100),
                         Amount = PM.SAT
                     };
                     ListpResp.Add(p);
@@ -353,6 +359,7 @@ namespace HotelBooking.Repository.Implementation
                         Tax = 0.18M,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
+                        TaxAmount = (PM.SUN * 18 / 100),
                         Amount = PM.SUN
                     };
                     ListpResp.Add(p);

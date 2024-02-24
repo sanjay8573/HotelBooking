@@ -202,7 +202,9 @@
     <Compile Include="Controllers\CouponController.cs" />
     <Compile Include="Controllers\DeptController.cs" />
     <Compile Include="Controllers\DesigController.cs" />
+    <Compile Include="Controllers\DocumentController.cs" />
     <Compile Include="Controllers\FloorController.cs" />
+    <Compile Include="Controllers\GuestsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HouseKeepingController.cs" />
     <Compile Include="Controllers\HRController.cs" />
@@ -216,6 +218,7 @@
     <Compile Include="Controllers\RoomTypeController.cs" />
     <Compile Include="Controllers\RoomTypeImageController.cs" />
     <Compile Include="Controllers\RSController.cs" />
+    <Compile Include="Controllers\SetupController.cs" />
     <Compile Include="Controllers\SPMController.cs" />
     <Compile Include="Controllers\StaffController.cs" />
     <Compile Include="Controllers\TeamController.cs" />
@@ -230,6 +233,7 @@
     <Compile Include="Model\BookedRoom.cs" />
     <Compile Include="Model\Booking.cs" />
     <Compile Include="Model\BookingCost.cs" />
+    <Compile Include="Model\BookingDocuments.cs" />
     <Compile Include="Model\BookingPayments.cs" />
     <Compile Include="Model\BookingRequest.cs" />
     <Compile Include="Model\Branch.cs" />
@@ -240,7 +244,9 @@
     <Compile Include="Model\CouponResponse.cs" />
     <Compile Include="Model\Dept.cs" />
     <Compile Include="Model\Designation.cs" />
+    <Compile Include="Model\DocumentType.cs" />
     <Compile Include="Model\Floor.cs" />
+    <Compile Include="Model\Guests.cs" />
     <Compile Include="Model\HouseKeeping.cs" />
     <Compile Include="Model\LoginRequestModel.cs" />
     <Compile Include="Model\LoginResponse.cs" />
@@ -266,6 +272,7 @@
     <Compile Include="Model\TNC.cs" />
     <Compile Include="Model\UserLoginResponse.cs" />
     <Compile Include="Model\VM_BookingDetails.cs" />
+    <Compile Include="Model\VM_DocumentResponse.cs" />
     <Compile Include="Model\VM_Module.cs" />
     <Compile Include="Model\VM_Roles.cs" />
     <Compile Include="Model\VM_Staff.cs" />
@@ -278,7 +285,9 @@
     <Compile Include="Repository\Implementation\CouponRepository.cs" />
     <Compile Include="Repository\Implementation\DeptRepository.cs" />
     <Compile Include="Repository\Implementation\DesignationRepository.cs" />
+    <Compile Include="Repository\Implementation\DocumentRepository.cs" />
     <Compile Include="Repository\Implementation\FloorRepository.cs" />
+    <Compile Include="Repository\Implementation\GuestRepository.cs" />
     <Compile Include="Repository\Implementation\HouseKeepingRepository.cs" />
     <Compile Include="Repository\Implementation\Logger.cs" />
     <Compile Include="Repository\Implementation\LoginRepository.cs" />
@@ -299,12 +308,14 @@
     <Compile Include="Repository\Interface\IAmenities.cs" />
     <Compile Include="Repository\Interface\IBookedRoom.cs" />
     <Compile Include="Repository\Interface\IBooking.cs" />
+    <Compile Include="Repository\Interface\IBookingDocument.cs" />
     <Compile Include="Repository\Interface\IBranch.cs" />
     <Compile Include="Repository\Interface\ICompany.cs" />
     <Compile Include="Repository\Interface\ICoupon.cs" />
     <Compile Include="Repository\Interface\IDept.cs" />
     <Compile Include="Repository\Interface\IDesignation.cs" />
     <Compile Include="Repository\Interface\IFloor.cs" />
+    <Compile Include="Repository\Interface\IGuests.cs" />
     <Compile Include="Repository\Interface\IHouseKeeping.cs" />
     <Compile Include="Repository\Interface\ILogger.cs" />
     <Compile Include="Repository\Interface\ILogin.cs" />
@@ -346,6 +357,7 @@
     <Content Include="Content\sidebar.css" />
     <Content Include="css\app.css" />
     <Content Include="css\bootstrap-colorpicker.css" />
+    <Content Include="css\calendar-monthview.css" />
     <Content Include="css\chartist.min.css" />
     <Content Include="css\css.css" />
     <Content Include="css\Datepicker.css" />
@@ -364,6 +376,7 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\Simple-Line-Icons.svg" />
+    <Content Include="fonts\font-awesome.min.css" />
     <Content Include="Global.asax" />
     <Content Include="images\01.jpg" />
     <Content Include="images\01.png" />
@@ -509,6 +522,12 @@
     <Content Include="Views\HR\Employees.cshtml" />
     <Content Include="Views\HR\Designation.cshtml" />
     <Content Include="Views\HR\Dept.cshtml" />
+    <Content Include="Views\UnProHome\ScratchPad.cshtml" />
+    <Content Include="Views\BookingInterface\Guests.cshtml" />
+    <Content Include="Views\BookingInterface\AddGuest.cshtml" />
+    <Content Include="Views\Setup\Company.cshtml" />
+    <Content Include="Views\Setup\Branch.cshtml" />
+    <Content Include="Views\BookingInterface\_Documents.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

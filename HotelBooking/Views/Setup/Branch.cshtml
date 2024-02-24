@@ -1,0 +1,155 @@
+﻿
+@{
+    ViewBag.Title = "Branch";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-address-card" aria-hidden="true"></i> Setup Branch</div>
+            <div class="widget-content padded text-center">
+                <form id="msform" runat="server" action="ProvisionGDSInfo.html" method="get">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Select Your Category</label>
+                                <select id="ddlEngine" class="full-width" runat="server">
+                                    <option selected="selected">Select Your Category</option>
+                                    <option>Reseller</option>
+                                    <option>Supplier</option>
+                                    <option>B2B_Site</option>
+                                    <option>B2B2C</option>
+                                    <option>Affilate</option>
+                                    <option>B2E</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Select Your Category</label>
+                                <ul class="unstyled centered">
+                                    <li>
+                                        <input class="styled-checkbox" id="styled-checkbox-1" type="checkbox" value="value1">
+                                        <label for="styled-checkbox-1">Reseller</label>
+                                    </li>
+                                    <li>
+                                        <input class="styled-checkbox" id="styled-checkbox-2" type="checkbox" value="value2" checked>
+                                        <label for="styled-checkbox-2">Supplier</label>
+                                    </li>
+                                    <li>
+                                        <input class="styled-checkbox" id="styled-checkbox-3" type="checkbox" value="value3">
+                                        <label for="styled-checkbox-3">B2B_Site</label>
+                                    </li>
+                                    <li>
+                                        <input class="styled-checkbox" id="styled-checkbox-4" type="checkbox" value="value4">
+                                        <label for="styled-checkbox-4">B2B2C</label>
+                                    </li>
+                                    <li>
+                                        <input class="styled-checkbox" id="styled-checkbox-5" type="checkbox" value="value5">
+                                        <label for="styled-checkbox-5">Affilate</label>
+                                    </li>
+                                    <li>
+                                        <input class="styled-checkbox" id="styled-checkbox-6" type="checkbox" value="value6">
+                                        <label for="styled-checkbox-6">B2E</label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">First Name</label>
+                                <input type="text" id="txtUserName" class="full-width" placeholder="First Name" runat="server">
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Last Name</label>
+                                <input type="text" id="txtUserName" class="full-width" placeholder="Last Name" runat="server">
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Company Name</label>
+                                <input type="text" id="txtUserName" class="full-width" placeholder="Company Name" runat="server">
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Email</label>
+                                <input type="text" id="txtEmail" class="full-width" placeholder="Email" runat="server">
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Country</label>
+                                <select id="ddlEngine" class="full-width" runat="server">
+                                    <option selected="selected">Select Country</option>
+                                    <option>USA</option>
+                                    <option>India</option>
+                                    <option>Canada</option>
+                                    <option>France</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Phone Number</label>
+                                <div class="checkoutcontact">
+                                    <div class="checkoutcode"><span id="spnCountryCode">+ 91</span></div>
+                                    <div class="checkoutcontactin">
+                                        <input type="text" id="txtPhoneNo" class="checkoutinput full-width" placeholder="Phone Number" runat="server">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12 pull-left">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Address Line 1</label>
+                                <input type="text" id="txtAddressLine1" class="full-width" placeholder="Address Line 1" runat="server">
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Address Line 2</label>
+                                <input type="text" id="txtAddressLine2" class="full-width" placeholder="Apartment, suite, unit, building, floor, etc." runat="server">
+                            </div>
+                        </div>
+                        <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12 pull-left">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">City</label>
+                                <input type="text" id="txtCity" class="full-width" placeholder="City" runat="server">
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">State / Province / Region</label>
+                                <input type="text" id="txtState" class="full-width" placeholder="State / Province / Region" runat="server">
+                            </div>
+                        </div>
+                        <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12 pull-left">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Postal Code</label>
+                                <input type="text" id="txtPostalCode" class="full-width" placeholder="Postal Code" runat="server">
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Website/URL</label>
+                                <input type="text" id="txtWebsite" class="full-width" placeholder="Website/URL" runat="server">
+                            </div>
+                        </div>
+                        <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12 pull-left">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">ARC/IATA</label>
+                                <input type="text" id="txtPostalCode" class="full-width" placeholder="ARC/IATA" runat="server">
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">CLIA</label>
+                                <input type="text" id="txtWebsite" class="full-width" placeholder="CLIA" runat="server">
+                            </div>
+                        </div>
+                        <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12 pull-left">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">ASTA</label>
+                                <input type="text" id="txtPostalCode" class="full-width" placeholder="ASTA" runat="server">
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Consorita/Affiliation</label>
+                                <input type="text" id="txtWebsite" class="full-width" placeholder="Consorita/Affiliation" runat="server">
+                            </div>
+                        </div>
+                    </div>
+                    <input type="button" name="prev" class="prev action-button" value="SAVE" runat="server">
+                    <input type="submit" name="Process" class="next action-button" value="PROCESS" runat="server">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

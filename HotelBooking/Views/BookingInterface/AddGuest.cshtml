@@ -1,0 +1,103 @@
+﻿@model HotelBooking.Model.Guests
+@{
+    ViewBag.Title = "AddGuest";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-address-card" aria-hidden="true"></i> Add Guest</div>
+            <div class="widget-content padded text-center">
+
+                @using (Html.BeginForm("SaveGuest", "BookingInterface", FormMethod.Post, new { id = "msform", enctype = "multipart/form-data" }))
+                {
+                    <div class="row">
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required"> Name</label>
+                                @Html.TextBoxFor(m => m.Name, new { @class = "full-width", placeholder = "Guest Name" })
+
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Address</label>
+
+                                @Html.TextBoxFor(m => m.Address, new { @class = "full-width", placeholder = "Guest Address" })
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">City </label>
+
+                                @Html.TextBoxFor(m => m.city, new { @class = "full-width", placeholder = "Guest City" })
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Pincode</label>
+
+                                @Html.TextBoxFor(m => m.pincode, new { @class = "full-width", placeholder = "Guest's city Pincode" })
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Country</label>
+                                <select id="SelCountry" class="form-required full-width" required name="SelCountry">
+                                    @if (ViewBag.StaticCountry != null)
+                                    {
+                                        foreach (var item in ViewBag.StaticCountry)
+                                        {
+                                            if (item.Text != null)
+                                            {
+                                                <option value="@item.Value" selected="@item.Selected">
+                                                    @item.Text
+                                                </option>
+
+                                            }
+                                        }
+                                    }
+                                </select>
+                                
+                                @Html.HiddenFor(model => model.country)
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Email</label>
+
+                                @Html.TextBoxFor(m => m.email, new { @class = "full-width", placeholder = "Guest's  Email" })
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Phone Number</label>
+                                <div class="checkoutcontact">
+                                    <div class="checkoutcode"><span id="spnCountryCode">+ 91</span></div>
+                                    <div class="checkoutcontactin">
+
+                                        @Html.TextBoxFor(m => m.Phone, new { @class = "checkoutinput full-width", placeholder = "Guest Phone Number" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <input type="submit" name="prev" id="btnAddGuest" class="prev action-button" onclick="setData();" value="SAVE" runat="server">
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function setData() {
+        $("#country").val($("#SelCountry option:selected").val());
+        
+    }
+    $(document).ready(function () {
+        var urlParams = new URLSearchParams(window.location.search);
+        console.log(urlParams.has('m')); // true
+        console.log(urlParams.get('m')); // "edit"
+        var mode = urlParams.get('m');
+        if (mode == "V") {
+            $('#msform :input').prop("disabled", true);
+            
+        }
+    });
+
+   
+
+</script>
+

@@ -1,44 +1,65 @@
-﻿<div class="row">
-    <div class="col-sm-12">
-        <div class="card widget-container">
-            <div class="widget-content padded text-center">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="row">
-                            <form id="msform">
-                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 full-width pull-left" style="margin-top: 15px;">
+﻿
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left table-responsive">
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left"><label style="margin-top: 10px;">Room Number</label></div>
+    <div class="col-lg-4 col-md-4 col-sm-6 pull-left">
+       
+        <select id="RoomType" required=required name="RoomType" class="full-width ddselect" runat="server">>
+            @if (ViewBag.RMComboModel != null)
+            {
+                foreach (var item in ViewBag.RMComboModel)
+                {
+                    if (item.Text != null)
+                    {
+                        <option value="@item.Value" selected="@item.Selected">
+                            @item.Text
+                        </option>
 
-                                    <select id="RoomType" required=required name="RoomType">
-                                        @if (ViewBag.RMComboModel != null)
-                                        {
-                                            foreach (var item in ViewBag.RMComboModel)
-                                            {
-                                                if (item.Text != null)
-                                                {
-                                                    <option value="@item.Value" selected="@item.Selected">
-                                                        @item.Text
-                                                    </option>
-
-                                                }
-                                            }
-                                        }
-                                    </select>
-                                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="btnAllocateRoom">Save</button>
-                                </div>
-                                </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    }
+                }
+            }
+        </select>
     </div>
+    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12 pull-left">
+        <button type="submit" class="allbtnin" id="btnAllocateRoom">Save</button>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">&nbsp;</div>
+    <table class="table table-bordered">
+        <tbody>
+
+            <tr class="trthbgclr">
+                <th class="text-center">#</th>
+                <th class="text-center">Date</th>
+                <th class="text-center">Room</th>
+                <th class="text-center">Floor</th>
+            </tr>
+            <tr class="active">
+                <td>1</td>
+                <td align="center" valign="middle">02/22/2018</td>
+                <td align="center" valign="middle">3</td>
+                <td align="center" valign="middle">Exutive Floor</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td align="center" valign="middle">02/22/2018</td>
+                <td align="center" valign="middle">3</td>
+                <td align="center" valign="middle">Exutive Floor</td>
+            </tr>
+            <tr class="active">
+                <td>3</td>
+                <td align="center" valign="middle">02/22/2018</td>
+                <td align="center" valign="middle">3</td>
+                <td align="center" valign="middle">Exutive Floor</td>
+            </tr>
+            
+        </tbody>
+    </table>
 </div>
 
 <script>
     $(document).ready(function () {
 
 
-        
+
         $("#btnAllocateRoom").on("click", function () {
             console.log("Allocating Rooms.....");
             const pmtType = $("#RoomType option:selected").text().replace(/[\n\r]+/g, ' ').trim();;
@@ -47,10 +68,10 @@
             const rmTxtAryy1 = rmTxtAryy[0].split("~");;
             const RoomNumber = rmTxtAryy1[1];
             const CustomerName = $("#GuestName").val();
-           
+
             const RoomTypeId = $("#RoomTypeId").val();
             const RoomTypeName = rmTxtAryy1[0].replace(/[\n\r]+/g, ' ').trim();;
-           
+
             const CheckIn = $("#cinDate").val();
             const CheckOut = $("#coutDate").val();
             const BookingId = $("#BookingId").val();
@@ -77,7 +98,7 @@
                 },
                 body: JSON.stringify(BookedRoomitem)
             })
-            .then(() => {
+                .then(() => {
 
                     $.toast({
                         heading: 'Success',
@@ -87,9 +108,9 @@
                         position: 'top-right',
                         loaderBg: '#9EC600'  // To change the background
                     });
-                $("#AllocateRoomLink").click();
+                    $("#AllocateRoomLink").click();
                 })
-           .catch(error => {
+                .catch(error => {
                     $.toast({
                         autoDismiss: true,
                         heading: 'Error',
@@ -103,7 +124,7 @@
 
 
         });
-       
+
 
     });
 </script>
