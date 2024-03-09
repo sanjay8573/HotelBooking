@@ -96,7 +96,8 @@ namespace HotelBooking.Repository.Implementation
             if (tmpPM != null)
             {
                 tmpPM.Title1 = SPMEntity.Title1;
-                tmpPM.DateRange = SPMEntity.DateRange;
+                tmpPM.DateRangeFrom = SPMEntity.DateRangeFrom;
+                tmpPM.DateRangeTo = SPMEntity.DateRangeTo;
                 tmpPM.SUN1 = SPMEntity.SUN1;
                 tmpPM.MON1 = SPMEntity.MON1;
                 tmpPM.TUE1 = SPMEntity.TUE1;

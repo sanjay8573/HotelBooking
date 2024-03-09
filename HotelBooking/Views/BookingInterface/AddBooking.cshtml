@@ -200,7 +200,7 @@
                         </div>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
-                        <input type="button" name="SUBMIT" class="prev action-button pull-right" onclick="GotoNextPage()" value="Next" runat="server">
+                        <input type="submit" name="SUBMIT" class="prev action-button pull-right" onclick="GotoNextPage()" value="Next" runat="server">
                     </div>
 
                 </div>
@@ -255,7 +255,8 @@
     
 
 <script>
-                function SaveBooking() {
+    function SaveBooking() {
+        console.log("SAving Booking.....");
                     const GuestName = $("#Selguest option:selected").text();
                     const GuestID = $("#Selguest option:selected").val();
 
@@ -278,11 +279,25 @@
                     const TotalAmount = $("#BK-PayAMT").text(); 
                     const couponCode = $("#BK-CPNCODE").val();
                     const CouponAmount = $("#BK-DISC").text();
-                    const ps = '9,10,12';// removeDuplicates(selectedPS).toString();
+        
+                    var selectedPS='';
+                    $('input[type=checkbox]').each(function () {
+
+                        if (this.name == "CHK_PS_BK") {
+                            if (this.checked) {
+
+                                selectedPS = selectedPS+this.id + ',';
+                            } 
+                        }
+
+                    });
+                        console.log(selectedPS);
+                        const ps = selectedPS.substring(0, selectedPS.length - 1);
+                        console.log(ps);
                     const BookingId = $("#BookingId").val();
                     const branchId = $("#BranchId").val();
                     const BookingNumber = $("#BookingNumber").val();
-                   
+                    
                     const Bookingitem = {
 
                         GuestName: GuestName,
@@ -321,7 +336,7 @@
                         }
                         Bookingitem.AllNights.push(BookingCost);
                     });
-                    console.log(Bookingitem);
+                    console.log(JSON.stringify(Bookingitem));
                     
                     fetch('/BookingInterface/SaveBooking', {
                         method: 'POST',
@@ -496,7 +511,7 @@
 
 
 </script>
-            <script>
+ <script>
                 $(document).ready(function () {
 
                     console.log(" On Ready   " + $("#PaidServices").val());

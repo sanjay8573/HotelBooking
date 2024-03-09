@@ -11,7 +11,8 @@ namespace HotelBooking.Model
         public int SpecialPriceManageId { get; set; }
         [Column("Title")]
         public string Title1 { get; set; }
-        public string DateRange { get; set; }
+        public string DateRangeFrom { get; set; }
+        public string DateRangeTo { get; set; }
         [Column("RoomTypeId")]
         public int RoomTypeId1 { get; set; }
         [Column("RoomTypeTitle")]

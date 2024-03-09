@@ -46,7 +46,8 @@
                     <input type="datetime-local" id="dtrEnd" class="full-width" name="daytime">
 
                 </div>
-                @Html.HiddenFor(model => model.DateRange)
+                @Html.HiddenFor(model => model.DateRangeFrom)
+                @Html.HiddenFor(model => model.DateRangeTo)
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
@@ -105,7 +106,8 @@
             var dtStart = $("#dtrStart").val();
             var dtEnd = $("#dtrEnd").val();
            
-            $("#DateRange").val(dtStart.substr(0, 10) + " To " + dtEnd.substr(0, 10));
+            $("#DateRangeFrom").val(dtStart.substr(0, 10));
+            $("#DateRangeTo").val(dtEnd.substr(0, 10));
            
             if (id <= 0) { $("#RoomType").focus(); rtnVal=false; }
 

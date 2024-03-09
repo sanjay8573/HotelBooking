@@ -12,7 +12,7 @@ namespace HotelBooking.Model
         public VM_BookingDetails() 
         {
 
-         BookedNiths= new List<PriceResponse>().AsEnumerable<PriceResponse>();
+         BookedNiths= new List<BookingCost>().AsEnumerable<BookingCost>();
          BookingPayments= new List<BookingPayments>().AsEnumerable<BookingPayments>();
         }
 
@@ -24,7 +24,8 @@ namespace HotelBooking.Model
         public string  CheckIn { get; set; }
         public string CheckOut { get; set; }
         public string Room { get; set;}
-        public int RoomTypeId { get; set; }
+        public string RoomTypeId { get; set; }
+        public int NoOfRooms { get; set; }
         public string BookingStatus { get; set; }
         public string PaymnentStatus { get; set; }
         public string  Audlts { get; set; }
@@ -37,7 +38,7 @@ namespace HotelBooking.Model
         public string CompanyPhone { get; set;}
         public string CompanyEmail { get; set;}
         
-        public IEnumerable<PriceResponse> BookedNiths { get; set; }
+        public IEnumerable<BookingCost> BookedNiths { get; set; }
 
         public IEnumerable<BookingPayments> BookingPayments { get; set; }
         public decimal TotalPrice { get; set; }

@@ -80,8 +80,9 @@
                                             <td align="center" valign="middle"> @bk.CheckOut</td>
                                             <td align="center" valign="middle">@bk.RoomNumber</td>
                                             <td align="center" valign="middle"><a href="@Url.Action("Checkout","BookingInterface",new { @BookingId = bk.BookingId })">Check Out</a></td>
-                                            <td align="center" valign="middle"><a href="@Url.Action("AddBooking","BookingInterface",new { @BookingId = bk.BookingId })" onclick="myFunction()">Extend Booking</a></td>
+                                            
                                         </tr>
+                                        i++;
                                     }
                                 }
                                        

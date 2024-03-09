@@ -312,6 +312,7 @@
     <Compile Include="Repository\Interface\IBranch.cs" />
     <Compile Include="Repository\Interface\ICompany.cs" />
     <Compile Include="Repository\Interface\ICoupon.cs" />
+    <Compile Include="Repository\Interface\IDashboard.cs" />
     <Compile Include="Repository\Interface\IDept.cs" />
     <Compile Include="Repository\Interface\IDesignation.cs" />
     <Compile Include="Repository\Interface\IFloor.cs" />
@@ -406,6 +407,7 @@
     <Content Include="JS\app-sidebar.js" />
     <Content Include="JS\bootstrap-colorpicker.js" />
     <Content Include="JS\bootstrap.min.js" />
+    <Content Include="JS\calendar-monthview.js" />
     <Content Include="JS\chartist.min.js" />
     <Content Include="JS\customizer.js" />
     <Content Include="JS\dashboard1.js" />
@@ -528,6 +530,9 @@
     <Content Include="Views\Setup\Company.cshtml" />
     <Content Include="Views\Setup\Branch.cshtml" />
     <Content Include="Views\BookingInterface\_Documents.cshtml" />
+    <Content Include="Views\BookingInterface\CreateBooking.cshtml" />
+    <Content Include="Views\BookingInterface\_PricePerRoom.cshtml" />
+    <Content Include="Views\BookingInterface\_PricePerNightNew.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

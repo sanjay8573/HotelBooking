@@ -1,16 +1,17 @@
 ﻿@model HotelBooking.Model.VM_DocumentResponse
 
 @{
-    var nDocUploaded = Model.Documents.Count;
+    var nDocUploaded = Model.Documents.Where(d=>d.DocumentTypeId!=4).Count();
     var RequiedDoc = Model.Pax - nDocUploaded;
-    
+    var k = 1;
+
 
 }
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left table-responsive">
     <div class="widget-content padded text-center">
         <div class="row">
           
-                <h5 class="tabheading text-left"> Uploaded Documents: <strong></strong><strong id="uploadedDoc">@nDocUploaded</strong> <span class="primary" style="margin-left: 20px;">Pending Document for :<strong> - </strong><strong id="PendingDocument">@RequiedDoc</strong></span></h5>
+            <h5 class="tabheading text-left"> Document Uploaded  for: <strong></strong><strong id="uploadedDoc">@nDocUploaded</strong> Pax<span class="primary" style="margin-left: 20px;">Pending Documents for :<strong> - </strong><strong id="PendingDocument">@RequiedDoc</strong> Pax</span></h5>
 
 
             </div>
@@ -35,12 +36,12 @@
                                 var selname = "DocSelType" + i.ToString();
                                 var fileBName = "DocFile" + i.ToString();
                                 var PaxId = "Pax" + i.ToString();
-                                var DocTypeName= "DocTypeName" + i.ToString();
+                                var DocTypeName = "DocTypeName" + i.ToString();
                                 <tr class="active">
-                                    <th class="text-center">@i</th>
+                                    <th class="text-center">@k</th>
                                     <th class="text-center">
                                         <input type="text" id="@PaxId" name="@PaxId" class="full-width" placeholder="Pax Name" runat="server">
-                                       
+
 
                                     </th>
 
@@ -67,8 +68,31 @@
                                         <input type="file" id="@fileBName" name="@fileBName" class=" full-width">
                                     </th>
                                 </tr>
+                                k++;
                             }
+                            <tr >
+                                <th class="text-center" colspan="4">
+                                    
+                                                    <input class="styled-checkbox" type="checkbox"  name="CHK_RCR" id="CHK_RCR" />
+                                                    <label for="CHK_RCR">Vechile Registration - Required</label>
+                                            
+                                                    <input type="hidden" id="isRCRequired" name="isRCRequired" value="false" />
+                                </th>
+                                
+                            </tr>
+                            <tr id="RCId" class="active">
+                               
+                                <th class="text-center" colspan="3">
+                                    <input type="text" id="PaxIdRC" name="PaxIdRC" class="full-width" placeholder="Registration Number" runat="server">
+                                    
 
+                                </th>
+
+
+                                <th class="text-center">
+                                    <input type="file" id="FileRC" name="FileRC" class=" full-width">
+                                </th>
+                            </tr>
                         </tbody>
                     </table>
 
@@ -113,16 +137,31 @@
 </div>
 </div>
 <script>
+    $(document).ready(function () {
+        $("#RCId").hide();
+         $('#CHK_RCR').change(function () {
+            if (this.checked) {
+                $("#RCId").show();
+                $("#isRCRequired").val("true");
+                
+            } else {
+                $("#RCId").hide();
+                $("#isRCRequired").val("false");
+            }
+        });
+    
+    });
 
-    function GetSelectedTextValue(idn,ddlSelect) {
-        var selectedText = ddlSelect.options[ddlSelect.selectedIndex].innerHTML;
+        function GetSelectedTextValue(idn, ddlSelect) {
+            var selectedText = ddlSelect.options[ddlSelect.selectedIndex].innerHTML;
 
-        const dtName = "DocTypeName"+idn;
-        $("#" + dtName).val(selectedText.trim());
-        console.log(idn + "   " + selectedText.trim() + "  " + dtName);
-    }
-    function setDataonSubmit() {
-        $("#BookingRef1").val($("#BookingRef").val());
-    }
+            const dtName = "DocTypeName" + idn;
+            $("#" + dtName).val(selectedText.trim());
+            console.log(idn + "   " + selectedText.trim() + "  " + dtName);
+        }
+        function setDataonSubmit() {
+            $("#BookingRef1").val($("#BookingRef").val());
+        }
+    
 </script>
 

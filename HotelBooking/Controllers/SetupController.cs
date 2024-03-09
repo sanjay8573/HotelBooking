@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HotelBooking.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,6 +13,11 @@ namespace HotelBooking.Controllers
         public ActionResult Company()
         {
             return View();
+        }
+        public int SaveCompay(Company companyEntity)
+        {
+            CompanyInfoController _bk = new CompanyInfoController();
+            return _bk.AddCompanyDetails(companyEntity);
         }
 
         public ActionResult Branch()

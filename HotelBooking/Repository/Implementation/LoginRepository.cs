@@ -60,8 +60,9 @@ namespace HotelBooking.Repository.Implementation
                     loginResponse.CompanyId = s.CompanyId;
                     try
                     {
-                        loginResponse.CompanyName =(_cmp.GetCompanyById(s.CompanyId)!=null) ? _cmp.GetCompanyById(s.CompanyId).Name:"";
-                        loginResponse.CompanyLog = (_cmp.GetCompanyById(s.CompanyId) != null) ? _cmp.GetCompanyById(s.CompanyId).CompanyLog : "";
+                        Company cmp = _cmp.GetCompanyById(s.CompanyId);
+                        loginResponse.CompanyName = (!string.IsNullOrEmpty(cmp.Name)) ? cmp.Name : string.Empty;
+                        loginResponse.CompanyLog = (!string.IsNullOrEmpty(cmp.CompanyLog)) ? cmp.CompanyLog : string.Empty;
                     }
                     catch (Exception)
                     {
@@ -86,7 +87,7 @@ namespace HotelBooking.Repository.Implementation
                     try
                     {
                         loginResponse.PrimaryRoles = (_irole.GetRoleById(s.PrimaryRoleID)!=null)?_irole.GetRoleById(s.PrimaryRoleID).Roles : "";
-                        loginResponse.SecondryRoles = (_irole.GetRoleById(s.SecondryRoleID) != null) ? _irole.GetRoleById(s.SecondryRoleID).Roles : "";
+                        //loginResponse.SecondryRoles = (_irole.GetRoleById(s.SecondryRoleID) != null) ? _irole.GetRoleById(s.SecondryRoleID).Roles : "";
                         loginResponse.Modules = getModulesObject(loginResponse.PrimaryRoles);
                     }
                     catch (Exception)

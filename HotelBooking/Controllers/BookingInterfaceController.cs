@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
+using System.Xml.Linq;
 
 namespace HotelBooking.Controllers
 {
@@ -50,8 +51,21 @@ namespace HotelBooking.Controllers
                 }
 
                 int pageNumber = page ?? 1;
+                var dateCriteria = DateTime.Now.Date.AddDays(-7);// last 7 days booking
+              
 
                 bksListModel = _bks.GetBookings(branchId);//.Where(d => d.isDeleted == false);
+                var QueryDeatils = from tmpBooking in bksListModel orderby tmpBooking.BookingDate descending
+                                   where tmpBooking.BookingDate>= dateCriteria
+                                   
+                                    select tmpBooking ;
+
+                var QueryDeatils1 = from tmpBooking1 in bksListModel
+                                   orderby DateTime.Parse(tmpBooking1.CheckIn) ascending
+                                   where DateTime.Parse(tmpBooking1.CheckIn) >= dateCriteria
+
+                                   select tmpBooking1;
+
                 Session["BranchId"] = branchId;
 
                 ViewBag.pSize = new List<SelectListItem>()
@@ -62,7 +76,7 @@ namespace HotelBooking.Controllers
                         new SelectListItem() { Value="15", Text= "15" },
                         new SelectListItem() { Value="20", Text= "20" },
                      };
-                IPagedList<Booking> bkslist = bksListModel.ToPagedList(pageNumber, (int)DefaultPageSize);
+                IPagedList<Booking> bkslist = QueryDeatils1.ToPagedList(pageNumber, (int)DefaultPageSize);
                
                 
 
@@ -100,7 +114,7 @@ namespace HotelBooking.Controllers
                         bool slt = false;
                         if (bookingId > 0)
                         {
-                            if (item.RoomTypeId == bk.RoomTypeId)
+                            if (item.RoomTypeId.ToString() == bk.RoomTypeId)
                                 slt = true;
                         }
                         RoomTypeitems.Add(new SelectListItem { Text = item.Title.Trim(), Value = item.RoomTypeId.ToString(), Selected = slt });
@@ -109,7 +123,7 @@ namespace HotelBooking.Controllers
                 if (bookingId > 0)
                 {
                     PaidServicesController _ps = new PaidServicesController();
-                    IEnumerable<PaidServices> ps = _ps.GetPaidServicesByRoomType(bk.RoomTypeId).Where(i => i.isActive == true && i.BranchId == branchId && i.isDeleted == false);
+                    IEnumerable<PaidServices> ps = _ps.GetPaidServicesByRoomType(1).Where(i => i.isActive == true && i.BranchId == branchId && i.isDeleted == false);
 
                     ViewBag.PS = ps;
 
@@ -131,7 +145,8 @@ namespace HotelBooking.Controllers
                 ViewBag.GSComboModel = AllGuest;
 
 
-                return View(bk);
+                return View("CreateBooking",bk);
+                //return View(bk);
             }
             else
             {
@@ -161,54 +176,52 @@ namespace HotelBooking.Controllers
         }
         public ActionResult BookingProcess(int BookingId, string BookingRef)
         {
-            ViewBag.BookingId = BookingId;
-            ViewBag.BookingRef = BookingRef;
-            int branchId = int.Parse(Session["BranchId"].ToString());
-            ViewBag.BranchId = branchId;
-            IEnumerable<BookingStatus> bkStatus = Enum.GetValues(typeof(BookingStatus))
-                                          .Cast<BookingStatus>();
-            IEnumerable<PaymentStatus> pmtStatus = Enum.GetValues(typeof(PaymentStatus))
-                                         .Cast<PaymentStatus>();
-            BookingController _bc = new BookingController();
-            VM_BookingDetails VMB = _bc.GetBookingDetails(branchId, BookingId);
+            try
+            {
+                ViewBag.BookingId = BookingId;
+                ViewBag.BookingRef = BookingRef;
+                int branchId = int.Parse(Session["BranchId"].ToString());
+                ViewBag.BranchId = branchId;
+                IEnumerable<BookingStatus> bkStatus = Enum.GetValues(typeof(BookingStatus))
+                                              .Cast<BookingStatus>();
+                IEnumerable<PaymentStatus> pmtStatus = Enum.GetValues(typeof(PaymentStatus))
+                                             .Cast<PaymentStatus>();
+                BookingController _bc = new BookingController();
+                VM_BookingDetails VMB = _bc.GetBookingDetails(branchId, BookingId);
+
+                ViewBag.bkStatus = from bk in bkStatus
+                                   select new SelectListItem
+                                   {
+                                       Text = bk.ToString(),
+                                       Value = bk.ToString(),
+                                       Selected = (bk.ToString().ToUpper() == VMB.BookingStatus.ToUpper())
+                                   };
+
+                ViewBag.pmtStatus = from bk in pmtStatus
+                                    select new SelectListItem
+                                    {
+                                        Text = bk.ToString(),
+                                        Value = bk.ToString(),
+                                        Selected = (bk.ToString().ToUpper() == VMB.PaymnentStatus.ToUpper())
+                                    };
+                return View(VMB);
+            }
+            catch (Exception)
+            {
+
+                return View("ErrorPage");
+            }
             
-            ViewBag.bkStatus = from bk in bkStatus
-                               select new SelectListItem
-                                     {
-                                         Text = bk.ToString(),
-                                         Value = bk.ToString(),
-                                         Selected=(bk.ToString()==VMB.BookingStatus)
-                                     };
 
-            ViewBag.pmtStatus = from bk in pmtStatus
-                                select new SelectListItem
-                               {
-                                   Text = bk.ToString(),
-                                   Value = bk.ToString(),
-                                    Selected = (bk.ToString() == VMB.PaymnentStatus)
-                                };
-
-            
-
-
-
-            return  View(VMB);
         }
 
 
-        public PartialViewResult _BookingDetails(string RoomTypeId, string cinDate, string coutDate)
+        public PartialViewResult _BookingDetails(int BookingId,string RoomTypeId, string cinDate, string coutDate)
         {
-
-            PriceRequest pr = new PriceRequest();
-            pr.CheckInDate = cinDate;
-            pr.CheckOutDate = coutDate;
-            pr.roomTypeId = int.Parse(RoomTypeId);
             int branchId = int.Parse(Session["BranchId"].ToString());
 
             BookingController _bc = new BookingController();
-            IEnumerable<PriceResponse> _pr = _bc.GetPricesForNight(pr);
-
-
+            IEnumerable<BookingCost> _pr = _bc.GetBookingsCost(BookingId);
             return PartialView("_BookingDetails", _pr);
 
         }
@@ -243,19 +256,20 @@ namespace HotelBooking.Controllers
 
             return PartialView("_Payments", bkplist);
         }
-        public PartialViewResult _AllocateRooms(int BookingId, int RoomTypeId)
+        public PartialViewResult _AllocateRooms(int BookingId, string RoomTypeId,int nor)
         {
             int branchId = int.Parse(Session["BranchId"].ToString());
             RoomController _rc = new RoomController();
 
-            IEnumerable<Room> rm = _rc.GetRoomsByRoomTypeId(branchId, RoomTypeId);
+            IEnumerable<Room> rm = _rc.GetRoomsByRoomTypeIds(branchId, RoomTypeId);
             List<SelectListItem> Roomitems = new List<SelectListItem>();
             Roomitems.Add(new SelectListItem { Text = "Select a Room", Value = "0" });
             foreach (Room item in rm)
             {
-                Roomitems.Add(new SelectListItem { Text = item.RoomTypeName+"~"+ item.RoomNumber + "-"+ item.FloorName, Value = item.RoomId.ToString()});
+                Roomitems.Add(new SelectListItem { Text = item.RoomTypeName+"-"+ item.RoomNumber + "-"+ item.FloorName, Value = item.RoomId.ToString()});
             }
             ViewBag.RMComboModel = Roomitems;
+            ViewBag.nRooms =  nor;
 
             return PartialView("_AllocateRooms");
 
@@ -320,20 +334,53 @@ namespace HotelBooking.Controllers
             return _bk.updatePaymentStatus(branchId, BookingId, status);
         }
 
-        public PartialViewResult _PricePerNight(string RoomTypeId , string cinDate,string coutDate)
+
+        public PartialViewResult _PricePerRoom( int nOfr, int todalNight)
+        {
+
+            if (Session.Keys.Count != 0)
+            {
+
+                int branchId = int.Parse(Session["BranchId"].ToString());
+                RoomTypeController RTC = new RoomTypeController();
+                IEnumerable<RoomType> rtm = new List<RoomType>();
+
+                rtm = RTC.GetRoomTypes(branchId).Where(d => d.isDeleted == false && d.isActive == true); ;
+                List<SelectListItem> RoomTypeitems = new List<SelectListItem>();
+                RoomTypeitems.Add(new SelectListItem { Text = "Select a Room Type", Value = "0" });
+                foreach (RoomType item in rtm)
+                {
+                    bool slt = false;
+                    //if (bookingId > 0)
+                    //{
+                    //    if (item.RoomTypeId == bk.RoomTypeId)
+                    //        slt = true;
+                    //}
+                    RoomTypeitems.Add(new SelectListItem { Text = item.Title.Trim(), Value = item.RoomTypeId.ToString(), Selected = slt });
+                }
+                ViewBag.RTComboModel1 = RoomTypeitems;
+            }
+                ViewBag.NOR = nOfr;
+                ViewBag.todalNight = todalNight;
+
+            return PartialView("_PricePerRoom");
+
+        }
+        public PartialViewResult _PricePerNight(string RoomTypeId , string cinDate,string coutDate,string refDiv)
         {
             
             PriceRequest pr = new PriceRequest();
             pr.CheckInDate = cinDate;
             pr.CheckOutDate= coutDate;
             pr.roomTypeId= int.Parse(RoomTypeId);
+            pr.nOfRoom = int.Parse(refDiv);
             int branchId = int.Parse(Session["BranchId"].ToString());
 
             BookingController _bc = new BookingController();
             IEnumerable<PriceResponse> _pr = _bc.GetPricesForNight(pr);
 
 
-            return PartialView("_PricePerNights", _pr);
+            return PartialView("_PricePerNightNew", _pr);
 
         }
         public PartialViewResult _PaidServices(string RoomTypeId)
@@ -361,7 +408,7 @@ namespace HotelBooking.Controllers
         }
 
 
-        public ActionResult BookedRoom(int? page, int? pSize = 2)
+        public ActionResult BookedRoom(int? page, int? pSize )
         {
             if (Session.Keys.Count > 0)
             {
@@ -387,11 +434,11 @@ namespace HotelBooking.Controllers
                 ViewBag.RTComboModel = RoomTypeitems;
                 ViewBag.pSize = new List<SelectListItem>()
                     {
-                        new SelectListItem() { Value="2", Text= "2" },
-                        new SelectListItem() { Value="5", Text= "5" },
-                        new SelectListItem() { Value="10", Text= "10" },
-                        new SelectListItem() { Value="15", Text= "15" },
-                        new SelectListItem() { Value="20", Text= "20" },
+                        new SelectListItem() { Value="2", Text= "2" ,Selected=(2==pSize)},
+                        new SelectListItem() { Value="5", Text= "5",Selected=(5==pSize) },
+                        new SelectListItem() { Value="10", Text= "10" ,Selected=(10==pSize)},
+                        new SelectListItem() { Value="15", Text= "15",Selected=(15==pSize)},
+                        new SelectListItem() { Value="20", Text= "20" ,Selected=(20==pSize)},
                      };
 
                 IPagedList<BookedRoom> bkslist = VBR.ToPagedList(pageNumber, (int)DefaultPageSize);
@@ -552,35 +599,72 @@ namespace HotelBooking.Controllers
                 DocumentController _dc = new DocumentController();
                 int BookingId = int.Parse(Request.Form["BookingId"].ToString());
                 string BookingRef = Request.Form["BookingRef1"].ToString();
+                bool isRCRequired = bool.Parse(Request.Form["isRCRequired"].ToString());
                 if (Request.Files.Count > 0)
                 {
                     
                     for (int i=0;i< Request.Files.Count; i++)
                     {
-                        BookingDocuments bd = new BookingDocuments();
-                        string _DocTypeid = "DocSelType" + i.ToString();
-                        string _DocTypeName = "DocTypeName" + i.ToString();
-                        string _PaxId= "Pax"+ i.ToString();
-
-
-                        string DocTypeId = Request.Form[_DocTypeid].ToString();
-                        string DocTypeName= Request.Form[_DocTypeName].ToString();
-                        string PaxName= Request.Form[_PaxId].ToString();
-                        string fileName = "DocFile" + i.ToString();
-                        HttpPostedFileBase postedFile = Request.Files[fileName];
-                        byte[] bytes;
-                        using (BinaryReader br = new BinaryReader(postedFile.InputStream))
+                        
+                        if (isRCRequired)
                         {
-                            bytes = br.ReadBytes(postedFile.ContentLength);
+                            if (Request.Files.Keys[i].Contains("RC"))
+                            {
+                                string DocTypeName1 = Request.Form["PaxIdRC"].ToString();
+                                HttpPostedFileBase postedFile1 = Request.Files["FileRC"];
+                                byte[] bytes1;
+                                using (BinaryReader br = new BinaryReader(postedFile1.InputStream))
+                                {
+                                    bytes1 = br.ReadBytes(postedFile1.ContentLength);
+                                }
+                                BookingDocuments bdRC = new BookingDocuments();
+                                bdRC.DocumentName = "Vechele Registration" + DocTypeName1;
+                                bdRC.DocumentData = bytes1;
+                                bdRC.BookingId = BookingId;
+                                bdRC.DocumentTypeId = 4;
+                                bdRC.PaxName = DocTypeName1;
+                                bdRC.isActive = true;
+                                _dc.AddDocuments(bdRC);
+                            } 
+
                         }
-                        bd.DocumentName = DocTypeName;
-                        bd.DocumentData = bytes;
-                        bd.BookingId = BookingId;
-                        bd.DocumentTypeId = int.Parse(DocTypeId);
-                        bd.PaxName = PaxName;
-                        bd.isActive = true;
-                       _dc.AddDocuments(bd);
+                       
+                            if (Request.Files.Keys[i].Contains("Doc"))
+                            {
+                                string _DocTypeid = "DocSelType" + i.ToString();
+                                string _DocTypeName = "DocTypeName" + i.ToString();
+                                string _PaxId = "Pax" + i.ToString();
+
+                                string DocTypeId = Request.Form[_DocTypeid].ToString();
+                                string DocTypeName = Request.Form[_DocTypeName].ToString();
+                                string PaxName = Request.Form[_PaxId].ToString();
+                                string fileName = "DocFile" + i.ToString();
+                                HttpPostedFileBase postedFile = Request.Files[fileName];
+                                byte[] bytes;
+                               
+                               
+                                using (BinaryReader br = new BinaryReader(postedFile.InputStream))
+                                {
+                                    bytes = br.ReadBytes(postedFile.ContentLength);
+                                }
+                                if (bytes != null)
+                                {
+                                    BookingDocuments bd = new BookingDocuments();
+                                    bd.DocumentName = DocTypeName;
+                                    bd.DocumentData = bytes;
+                                    bd.BookingId = BookingId;
+                                    bd.DocumentTypeId = int.Parse(DocTypeId);
+                                    bd.PaxName = PaxName;
+                                    bd.isActive = true;
+                                    _dc.AddDocuments(bd);
+                                }
+                            }
+                        
+
+                        
+                        
                     }
+                    
                 }
                
                 Session["BranchId"] = branchId;

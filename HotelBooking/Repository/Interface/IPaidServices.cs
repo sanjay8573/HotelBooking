@@ -10,5 +10,7 @@ namespace HotelBooking.Repository.Interface
 
         void DeletePaidService(int paidserviceid);
         IEnumerable<PaidServices> GetPaidServicesByRoomType(int roomTypeId);
+
+        IEnumerable<PaidServices> GetPaidServicesByIds(string ids);
     }
 }

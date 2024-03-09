@@ -1,5 +1,5 @@
 ﻿@model HotelBooking.Model.UserLoginResponse
-
+<link href="~/css/calendar-monthview.css" rel="stylesheet" />
 <!--Statistics cards Starts-->
 <div class="row">
     <div class="col-xl-3 col-lg-6 col-md-6 col-12">
@@ -66,43 +66,172 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">Administration Details</h4>
-            </div>
-            <div class="card-body">
-                <div class="card-block">
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Username</th>
-                                <th>Password</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Ritesh</td>
-                                <td>Kumar</td>
-                                <td>Ritesh@test.com</td>
-                                <td>...............</td>
-                            </tr>
-                            <tr>
-                                <td>Munish</td>
-                                <td>Sharma</td>
-                                <td>Munish@test.com</td>
-                                <td>...............</td>
-                            </tr>
-                            <tr>
-                                <td>Sanjay </td>
-                                <td>Test</td>
-                                <td>Sanjay@test.com</td>
-                                <td>...............</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card widget-container">
+                        <div class="heading"> <i class="fa fa-address-card" aria-hidden="true"></i> Availability Calendar</div>
+                        <div class="widget-content padded text-center">
+                           
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                    <div class="calendar">
+                                        <header>
+                                            <label id="calendar-title" for="calendar-date" onClick="didClickTitle"></label>
+                                            <input type="date" id="calendar-date">
+                                            <div class="spacer"></div>
+                                            <button><i class="fas fa-chevron-left"></i></button>
+                                            <button>today</button>
+                                            <button><i class="fas fa-chevron-right"></i></button>
+                                        </header>
+                                        <ol class="day-names">
+                                            <li>Sun</li>
+                                            <li>Mon</li>
+                                            <li>Tue</li>
+                                            <li>Wed</li>
+                                            <li>Thu</li>
+                                            <li>Fri</li>
+                                            <li>Sat</li>
+                                        </ol>
+                                        <ol class="days">
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                            <li>
+                                                <div class="content"></div>
+                                            </li>
+                                        </ol>
+                                    </div>
+                                </div>
+
+                            </div>
+                           
+
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
+<script src="~/JS/calendar-monthview.js"></script>

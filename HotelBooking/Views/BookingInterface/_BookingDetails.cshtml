@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HotelBooking.Model.PriceResponse>
+﻿@model IEnumerable<HotelBooking.Model.BookingCost>
 
 
 
@@ -7,7 +7,7 @@
             <tr class="trthbgclr">
                 <th>#</th>
                 <th>Date</th>
-               
+
                 <th>Price</th>
 
             </tr>
@@ -20,30 +20,39 @@
                 {
                     <tr>
                         <td>@i</td>
+                        @if(@p.CostCategory==1){
                         <td>@p.Date</td>
-                      
-                        <td align="right">$ @p.Amount</td>
+                        }
+                        else{
+                        <td>@p.Description</td>
+                        }
+
+
+
+                        <td align="right">$ @p.PerNightCost</td>
                         <input type="hidden" id="BookingCostId" value="@p.BookingCostId" />
                     </tr>
                     i++;
-                    totalAmount = totalAmount + p.Amount;
+                    totalAmount = totalAmount + p.PerNightCost;
                     totalTax = totalTax + p.TaxAmount;
-                   
+
                 }
-                
-                    totalAmount = totalAmount + totalTax;
-                
-                    <tr>
-                        <td colspan="2" align="right">Tax(18%) : </td>
-                        <td align="right">$ @totalTax</td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" align="right">Total : </td>
-                        <td colspan="3" align="right">$ @totalAmount</td>
-                    </tr>
 
-                <input type="hidden" id="TotalCostForNights" value="@totalAmount" />
+                totalAmount = totalAmount + totalTax;
 
+
+                        <tr>
+                            <td colspan="2" align="right">Tax(18%) : </td>
+                            <td align="right">$ @totalTax</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="right">Total : </td>
+                            <td colspan="3" align="right">$ @totalAmount</td>
+                        </tr>
+
+                        <input type="hidden" id="TotalCostForNights" value="@totalAmount" />
+
+                    }
             }
         </tbody>
     </table>

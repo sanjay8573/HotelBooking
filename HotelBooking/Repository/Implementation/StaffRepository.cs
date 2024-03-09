@@ -29,7 +29,7 @@ namespace HotelBooking.Repository.Implementation
         {
             List<VM_Staff> s2 = new List<VM_Staff>();
             Staff[] s0; 
-            s0 = _context.Staff.Where(b => b.BranchId == branchId).ToArray();
+            s0 = _context.Staff.Where(b => b.BranchId == branchId && b.isActive==true).ToArray();
             foreach(Staff s1 in s0 )
             {
                 VM_Staff tmpS = new VM_Staff();

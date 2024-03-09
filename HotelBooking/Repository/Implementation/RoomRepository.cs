@@ -57,7 +57,25 @@ namespace HotelBooking.Repository.Implementation
 
         public IEnumerable<Room> GetRoomsByRoomTypeId(int branchId,int RoomTypeId)
         {
-            return _context.Rooms.Where(r => r.BranchId == branchId && r.RoomTypeId==RoomTypeId).ToArray();
+            IEnumerable<BookedRoom>  lstBookedRoom = _context.BookedRoom.Where(r => r.RoomTypeId == RoomTypeId && r.isCheckout == false && r.BranchId== branchId).ToArray();
+            IEnumerable<Room> rms= _context.Rooms.Where(r => r.BranchId == branchId && r.RoomTypeId == RoomTypeId).ToArray();
+            IEnumerable<Room> rms1 = from r in rms
+                                     where !(from bked in lstBookedRoom
+                                             select bked.RoomId)
+                                             .Contains(r.RoomId)
+                                     select r;
+            return rms1;
+        }
+        public IEnumerable<Room> GetRoomsByRoomTypeIds(int branchId, string RoomTypeId)
+        {
+            IEnumerable<BookedRoom> lstBookedRoom = _context.BookedRoom.Where(r => RoomTypeId.Contains( r.RoomTypeId.ToString()) && r.isCheckout == false && r.BranchId == branchId).ToArray();
+            IEnumerable<Room> rms = _context.Rooms.Where(r => r.BranchId == branchId && RoomTypeId.Contains(r.RoomTypeId.ToString())).ToArray();
+            IEnumerable<Room> rms1 = from r in rms
+                                     where !(from bked in lstBookedRoom
+                                             select bked.RoomId)
+                                             .Contains(r.RoomId)
+                                     select r;
+            return rms1;
         }
 
         public bool SaveRoom(Room entityRoom)

@@ -16,11 +16,14 @@ namespace HotelBooking.Model
         public string GuestName { get; set; }
         public int BookingTypeId { get; set; }
         public string BookingTypeName { get; set; }
-        public int RoomTypeId { get; set; }
+        public string RoomTypeId { get; set; }
         public string RoomTypeName { get; set; }
         public int Adult { get; set; }
         public int Child { get; set; }
         public string CheckIn { get; set; }
+        public string ChildAge1 { get; set; }
+        public string ChildAge2 { get; set; }
+        public string ChildAge3 { get; set; }
         public string Checkout { get; set; }
         public int NoOfRooms { get; set; }
         public int Nights { get; set; }

@@ -85,7 +85,20 @@ namespace HotelBooking.Repository.Implementation
 
         public IEnumerable<PaidServices> GetPaidServicesByRoomType(int roomTypeId)
         {
-            return _context.PaidServices.Where(b => b.RoomTypeId.Contains(roomTypeId.ToString())).ToArray();
+            //return _context.PaidServices.Where(b => b.RoomTypeId.Contains(roomTypeId.ToString())).ToArray();//based on RoomtyepId
+            return _context.PaidServices.Where(b => b.isActive==true && b.isDeleted==false).ToArray();
+        }
+        public IEnumerable<PaidServices> GetPaidServicesByIds(string ids)
+        {
+            var numbers = ids.Split(',')?.Select(Int32.Parse)?.ToList();
+            
+            return _context.PaidServices.Where(b=> numbers.Contains(b.PaidServiceId)).ToArray();
+        }
+        public IEnumerable<PaidServices> GetPaidServicesByBookingId(int bookingId)
+        {
+           
+
+            return _context.PaidServices.ToArray();
         }
     }
 }

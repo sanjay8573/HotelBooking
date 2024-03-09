@@ -32,6 +32,13 @@ namespace HotelBooking.Controllers
             return _room.GetRoomsByRoomTypeId(BranchId, RoomTypeId);
         }
 
+        [HttpGet]
+        [Route("api/Room/GetRoomsByRoomTypeIds/{BranchId}")]
+        public IEnumerable<Room> GetRoomsByRoomTypeIds(int BranchId, string RoomTypeId)
+        {
+            return _room.GetRoomsByRoomTypeIds(BranchId, RoomTypeId);
+        }
+
         [HttpPost]
         [Route("api/Room/AddRoom/{BranchId}")]
         public bool AddRoom(Room roomEntity)

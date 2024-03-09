@@ -22,6 +22,8 @@ namespace HotelBooking.Model
         public int PrimaryRoleID { get; set; }
         public int SecondryRoleID { get; set; }
         public int CompanyId { get; set; }
+        public bool isActive { get; set; }
+        public bool isDeleted { get; set; }
 
 
 

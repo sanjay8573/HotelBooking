@@ -4,18 +4,19 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-    <title>INFINITY INFINITY</title>
+    <title>Hotel Configuration: Room Types</title>
     <!--<link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,700,900|Montserrat:300,400,500,600,700,800,900" rel="stylesheet">-->
     <!-- BEGIN VENDOR CSS-->
     <!-- font icons-->
     <link rel="stylesheet" type="text/css" href="css/style.min.css">
     <!--<link rel="stylesheet" type="text/css" href="css/style.css">-->
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/perfect-scrollbar.min.css">
     <link rel="stylesheet" type="text/css" href="css/prism.min.css">
     <link rel="stylesheet" type="text/css" href="css/chartist.min.css">
     <link rel="stylesheet" type="text/css" href="css/app.css">
+    <link rel="stylesheet" type="text/css" href="css/froala_editor.pkgd.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/Datepicker.css" />
 </head>
 <body data-col="2-columns" class=" 2-columns ">
     <div class="wrapper">
@@ -38,8 +39,8 @@
             <div class="sidebar-content">
                 <div class="nav-container">
                     <ul id="main-menu-navigation" data-menu="menu-navigation" class="navigation navigation-main">
-                        <li class=" nav-item active"><a href="index.html"><i class="fa fa-dashboard"></i><span data-i18n="" class="menu-title">Dashboard</span></a></li>
-                        <li class=" nav-item"><a href="#"><i class="ft-list"></i><span data-i18n="" class="menu-title">Bookings</span></a></li>
+                        <li class=" nav-item"><a href="index.html"><i class="fa fa-dashboard"></i><span data-i18n="" class="menu-title">Dashboard</span></a></li>
+                        <li class=" nav-item active"><a href="#"><i class="ft-list"></i><span data-i18n="" class="menu-title">Bookings</span></a></li>
                         <li class=" nav-item"><a href="#"><i class="ft-home"></i><span data-i18n="" class="menu-title">Booked Rooms</span></a></li>
                         <li class=" nav-item"><a href="#"><i class="ft-home"></i><span data-i18n="" class="menu-title">Booked Halls</span></a></li>
                         <li class=" nav-item"><a href="#"><i class="ft-users"></i><span data-i18n="" class="menu-title">Guests</span></a></li>
@@ -154,6 +155,16 @@
                 <div class="navbar-container">
                     <div id="navbarSupportedContent" class="collapse navbar-collapse">
                         <ul class="navbar-nav">
+                            <li class="nav-item mr-2">
+                                <a id="navbar-fullscreen" href="javascript:;" class="nav-link apptogglefullscreen">
+                                    <i class="ft-maximize font-medium-3 blue-grey darken-4"></i>
+                                    <p class="d-none">fullscreen</p>
+                                </a>
+                            </li>
+                            <li class="dropdown nav-item">
+                                <a id="dropdownBasic3" href="#" data-toggle="dropdown" class="nav-link position-relative dropdown-toggle"><i class="ft-flag font-medium-3 blue-grey darken-4"></i><span class="selected-language d-none"></span></a>
+                                <div class="dropdown-menu dropdown-menu-right"><a href="javascript:;" class="dropdown-item py-1"><img src="images/us.png" class="langimg" /><span> English</span></a><a href="javascript:;" class="dropdown-item py-1"><img src="images/es.png" class="langimg" /><span> Spanish</span></a><a href="javascript:;" class="dropdown-item py-1"><img src="images/br.png" class="langimg" /><span> Portuguese</span></a><a href="javascript:;" class="dropdown-item"><img src="images/de.png" class="langimg" /><span> French</span></a></div>
+                            </li>
                             <li class="dropdown nav-item">
                                 <a id="dropdownBasic3" href="#" data-toggle="dropdown" class="nav-link position-relative dropdown-toggle">
                                     <i class="ft-user font-medium-3 blue-grey darken-4"></i>
@@ -176,157 +187,483 @@
             <div class="main-content">
                 <div class="content-wrapper">
                     <!--Statistics cards Starts-->
-
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="card widget-container">
-                                <div class="heading"> <i class="fa fa-address-card" aria-hidden="true"></i> Add Company</div>
+                                <div class="heading"> <i class="fa fa-bar-chart-o"></i>Bookings <small>Lists</small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Bookings</small> </span></div>
                                 <div class="widget-content padded text-center">
-                                    <form id="msform" runat="server" action="ProvisionGDSInfo.html" method="get">
-                                        <div class="row">
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                                    <label for="edit-mail" class="form-required">Select Your Category</label>
-                                                    <select id="ddlEngine" class="full-width" runat="server">
-                                                        <option selected="selected">Select Your Category</option>
-                                                        <option>Reseller</option>
-                                                        <option>Supplier</option>
-                                                        <option>B2B_Site</option>
-                                                        <option>B2B2C</option>
-                                                        <option>Affilate</option>
-                                                        <option>B2E</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                                    <label for="edit-mail" class="form-required">Select Your Category</label>
-                                                    <ul class="unstyled centered">
-                                                        <li>
-                                                            <input class="styled-checkbox" id="styled-checkbox-1" type="checkbox" value="value1">
-                                                            <label for="styled-checkbox-1">Reseller</label>
-                                                        </li>
-                                                        <li>
-                                                            <input class="styled-checkbox" id="styled-checkbox-2" type="checkbox" value="value2" checked>
-                                                            <label for="styled-checkbox-2">Supplier</label>
-                                                        </li>
-                                                        <li>
-                                                            <input class="styled-checkbox" id="styled-checkbox-3" type="checkbox" value="value3">
-                                                            <label for="styled-checkbox-3">B2B_Site</label>
-                                                        </li>
-                                                        <li>
-                                                            <input class="styled-checkbox" id="styled-checkbox-4" type="checkbox" value="value4">
-                                                            <label for="styled-checkbox-4">B2B2C</label>
-                                                        </li>
-                                                        <li>
-                                                            <input class="styled-checkbox" id="styled-checkbox-5" type="checkbox" value="value5">
-                                                            <label for="styled-checkbox-5">Affilate</label>
-                                                        </li>
-                                                        <li>
-                                                            <input class="styled-checkbox" id="styled-checkbox-6" type="checkbox" value="value6">
-                                                            <label for="styled-checkbox-6">B2E</label>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                                    <label for="edit-mail" class="form-required">First Name</label>
-                                                    <input type="text" id="txtUserName" class="full-width" placeholder="First Name" runat="server">
-                                                </div>
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                                    <label for="edit-mail" class="form-required">Last Name</label>
-                                                    <input type="text" id="txtUserName" class="full-width" placeholder="Last Name" runat="server">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                                    <label for="edit-mail" class="form-required">Company Name</label>
-                                                    <input type="text" id="txtUserName" class="full-width" placeholder="Company Name" runat="server">
-                                                </div>
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                                    <label for="edit-mail" class="form-required">Email</label>
-                                                    <input type="text" id="txtEmail" class="full-width" placeholder="Email" runat="server">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                                    <label for="edit-mail" class="form-required">Country</label>
-                                                    <select id="ddlEngine" class="full-width" runat="server">
-                                                        <option selected="selected">Select Country</option>
-                                                        <option>USA</option>
-                                                        <option>India</option>
-                                                        <option>Canada</option>
-                                                        <option>France</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                                    <label for="edit-mail" class="form-required">Phone Number</label>
-                                                    <div class="checkoutcontact">
-                                                        <div class="checkoutcode"><span id="spnCountryCode">+ 91</span></div>
-                                                        <div class="checkoutcontactin">
-                                                            <input type="text" id="txtPhoneNo" class="checkoutinput full-width" placeholder="Phone Number" runat="server">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12 pull-left">
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                                    <label for="edit-mail" class="form-required">Address Line 1</label>
-                                                    <input type="text" id="txtAddressLine1" class="full-width" placeholder="Address Line 1" runat="server">
-                                                </div>
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                                    <label for="edit-mail" class="form-required">Address Line 2</label>
-                                                    <input type="text" id="txtAddressLine2" class="full-width" placeholder="Apartment, suite, unit, building, floor, etc." runat="server">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12 pull-left">
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                                    <label for="edit-mail" class="form-required">City</label>
-                                                    <input type="text" id="txtCity" class="full-width" placeholder="City" runat="server">
-                                                </div>
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                                    <label for="edit-mail" class="form-required">State / Province / Region</label>
-                                                    <input type="text" id="txtState" class="full-width" placeholder="State / Province / Region" runat="server">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12 pull-left">
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                                    <label for="edit-mail" class="form-required">Postal Code</label>
-                                                    <input type="text" id="txtPostalCode" class="full-width" placeholder="Postal Code" runat="server">
-                                                </div>
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                                    <label for="edit-mail" class="form-required">Website/URL</label>
-                                                    <input type="text" id="txtWebsite" class="full-width" placeholder="Website/URL" runat="server">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12 pull-left">
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                                    <label for="edit-mail" class="form-required">ARC/IATA</label>
-                                                    <input type="text" id="txtPostalCode" class="full-width" placeholder="ARC/IATA" runat="server">
-                                                </div>
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                                    <label for="edit-mail" class="form-required">CLIA</label>
-                                                    <input type="text" id="txtWebsite" class="full-width" placeholder="CLIA" runat="server">
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12 pull-left">
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                                    <label for="edit-mail" class="form-required">ASTA</label>
-                                                    <input type="text" id="txtPostalCode" class="full-width" placeholder="ASTA" runat="server">
-                                                </div>
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                                    <label for="edit-mail" class="form-required">Consorita/Affiliation</label>
-                                                    <input type="text" id="txtWebsite" class="full-width" placeholder="Consorita/Affiliation" runat="server">
-                                                </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12 pull-right">
+                                                <button type="button" class="allbtnin full-width form-group" onclick="myFunction()"> +ADD</button>
                                             </div>
                                         </div>
-                                        <input type="button" name="prev" class="prev action-button" value="SAVE" runat="server">
-                                        <input type="submit" name="Process" class="next action-button" value="PROCESS" runat="server">
-                                    </form>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                                    <select id="ddlEngine" class="full-width ddselect" runat="server">
+                                                        <option selected="selected">Filter By Room Type</option>
+                                                        <option>One</option>
+                                                        <option>Two</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                                    <input type="text" id="datepicker" class="full-width allinputgo" placeholder="Check In" autocomplete="off">
+                                                </div>
+                                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                                    <input type="text" id="datepicker2" class="full-width allinputgo" placeholder="Check Out" autocomplete="off">
+                                                </div>
+                                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                                    <input type="text" id="datepicker3" class="full-width allinputgo" placeholder="Booking Date" autocomplete="off">
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                    <select id="" class="full-width ddselect" runat="server">
+                                                        <option selected="selected">--Filter By Booking Status--</option>
+                                                        <option>One</option>
+                                                        <option>Two</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                    <select id="" class="full-width ddselect" runat="server">
+                                                        <option selected="selected">--Filter By Payment Status--</option>
+                                                        <option>One</option>
+                                                        <option>Two</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                    <select id="" class="full-width ddselect" runat="server">
+                                                        <option selected="selected">--Filter By Hall Type--</option>
+                                                        <option>One</option>
+                                                        <option>Two</option>
+                                                    </select>
+                                                </div>
+                                                <!--<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                                        <input type="text" id="txtUserName" class="allinputgo" placeholder="" runat="server">
+                                                        <button type="submit" class="allbtnin">GO</button>
+                                                      </div>-->
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 table-responsive">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 pull-left">
+                                                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-left text-left">
+                                                    Show
+                                                    <select id="ddlEngine" class="onlyinput" runat="server">
+                                                        <option selected="selected">10</option>
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                        <option>4</option>
+                                                    </select>
+                                                    Intries
+                                                </div>
+                                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
+                                                    Search
+                                                    <input type="text" id="txtUserName" class="onlyinput" placeholder="Search" runat="server">
+                                                </div>
+                                            </div>
+                                            <table class="table table-bordered">
+                                                <tbody>
+                                                    <tr style="background: #eaeeef;">
+                                                        <td colspan="13" align="left" valign="middle"><div class="allheadingin">Bookings</div></td>
+                                                    </tr>
+                                                    <tr class="trthbgclr">
+                                                        <th class="text-center">#</th>
+                                                        <th class="text-center">Booking Number</th>
+                                                        <th class="text-center">Customer Name</th>
+                                                        <th class="text-center">Room/Hall</th>
+                                                        <th class="text-center">Check in</th>
+                                                        <th class="text-center">Check out</th>
+                                                        <th class="text-center">Booking Date</th>
+                                                        <th class="text-center">Payment Status</th>
+                                                        <th class="text-center">Booking Status</th>
+                                                    </tr>
+                                                    <tr class="active">
+                                                        <td>1</td>
+                                                        <td><a href="#" data-toggle="modal" data-target="#NewStatus">1254652365</a></td>
+                                                        <td align="center" valign="middle">Joana Deo</td>
+                                                        <td align="center" valign="middle">Excutive</td>
+                                                        <td align="center" valign="middle">02/22/2018</td>
+                                                        <td align="center" valign="middle"> 02/23/2018</td>
+                                                        <td align="center" valign="middle">02/22/2018 00:13</td>
+                                                        <td align="center" valign="middle">Success</td>
+                                                        <td align="center" valign="middle">Success</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2</td>
+                                                        <td><a href="#" data-toggle="modal" data-target="#NewStatus">1254652365</a></td>
+                                                        <td align="center" valign="middle">Joana Deo</td>
+                                                        <td align="center" valign="middle">Excutive</td>
+                                                        <td align="center" valign="middle">02/22/2018</td>
+                                                        <td align="center" valign="middle"> 02/23/2018</td>
+                                                        <td align="center" valign="middle">02/22/2018 00:13</td>
+                                                        <td align="center" valign="middle">Success</td>
+                                                        <td align="center" valign="middle">Success</td>
+                                                    </tr>
+                                                    <tr class="active">
+                                                        <td>3</td>
+                                                        <td><a href="#" data-toggle="modal" data-target="#NewStatus">1254652365</a></td>
+                                                        <td align="center" valign="middle">Joana Deo</td>
+                                                        <td align="center" valign="middle">Excutive</td>
+                                                        <td align="center" valign="middle">02/22/2018</td>
+                                                        <td align="center" valign="middle"> 02/23/2018</td>
+                                                        <td align="center" valign="middle">02/22/2018 00:13</td>
+                                                        <td align="center" valign="middle">Success</td>
+                                                        <td align="center" valign="middle">Success</td>
+                                                    </tr>
+                                                    <tr> </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="row" id="AddBooking" style="display: none;">
+                        <div class="col-sm-12">
+                            <div class="card widget-container">
+                                <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
+                                        <label for="edit-mail" class="form-required">Guest</label>
+                                        <select name="categories" id="categories" class="full-width freetrial">
+                                            <option selected="selected" value="1">Select Guest</option>
+                                            <option value="2">Jhon Rick</option>
+                                            <option value="3">Anand Chy</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
+                                        <label for="edit-mail" class="form-required">Booking Type</label>
+                                        <select name="categories" id="categories" class="full-width freetrial">
+                                            <option selected="selected" value="1">Select Booking Type</option>
+                                            <option value="2">Room Booking</option>
+                                            <option value="3">Hall Booking</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
+                                        <label for="edit-mail" class="form-required">GST?</label>
+                                        <input type="text" id="txtRoomNumber" class="full-width" placeholder="GST Number" runat="server">
+                                    </div>
+                                    <!--<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
+                                      <label for="edit-mail" class="form-required">Room</label>
+                                      <select name="categories" id="categories" class="full-width freetrial">
+                                        <option selected="selected" value="1">Select Room</option>
+                                        <option value="4">Standard</option>
+                                        <option value="2">Executive</option>
+                                        <option value="3">Honeymoon Suite</option>
+                                        <option value="4">Deluxe Room</option>
+                                      </select>
+                                    </div>-->
+                                    <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 p-0 pull-left" style="margin-top: 15px;">
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">
+                                            <label for="edit-mail" class="form-required">Adults</label>
+                                            <div class="number">
+                                                <span class="minus">-</span>
+                                                <input type="text" value="1" />
+                                                <span class="plus">+</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">
+                                            <label for="edit-mail" class="form-required">Child</label>
+                                            <div class="number">
+                                                <span class="minus">-</span>
+                                                <input type="text" value="1" />
+                                                <span class="plus">+</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-left">
+                                            <label for="edit-mail" class="form-required">Child 1 Age?</label>
+                                            <select name="ChildAge" id="ChildAge" class="full-width freetrial">
+                                                <option selected="selected" value="1">1 Year</option>
+                                                <option value="2">2 Years</option>
+                                                <option value="3">3 Years</option>
+                                                <option value="4">4 Years</option>
+                                                <option value="5">5 Years</option>
+                                                <option value="6">6 Years</option>
+                                                <option value="7">7 Years</option>
+                                                <option value="8">8 Years</option>
+                                                <option value="9">9 Years</option>
+                                                <option value="10">10 Years</option>
+                                                <option value="11">11 Years</option>
+                                                <option value="12">12 Years</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-left">
+                                            <label for="edit-mail" class="form-required">Child 2 Age?</label>
+                                            <select name="Child2Age" id="Child2Age" class="full-width freetrial">
+                                                <option selected="selected" value="1">1 Year</option>
+                                                <option value="2">2 Years</option>
+                                                <option value="3">3 Years</option>
+                                                <option value="4">4 Years</option>
+                                                <option value="5">5 Years</option>
+                                                <option value="6">6 Years</option>
+                                                <option value="7">7 Years</option>
+                                                <option value="8">8 Years</option>
+                                                <option value="9">9 Years</option>
+                                                <option value="10">10 Years</option>
+                                                <option value="11">11 Years</option>
+                                                <option value="12">12 Years</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-left">
+                                            <label for="edit-mail" class="form-required">Child 3 Age?</label>
+                                            <select name="Child3Age" id="Child3Age" class="full-width freetrial">
+                                                <option selected="selected" value="1">1 Year</option>
+                                                <option value="2">2 Years</option>
+                                                <option value="3">3 Years</option>
+                                                <option value="4">4 Years</option>
+                                                <option value="5">5 Years</option>
+                                                <option value="6">6 Years</option>
+                                                <option value="7">7 Years</option>
+                                                <option value="8">8 Years</option>
+                                                <option value="9">9 Years</option>
+                                                <option value="10">10 Years</option>
+                                                <option value="11">11 Years</option>
+                                                <option value="12">12 Years</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 p-0 pull-left" style="margin-top: 15px;">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                                            <label for="edit-mail" class="form-required">Check In</label>
+                                            <input type="text" id="Addbookingdatepickerinn" class="full-width allinputgo" placeholder="Check In" autocomplete="off">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                                            <label for="edit-mail" class="form-required">Check Out</label>
+                                            <input type="text" id="Addbookingdatepickerout" class="full-width allinputgo" placeholder="Check Out" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left" style="margin-top: 15px; background: #d4dee1; padding: 5px 0px;">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                                            <label style="padding: 20px 0px; font-size: 14px; color: #003556;">2 Adults / 2 Child For 2 Days</label>
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                                            <label for="edit-mail" class="form-required">Number if Room</label>
+                                            <select name="NumberofRoom" id="NumberofRoom" class="full-width freetrial">
+                                                <option selected="selected" value="1">1</option>
+                                                <option value="2">2 </option>
+                                                <option value="3">3 </option>
+                                                <option value="4">4 </option>
+                                                <option value="5">5 </option>
+                                                <option value="6">6 </option>
+                                                <option value="7">7 </option>
+                                                <option value="8">8 </option>
+                                                <option value="9">9 </option>
+                                                <option value="10">10 </option>
+                                                <option value="11">11 </option>
+                                                <option value="12">12 </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left" style="margin-top: 15px;">
+                                        <table class="table table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="trthbgclr" align="left" valign="middle">Room 1</td>
+                                                    <td align="left" valign="middle">
+                                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th width="30%">Room Typpe</th>
+                                                                    <th width="20%">Day</th>
+                                                                    <th width="20%">Price</th>
+                                                                    <th width="30%">&nbsp;</th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>
+                                                                        <select name="categories" id="categories" class="full-width freetrial mg-b0">
+                                                                            <option selected="selected" value="1">Select Room</option>
+                                                                            <option value="4">Standard</option>
+                                                                            <option value="2">Executive</option>
+                                                                            <option value="3">Honeymoon Suite</option>
+                                                                            <option value="4">Deluxe Room</option>
+                                                                        </select>
+                                                                    </th>
+                                                                    <td>4</td>
+                                                                    <td>$ 1500</td>
+                                                                    <td><a href="#" data-toggle="modal" data-target="#ViewEditPerDayPrice">View/Edit Per Day Price</a></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="trthbgclr" align="left" valign="middle">Room 2</td>
+                                                    <td align="left" valign="middle">
+                                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th width="30%">Room Typpe</th>
+                                                                    <th width="20%">Day</th>
+                                                                    <th width="20%">Price</th>
+                                                                    <th width="30%">&nbsp;</th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>
+                                                                        <select name="categories" id="categories" class="full-width freetrial mg-b0">
+                                                                            <option selected="selected" value="1">Select Room</option>
+                                                                            <option value="4">Standard</option>
+                                                                            <option value="2">Executive</option>
+                                                                            <option value="3">Honeymoon Suite</option>
+                                                                            <option value="4">Deluxe Room</option>
+                                                                        </select>
+                                                                    </th>
+                                                                    <td>4</td>
+                                                                    <td>$ 1500</td>
+                                                                    <td><a href="#" data-toggle="modal" data-target="#ViewEditPerDayPrice">View/Edit Per Day Price</a></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="trthbgclr" align="left" valign="middle">Paid Services</td>
+                                                    <td align="left" valign="middle">
+                                                        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="paidservices">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td align="left" width="5%" class="tpad text-center">1</td>
+                                                                    <td align="left" width="70%" class="tpad">Casino</td>
+                                                                    <td align="left" width="5%" class="tpad"><input type="checkbox"></td>
+                                                                    <td align="left" width="10%"><input type="text" id="txtRoomNumber" class="full-width mg-0" placeholder="1" runat="server"></td>
+                                                                    <td align="left" width="10%" class="tpad">$ 99</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="left" class="tpad text-center">2</td>
+                                                                    <td align="left" class="tpad">SPA</td>
+                                                                    <td align="left" class="tpad"><input type="checkbox"></td>
+                                                                    <td align="left"><input type="text" id="txtRoomNumber" class="full-width mg-0" placeholder="1" runat="server"></td>
+                                                                    <td align="left" class="tpad">$ 299</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="left" class="tpad text-center">3</td>
+                                                                    <td align="left" class="tpad">Cinema</td>
+                                                                    <td align="left" class="tpad"><input type="checkbox"></td>
+                                                                    <td align="left"><input type="text" id="txtRoomNumber" class="full-width mg-0" placeholder="1" runat="server"></td>
+                                                                    <td align="left" class="tpad">$ 122</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="left" class="tpad text-center">4</td>
+                                                                    <td align="left" class="tpad">Airport Drop</td>
+                                                                    <td align="left" class="tpad"><input type="checkbox"></td>
+                                                                    <td align="left"><input type="text" id="txtRoomNumber" class="full-width mg-0" placeholder="1" runat="server"></td>
+                                                                    <td align="left" class="tpad">$ 550</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="left" class="tpad text-center">5</td>
+                                                                    <td align="left" class="tpad">Gtm</td>
+                                                                    <td align="left" class="tpad"><input type="checkbox"></td>
+                                                                    <td align="left"><input type="text" id="txtRoomNumber" class="full-width mg-0" placeholder="1" runat="server"></td>
+                                                                    <td align="left" class="tpad">$ 10</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="trthbgclr" align="left" valign="middle">Amount </td>
+                                                    <td align="left" valign="middle"><strong>$ 1500</strong></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="trthbgclr" align="left" valign="middle">Taxes</td>
+                                                    <td align="left" valign="middle">
+                                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td align="left">1</td>
+                                                                    <td align="left">Tax(s)</td>
+                                                                    <td align="left">18.00</td>
+                                                                    <td align="left" width="30%">=$ 270 <a href="#" data-toggle="modal" data-target="#AmountBreakup" class="pull-right">Amount/Breakup</a></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="left" colspan="3"><strong>Total Tax</strong></td>
+                                                                    <td align="left"><strong>=$ 270</strong></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="trthbgclr" align="left" valign="middle">Total Amount</td>
+                                                    <td align="left" valign="middle"><strong>$ 1770</strong></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="col-12 col-lg-12 col-md-12 col-sm-12 pull-left" style="margin-top: 15px; background: #d4dee1; padding: 5px 0px;">
+                                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">
+                                                <label for="edit-mail" class="form-required">Show Rooms</label>
+                                                <select name="categories" id="categories" class="full-width freetrial">
+                                                    <option selected="selected" value="1">All</option>
+                                                    <option value="2">Standerd</option>
+                                                    <option value="3">Dilux</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">
+                                                <label for="edit-mail" class="form-required">Time Range</label>
+                                                <select name="categories" id="categories" class="full-width freetrial">
+                                                    <option selected="selected" value="1">Month</option>
+                                                    <option value="2">Jan</option>
+                                                    <option value="3">Feb</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">
+                                                <label for="edit-mail" class="form-required">&nbsp;</label>
+                                                <ul class="unstyled">
+                                                    <li>
+                                                        <input class="styled-checkbox" id="styled-checkbox-2" type="checkbox" value="value2" checked="">
+                                                        <label for="styled-checkbox-2">Auto Cell Width</label>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">
+                                                <label for="edit-mail" class="form-required">&nbsp;</label>
+                                                <input type="button" name="SUBMIT" class="prev action-button full-width mg-0" value="Next" runat="server">
+                                            </div>
+                                        </div>
+
+                                        <table class="table table-bordered">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="22%" align="left" colspan="2" valign="middle" style="font-size: 17px; font-weight: 600; color: #003556;">Make Reservation</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="trthbgclr" width="22%" align="left" valign="middle">Details</td>
+                                                    <td width="78%" align="left" valign="middle">Exutive 1 Night Booking From 01/03/2024 to 02/03/2024</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="trthbgclr" align="left" valign="middle">Total Amount</td>
+                                                    <td align="left" valign="middle">$ 1770</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="trthbgclr" align="left" valign="middle">Coupon</td>
+                                                    <td align="left" valign="middle">
+                                                        <input type="text" class="pull-left" placeholder="Coupon">
+                                                        <input type="button" name="SUBMIT" class="prev action-button pull-left" value="Apply" runat="server" style="margin: 5px 15px;">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="trthbgclr" align="left" valign="middle">Coupon Applied</td>
+                                                    <td align="left" valign="middle">-$354</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="trthbgclr" align="left" valign="middle">Amount Payable</td>
+                                                    <td align="left" valign="middle">$ 1416</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                            <input type="button" name="SUBMIT" class="prev action-button pull-right" value="Book" runat="server">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
                 <!--Line with Area Chart 1 Ends-->
             </div>
         </div>
@@ -334,6 +671,105 @@
             <p class="clearfix text-muted text-sm-center px-2"><span>Copyright  &copy; 2020 <a href="#" id="pixinventLink" target="_blank" class="text-bold-800 primary darken-2">INFINITY </a>, All rights reserved. </span></p>
         </footer>
     </div>
+
+    <div class="modal fade" id="ViewEditPerDayPrice" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <h4 class="tabheading text-left popuphed"><i class="fa fa-edit" aria-hidden="true"></i> View/Edit Per Day Price </h4>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered">
+                                <tbody>
+                                    <tr class="trthbgclr text-left">
+                                        <th width="33%">&nbsp;</th>
+                                        <th width="33%">Actual Price</th>
+                                        <th width="33%">Offer Price</th>
+                                    </tr>
+                                    <tr>
+                                        <th width="33%">Day 1</th>
+                                        <td><label>$1500</label></td>
+                                        <td><input type="text" id="txtDay1" class="full-width allinput" placeholder="$170" runat="server"></td>
+                                    </tr>
+                                    <tr>
+                                        <th width="33%">Day 2</th>
+                                        <td><label>$1500</label></td>
+                                        <td><input type="text" id="txtDay2" class="full-width allinput" placeholder="$170" runat="server"></td>
+                                    </tr>
+                                    <tr>
+                                        <th width="33%">Day 3</th>
+                                        <td><label>$1500</label></td>
+                                        <td><input type="text" id="txtDay3" class="full-width allinput" placeholder="$170" runat="server"></td>
+                                    </tr>
+                                    <tr>
+                                        <th width="33%">Day 4</th>
+                                        <td><label>$1500</label></td>
+                                        <td><input type="text" id="txtDay4" class="full-width allinput" placeholder="$170" runat="server"></td>
+                                    </tr>
+                                    <tr>
+                                        <th width="33%">Day 5</th>
+                                        <td><label>$1500</label></td>
+                                        <td><input type="text" id="txtDay5" class="full-width allinput" placeholder="$170" runat="server"></td>
+                                    </tr>
+                                    <tr>
+                                        <th width="33%">Day 1</th>
+                                        <td><label>$1500</label></td>
+                                        <td><input type="text" id="txtDay6" class="full-width allinput" placeholder="$170" runat="server"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <button type="submit" class="allbtnin full-width">Save</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="AmountBreakup" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <h4 class="tabheading text-left popuphed"><i class="fa fa-edit" aria-hidden="true"></i> Amount / Breakup</h4>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered">
+                                <tbody>
+                                    <tr class="trthbgclr text-left">
+                                        <th width="5%">&nbsp;</th>
+                                        <th width="31%">&nbsp;</th>
+                                        <th width="31%">Percent</th>
+                                        <th width="31%">Price</th>
+                                    </tr>
+                                    <tr>
+                                        <td align="left">1</td>
+                                        <td align="left">Good and Services Tax (GST)</td>
+                                        <td align="left">18.00</td>
+                                        <td align="left">=$ 270</td>
+                                    </tr>
+                                <td align="left" colspan="3"><strong>Total Tax</strong></td>
+                                <td align="left"><strong>=$ 270</strong></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <button type="submit" class="allbtnin full-width">Save</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Customizer Menu Starts-->
@@ -409,7 +845,7 @@
             <hr>
             <!-- Sidebar Width Starts-->
             <div>
-                <label for="cz-sidebar-width">Sidebar Width</label>
+                <label for="cz-sidebar-width" style="align-content: space-between; margin-bottom: 0px;">Sidebar Width</label>
                 <select id="cz-sidebar-width" class="custom-select cz-sidebar-width float-right">
                     <option value="small">Small</option>
                     <option value="medium" selected="">Medium</option>
@@ -441,5 +877,71 @@
     <!-- BEGIN PAGE LEVEL JS-->
     <script src="js/dashboard1.js" type="text/javascript"></script>
     <!-- END PAGE LEVEL JS-->
+    <!-- BEGIN fck html editor JS-->
+    <script type="text/javascript" src="js/froala_editor.pkgd.min.js"></script>
+    <script>var editor = new FroalaEditor('#checkoutmessage');</script>
+
+    <!--  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>-->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
+    <script>
+        function myFunction() {
+            document.getElementById("AddBooking").style.display = "block";
+        }
+    </script>
+    <script>
+        $(function () {
+            $("#datepicker").datepicker({
+                dateFormat: "dd-mm-yy"
+                , duration: "fast"
+            });
+        });
+        $(function () {
+            $("#datepicker2").datepicker({
+                dateFormat: "dd-mm-yy"
+                , duration: "fast"
+            });
+        });
+
+        $(function () {
+            $("#datepicker3").datepicker({
+                dateFormat: "dd-mm-yy"
+                , duration: "fast"
+            });
+        });
+
+        $(function () {
+            $("#Addbookingdatepickerinn").datepicker({
+                dateFormat: "dd-mm-yy"
+                , duration: "fast"
+            });
+        });
+
+        $(function () {
+            $("#Addbookingdatepickerout").datepicker({
+                dateFormat: "dd-mm-yy"
+                , duration: "fast"
+            });
+        });
+
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.minus').click(function () {
+                var $input = $(this).parent().find('input');
+                var count = parseInt($input.val()) - 1;
+                count = count < 1 ? 1 : count;
+                $input.val(count);
+                $input.change();
+                return false;
+            });
+            $('.plus').click(function () {
+                var $input = $(this).parent().find('input');
+                $input.val(parseInt($input.val()) + 1);
+                $input.change();
+                return false;
+            });
+        });
+    </script>
 </body>
 </html>

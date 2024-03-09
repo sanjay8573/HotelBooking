@@ -54,5 +54,18 @@ namespace HotelBooking.Controllers
         {
             return _ps.GetPaidServicesByRoomType(roomTypeId);
         }
+
+        [HttpGet]
+        [Route("api/PaidServices/GetPaidServicesByIds/{ids}")]
+        public IEnumerable<PaidServices> GetPaidServicesByIds(string ids)
+        {
+            return _ps.GetPaidServicesByIds(ids);
+        }
+        //[HttpGet]
+        //[Route("api/PaidServices/GetPaidServicesByBookingId/{BookingId}")]
+        //public IEnumerable<PaidServices> GetPaidServicesByBookingId(int BookingId)
+        //{
+        //    return _ps.GetPaidServicesByBookingId(BookingId);
+        //}
     }
 }

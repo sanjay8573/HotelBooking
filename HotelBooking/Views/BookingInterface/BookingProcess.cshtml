@@ -65,9 +65,9 @@
                             <div class="tab-menu">
                                 <ul>
                                     <li><a href="#" class="tab-a active-a" id="BookingDetailsLink" data-id="Details">Details</a></li>
-                                    <li><a href="#" class="tab-a" id="BookingPaymentLink" data-id="Payments">Payments</a></li>
-                                    <li><a href="#" class="tab-a" id="AllocateRoomLink" data-id="Room">Allocate Room</a></li>
                                     <li><a href="#" class="tab-a" id="UploadDocLink" data-id="Docuemnts">Documents</a></li>
+                                    <li><a href="#" class="tab-a" id="AllocateRoomLink" data-id="Room">Allocate Room</a></li>
+                                    <li><a href="#" class="tab-a" id="BookingPaymentLink" data-id="Payments">Payments</a></li>
                                 </ul>
                             </div>
                             <!--end of tab-menu-->
@@ -163,7 +163,7 @@
                             <div class="tab" data-id="Docuemnts">
 
                                 <div class="row" id="BookingDocumentDIV">
-                                   
+
                                 </div>
                             </div>
                             <!--end of tab three-->
@@ -178,6 +178,7 @@
                 <input type="hidden" id="Amountpaid" value="@Model.Amountpaid" />
                 <input type="hidden" id="AmountPending" value="@Model.AmountPending" />
                 <input type="hidden" id="RoomTypeId" value="@Model.RoomTypeId" />
+                <input type="hidden" id="NoOfRooms" value="@Model.NoOfRooms" />
                 <input type="hidden" id="RoomTypeName" value="" />
 
                 <input type="hidden" id="GuestId" value="@Model.GuestId" />
@@ -192,23 +193,38 @@
 
 <script>
     $(document).ready(function () {
-
+       
         $('.tab-a').click(function () {
             $(".tab").removeClass('tab-active');
             $(".tab[data-id='" + $(this).attr('data-id') + "']").addClass("tab-active");
             $(".tab-a").removeClass('active-a');
             $(this).parent().find(".tab-a").addClass('active-a');
         });
-
+        $("#BookingDetailsLink").click();
 
         $("#BookingDetailsLink").click(function () {
             var BranchId = $("#BranchId").val();
-           
+            var BookingId = $("#BookingId").val();
             var cin = $("#cinDate").val();
             var cout = $("#coutDate").val();
             const RoomTypeId = $("#RoomTypeId").val();
             console.log("test1.......");
-            $("#BookingDetailsDIV").load("/BookingInterface/_BookingDetails?RoomTypeId=" + RoomTypeId + "&cinDate=" + cin + "&coutDate=" + cout);
+            var URL = "/BookingInterface/_BookingDetails?BookingId=" + BookingId + "&RoomTypeId=" + RoomTypeId + "&cinDate=" + cin + "&coutDate=" + cout;
+            $.ajax({
+                type: 'GET',
+                url: URL,
+                success: function (data) {
+                    //console.log(data);
+                    
+                    //$("#overlay").fadeOut(300);
+                }
+            }).done(function (data) {
+                setTimeout(function () {
+                    // $("#overlay").fadeOut(300);
+                }, 500);
+                $("#BookingDetailsDIV").html(data);
+            });
+           
 
 
         });
@@ -227,11 +243,13 @@
         $("#AllocateRoomLink").click(function () {
 
             var BookingId = $("#BookingId").val();
-
+            var nRooms = $("#NoOfRooms").val();
             console.log("test3.......");
             const RoomTypeId = $("#RoomTypeId").val();
             console.log("Booking made for= " + RoomTypeId);
-            $("#AllocateRoomDIV").load("/BookingInterface/_AllocateRooms?BookingId=" + BookingId + "&RoomTypeId=" + RoomTypeId);
+            var url = "/BookingInterface/_AllocateRooms?BookingId=" + BookingId + "&RoomTypeId='" + RoomTypeId + "'&nor=" + nRooms;
+            console.log("Url for alocate Room= " + url);
+            $("#AllocateRoomDIV").load(url);
 
 
 
