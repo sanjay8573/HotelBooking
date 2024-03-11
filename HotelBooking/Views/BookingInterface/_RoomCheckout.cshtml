@@ -1,0 +1,132 @@
+﻿@model HotelBooking.Model.VM_BookedRoomResponse
+    @{ 
+        int bkRoomCount = Model.BookedRooms.Count;
+        int RelRoomCount = Model.ReleasedRoom.Count;
+    }
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left table-responsive">
+
+
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">&nbsp;</div>
+    <table class="table table-bordered">
+        <tbody>
+
+
+            @if (Model.BookedRooms != null)
+            {
+
+                if (bkRoomCount > 0)
+                {
+                    <tr>
+                        <th colspan="4" class="text-left">Occupied Room(s)</th>
+
+                    </tr>
+                    <tr class="trthbgclr">
+                        <th class="text-center">#</th>
+                        <th class="text-center">Room Number</th>
+                        <th class="text-center">Room Type</th>
+                        <th class="text-center">Floor</th>
+                        <th class="text-center">Checkout</th>
+                        
+                    </tr>
+                }
+
+                int k = 1+ RelRoomCount;
+                foreach (var item in Model.BookedRooms)
+                {
+                    <tr class="active">
+                        <td> Room #@k</td>
+
+                        <td align="center" valign="middle">@item.RoomNumber</td>
+                        <td align="center" valign="middle">@item.RoomTypeName</td>
+                        <td align="center" valign="middle"> @item.FloorName</td>
+                        <td align="center" valign="middle">
+                            <button type="button" class="allbtnin" onclick="CheckOutRoom('@item.BookingId','@item.BookedRoomId');">Check Out</button>
+                        </td>
+                    </tr>
+                    k++;
+                }
+
+            }
+        </tbody>
+    </table>
+    <table class="table table-bordered">
+        <tbody>
+
+
+            @if (Model.ReleasedRoom != null)
+            {
+                if (RelRoomCount > 0)
+                {
+                    <tr>
+                        <th colspan="4" class="text-left">Released Room(s)</th>
+
+                    </tr>
+                    <tr class="trthbgclr">
+                        <th class="text-center">#</th>
+                        <th class="text-center">Room Number</th>
+                        <th class="text-center">Room Type</th>
+                        <th class="text-center">Floor</th>
+                        <th class="text-center">Checkout</th>
+                    </tr>
+                }
+                int k = 1;
+                foreach (var item in Model.ReleasedRoom)
+                {
+                    <tr class="active">
+                        <td> Room #@k</td>
+
+                        <td align="center" valign="middle">@item.RoomNumber</td>
+                        <td align="center" valign="middle">@item.RoomTypeName</td>
+                        <td align="center" valign="middle"> @item.FloorName</td>
+                        <td align="center" valign="middle">@item.CheckOut</td>
+                    </tr>
+                    k++;
+                }
+
+            }
+
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+       
+    });
+    function CheckOutRoom(bkId, rmId,rmNo) {
+        console.log("Selected Room for Checkout " + rmId + " and Booking Id" + bkId);
+
+
+        fetch('/BookingInterface/CheckOut?BookingId=' + bkId + "&RoomId=" + rmId, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+           
+        })
+            .then(() => {
+                $("#checkOut1").click();
+                $.toast({
+                    heading: 'Success',
+                    text: 'Room#' + rmNo +' Success ',
+                    icon: 'success',
+                    loader: false,        // Change it to false to disable loader
+                    position: 'top-right',
+                    loaderBg: '#9EC600'  // To change the background
+                });
+                
+            })
+            .catch(error => {
+                $.toast({
+                    autoDismiss: true,
+                    heading: 'Error',
+                    text: 'Error on Checking out',
+                    icon: 'warning',
+                    position: 'top-right',
+                    loader: false,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                });
+            });
+    }
+</script>

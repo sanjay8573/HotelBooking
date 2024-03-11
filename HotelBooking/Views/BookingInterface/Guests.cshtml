@@ -11,7 +11,7 @@
                 <div class="card-block pt-2 ">
                     <div class="media">
                         <div class="media-body white text-left">
-                            <h3 class="font-large-1 mb-0">2</h3>
+                            <h3 class="font-large-1 mb-0">@ViewBag.NumberOfGuest</h3>
                             <span>GUESTS</span>
                         </div>
                         <div class="media-right white text-right"> <i class="fa fa-leaf font-large-1"></i> </div>
@@ -26,7 +26,7 @@
                 <div class="card-block pt-2 ">
                     <div class="media">
                         <div class="media-body white text-left">
-                            <h3 class="font-large-1 mb-0">0</h3>
+                            <h3 class="font-large-1 mb-0">@ViewBag.NumberOfVIP</h3>
                             <span>VIP</span>
                         </div>
                         <div class="media-right white text-right"> <i class="fa fa-users font-large-1"></i> </div>
@@ -35,7 +35,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-3 col-lg-6 col-md-6 col-12">
+    @*<div class="col-xl-3 col-lg-6 col-md-6 col-12">
         <div class="card gradient-green-tea">
             <div class="card-body">
                 <div class="card-block pt-2 ">
@@ -64,7 +64,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>*@
 </div>
 <!--Statistics cards Starts-->
 <div class="row">
@@ -130,18 +130,18 @@
                                 }
 
 
-                                        <tr>
-                                            <td colspan="9">
-                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                                    <span class="float-left restextpagin">Showing @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount entries</span>
+                                <tr>
+                                    <td colspan="10">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <span class="float-left restextpagin">Showing @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount entries</span>
 
-                                                    <div class="pagination pull-right">
-                                                        @Html.PagedListPager(Model, page => Url.Action("GetAmenities", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
+                                            <div class="pagination pull-right">
+                                                @Html.PagedListPager(Model, page => Url.Action("Guests", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -150,3 +150,9 @@
     </div>
 </div>
 
+<script type="text/javascript">
+    $("#pSize").change(function () {
+        $("#form1").submit();
+    });
+
+</script>    

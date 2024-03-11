@@ -24,8 +24,16 @@ namespace HotelBooking.Repository.Implementation
 
             if (DesignationEntity != null)
             {
-                _context.Designation.Add(DesignationEntity);
-                _context.SaveChanges();
+                if (DesignationEntity.Id > 0)
+                {
+                    UpdateDesignation(DesignationEntity);
+                }
+                else
+                {
+                    _context.Designation.Add(DesignationEntity);
+                    _context.SaveChanges();
+                }
+                
                 result = DesignationEntity.Id;
             }
             return result;

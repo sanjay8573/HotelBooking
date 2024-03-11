@@ -54,6 +54,12 @@ namespace HotelBooking.Controllers
 
 
         }
+        [HttpGet]
+        [Route("api/Dept/DeleteDepartment/{id}")]
+        public void DeleteDepartment(int id)
+        {
+             _Dept.DeleteDept(id);
+        }
 
     }
 }

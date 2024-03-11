@@ -13,4 +13,12 @@ namespace HotelBooking.Model
         public int Rooms { get; set; }
        public IPagedList<BookingDocuments> Documents { get; set; }
     }
+    public class VM_BookedRoomResponse
+    {
+        public int BookingId { get; set; }
+        public int Pax { get; set; }
+        public int Rooms { get; set; }
+        public IPagedList<BookedRoom> BookedRooms { get; set; }
+        public IPagedList<BookedRoom> ReleasedRoom { get; set; }
+    }
 }

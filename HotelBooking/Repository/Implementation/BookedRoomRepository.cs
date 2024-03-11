@@ -42,13 +42,18 @@ namespace HotelBooking.Repository.Implementation
         {
            return _context.BookedRoom.Where(b=>b.BranchId == BranchId && b.isCheckout==false).ToArray();
         }
+
+        public IEnumerable<BookedRoom> GetAllBookedRoomByBookingId(int BranchId,int BookingId)
+        {
+            return _context.BookedRoom.Where(b => b.BranchId == BranchId && b.BookingId== BookingId).ToArray();
+        }
         public bool CheckOutRoom(CheckOutRequest coReq)
         {
             bool rtnVal;
             try
             {
-                //_context.BookedRoom.Where(b => b.BookingId == coReq.BookingId && b.BookedRoomId == coReq.BookedRoomId && b.BranchId==coReq.BranchId)
-                                                  //  .ExecuteUpdate(e => e.SetProperty(u => u.isCheckout , true));
+                BookedRoom BKD = _context.BookedRoom.Where(b => b.BookingId == coReq.BookingId && b.BookedRoomId == coReq.BookedRoomId && b.BranchId == coReq.BranchId).SingleOrDefault();
+                BKD.isCheckout = true;
                 _context.SaveChanges();
 
                 rtnVal = true;

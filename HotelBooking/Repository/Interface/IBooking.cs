@@ -30,5 +30,6 @@ namespace HotelBooking.Repository.Interface
         VM_BookingDetails GetBookingDetails(int BranchId, int BookingId);
         bool UpdateBookingStatus(int BranchId, int Bookingid, string bookingStatus);
         bool UpdatePaymentStatus(int BranchId, int Bookingid, string paymentStatus);
+        DashBoardData DashboardData(int BranchId);
     }
 }

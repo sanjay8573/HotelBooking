@@ -1,15 +1,26 @@
 ﻿@model HotelBooking.Model.UserLoginResponse
 <link href="~/css/calendar-monthview.css" rel="stylesheet" />
 <!--Statistics cards Starts-->
+<style>
+    #check_1 {
+        background-color: green;
+    }
+
+    #loading_1 {
+        background-color: blue;
+    }
+</style>
 <div class="row">
     <div class="col-xl-3 col-lg-6 col-md-6 col-12">
         <div class="card gradient-blackberry">
             <div class="card-body">
                 <div class="card-block pt-2 ">
                     <div class="media">
-                        <div class="media-body white text-left">
-                            <h3 class="font-large-1 mb-0">10</h3>
-                            <span>Bookings</span>
+                        <div hidden id="check_1"></div>
+                        <div hidden id="loading_1">LOADING</div>
+                        <div id="BookingDiv" class="media-body white text-left">
+                            <h3 class="font-large-1 mb-0">0</h3>
+                            <span>BOOKINGS</span>
                         </div>
                         <div class="media-right white text-right"> <i class="ft-list font-large-1"></i> </div>
                     </div>
@@ -22,8 +33,10 @@
             <div class="card-body">
                 <div class="card-block pt-2 ">
                     <div class="media">
-                        <div class="media-body white text-left">
-                            <h3 class="font-large-1 mb-0">100.00</h3>
+                        <div hidden id="check_1"></div>
+                        <div hidden id="loading_1">LOADING</div>
+                        <div id="ReveneDiv" class="media-body white text-left">
+                            <h3 class="font-large-1 mb-0">0.00</h3>
                             <span>TODAY'S REVENUE</span>
                         </div>
                         <div class="media-right white text-right"> <i class="fa fa-dollar font-large-1"></i> </div>
@@ -37,8 +50,10 @@
             <div class="card-body">
                 <div class="card-block pt-2 ">
                     <div class="media">
-                        <div class="media-body white text-left">
-                            <h3 class="font-large-1 mb-0">14</h3>
+                        <div hidden id="check_1"></div>
+                        <div hidden id="loading_1">LOADING</div>
+                        <div id="roomDiv" class="media-body white text-left">
+                            <h3 class="font-large-1 mb-0">0</h3>
                             <span>ROOMS</span>
                         </div>
                         <div class="media-right white text-right"> <i class="ft-home font-large-1"></i> </div>
@@ -52,8 +67,10 @@
             <div class="card-body">
                 <div class="card-block pt-2 ">
                     <div class="media">
-                        <div class="media-body white text-left">
-                            <h3 class="font-large-1 mb-0">2</h3>
+                        <div hidden id="check_1"></div>
+                        <div hidden id="loading_1">LOADING</div>
+                        <div id="guestDiv" class="media-body white text-left">
+                            <h3 class="font-large-1 mb-0">0</h3>
                             <span>GUESTS</span>
                         </div>
                         <div class="media-right white text-right"> <i class="ft-users font-large-1"></i> </div>
@@ -235,3 +252,43 @@
     </div>
 </div>
 <script src="~/JS/calendar-monthview.js"></script>
+<script>
+    $(document).ready(function () {
+
+        function HideCheckShowLoading(checkId) {
+            $("#check_" + checkId).hide('slow', function () {
+                $("#loading_" + checkId).show('slow');
+            });
+        };
+
+        function HideLoadingShowCheck(checkId) {
+            $("#loading_" + checkId).finish().hide('slow', function () {
+                $("#check_" + checkId).finish().show('slow');
+            });
+        };
+        HideCheckShowLoading(1);
+        const URL = '/BookingInterface/GetNoOfBookings';
+        $.ajax({
+            url: URL,
+            contentType: 'application/json; charset=utf-8',
+            type: "GET",
+            success: function (response) {
+                console.log("Success.............." + JSON.stringify(response)+ "====");
+                $("#BookingDiv h3").html(response.NoOfBooking);
+                $("#roomDiv h3").html(response.NoOfRooms);
+                $("#guestDiv h3").html(response.NoOfGuest);
+                HideLoadingShowCheck(1);
+                //$("#check_1").hide(1000);
+            },
+            error: function () {
+                //do something else                
+            }
+        }).done(function () {
+            console.log("Done..............");
+           
+            HideLoadingShowCheck(1)
+        });
+    });
+
+
+</script>

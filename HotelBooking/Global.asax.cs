@@ -24,10 +24,10 @@ namespace HotelBooking
         protected void Application_Error(Object sender, EventArgs e)
         {
             Logger l = new Logger();
-            Response.Write("Somthing went wrong....");
-            Response.Write(Server.GetLastError().ToString());
-            Response.Write("========");
-            Response.Write(Server.GetLastError().Message.ToString());
+            //Response.Write("Somthing went wrong....");
+            //Response.Write(Server.GetLastError().ToString());
+            //Response.Write("========");
+            //Response.Write(Server.GetLastError().Message.ToString());
             l.Log(Server.GetLastError().ToString(), Server.GetLastError().Message.ToString(), DateTime.Now);
             Server.ClearError();
         }

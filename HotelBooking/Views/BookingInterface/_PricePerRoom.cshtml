@@ -1,41 +1,46 @@
 ﻿
 <style>
-  #overlay{
-  position: fixed;
-  /*top: 0;*/
-  z-index: 100;
-  width: 100%;
-  height:100%;
-  display: none;
-  background: rgba(0,0,0,0.6);
-}
-.cv-spinner {
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px #ddd solid;
-  border-top: 4px #2e93e6 solid;
-  border-radius: 50%;
-  animation: sp-anime 0.8s infinite linear;
-}
-@@keyframes sp-anime {
-  100% {
-    transform: rotate(360deg);
-  }
-}
-.is-hide{
-  display:none;
-}
+    #overlay {
+        position: fixed;
+        /*top: 0;*/
+        z-index: 100;
+        width: 100%;
+        height: 100%;
+        display: none;
+        background: rgba(0,0,0,0.6);
+    }
+
+    .cv-spinner {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px #ddd solid;
+        border-top: 4px #2e93e6 solid;
+        border-radius: 50%;
+        animation: sp-anime 0.8s infinite linear;
+    }
+
+    @@keyframes sp-anime {
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .is-hide {
+        display: none;
+    }
 </style>
 
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<table width="100%" border="0" id="tblCosting" cellspacing="0" cellpadding="0">
     <tbody>
-        
+
+
         @if (ViewBag.NOR != null)
         {
             for (int i = 1; i <= ViewBag.NOR; i++)
@@ -43,74 +48,91 @@
                 var rtselname = "RTSelType" + i.ToString();
                 var divref = "#ViewEditPerDayPrice" + i.ToString();
                 var VEPPL = "ViewEditPerDayPriceLink" + i.ToString();
-                var jsonDataId= "jsonDataId" + i.ToString();
+                var jsonDataId = "jsonDataId" + i.ToString();
 
-                var totalPerRoomCostId= "totalPerRoomCost" + i.ToString();
+                var totalPerRoomCostId = "totalPerRoomCost" + i.ToString();
+
+
                 <tr>
-                    <td class="trthbgclr" width="130px" align="left"  valign="middle">Room #@i</td>
-                    <td align="left" valign="middle">
-                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                            <tbody>
+                    <td class="trthbgclr" width="15%" align="left" valign="middle">Room #@i</td>
+                    <td width="25%" align="left" valign="middle">
+                        <select id="@rtselname" required=required onchange="GetPrice('@i', '@rtselname');" name="@rtselname">
+                            @if (ViewBag.RTComboModel1 != null)
+                            {
+                                foreach (var item in ViewBag.RTComboModel1)
+                                {
+                                    if (item.Text != null)
+                                    {
+                                        <option value="@item.Value" selected="@item.Selected">
+                                            @item.Text
+                                        </option>
 
-                                <tr>
-                                    <th width="30%" align="left" valign="middle" >
-                                        <select id="@rtselname" required=required onchange="GetPrice('@i', '@rtselname');" name="@rtselname">
-                                            @if (ViewBag.RTComboModel1 != null)
-                                            {
-                                                foreach (var item in ViewBag.RTComboModel1)
-                                                {
-                                                    if (item.Text != null)
-                                                    {
-                                                        <option value="@item.Value" selected="@item.Selected">
-                                                            @item.Text
-                                                        </option>
-
-                                                    }
-                                                }
-                                            }
-                                        </select>
-                                    </th>
-                                    <td width="20%" align="center" valign="middle">@ViewBag.todalNight</td>
-                                    <td width="20%" align="right" valign="middle" id="@totalPerRoomCostId"></td>
-                                    <td width="30%" align="center" valign="middle">
-                                        <a href="#" id="@VEPPL" data-toggle="modal" data-target="@divref">View/Edit Per Day Price</a>
-                                        @Html.HiddenFor(m=> jsonDataId , new {@id= jsonDataId })
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                    }
+                                }
+                            }
+                        </select>
+                    </td>
+                    <td width="15%" align="center" valign="middle">@ViewBag.todalNight</td>
+                    <td width="15%" align="right" valign="middle" id="@totalPerRoomCostId"></td>
+                    <td width="30%" align="center" valign="middle">
+                        <a href="#" id="@VEPPL" data-toggle="modal" data-target="@divref">View/Edit Per Day Price</a>
+                        @Html.HiddenFor(m => jsonDataId, new { @id = jsonDataId })
                     </td>
                 </tr>
 
+
+
             }
         }
-       
-        
-
-       
     </tbody>
 </table>
+
+
+
+
 
 @if (ViewBag.NOR != null)
 {
     for (int i = 1; i <= ViewBag.NOR; i++)
     {
         var divName = "ViewEditPerDayPrice" + i;
-        <div  class="modal fade"   id="@divName" role="dialog"><h2>Sanjay @i</h2></div>
+        <div class="modal fade" id="@divName" role="dialog"><h2>Sanjay @i</h2></div>
     }
 }
 
 <script>
-   
+
     $(document).ready(function () {
         amt = Number($("#totAmt").text());
         console.log("Current total Amount on Prircing load :" + amt);
     });
-    
-    function divLoaded(idn) {
-        var TCFNID = "TotalCostForNights" + idn;
-        var currentCost = $("#" + TCFNID).val()
-        calcuteTotalandtaxes(currentCost,'+')
+
+    function divLoaded() {
+        //
+        var costing=Number(0);
+        $('#tblCosting').find("tr").each(function () {
+            var currentRow = $(this); 
+            var col3 = currentRow.find("td:eq(3)").text();
+            if (col3 != '') {
+                console.log("Value" + col3);
+                costing = costing+Number(col3);
+                console.log("Costing"+costing);
+            }
+
+          
+            
+        });
+        amt = costing;
+        console.log("Amount :" + amt);
+        $("#hdnRoomCost").val(amt.toFixed(2));
+        $("#totAmt").text(amt.toFixed(2));
+        $("#totAmt").trigger('change');
+        calculatePS();
+        //
+
+        //var TCFNID = "TotalCostForNights" + idn;
+        //var currentCost = $("#" + TCFNID).val()
+        //calcuteTotalandtaxes(currentCost, '+')
 
     };
     function calcuteTotalandtaxes(cc, opt) {
@@ -120,13 +142,15 @@
         else {
             amt = Number(amt) - Number(cc);
         }
+        console.log("Amount :" + amt);
         $("#hdnRoomCost").val(amt.toFixed(2));
         $("#totAmt").text(amt.toFixed(2));
-        $("#totAmt").trigger('change'); 
+        $("#totAmt").trigger('change');
     }
     function GetPrice(idn, ddlSelect) {
-         var divId = "ViewEditPerDayPrice" + idn;
-        var VeiwEditLink = "ViewEditPerDayPriceLink"+idn;
+
+        var divId = "ViewEditPerDayPrice" + idn;
+        var VeiwEditLink = "ViewEditPerDayPriceLink" + idn;
         //console.log(divId);
         var RoomTypeId = $('#' + ddlSelect + ' option:selected').val();
         var cin = $("#Addbookingdatepickerinn").val();
@@ -145,11 +169,12 @@
                 }
             }).done(function () {
                 setTimeout(function () {
-                   // $("#overlay").fadeOut(300);
+                    // $("#overlay").fadeOut(300);
+                    divLoaded();
                 }, 500);
-                divLoaded(idn);
+               
             });
-       	
+
         } else {
             var perRoomCostId = "totalPerRoomCost" + idn;
             var currSelectedCost = $("#" + perRoomCostId).text();

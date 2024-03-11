@@ -34,7 +34,7 @@
                                                     <th width="33%">Day #@i</th>
                                                     <td><label>$@p.Amount</label></td>
                                                     <td>
-                                                        @Html.TextBoxFor(m => p.OfferPrice, new { id = txtId, placeholder = "0.00",vTag=p.Date })
+                                                        @Html.TextBoxFor(m => p.OfferPrice, new { id = txtId, placeholder = "0.00",vTag=p.Date,basePrice=p.Amount })
                                                        
                                                         @*<input type="text" id="@txtId" class="full-width allinput" placeholder="0.00" value="@p.OfferPrice" runat="server">*@
                                                      </td>
@@ -72,8 +72,9 @@
         $("#" + perRoomCostId).text(TotalRoomCost);
         $("#" + jsondataId).val('@Html.Raw(Json.Encode(Model))');
         $("#" + perRoomCostId).on('change', function () {
-            console.log("Cost Chnaged");
-            console.log("Current Cost" + amt);
+            //console.log("Cost Chnaged");
+            //console.log("Current Cost" + amt);
+            $("#totAmt").trigger('change'); 
         });
          
 
@@ -82,6 +83,7 @@
     function updateTotalCost(id) {
         var tableId ="TableId"+id;
         var totalRoomCostonSave = parseInt("0");
+        var totalBasePrice = parseInt("0");
         var jsondataId = "jsonDataId" + id;
         data = $.parseJSON($("#" + jsondataId).val());
        
@@ -89,7 +91,8 @@
          //console.log($(this).attr("vTag"));
          var dd = $(this).attr("vTag");
          var vv = this.value;
-
+            var bp = $(this).attr("baseprice");
+            totalBasePrice += bp;
          for (let object of data) {
              if (object.Date === dd) {
                  object.OfferPrice = vv;
@@ -98,9 +101,11 @@
             totalRoomCostonSave += parseInt(this.value);
            
          //console.log(totalRoomCostonSave)
-     });
+        });
+        
       var perRoomCostId = "totalPerRoomCost" + id;
         $("#" + perRoomCostId).text(totalRoomCostonSave.toFixed(2));
+        divLoaded();
         $("#" + perRoomCostId).trigger('change');   
         $("#"+jsondataId).val(JSON.stringify(data))
        

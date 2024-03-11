@@ -663,6 +663,17 @@ namespace HotelBooking.Repository.Implementation
             _context.SaveChanges();
             return true;
         }
+
+        public DashBoardData DashboardData(int BranchId)
+        {
+            DashBoardData ds = new DashBoardData();
+            ds.NoOfBooking = _context.Booking.Where(b=>b.BranchId== BranchId).Count();
+            ds.NoOfRooms = _context.Rooms.Where(b => b.BranchId == BranchId).Count();
+            ds.NoOfGuest = _context.Guests.Where(b => b.BranchId == BranchId).Count();
+            
+            return ds;
+        }
+
         private string generateInvoiceNumber(int branchId)
         {
             string rtnStr = string.Empty;

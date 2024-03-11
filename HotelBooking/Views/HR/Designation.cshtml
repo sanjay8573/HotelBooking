@@ -12,7 +12,7 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12 pull-right">
-                            <button type="button" class="allbtnin  form-group" data-toggle="modal" data-target="#NewStatus"> +ADD</button>
+                            <button type="button" class="allbtnin  form-group" data-toggle="modal" onclick="location.href='@Url.Action("AddDesig","HR")'" data-target="#NewStatus"> +ADD</button>
                         </div>
                     </div>
                 </div>
@@ -52,14 +52,14 @@
                                             <td align="left" valign="middle">@stf.DesignationName</td>
                                             <td align="left" valign="middle">@stf.DesignationCode</td>
 
-                                            <td align="left" valign="middle"><a href="@Url.Action("AddDesignation","HR",new { @DeptId = stf.Id })" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
-                                            <td align="left" valign="middle"><a href="@Url.Action("DelDesignation","HR",new { @EmpId = stf.Id })" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
+                                            <td align="left" valign="middle"><a href="@Url.Action("AddDesignation","HR",new { @DesigId = stf.Id })" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
+                                            <td align="left" valign="middle"><a href="@Url.Action("DelDesignation","HR",new { @DesigId = stf.Id })" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
                                         </tr>
                                         i++;
                                     }
                                 }
                                 <tr>
-                                    <td colspan="4">
+                                    <td colspan="5">
                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                             <span class="float-left restextpagin">Showing @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</span>
 

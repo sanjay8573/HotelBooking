@@ -1,24 +1,32 @@
 ﻿@{ 
 
     int nr = ViewBag.nRooms;
+    int totalBookedRoom = ViewBag.AllocatedRoomModel.Length;
 }
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left table-responsive">
-    
-    
+
+
     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">&nbsp;</div>
     <table class="table table-bordered">
         <tbody>
 
-            <tr class="trthbgclr">
-                <th class="text-center">#</th>
 
-                <th class="text-center">Room</th>
-                <th class="text-center">Floor</th>
-                <th class="text-center">Allocate</th>
-            </tr>
             @if (ViewBag.nRooms != null)
             {
-                int k = 1;
+                if (ViewBag.nRooms > 0)
+                {
+                    <tr>
+                        <th colspan="4" class="text-left">Allocation Pending</th>
+                       
+                    </tr>
+                    <tr class="trthbgclr">
+                        <th class="text-center">#</th>
+                        <th class="text-center">Room</th>
+                        <th class="text-center">Floor</th>
+                        <th class="text-center">Allocate</th>
+                    </tr>
+                }
+                int k = 1 + totalBookedRoom;
                 for (int i = 0; i < nr; i++)
                 {
 
@@ -26,7 +34,7 @@
                     var flrname = "floor" + i.ToString();
                     <tr class="active">
                         <td> Room @k</td>
-                     
+
                         <td align="center" valign="middle">
                             <select id="@selname" required=required name="@selname" onchange="GetSelectedTextValue('@i',this);" class="full-width ddselect" runat="server">
                                 >
@@ -50,10 +58,52 @@
 
                         <td align="center" valign="middle" id="@flrname"></td>
                         <td align="center" valign="middle">
-                            
-                                <button type="button" class="allbtnin" onclick="AllocateRoom('@i');">Allocate</button>
-                           
+
+                            <button type="button" class="allbtnin" onclick="AllocateRoom('@i');">Allocate</button>
+
                         </td>
+                    </tr>
+                    k++;
+                }
+
+            }
+
+
+
+        </tbody>
+    </table>
+    <table class="table table-bordered">
+        <tbody>
+
+
+            @if (ViewBag.AllocatedRoomModel != null)
+            {
+                if (totalBookedRoom > 0)
+                {
+                    <tr>
+                        <th colspan="5" class="text-left">Allocated Room(s)</th>
+
+                    </tr>
+                    <tr class="trthbgclr">
+                        <th class="text-center">#</th>
+                        <th class="text-center">RoomNumber</th>
+                        <th class="text-center">RoomType</th>
+                        <th class="text-center">Floor</th>
+                        <th class="text-center">Expected Checkout</th>
+                    </tr>
+                }
+                int k = 1;
+                foreach (var bk in ViewBag.AllocatedRoomModel)
+                {
+
+
+
+                    <tr class="active">
+                        <td> Room @k</td>
+                        <td align="center" valign="middle">@bk.RoomNumber</td>
+                        <td align="center" valign="middle"> @bk.RoomTypeName</td>
+                        <td align="center" valign="middle"> @bk.FloorName</td>
+                        <td align="center" valign="middle">@bk.CheckOut</td>
                     </tr>
                     k++;
                 }
@@ -75,8 +125,10 @@
             console.log("Allocating Rooms.....");
             const pmtType = $("#RoomType option:selected").text().replace(/[\n\r]+/g, ' ').trim();;
             var rmTxtAryy = pmtType.split("-");
+            console.log(rmTxtAryy);
             const RoomId = $("#RoomType option:selected").val();
-            //const rmTxtAryy1 = rmTxtAryy[0].split("~");;
+            var rmids = RoomId.split("-");
+            console.log(rmids);
             const RoomNumber = rmTxtAryy[1];
             const CustomerName = $("#GuestName").val();
 
@@ -89,17 +141,20 @@
             const BranchId = $("#BranchId").val();
             const BookedRoomitem = {
                 BookingId: parseInt(BookingId),
-                RoomId: parseInt(RoomId),
+                RoomId: parseInt(rmids[0]),
                 CustomerName: CustomerName,
                 RoomTypeId: parseInt(RoomTypeId),
                 RoomTypeName: RoomTypeName,
+                FloorId:parseInt(rmids[1]),
+                FloorName: rmTxtAryy[2],
                 CheckIn: CheckIn,
                 CheckOut: CheckOut,
                 RoomNumber: RoomNumber,
                 BranchId: parseInt(BranchId),
                 isActive: 1
             };
-
+            console.log(BookedRoomitem);
+           
 
             fetch('/BookingInterface/SaveAllocatedRoom', {
                 method: 'POST',
@@ -157,7 +212,7 @@
         const pmtType = $('#'+selId +" option:selected").text().replace(/[\n\r]+/g, ' ').trim();
         console.log(pmtType);
         const RoomId = $('#' + selId + " option:selected").val();
-      
+        var rmids = RoomId.split("-");
         var rmTxtAryy = pmtType.split("-");
        
         //const rmTxtAryy1 = rmTxtAryy[0].split("~");;
@@ -175,10 +230,12 @@
         const BranchId = $("#BranchId").val();
         const BookedRoomitem = {
             BookingId: parseInt(BookingId),
-            RoomId: parseInt(RoomId),
+            RoomId: parseInt(rmids[0]),
             CustomerName: CustomerName,
             RoomTypeId: parseInt(RoomTypeId),
             RoomTypeName: RoomTypeName,
+            FloorId: parseInt(rmids[1]),
+            FloorName: rmTxtAryy[2],
             CheckIn: CheckIn,
             CheckOut: CheckOut,
             RoomNumber: RoomNumber,
@@ -186,7 +243,7 @@
             isActive: 1
         };
 
-       
+        console.log(BookedRoomitem);
        
         fetch('/BookingInterface/SaveAllocatedRoom', {
             method: 'POST',

@@ -228,6 +228,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Model\AllocateRoomResponse.cs" />
     <Compile Include="Model\Amenities.cs" />
     <Compile Include="Model\AppLogs.cs" />
     <Compile Include="Model\BookedRoom.cs" />
@@ -242,6 +243,7 @@
     <Compile Include="Model\Company.cs" />
     <Compile Include="Model\Coupon.cs" />
     <Compile Include="Model\CouponResponse.cs" />
+    <Compile Include="Model\DashBoardData.cs" />
     <Compile Include="Model\Dept.cs" />
     <Compile Include="Model\Designation.cs" />
     <Compile Include="Model\DocumentType.cs" />
@@ -533,6 +535,9 @@
     <Content Include="Views\BookingInterface\CreateBooking.cshtml" />
     <Content Include="Views\BookingInterface\_PricePerRoom.cshtml" />
     <Content Include="Views\BookingInterface\_PricePerNightNew.cshtml" />
+    <Content Include="Views\HR\AddDept.cshtml" />
+    <Content Include="Views\HR\AddDesig.cshtml" />
+    <Content Include="Views\BookingInterface\_RoomCheckout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -102,5 +102,12 @@ namespace HotelBooking.Controllers
             return _bk.UpdatePaymentStatus(Branchid, BookingId, PaymentStatus);
         }
 
+        [HttpPost]
+        [Route("api/Booking/DashboardDate/{BranchId}")]
+        public DashBoardData DashboardData(int Branchid)
+        {
+            return _bk.DashboardData(Branchid);
+        }
+
     }
 }

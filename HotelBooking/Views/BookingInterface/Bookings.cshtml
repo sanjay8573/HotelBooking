@@ -124,7 +124,18 @@
                                         i++;
                                     }
                                 }
-                                    </tbody>
+                                <tr>
+                                    <td colspan="9">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <span class="float-left restextpagin">Showing Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount </span>
+
+                                            <div class="pagination pull-right">
+                                                @Html.PagedListPager(Model, page => Url.Action("Bookings", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>

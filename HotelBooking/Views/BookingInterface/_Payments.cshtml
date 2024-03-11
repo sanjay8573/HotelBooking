@@ -6,6 +6,9 @@
             <h5 class="tabheading text-left"><i class="fa fa-address-card" aria-hidden="true"></i> Total Paid: <strong>$</strong><strong id="amtPaid">@ViewBag.PaidAmount</strong> <span class="primary" style="margin-left: 20px;">Pending:<strong>$ - </strong><strong id="amtPending">0.00</strong></span></h5>
 
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                @*<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-right">
+                    <button type="button" class="addextraamountordiscountbtn  form-group" onclick="myFunction()"> +Add Extra Amount or Discount</button>
+                </div>*@
                 <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12 pull-right">
                     <button type="button" class="addextraamountordiscountbtn" data-toggle="modal" data-target="#Addpayment"> +ADD</button>
                 </div>
@@ -140,12 +143,19 @@
 
 <script>
     $(document).ready(function () {
-        
-        
+       
+        console.log("Payment loaded");
         const totPrice = $("#TotalPrice").val();
         var amtPending = Number(totPrice) - Number($("#amtPaid").text());
+
         $("#amtPending").text((Number(amtPending).toFixed(2)));
         $("#txtAmtDue").val((Number(amtPending).toFixed(2)));
+
+        if (Number(amtPending) <= 0) {
+            $("#btnCheckout").show();
+        } else {
+            $("#btnCheckout").hide();
+        }
         $("#txtPmtDate").datepicker({
             dateFormat: "dd-mm-yy",
             duration: "fast",
@@ -153,6 +163,9 @@
             disabledDates: [new Date()]
             
         });
+
+        
+
         $("#btnAddPayemnt").on("click", function () {
             console.log("Saving payments.....");
             //const txtordNo = $("#txtordNo").val();
@@ -184,7 +197,7 @@
                 body: JSON.stringify(pmtitem)
             })
             .then(() => {
-                   
+                $("#Payments1").click(); 
                     $.toast({
                         heading: 'Success',
                         text: 'Booking Success ',
@@ -193,7 +206,7 @@
                         position: 'top-right',
                         loaderBg: '#9EC600'  // To change the background
                     });
-                $("#BookingPaymentLink").click();
+                //top.loadPaymentDiv();
                 })
            .catch(error => {
                     $.toast({

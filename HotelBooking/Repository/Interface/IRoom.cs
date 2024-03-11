@@ -9,7 +9,7 @@ namespace HotelBooking.Repository.Interface
         Room GetRoom(int roomId);
         IEnumerable<Room> GetRooms(int branchId);
         IEnumerable<Room> GetRoomsByRoomTypeId(int branchId, int RoomTypeId);
-        IEnumerable<Room> GetRoomsByRoomTypeIds(int branchId, string RoomTypeId);
+        AllocateRoomResponse GetRoomsByRoomTypeIds(int branchId, string RoomTypeId,int BookingId);
         bool DeleteRoom(int roomId);
     }
 }

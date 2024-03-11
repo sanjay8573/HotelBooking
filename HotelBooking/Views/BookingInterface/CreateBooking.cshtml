@@ -183,7 +183,7 @@
                     </div>*@
                     <table class="table table-bordered">
                         <tr>
-                            <td style="width:130px" class="trthbgclr" align="left" valign="middle">&nbsp;</td>
+                            <td  class="trthbgclr" align="left" valign="middle">&nbsp;</td>
                             <td>
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tbody>
@@ -213,7 +213,7 @@
                         <tr>
                             <td class="trthbgclr" align="left" valign="middle">Amount </td>
                             <td align="left" valign="middle">
-                                <input type="text" id="hdnRoomCost" />
+                                <input type="hidden" id="hdnRoomCost" />
                             <strong>$</strong><strong id="totAmt">0.00</strong>
                             </td>
                         </tr>
@@ -360,8 +360,8 @@
                         GuestID: parseInt(GuestID),
                         BookingTypeName: bTypeName,
                         BookingTypeId: parseInt(BtypeID),
-                        RoomTypeId: roomTypeIds,
-                        RoomTypeName: roomTypeNames,
+                        RoomTypeId: roomTypeIds.substring(0, roomTypeIds.length - 1),
+                        RoomTypeName: roomTypeNames.substring(0, roomTypeNames.length - 1),
                         Adult: parseInt(Adults),
                         Child: parseInt(KID),
                         CheckIn: CIN,
@@ -441,8 +441,8 @@
             }
 
         }); 
-        console.log(Bookingitem);
-        console.log(JSON.stringify(Bookingitem));
+        //console.log(Bookingitem);
+        //console.log(JSON.stringify(Bookingitem));
         ////
        // return false;
                    
@@ -467,8 +467,8 @@
                                 position: 'top-right',
                                 loaderBg: '#9EC600'  // To change the background
                             });
-                            //Toast.setPlacement(TOAST_PLACEMENT.TOP_RIGHT);
-                            //Toast.create("Success", "Testing", TOAST_STATUS.SUCCESS, 10000);
+                            window.location.href = '/BookingInterface/Bookings/';
+                            
                         })
                         .catch(error => {
                             $.toast({
@@ -529,35 +529,28 @@
 
                 }
                 var dataList = [];
-                 function calculatePS(chkId, txtQTY) {
-                    console.log('Testing calcuation for ' + chkId);
-                     //var gTotal = $("#hdnRoomCost").val();
-                     var gTotal = $("#totAmt").text();
+                 function calculatePS() {
+                    console.log('Calcuation for Paid services selected ');
+                     var gTotal = $("#hdnRoomCost").val();
+                     
                      console.log('Current Total ' + gTotal);
-                     ///geting qty entered
-                   
-                     //console.log('Quantity entered ' + qty);
+                     
                     $('input[type=checkbox]').each(function () {
 
-                        if (this.name == "CHK_PS_BK" && this.id == chkId ) {
-                            var qty = $("#" + txtQTY).val();
+                        
+                        if (this.name == "CHK_PS_BK") {
+                           
                             if (this.checked) {
-                                
-                                console.log('CHECKED' + this.id + "   " + this.value + " QTY" + qty);
+                                var txtId = this.id.replace("CHK_PS_BK", "QTY");
+                                var qty = $("#" + txtId).val();
+                                console.log('CHECKED id' + this.id + "  checked Value  " + this.value + " QTY=" + Number(qty));
                                 if (Number(qty) > 0) {
-                                    var tmptotal = Number(qty) * Number(this.value)
+                                    var tmptotal = Number(qty) * Number(this.value);
                                     gTotal = Number(gTotal) + Number(tmptotal);
                                     console.log('gTotal' + gTotal);
-                                }
-                            } else {
-                                console.log('NOT CHECKED' + this.id + "   " + this.value + " QTY" + qty);
-                                qty = 0;
-                                if (Number(qty) > 0) {
-                                    var tmptotal = qty * this.value
-                                    gTotal = Number(gTotal) - Number(tmptotal);
-                                }
-                               
+                                } 
                             }
+                            
                         }
 
                     });
@@ -566,35 +559,7 @@
                      $("#totAmt").text(Number(gTotal).toFixed(2));
                      $("#totAmt").trigger('change');  
     }
-    function calPSonTextChange(chkId, txtQTY) {
-        console.log('Testing calcuation for ' + txtQTY);
-        //var gTotal = $("#hdnRoomCost").val();
-        var gTotal = $("#totAmt").text();
-        console.log('Current Total ' + gTotal);
-        ///geting qty entered
-        var qty = $("#" + txtQTY).val();
-        console.log('Quantity entered ' + qty);
-        $('input[type=checkbox]').each(function () {
-
-            if (this.name == "CHK_PS_BK" && this.id == chkId) {
-
-                if (this.checked) {
-
-                    console.log('CHECKED' + this.id + "   " + this.value + " QTY" + qty);
-                    //if (Number(qty) > 0) {
-                        var tmptotal = Number(qty) * Number(this.value)
-                        gTotal = Number(gTotal) + Number(tmptotal);
-                        console.log('gTotal' + gTotal);
-                    //}
-                }
-            }
-
-        });
-
-        console.log('Final Total' + gTotal);
-        $("#totAmt").text(Number(gTotal).toFixed(2));
-        $("#totAmt").trigger('change'); 
-    }
+    
                 $(function () {
                     var userObj;
                     console.log("On Load ===="+userObj);
@@ -641,13 +606,19 @@
                             var todate = maxDate.getDate();
                             var todalNight = parseInt(todate) - parseInt(fdate);
                             $('#nOn').text(todalNight);
-                           
+                            amt = 0;
+                            $("#totAmt").text('');
+                            $("#hdnRoomCost").val(0);
+                            $("#totAmt").trigger('change'); 
 
 
                         }
                     });
                     $("#NumberofRoom").change(function () {
-                       
+                        amt = 0;
+                        $("#totAmt").text('');
+                        $("#hdnRoomCost").val(0);
+                        $("#totAmt").trigger('change');  
                         var RoomTypeId = "1";// $("#RoomType").val();
                         
                         var maxDate = $("#Addbookingdatepickerout").datepicker('getDate');
@@ -657,7 +628,7 @@
                         var todalNight = parseInt(todate) - parseInt(fdate);
                         var totalRoomSelected = $('option:selected', this).val();
                         //console.log(RoomTypeId + "  " + cin + "   " + cout);
-                        
+                        $("#PPR").html('');
                         $("#PPR").load("/BookingInterface/_PricePerRoom?nOfr=" + totalRoomSelected + "&todalNight=" + todalNight);
                         //$("#ppn").load("/BookingInterface/_PricePerNight?RoomTypeId=" + RoomTypeId + "&cinDate=" + cin + "&coutDate=" + cout + "&nOfr=" + totalRoomSelected);
 
@@ -671,10 +642,11 @@
 
 </script>
 <script>
-                $(document).ready(function () {
+    $(document).ready(function () {
+       
                     $("#totAmt").on('change', function () {
                        
-                        console.log("calculating...taxes and Grand Total");
+                        //console.log("calculating...taxes and Grand Total");
                         calcuateGrandTotaAndtaxes();
                     });
                   
@@ -760,14 +732,14 @@
 
     function calcuateGrandTotaAndtaxes() {
 
-        console.log("Current total Amount on selection :" + amt);
+        //console.log("Current total Amount on selection :" + amt);
         var tottalAmount = $("#totAmt").text();
         //var taxpercentage = $("#txPct").text();
         var totaltax = ((Number(tottalAmount) * Number(18)) / 100).toFixed(2);
         $("#taxVal").text(totaltax);
         $("#taxTotal").text(totaltax);
         var gTotalAmount = ((Number(tottalAmount) + Number(totaltax)));
-        console.log(" Grand Total  " + gTotalAmount);
+        //console.log(" Grand Total  " + gTotalAmount);
         $("#gTot").text(gTotalAmount.toFixed(2));
 
     }

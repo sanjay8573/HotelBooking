@@ -3,6 +3,7 @@ using HotelBooking.Repository.Implementation;
 using HotelBooking.Repository.Interface;
 
 using System.Collections.Generic;
+using System.Data;
 using System.Web.Http;
 
 namespace HotelBooking.Desig
@@ -38,6 +39,16 @@ namespace HotelBooking.Desig
             
 
             return _Desig.AddDesignation(DesigEntity);
+
+
+        }
+        [HttpPost]
+        [Route("api/Desig/DelDesignation")]
+        public void DelDesignation(int DesigId)
+        {
+
+
+             _Desig.DeleteDesignation(DesigId);
 
 
         }

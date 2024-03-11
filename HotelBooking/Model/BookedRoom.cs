@@ -12,6 +12,8 @@ namespace HotelBooking.Model
         public string CustomerName { get; set; }
         public int RoomTypeId { get; set; }
         public string  RoomTypeName { get; set; }
+        public int FloorId { get; set; }
+        public string FloorName { get; set; }
         public string CheckIn { get; set; }
         public string CheckOut { get; set; }
         public string  RoomNumber { get; set; }

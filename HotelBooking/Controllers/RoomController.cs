@@ -34,9 +34,9 @@ namespace HotelBooking.Controllers
 
         [HttpGet]
         [Route("api/Room/GetRoomsByRoomTypeIds/{BranchId}")]
-        public IEnumerable<Room> GetRoomsByRoomTypeIds(int BranchId, string RoomTypeId)
+        public AllocateRoomResponse GetRoomsByRoomTypeIds(int BranchId, string RoomTypeId,int BookingId)
         {
-            return _room.GetRoomsByRoomTypeIds(BranchId, RoomTypeId);
+            return _room.GetRoomsByRoomTypeIds(BranchId, RoomTypeId,BookingId);
         }
 
         [HttpPost]

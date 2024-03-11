@@ -1,4 +1,5 @@
 ﻿using HotelBooking.Model;
+using Newtonsoft.Json.Linq;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -261,15 +262,18 @@ namespace HotelBooking.Controllers
             int branchId = int.Parse(Session["BranchId"].ToString());
             RoomController _rc = new RoomController();
 
-            IEnumerable<Room> rm = _rc.GetRoomsByRoomTypeIds(branchId, RoomTypeId);
+            //IEnumerable<Room> rm = _rc.GetRoomsByRoomTypeIds(branchId, RoomTypeId, BookingId);
+            AllocateRoomResponse rm= _rc.GetRoomsByRoomTypeIds(branchId, RoomTypeId, BookingId);
             List<SelectListItem> Roomitems = new List<SelectListItem>();
             Roomitems.Add(new SelectListItem { Text = "Select a Room", Value = "0" });
-            foreach (Room item in rm)
+            foreach (Room item in rm.AvailableRooms)
             {
-                Roomitems.Add(new SelectListItem { Text = item.RoomTypeName+"-"+ item.RoomNumber + "-"+ item.FloorName, Value = item.RoomId.ToString()});
+                Roomitems.Add(new SelectListItem { Text = item.RoomTypeName+"-"+ item.RoomNumber + "-"+ item.FloorName, Value = item.RoomId.ToString() + "-" + item.floor.ToString() });
             }
-            ViewBag.RMComboModel = Roomitems;
-            ViewBag.nRooms =  nor;
+            ViewBag.RMComboModel = Roomitems; 
+            ViewBag.AllocatedRoomModel = rm.BookedRooms;
+            int alreadyallocated = rm.BookedRooms.Count();
+            ViewBag.nRooms =  nor - alreadyallocated;
 
             return PartialView("_AllocateRooms");
 
@@ -469,7 +473,7 @@ namespace HotelBooking.Controllers
             }
         }
 
-        public ActionResult Guests(int? page, int? pSize = 2)
+        public ActionResult Guests(int? page, int? pSize )
         {
             if (Session.Keys.Count > 0)
             {
@@ -486,8 +490,10 @@ namespace HotelBooking.Controllers
                 GuestsController _bm = new GuestsController();
                 IEnumerable<Guests> GS = _bm.GetAllGuests(branchId);
 
-                
-                
+                ViewBag.NumberOfVIP = GS.Where(v => v.isVIP == true).Count();
+                ViewBag.NumberOfGuest = GS.Count();
+
+
                 ViewBag.pSize = new List<SelectListItem>()
                     {
                         new SelectListItem() { Value="2", Text= "2" },
@@ -674,6 +680,84 @@ namespace HotelBooking.Controllers
             {
                 return RedirectToAction("index", "unProHome");
             }
+
+        }
+
+        [HttpGet]
+        public JsonResult GetNoOfBookings()
+        {
+            DashBoardData ds = new DashBoardData();
+           
+            try
+            {
+                if (Session.Keys.Count != 0)
+                {
+                    int branchId = int.Parse(Session["BranchId"].ToString());
+
+                    IEnumerable<Booking> bksListModel = new List<Booking>();
+                    BookingController _bks = new BookingController();
+                    ds = _bks.DashboardData(branchId);//.Where(d => d.isDeleted == false);
+                 }
+            }
+            catch (Exception)
+            {
+
+                return Json("Error");
+            }
+           
+            
+            return Json(ds, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpPost]
+        public bool CheckOut(int BookingId, int RoomId)
+        {
+            bool rtnVal = false;
+            try
+            {
+                int branchId = int.Parse(Session["BranchId"].ToString());
+                CheckOutRequest CR = new CheckOutRequest();
+                CR.BranchId = branchId;
+                CR.BookedRoomId = RoomId;
+                CR.BookingId = BookingId;
+                BookedRoomController BRC = new BookedRoomController();
+                BRC.checkOut(CR);
+                rtnVal = true;
+            }
+            catch (Exception)
+            {
+
+                rtnVal = false;
+            }
+            
+
+            return rtnVal;
+        }
+
+        public PartialViewResult _RoomCheckout(int BookingId, int noRooms, int? page, int? pSize)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            int? DefaultPageSize = 10;
+            if (pSize != null)
+            {
+                DefaultPageSize = pSize;
+            }
+            int pageNumber = page ?? 1;
+
+            BookedRoomController DC = new BookedRoomController();
+            IEnumerable<BookedRoom> BR = DC.GetAllBookedRoomByBookingId(branchId, BookingId);
+            IEnumerable<BookedRoom> OccupiedRoom = BR.Where(c => c.isCheckout == false).ToArray();
+            IEnumerable<BookedRoom> ReleasedRoom = BR.Where(c => c.isCheckout == true).ToArray();
+
+            VM_BookedRoomResponse vM_BRResponse = new VM_BookedRoomResponse();
+            vM_BRResponse.BookingId = BookingId;
+            //vM_BRResponse.Pax = noPax;
+            vM_BRResponse.Rooms = noRooms;
+            vM_BRResponse.BookedRooms = OccupiedRoom.ToPagedList(pageNumber, (int)DefaultPageSize);
+            vM_BRResponse.ReleasedRoom = ReleasedRoom.ToPagedList(pageNumber, (int)DefaultPageSize);
+
+            return PartialView("_RoomCheckout", vM_BRResponse);
 
         }
     }

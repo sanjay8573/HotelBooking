@@ -34,5 +34,11 @@ namespace HotelBooking.Controllers
         {
             return _IBR.CheckOutRoom(coReq);
         }
+        [HttpGet]
+        [Route("api/BookedRoom/GetAllBookedRoomByBookingId/{BranchId}")]
+        public IEnumerable<BookedRoom> GetAllBookedRoomByBookingId(int BranchId,int Bookingid)
+        {
+            return _IBR.GetAllBookedRoomByBookingId(BranchId,Bookingid);
+        }
     }
 }

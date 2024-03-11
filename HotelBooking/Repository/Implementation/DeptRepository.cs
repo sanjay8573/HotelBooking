@@ -23,9 +23,17 @@ namespace HotelBooking.Repository.Implementation
 
             if (DeptEntity != null)
             {
+                if (DeptEntity.Id > 0)
+                {
+                    result = UpdateDept(DeptEntity);
+                }
+            
+            else {
                 _context.Dept.Add(DeptEntity);
                 _context.SaveChanges();
                 result = DeptEntity.Id;
+            }
+                
             }
             return result;
         }
@@ -35,7 +43,8 @@ namespace HotelBooking.Repository.Implementation
             var DeptEntity = _context.Dept.Find(DeptId);
             if (DeptEntity != null)
             {
-                _context.Dept.Remove(DeptEntity);
+                DeptEntity.isDeleted = true;
+                
                 _context.SaveChanges();
             }
         }
@@ -61,7 +70,9 @@ namespace HotelBooking.Repository.Implementation
 
             if (DeptEntity != null)
             {
-                //_context.Dept.Update(DeptEntity);
+                var tmpEntity = _context.Dept.Find(DeptEntity.Id);
+                tmpEntity.DepartmentName = DeptEntity.DepartmentName;
+                tmpEntity.isActive = DeptEntity.isActive;
                 _context.SaveChanges();
                 result = DeptEntity.Id;
             }
