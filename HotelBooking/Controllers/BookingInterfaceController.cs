@@ -430,8 +430,14 @@ namespace HotelBooking.Controllers
                 IEnumerable<BookedRoom> VBR = _bm.GetAllBookedRoom(branchId);
 
                 List<SelectListItem> RoomTypeitems = new List<SelectListItem>();
+                var rst = (from item in VBR
+                           select new
+                           {
+                               item.RoomTypeId,
+                               item.RoomTypeName
+                           }).Distinct();
                 RoomTypeitems.Add(new SelectListItem { Text = "Filter by  Room Type", Value = "0" });
-                foreach (BookedRoom item in VBR)
+                foreach (var item in rst)
                 {
                     RoomTypeitems.Add(new SelectListItem { Text = item.RoomTypeName, Value = item.RoomTypeId.ToString()});
                 }

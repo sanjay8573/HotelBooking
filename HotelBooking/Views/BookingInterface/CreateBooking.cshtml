@@ -746,7 +746,7 @@
 
     function GotoNextPage() {
 
-        var bkDetails = $("#RoomType option:selected").text() + " 1 Nights Booking from " + $("#Addbookingdatepickerinn").val() + " To " + $("#Addbookingdatepickerout").val();
+        var bkDetails = $("#RoomType option:selected").text() + " " + $("#nOn").text() +" Nights Booking from " + $("#Addbookingdatepickerinn").val() + " To " + $("#Addbookingdatepickerout").val();
         var gtptal1 = $("#gTot").text();
         $("#BookingFirstPage").css("display", "none");
         $("#BookingNextPage").css("display", "block");
