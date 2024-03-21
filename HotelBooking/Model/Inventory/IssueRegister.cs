@@ -12,7 +12,7 @@ namespace HotelBooking.Model.Inventory
     {
         [Key]
         public int IssueRegisterId { get; set; }
-        public string LotNumber { get; set; }
+        public string LotNumber { get; set; }="Lot1";
         public int ItemId { get; set; }
         public string ItemName { get; set; }
         public int OpeningQuantity  { get; set; }
