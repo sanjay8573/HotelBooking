@@ -1,0 +1,114 @@
+﻿@model IEnumerable<HotelBooking.Model.PriceResponse>
+    @{ 
+        var idn = Model.Select(c => c.BookingCostId).First();
+        var totDiveId = "TotalCostForNights" + idn;
+        var tableId="TableId"+ idn;
+        var btnId = "btn" + idn;
+    }
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-body">
+            <div class="row">
+                <h4 class="tabheading text-left popuphed"><i class="fa fa-edit" aria-hidden="true"></i> View/Edit Per Day Price </h4>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered" id="@tableId">
+                        <tbody>
+                            <tr class="trthbgclr text-left">
+                                <th width="33%">&nbsp;</th>
+                                <th width="33%">Actual Price</th>
+                                <th width="33%">Offer Price</th>
+                            </tr>
+
+
+                            @if (Model != null)
+                            {
+                                var i = 1;
+                                decimal totalAmount = decimal.Parse("0");
+
+                                foreach (HotelBooking.Model.PriceResponse p in Model)
+                                //for(var k = 0; k < Model.Count(); i++)
+                                            {
+                                            var txtId = "txtDay" + i.ToString();
+                                                <tr>
+                                                    <th width="33%">Day #@i</th>
+                                                    <td><label>$@p.Amount</label></td>
+                                                    <td>
+                                                        @Html.TextBoxFor(m => p.OfferPrice, new { id = txtId, placeholder = "0.00",vTag=p.Date,basePrice=p.Amount })
+                                                       
+                                                        @*<input type="text" id="@txtId" class="full-width allinput" placeholder="0.00" value="@p.OfferPrice" runat="server">*@
+                                                     </td>
+
+
+                                                   </tr>
+
+                                                i++;
+                                                totalAmount = totalAmount + p.OfferPrice;
+                                            }
+                                <input type="hidden" id="@totDiveId" value="@totalAmount" />
+
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <button type="button" class="allbtnin full-width" onclick="updateTotalCost('@idn');" id="@btnId" >Save</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var btnid = "btnId" + '@idn';
+        var perRoomCostId = "totalPerRoomCost" + '@idn';
+        var jsondataId ="jsonDataId"+  '@idn';
+        var TotalRoomCost = $("#" +'@totDiveId').val();
+        //console.log("Per Room Cost Id" + perRoomCostId + " Per Room COST " + TotalRoomCost)
+        $("#" + perRoomCostId).text(TotalRoomCost);
+        $("#" + jsondataId).val('@Html.Raw(Json.Encode(Model))');
+        $("#" + perRoomCostId).on('change', function () {
+            //console.log("Cost Chnaged");
+            //console.log("Current Cost" + amt);
+            $("#totAmt").trigger('change'); 
+        });
+         
+
+    });
+
+    function updateTotalCost(id) {
+        var tableId ="TableId"+id;
+        var totalRoomCostonSave = parseInt("0");
+        var totalBasePrice = parseInt("0");
+        var jsondataId = "jsonDataId" + id;
+        data = $.parseJSON($("#" + jsondataId).val());
+       
+        $('#' + tableId).find('input[type=text]').each(function () {
+         //console.log($(this).attr("vTag"));
+         var dd = $(this).attr("vTag");
+         var vv = this.value;
+            var bp = $(this).attr("baseprice");
+            totalBasePrice += bp;
+         for (let object of data) {
+             if (object.Date === dd) {
+                 object.OfferPrice = vv;
+             }
+         }
+            totalRoomCostonSave += parseInt(this.value);
+           
+         //console.log(totalRoomCostonSave)
+        });
+        
+      var perRoomCostId = "totalPerRoomCost" + id;
+        $("#" + perRoomCostId).text(totalRoomCostonSave.toFixed(2));
+        divLoaded();
+        $("#" + perRoomCostId).trigger('change');   
+        $("#"+jsondataId).val(JSON.stringify(data))
+       
+    }
+
+</script>

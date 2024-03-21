@@ -35,6 +35,8 @@ namespace HotelBooking.Model
         public string GuestName { get; set; }
         public string CompanyName { get; set;}
         public string CompanyAddress { get; set;}
+        public string CompanyCity { get; set; }
+        public string CompanyCountry { get; set; }
         public string CompanyPhone { get; set;}
         public string CompanyEmail { get; set;}
         
@@ -44,5 +46,16 @@ namespace HotelBooking.Model
         public decimal TotalPrice { get; set; }
         public decimal Amountpaid { get; set; }
         public decimal AmountPending { get; set; }
+
+        ///Guest Details
+        ///
+        public string  GuestAddress { get; set; }
+        public string  GuestCity { get; set; }
+        public string Guestpincode { get; set; }
+        public string Guestcountry { get; set; }
+        public string GuestPhone { get; set; }
+        public string Guestemail { get; set; }
+
+
     }
 }

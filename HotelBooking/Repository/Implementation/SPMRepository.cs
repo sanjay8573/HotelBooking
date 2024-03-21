@@ -11,11 +11,11 @@ namespace HotelBooking.Repository.Implementation
     public class SPMRepository : ISPM
     {
         private readonly CompanyContext _context;
-        public SPMRepository(CompanyContext context)
-        {
-            _context = context;
+        //public SPMRepository(CompanyContext context)
+        //{
+        //    _context = context;
 
-        }
+        //}
         public SPMRepository()
         {
             _context = new CompanyContext();

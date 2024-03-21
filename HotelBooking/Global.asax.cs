@@ -21,15 +21,16 @@ namespace HotelBooking
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+               
         protected void Application_Error(Object sender, EventArgs e)
         {
+            var ex = Server.GetLastError();
+            var msg = Server.GetLastError().Message.ToString() + ex.StackTrace.ToString();
             Logger l = new Logger();
-            //Response.Write("Somthing went wrong....");
-            //Response.Write(Server.GetLastError().ToString());
-            //Response.Write("========");
-            //Response.Write(Server.GetLastError().Message.ToString());
-            l.Log(Server.GetLastError().ToString(), Server.GetLastError().Message.ToString(), DateTime.Now);
             Server.ClearError();
+            l.Log(ex.ToString(), msg, DateTime.Now);
+            //Response.Redirect("~/Error.cshtml");
         }
 
     }

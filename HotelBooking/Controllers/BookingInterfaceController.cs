@@ -1,4 +1,5 @@
-﻿using HotelBooking.Model;
+﻿using HotelBooking.Attribute;
+using HotelBooking.Model;
 using Newtonsoft.Json.Linq;
 using PagedList;
 using System;
@@ -12,6 +13,7 @@ using System.Xml.Linq;
 
 namespace HotelBooking.Controllers
 {
+    [CheckSessionTimeOut]
     public class BookingInterfaceController : Controller
     {
         // GET: BookingInterface
@@ -23,8 +25,7 @@ namespace HotelBooking.Controllers
         
         public ActionResult Bookings(int? page, int? pSize )
         {
-            if (Session.Keys.Count != 0)
-            {
+            
                 int branchId = int.Parse(Session["BranchId"].ToString());
                 RoomTypeController RTC = new RoomTypeController();
 
@@ -82,16 +83,11 @@ namespace HotelBooking.Controllers
                 
 
                 return View(bkslist);
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+            
         }
         public ActionResult AddBooking(int bookingId=0)
         {
-            if (Session.Keys.Count != 0)
-            {
+            
                 
                 int branchId = int.Parse(Session["BranchId"].ToString());
                 RoomTypeController RTC = new RoomTypeController();
@@ -145,14 +141,10 @@ namespace HotelBooking.Controllers
                 }
                 ViewBag.GSComboModel = AllGuest;
 
-
+                Session["BranchId"] = branchId;
                 return View("CreateBooking",bk);
                 //return View(bk);
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+            
         }
         public bool SaveBooking(BookingRequest bookingEntity)
         {
@@ -205,12 +197,13 @@ namespace HotelBooking.Controllers
                                         Value = bk.ToString(),
                                         Selected = (bk.ToString().ToUpper() == VMB.PaymnentStatus.ToUpper())
                                     };
+                Session["BranchId"] = branchId;
                 return View(VMB);
             }
             catch (Exception)
             {
 
-                return View("ErrorPage");
+                return View("LogOff");
             }
             
 
@@ -223,6 +216,7 @@ namespace HotelBooking.Controllers
 
             BookingController _bc = new BookingController();
             IEnumerable<BookingCost> _pr = _bc.GetBookingsCost(BookingId);
+            Session["BranchId"] = branchId;
             return PartialView("_BookingDetails", _pr);
 
         }
@@ -259,21 +253,25 @@ namespace HotelBooking.Controllers
         }
         public PartialViewResult _AllocateRooms(int BookingId, string RoomTypeId,int nor)
         {
-            int branchId = int.Parse(Session["BranchId"].ToString());
-            RoomController _rc = new RoomController();
+            
+                int branchId = int.Parse(Session["BranchId"].ToString());
+                RoomController _rc = new RoomController();
 
-            //IEnumerable<Room> rm = _rc.GetRoomsByRoomTypeIds(branchId, RoomTypeId, BookingId);
-            AllocateRoomResponse rm= _rc.GetRoomsByRoomTypeIds(branchId, RoomTypeId, BookingId);
-            List<SelectListItem> Roomitems = new List<SelectListItem>();
-            Roomitems.Add(new SelectListItem { Text = "Select a Room", Value = "0" });
-            foreach (Room item in rm.AvailableRooms)
-            {
-                Roomitems.Add(new SelectListItem { Text = item.RoomTypeName+"-"+ item.RoomNumber + "-"+ item.FloorName, Value = item.RoomId.ToString() + "-" + item.floor.ToString() });
-            }
-            ViewBag.RMComboModel = Roomitems; 
-            ViewBag.AllocatedRoomModel = rm.BookedRooms;
-            int alreadyallocated = rm.BookedRooms.Count();
-            ViewBag.nRooms =  nor - alreadyallocated;
+                //IEnumerable<Room> rm = _rc.GetRoomsByRoomTypeIds(branchId, RoomTypeId, BookingId);
+                AllocateRoomResponse rm = _rc.GetRoomsByRoomTypeIds(branchId, RoomTypeId, BookingId);
+                List<SelectListItem> Roomitems = new List<SelectListItem>();
+                Roomitems.Add(new SelectListItem { Text = "Select a Room", Value = "0" });
+                foreach (Room item in rm.AvailableRooms)
+                {
+                    Roomitems.Add(new SelectListItem { Text = item.RoomTypeName + "-" + item.RoomNumber + "-" + item.FloorName, Value = item.RoomId.ToString() + "-" + item.floor.ToString() });
+                }
+                ViewBag.RMComboModel = Roomitems;
+                // ViewBag.AllocatedRoomNotCheckOut=
+                ViewBag.AllocatedRoomModel = rm.BookedRooms.Where(c => c.isCheckout == false).ToArray();
+                int alreadyallocated = rm.BookedRooms.Count();
+                ViewBag.nRooms = nor - alreadyallocated;
+                Session["BranchId"] = branchId;
+            
 
             return PartialView("_AllocateRooms");
 
@@ -342,8 +340,7 @@ namespace HotelBooking.Controllers
         public PartialViewResult _PricePerRoom( int nOfr, int todalNight)
         {
 
-            if (Session.Keys.Count != 0)
-            {
+            
 
                 int branchId = int.Parse(Session["BranchId"].ToString());
                 RoomTypeController RTC = new RoomTypeController();
@@ -363,7 +360,7 @@ namespace HotelBooking.Controllers
                     RoomTypeitems.Add(new SelectListItem { Text = item.Title.Trim(), Value = item.RoomTypeId.ToString(), Selected = slt });
                 }
                 ViewBag.RTComboModel1 = RoomTypeitems;
-            }
+            
                 ViewBag.NOR = nOfr;
                 ViewBag.todalNight = todalNight;
 
@@ -414,8 +411,7 @@ namespace HotelBooking.Controllers
 
         public ActionResult BookedRoom(int? page, int? pSize )
         {
-            if (Session.Keys.Count > 0)
-            {
+            
                 int? DefaultPageSize = 10;
                 if (pSize != null)
                 {
@@ -453,18 +449,13 @@ namespace HotelBooking.Controllers
 
                 IPagedList<BookedRoom> bkslist = VBR.ToPagedList(pageNumber, (int)DefaultPageSize);
                 return View(bkslist);
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+            
         }
 
 
         public ActionResult Checkout(int bookingId = 0)
         {
-            if (Session.Keys.Count != 0)
-            {
+           
                
                 int branchId = int.Parse(Session["BranchId"].ToString());
                 ViewBag.BranchId = branchId;
@@ -472,17 +463,12 @@ namespace HotelBooking.Controllers
                 VM_BookingDetails VMB = _bc.GetBookingDetails(branchId, bookingId);
                 
                 return View("CheckOut", VMB);
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+            
         }
 
         public ActionResult Guests(int? page, int? pSize )
         {
-            if (Session.Keys.Count > 0)
-            {
+            
                 int? DefaultPageSize = 10;
                 if (pSize != null)
                 {
@@ -511,16 +497,11 @@ namespace HotelBooking.Controllers
 
                 IPagedList<Guests> gslist = GS.ToPagedList(pageNumber, (int)DefaultPageSize);
                 return View(gslist);
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+            
         }
         public ActionResult AddGuest(int GuestId = 0)
         {
-            if (Session.Keys.Count != 0)
-            {
+            
                 //bookingId = 2;
                 int branchId = int.Parse(Session["BranchId"].ToString());
                
@@ -548,27 +529,18 @@ namespace HotelBooking.Controllers
 
 
                 return View(bk);
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+            
         }
         public ActionResult SaveGuest(Guests guestEntity)
         {
 
-            if (Session.Keys.Count != 0)
-            {
+           
                 int branchId = int.Parse(Session["BranchId"].ToString());
                 guestEntity.BranchId = branchId;
                 GuestsController _bk = new GuestsController();
                 bool rtn= _bk.AddGuest(guestEntity);
                 return RedirectToAction("Guests");
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+            
         }
         public ActionResult MakeVIP(int GuestId)
         {
@@ -590,23 +562,17 @@ namespace HotelBooking.Controllers
         public ActionResult DelGuest(int GuestId)
         {
 
-            if (Session.Keys.Count != 0)
-            {
+            
                 int branchId = int.Parse(Session["BranchId"].ToString());
 
                 GuestsController _bk = new GuestsController();
                 _bk.DeleteGuest(branchId, GuestId);
                 return RedirectToAction("Guests");
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+            
         }
         public ActionResult SaveBookingDocuments()
         {
-            if (Session.Keys.Count > 0)
-            {
+            
                 int branchId = int.Parse(Session["BranchId"].ToString());
                 DocumentController _dc = new DocumentController();
                 int BookingId = int.Parse(Request.Form["BookingId"].ToString());
@@ -681,11 +647,7 @@ namespace HotelBooking.Controllers
                
                 Session["BranchId"] = branchId;
                 return RedirectToAction("BookingProcess", new { BookingId= BookingId, BookingRef= BookingRef });
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+            
 
         }
 
@@ -696,14 +658,13 @@ namespace HotelBooking.Controllers
            
             try
             {
-                if (Session.Keys.Count != 0)
-                {
+                
                     int branchId = int.Parse(Session["BranchId"].ToString());
 
                     IEnumerable<Booking> bksListModel = new List<Booking>();
                     BookingController _bks = new BookingController();
                     ds = _bks.DashboardData(branchId);//.Where(d => d.isDeleted == false);
-                 }
+                 
             }
             catch (Exception)
             {

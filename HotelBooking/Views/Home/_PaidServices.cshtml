@@ -1,0 +1,29 @@
+﻿ @model IEnumerable<HotelBooking.Model.PaidServices>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="paidservices">
+    <tbody>
+        @if (Model != null)
+        {
+            var i = 1;
+            foreach (var ps in Model)
+            {
+                var chkId = "CHK_PS_BK" + ps.PaidServiceId;
+                var txtQTY = "QTY" + ps.PaidServiceId;
+                <tr>
+                    <td align="left" width="5%" class="tpad text-center">@i</td>
+                    <td align="left" width="70%" class="tpad">@ps.Title</td>
+                    @*<td align="left">@ps.PriceType</td>*@
+                <td align="left" width="5%" class="tpad">
+                    <input class="styled-checkbox" id="@chkId" onclick="calculatePS();" type="checkbox" value="@ps.Price" title="@ps.Title" name="CHK_PS_BK">
+                    <label for="@chkId" ></label>
+                </td>
+                    <td align="left" width="10%"><input type="text" id="@txtQTY" oninput="calculatePS();"  class="full-width mg-0" placeholder="0" runat="server"></td>
+                    <td align="left" width="10%" class="tpad"><span>$</span><span>@ps.Price</span></td>
+                </tr>
+               
+                i++;
+            }
+        }
+    </tbody>
+</table>
+

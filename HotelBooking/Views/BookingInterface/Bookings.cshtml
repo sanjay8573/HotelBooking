@@ -12,7 +12,7 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12 pull-right">
-                            <button type="button" class="allbtnin  form-group" onclick="location.href='@Url.Action("AddBooking","BookingInterface")'"> +ADD</button>
+                            <button type="button" class="allbtnin  form-group" onclick="location.href='@Url.Action("AddBooking","Home")'"> +ADD</button>
                         </div>
                     </div>
                 </div>
@@ -77,7 +77,7 @@
                     <div class="col-lg-12 col-md-12 col-sm-12 table-responsive">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 pull-left">
                             <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-left text-left">
-                                @using (Html.BeginForm("Bookings", "BookingInterface", FormMethod.Get, new { id = "form1" }))
+                                @using (Html.BeginForm("Bookings", "Home", FormMethod.Get, new { id = "form1" }))
                                 {
                                     <div id="pro_pag2">
                                         Show @Html.DropDownList("pSize", (IEnumerable<SelectListItem>)ViewBag.pSize, new { @class = "onlyinput" }) Records
@@ -112,7 +112,7 @@
                                     {
                                         <tr class="active">
                                             <td>@i</td>
-                                            <td><a href="@Url.Action("BookingProcess","BookingInterface" ,new { BookingId=bk.BookingId,BookingRef=bk.BookingNumber})">@bk.BookingNumber</a></td>
+                                            <td><a href="@Url.Action("BookingProcess","Home" ,new { BookingId=bk.BookingId,BookingRef=bk.BookingNumber})">@bk.BookingNumber</a></td>
                                             <td align="center" valign="middle">@bk.GuestName</td>
                                             <td align="center" valign="middle">@bk.RoomTypeName</td>
                                             <td align="center" valign="middle">@bk.CheckIn</td>

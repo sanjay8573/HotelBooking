@@ -129,7 +129,21 @@ namespace HotelBooking.Context
             get;
             set;
         }
-
+        public DbSet<DocType> DocType
+        {
+            get;
+            set;
+        }
+        public DbSet<AvailableCurrency> AvailableCurrency
+        {
+            get;
+            set;
+        }
+        public DbSet<CurrencyExchange> CurrencyExchange
+        {
+            get;
+            set;
+        }
 
 
 

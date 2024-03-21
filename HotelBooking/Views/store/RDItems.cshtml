@@ -1,0 +1,491 @@
+﻿
+@{
+    ViewBag.Title = "RDItems";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Relese / Depositive <small>Items</small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Stores Item</small> </span></div>
+            <div class="widget-content padded text-center">
+                <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
+                    <div class="row">
+                        <div id="dynDivContainer1" class="col-lg-12 col-md-12 col-sm-12">
+                            <div id="item1" class="row">
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12" style="align-self: center;">
+
+                                    <label class="text-center"><i class="fa fa-arrow-right" aria-hidden="true"></i></label>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Item Name</label>
+                                    <select name="SeleIteName" id="SeleIteName" class="full-width freetrial">
+                                        @if (ViewBag.alltem != null)
+                                        {
+                                            foreach (var item in ViewBag.alltem)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text.Trim()
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Avl.Qty</label>
+                                    <input type="text" id="txtAvlQty" class="full-width" placeholder="Available Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Qty</label>
+                                    <input type="text" id="txtQty" class="full-width" placeholder="Issued Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Bal.Qty</label>
+                                    <input type="text" id="txtBalQty" class="full-width" placeholder="Balance  Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Issued Date</label>
+                                    <input type="text" id="Itemdatepicker" class="full-width allinputgo" placeholder="Issued Date" autocomplete="off">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Issued To</label>
+                                    <select name="SeleIssueTo" id="SeleIssueTo" class="full-width freetrial">
+                                        @if (ViewBag.IssueTo != null)
+                                        {
+                                            foreach (var item in ViewBag.IssueTo)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text.Trim()
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Select</label>
+                                    <select id="ddlEngine" class="full-width ddselect" runat="server">
+                                        <option selected="selected">Select</option>
+                                        <option value="0">Release Items</option>
+                                        <option value="1">Depositive Items</option>
+                                    </select>
+                                    <button type="button" style="font-size:15px;width:20% !important" onclick="addItem();" class="full-width prev Addmorebtn"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                </div>
+
+
+                            </div>
+                            <div id="item2" class="row" style="display:none !important">
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12" style="align-self: center;">
+
+                                    <label class="text-center"><i class="fa fa-arrow-right" aria-hidden="true"></i></label>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Item Name</label>
+                                    <select name="SeleIteName" id="SeleIteName" class="full-width freetrial">
+                                        @if (ViewBag.alltem != null)
+                                        {
+                                            foreach (var item in ViewBag.alltem)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text.Trim()
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Avl.Qty</label>
+                                    <input type="text" id="txtAvlQty" class="full-width" placeholder="Available Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Qty</label>
+                                    <input type="text" id="txtQty" class="full-width" placeholder="Issued Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Bal.Qty</label>
+                                    <input type="text" id="txtBalQty" class="full-width" placeholder="Balance  Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Issued Date</label>
+                                    <input type="text" id="Itemdatepicker" class="full-width allinputgo" placeholder="Issued Date" autocomplete="off">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Issued To</label>
+                                    <select name="SeleIssueTo" id="SeleIssueTo" class="full-width freetrial">
+                                        @if (ViewBag.IssueTo != null)
+                                        {
+                                            foreach (var item in ViewBag.IssueTo)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text.Trim()
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Select</label>
+                                    <select id="ddlEngine" class="full-width ddselect" runat="server">
+                                        <option selected="selected">Select</option>
+                                        <option value="0">Release Items</option>
+                                        <option value="1">Depositive Items</option>
+                                    </select>
+                                    <button type="button" style="font-size:15px;width:20% !important" class="full-width prev removebtn" onclick="RemoveItem(this);"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                </div>
+
+
+                            </div>
+
+                            <div id="item3" class="row" style="display:none !important">
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12" style="align-self: center;">
+
+                                    <label class="text-center"><i class="fa fa-arrow-right" aria-hidden="true"></i></label>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Item Name</label>
+                                    <select name="SeleIteName" id="SeleIteName" class="full-width freetrial">
+                                        @if (ViewBag.alltem != null)
+                                        {
+                                            foreach (var item in ViewBag.alltem)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text.Trim()
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Avl.Qty</label>
+                                    <input type="text" id="txtAvlQty" class="full-width" placeholder="Available Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Qty</label>
+                                    <input type="text" id="txtQty" class="full-width" placeholder="Issued Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Bal.Qty</label>
+                                    <input type="text" id="txtBalQty" class="full-width" placeholder="Balance  Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Issued Date</label>
+                                    <input type="text" id="Itemdatepicker" class="full-width allinputgo" placeholder="Issued Date" autocomplete="off">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Issued To</label>
+                                    <select name="SeleIssueTo" id="SeleIssueTo" class="full-width freetrial">
+                                        @if (ViewBag.IssueTo != null)
+                                        {
+                                            foreach (var item in ViewBag.IssueTo)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text.Trim()
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Select</label>
+                                    <select id="ddlEngine" class="full-width ddselect" runat="server">
+                                        <option selected="selected">Select</option>
+                                        <option value="0">Release Items</option>
+                                        <option value="1">Depositive Items</option>
+                                    </select>
+                                    <button type="button" style="font-size:15px;width:20% !important" class="full-width prev removebtn" onclick="RemoveItem(this);"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                </div>
+
+
+                            </div>
+
+                            <div id="item4" class="row" style="display:none !important">
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12" style="align-self: center;">
+
+                                    <label class="text-center"><i class="fa fa-arrow-right" aria-hidden="true"></i></label>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Item Name</label>
+                                    <select name="SeleIteName" id="SeleIteName" class="full-width freetrial">
+                                        @if (ViewBag.alltem != null)
+                                        {
+                                            foreach (var item in ViewBag.alltem)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text.Trim()
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Avl.Qty</label>
+                                    <input type="text" id="txtAvlQty" class="full-width" placeholder="Available Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Qty</label>
+                                    <input type="text" id="txtQty" class="full-width" placeholder="Issued Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Bal.Qty</label>
+                                    <input type="text" id="txtBalQty" class="full-width" placeholder="Balance  Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Issued Date</label>
+                                    <input type="text" id="Itemdatepicker" class="full-width allinputgo" placeholder="Issued Date" autocomplete="off">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Issued To</label>
+                                    <select name="SeleIssueTo" id="SeleIssueTo" class="full-width freetrial">
+                                        @if (ViewBag.IssueTo != null)
+                                        {
+                                            foreach (var item in ViewBag.IssueTo)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text.Trim()
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Select</label>
+                                    <select id="ddlEngine" class="full-width ddselect" runat="server">
+                                        <option selected="selected">Select</option>
+                                        <option value="0">Release Items</option>
+                                        <option value="1">Depositive Items</option>
+                                    </select>
+                                    <button type="button" style="font-size:15px;width:20% !important" class="full-width prev removebtn" onclick="RemoveItem(this);"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                </div>
+
+
+                            </div>
+
+                            <div id="item5" class="row" style="display:none !important">
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12" style="align-self: center;">
+
+                                    <label class="text-center"><i class="fa fa-arrow-right" aria-hidden="true"></i></label>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Item Name</label>
+                                    <select name="SeleIteName" id="SeleIteName" class="full-width freetrial">
+                                        @if (ViewBag.alltem != null)
+                                        {
+                                            foreach (var item in ViewBag.alltem)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text.Trim()
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Avl.Qty</label>
+                                    <input type="text" id="txtAvlQty" class="full-width" placeholder="Available Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Qty</label>
+                                    <input type="text" id="txtQty" class="full-width" placeholder="Issued Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Bal.Qty</label>
+                                    <input type="text" id="txtBalQty" class="full-width" placeholder="Balance  Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Issued Date</label>
+                                    <input type="text" id="Itemdatepicker" class="full-width allinputgo" placeholder="Issued Date" autocomplete="off">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Issued To</label>
+                                    <select name="SeleIssueTo" id="SeleIssueTo" class="full-width freetrial">
+                                        @if (ViewBag.IssueTo != null)
+                                        {
+                                            foreach (var item in ViewBag.IssueTo)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text.Trim()
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Select</label>
+                                    <select id="ddlEngine" class="full-width ddselect" runat="server">
+                                        <option selected="selected">Select</option>
+                                        <option value="0">Release Items</option>
+                                        <option value="1">Depositive Items</option>
+                                    </select>
+                                    <button type="button" style="font-size:15px;width:20% !important" class="full-width prev removebtn" onclick="RemoveItem(this);"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px;">
+                            <input type="hidden" id="BranchId" value="@ViewBag.BranchId" />
+                            <button type="button" class="allbtnin full-width" onclick="SaveItem();">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function addItem() {
+
+        var nRows = $("#dynDivContainer1 > div:visible").length;
+        console.log("NRows" + nRows);
+        var n = parseInt(nRows) + 1;
+        if (n > 5) { return; }
+        console.log('sanjay' + n);
+        var todsipalyDivId = 'item' + n;
+        console.log(todsipalyDivId);
+        $('#' + todsipalyDivId).show();
+
+
+        //console.log(itemIndex);
+
+        return false;
+
+    }
+    function RemoveItem($currentItem) {
+
+        var id = $($currentItem).parent().parent().attr('id');
+        console.log(id);
+        $('#' + id).css('display', 'none');
+    }
+    function SaveItem() {
+        var items = [];
+        var branchId = $('#BranchId').val();
+        $("#dynDivContainer1 > div:visible").each(function (idx, el) {
+            var txtItemName;
+            var txtItemId;
+            var txtInOut;
+            var txtQty;
+            var AQty;
+            var BQty;
+            var txtIssueDate;
+            var txtIssueToId;
+            var txtIssueToName;
+            var txtIssueById='@ViewBag.IssueById';
+            var txtIssueByName='@ViewBag.IssueByName';;
+            console.log(idx);
+            //  $("#dynDivContainer > div:visible > div > input:text").each(function (idx, el)
+            var cuurentDiv = el.id;
+            console.log("Current Div Id"+cuurentDiv);
+
+            $("#" + cuurentDiv + " div > input:text").each(function (idx, el) {
+                if (el.id == "txtAvlQty") {
+                    AQty =$(el).val()
+                }
+                if (el.id == "txtQty") {
+                    txtQty = $(el).val()
+                }
+                if (el.id == "txtBalQty") {
+                    BQty = $(el).val()
+                }
+                if (el.id == "Itemdatepicker") {
+                    txtIssueDate = $(el).val()
+                }
+
+
+            });
+            $("#" + cuurentDiv + " div > select").each(function (idx, el) {
+                if (el.id == "SeleIteName") {
+                    txtItemId = $(el).find(":selected").val();
+                    txtItemName = $(el).find(":selected").text().replace(/[\n\r]+/g, ' ').trim();
+
+                }
+                if (el.id == "SeleIssueTo") {
+                    txtIssueToId = $(el).find(":selected").val();
+                    txtIssueToName = $(el).find(":selected").text().replace(/[\n\r]+/g, ' ').trim();
+
+                }
+                if (el.id == "ddlEngine") {
+                    txtInOut = $(el).find(":selected").val();
+
+
+                }
+
+
+
+            });
+
+
+            var item = {
+
+                Branchid: branchId,
+                ItemName: txtItemName,
+                ItemId: txtItemId,
+                OpeningQuantity: Number(AQty),
+                IssueQuantity: Number(txtQty),
+                BalanceQuantity: Number(BQty),
+                IsInward: (txtInOut=="0")?false:true,
+                IssueDate: txtIssueDate,
+                IssuedBy: txtIssueById,
+                IssuedByName: txtIssueByName,
+                issuedTo: txtIssueToId,
+                issuedToName: txtIssueToName,
+                isActive:true
+
+            };
+            items.push(item);
+        });
+        console.log(items);
+
+             $.ajax({
+                 type: "POST",
+                 url: '@Url.Action("SaveRDItems", "store")',
+
+                 data: { items: items },
+
+                 success: function (recData) { console.log('Success'); window.location.href =  '/store/IssuedItems';  },
+                 error: function () { console.log('A error'); }
+             });
+    }
+</script>

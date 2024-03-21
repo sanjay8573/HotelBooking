@@ -1,0 +1,192 @@
+﻿@model HotelBooking.Model.Staff
+@{
+    ViewBag.Title = "AddEmployees";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container"> 
+            <div class="heading"> <i class=" fa fa-address-card-o" aria-hidden="true"></i> Add Employee</div>
+            <div class="widget-content padded text-center">
+                
+                    @using (Html.BeginForm("SaveEmployee", "Home", FormMethod.Post, new { id = "msform" }))
+                    {
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                    <label for="edit-mail" class="form-required">Department</label>
+                                    <select name="Seldpt" id="Seldpt" class="full-width freetrial">
+                                        @if (ViewBag.DEPTComboModel != null)
+                                        {
+                                            foreach (var item in ViewBag.DEPTComboModel)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text.Trim()
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                    <label for="edit-mail" class="form-required">Designation</label>
+                                    <select name="Seldesig" id="Seldesig" class="full-width freetrial">
+                                        @if (ViewBag.DesigComboModel != null)
+                                        {
+                                            foreach (var item in ViewBag.DesigComboModel)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text.Trim()
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                    <label for="edit-mail" class="form-required">Role</label>
+                                    <select name="SelRole" id="SelRole" class="full-width freetrial">
+                                        @if (ViewBag.RoleComboModel != null)
+                                        {
+                                            foreach (var item in ViewBag.RoleComboModel)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text.Trim()
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                    <label for="edit-mail" class="form-required">Team </label>
+                                    <select name="SelTeam" id="SelTeam" class="full-width freetrial">
+                                        @if (ViewBag.TeamComboModel != null)
+                                        {
+                                            foreach (var item in ViewBag.TeamComboModel)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text.Trim()
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                    <label for="edit-mail" class="form-required"> Name</label>
+
+                                    @Html.TextBoxFor(model => model.StaffName, new { @class = "full-width", placeholder = "Employee Name" })
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                    <label for="edit-mail" class="form-required">Nick Name</label>
+
+                                    @Html.TextBoxFor(model => model.NickName, new { @class = "full-width", placeholder = "Nick Name" })
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                    <label for="edit-mail" class="form-required">Phone Number</label>
+                                    <div class="checkoutcontact">
+                                        <div class="checkoutcode"><span id="spnCountryCode">+ 91</span></div>
+                                        <div class="checkoutcontactin">
+
+                                            @Html.TextBoxFor(model => model.Phone1, new { @class = "full-width", placeholder = "Phone Number" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                    <label for="edit-mail" class="form-required">Alternative Phone Number</label>
+                                    <div class="checkoutcontact">
+                                        <div class="checkoutcode"><span id="spnCountryCode">+ 91</span></div>
+                                        <div class="checkoutcontactin">
+
+                                            @Html.TextBoxFor(model => model.Phone2, new { @class = "full-width", placeholder = "Alternate Phone Number" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                    <label for="edit-mail" class="form-required">Email</label>
+                                    
+                                    @Html.TextBoxFor(model => model.Email, new { @class = "full-width", placeholder = "Staff Email" })
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                    <label for="edit-mail" class="form-required">Daily Booking Limit</label>
+
+                                    @Html.TextBoxFor(model => model.DailyBookingLimit, new { @class = "full-width", placeholder = "Booking Limit" })
+                                </div>
+                                @Html.HiddenFor(model => model.isActive)
+                                @Html.HiddenFor(model => model.DepartmentId)
+                                @Html.HiddenFor(model => model.DesignationId)
+                                @Html.HiddenFor(model => model.TeamId)
+                                @Html.HiddenFor(model => model.PrimaryRoleID)
+                                @Html.HiddenFor(model => model.SecondryRoleID)
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                                    <label for="edit-mail" class="form-required">&nbsp;</label>
+
+                                    <ul class="unstyled">
+                                        <li>
+                                            <input class="styled-checkbox" id="CHK_ACTIVE" type="checkbox" checked="@Model.isActive" name="CHK_ACTIVE">
+                                            <label for="CHK_ACTIVE">Active</label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+
+                        </div>
+                            <input type="submit" name="prev" class="prev action-button" onclick="setValues();" value="SAVE" runat="server">
+                        
+                    }
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function setValues() {
+        $('input[type=checkbox]').each(function () {
+            if (this.name == "CHK_ACTIVE") {
+                $('#isActive').val(this.checked);
+
+            }
+        });
+        const DeptID = $("#Seldpt option:selected").val();
+        const DesigID = $("#Seldesig option:selected").val();
+        const TeamID = $("#SelTeam option:selected").val();
+        const RoleID = $("#SelRole option:selected").val();
+        $('#DepartmentId').val(DeptID);
+        $('#DesignationId').val(DesigID);
+        $('#TeamId').val(TeamID);
+        $('#PrimaryRoleID').val(RoleID);
+        $('#SecondryRoleID').val(RoleID);
+
+    }
+    
+</script>

@@ -1,0 +1,233 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<HotelBooking.Model.BookingPayments>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left table-responsive">
+    <div class="widget-content padded text-center">
+        <div class="row">
+            <h5 class="tabheading text-left"><i class="fa fa-address-card" aria-hidden="true"></i> Total Paid: <strong>$</strong><strong id="amtPaid">@ViewBag.PaidAmount</strong> <span class="primary" style="margin-left: 20px;">Pending:<strong>$ - </strong><strong id="amtPending">0.00</strong></span></h5>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                @*<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-right">
+                    <button type="button" class="addextraamountordiscountbtn  form-group" onclick="myFunction()"> +Add Extra Amount or Discount</button>
+                </div>*@
+                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12 pull-right">
+                    <button type="button" class="addextraamountordiscountbtn" data-toggle="modal" data-target="#Addpayment"> +ADD</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 table-responsive">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 pull-left">
+                    @*<div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-left text-left">
+                        @using (Html.BeginForm("_Payments", "BookingInterface", FormMethod.Get, new { id = "form1" }))
+                        {
+                            <div id="pro_pag2">
+                                Show
+                                @Html.DropDownList("pSize", (IEnumerable<SelectListItem>)ViewBag.pSize, new { @class = "onlyinput" })
+                                Records
+                            </div>
+                        }
+                    </div>*@
+                    @*<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
+                        Search
+                        <input type="text" id="txtUserName" class="onlyinput" placeholder="Search" runat="server">
+                    </div>*@
+                </div>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr style="background: #eaeeef;">
+                            <td colspan="13" align="left" valign="middle"><div class="allheadingin">Payments</div></td>
+                        </tr>
+                        <tr class="trthbgclr">
+                            <th class="text-center">#</th>
+                            <th class="text-center">Added Date</th>
+                            <th class="text-center">Invoice Number</th>
+                            <th class="text-center">Amount</th>
+                            <th class="text-center" colspan="3" width="22%">Actions</th>
+                        </tr>
+                        @if (Model != null)
+                        {
+                            var i = 1;
+                            foreach (var bk in Model)
+                            {
+                                <tr class="active">
+                                    <td>@i</td>
+
+                                    <td align="center" valign="middle">@bk.PaymentDate</td>
+                                    <td align="center" valign="middle">@bk.InvoiceNumber</td>
+                                    <td align="center" valign="middle">@bk.paymentAmount</td>
+                                   
+                                    <td align="center" valign="middle"><a href="#" class="editbtn"><i class="fa fa-eye"></i> Reciept</a></td>
+                                    
+                                </tr>
+                                i++;
+                            }
+                        }
+                        @*<tr>
+                            <td colspan="8">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <span class="float-left restextpagin">Showing Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount </span>
+
+                                    <div class="pagination pull-right">
+                                        @Html.PagedListPager(Model, page => Url.Action("_payment", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>*@
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="Addpayment" z-index="-1" role="dialog" aria-labelledby="personalModalLabel" aria-hidden="true">
+   
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <h4 class="tabheading text-left"><i class="fa fa-address-card" aria-hidden="true"></i> Add Payment </h4>
+                    @*<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label for="edit-mail" class="form-required">Order Number</label>
+                        <input type="text" id="txtordNo" class="full-width allinput" placeholder="123456987" runat="server">
+                    </div>*@
+                    @*<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label for="edit-mail" class="form-required">Invoice Number</label>
+                        <input type="text" id="txtInvNo" class="full-width allinput" placeholder="170" runat="server">
+                    </div>*@
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label for="edit-mail" class="form-required">Added Date</label>
+                        <input type="text" id="txtPmtDate" class="full-width allinput" placeholder="2024-03-05" runat="server">
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label for="edit-mail" class="form-required">Payment Method</label>
+                        <select name="pmtType" id="pmtType" class="full-width allinput">
+                            <option selected="selected" value="N">Select</option>
+                            <option value="1">Paypal</option>
+                            <option value="2">Strip</option>
+                            <option value="3">Cash</option>
+                            <option value="4">Cheque</option>
+                            <option value="5">UPI</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label for="edit-mail" class="form-required">Payment Details</label>
+                        <input type="text" id="txtPmtRemarks" class="full-width allinput" placeholder="Remarks/Cheque detail/UPI Details" runat="server">
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label for="edit-mail" class="form-required">Payment Due</label>
+                        <input type="text" id="txtAmtDue" class="full-width allinput" placeholder="-30" runat="server">
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <label for="edit-mail" class="form-required">Amount</label>
+                        <input type="text" id="txtAmt" class="full-width allinput" placeholder="0.00" runat="server">
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="btnAddPayemnt">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+               
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+       
+            $(document.body).append($("#Addpayment").clone());
+            $("#Addpayment").remove();
+       
+        console.log("Payment loaded");
+        const totPrice = $("#TotalPrice").val();
+        var amtPending = Number(totPrice) - Number($("#amtPaid").text());
+
+        $("#amtPending").text((Number(amtPending).toFixed(2)));
+        $("#txtAmtDue").val((Number(amtPending).toFixed(2)));
+
+        if (Number(amtPending) <= 0) {
+            $("#btnCheckout").show();
+        } else {
+            $("#btnCheckout").hide();
+        }
+        $("#txtPmtDate").datepicker({
+            dateFormat: "dd-mm-yy",
+            duration: "fast",
+            minDate: 0,
+            disabledDates: [new Date()]
+            
+        });
+
+        
+
+        $("#btnAddPayemnt").on("click", function () {
+            console.log("Saving payments.....");
+            //const txtordNo = $("#txtordNo").val();
+            //const txtInvNo = $("#txtInvNo").val();
+            const pmtDate = $("#txtPmtDate").val();
+            const pmtType = $("#pmtType option:selected").text();
+            const pmtTypeCode = $("#pmtType option:selected").val();
+            const txtAmt = $("#txtAmt").val();
+            const BookingId = $("#BookingId").val();
+            const BranchId = $("#BranchId").val();
+            const pmtitem = {
+                BookingId: parseInt(BookingId),
+                PaymentDate: pmtDate,
+                //InvoiceNumber: txtInvNo,
+                paymentAmount: Number(txtAmt).toFixed(2),
+                BranchId: parseInt(BranchId),
+                //OrderNumber: txtordNo,
+                PaymentType: parseInt(pmtTypeCode),
+                PaymentTypeName: pmtType
+            };
+           
+            
+            fetch('/Home/Addpayments', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(pmtitem)
+            })
+            .then(() => {
+                $("#Payments1").click(); 
+                    $.toast({
+                        heading: 'Success',
+                        text: 'Payments Success ',
+                        icon: 'success',
+                        loader: false,        // Change it to false to disable loader
+                        position: 'top-right',
+                        loaderBg: '#9EC600'  // To change the background
+                    });
+                //top.loadPaymentDiv();
+                })
+           .catch(error => {
+                    $.toast({
+                        autoDismiss: true,
+                        heading: 'Error',
+                        text: 'Error on payment Processing',
+                        icon: 'warning',
+                        position: 'top-right',
+                        loader: false,        // Change it to false to disable loader
+                        loaderBg: '#9EC600'  // To change the background
+                    });
+                });
+               
+            
+        });
+        $("#pSize").change(function () {
+             $("#form1").submit();
+        });
+        
+    });
+</script>

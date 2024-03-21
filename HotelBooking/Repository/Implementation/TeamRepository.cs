@@ -9,10 +9,10 @@ namespace HotelBooking.Repository.Implementation
     public class TeamRepository : Iteam
     {
         private readonly DeptContext _context;
-        public TeamRepository(DeptContext context)
-        {
-            _context = context;
-        }
+        //public TeamRepository(DeptContext context)
+        //{
+        //    _context = context;
+        //}
         public TeamRepository()
         {
             _context = new DeptContext();

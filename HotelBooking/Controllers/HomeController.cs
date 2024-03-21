@@ -1,4 +1,6 @@
-﻿using HotelBooking.Model;
+﻿using HotelBooking.Attribute;
+using HotelBooking.Desig;
+using HotelBooking.Model;
 using HotelBooking.Repository.Interface;
 using Microsoft.Ajax.Utilities;
 using PagedList;
@@ -6,44 +8,43 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Security.Policy;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
+using System.Web.SessionState;
 using System.Web.UI;
+using static System.Web.Razor.Parser.SyntaxConstants;
+
 
 namespace HotelBooking.Controllers
 {
+    [CheckSessionTimeOut]
     public class HomeController : Controller
     {
+        
         public ActionResult Index()
         {
+           int  branchId = int.Parse(Session["BranchId"].ToString());
 
-            LoginController loginController = new LoginController();
-
-            if (Session.Keys.Count != 0) {
-                int userid = (int)Session["UserId"];
-                UserLoginResponse model = loginController.UserLogin(userid);
-
-                Session["Logged_In"] = "LoggedIn";
-                Session["UserLoginResponse"] = model;
-                Session["CompanyId"] = model.CompanyId;
-                Session["BranchId"] = model.BranchId;
-
-                return View();
-            }
-            else
-            {
-                Session["ErrorMessage"] = "Please check your credential";
-                return RedirectToAction("Index", "unProHome");
-            }
-
-
-
+            return View();
+         
         }
         public ActionResult Logout()
         {
-            Session["Logged_In"] = "";
-            Session["UserId"] = "";
-            Session["ErrorMessage"] = "";
+            FormsAuthentication.SignOut();
+            HttpContext.Session["Logged_In"] = "LoggedOut";
+            HttpContext.Session["UserLoginResponse"] = null;
+            HttpContext.Session["CompanyId"] = null;
+            HttpContext.Session["BranchId"] =null;
+            HttpCookie uu = HttpContext.Request.Cookies.Get("LoginCookies");
+            uu.Value = "";
+            uu.Expires = DateTime.Now.AddDays(-2);
+            HttpContext.Response.Cookies.Add(uu);
+
+            //HttpContext.Response.Cookies.Remove("LoginCookies");
+            Session.Abandon();
             return RedirectToAction("index", "unProHome");
 
         }
@@ -81,8 +82,7 @@ namespace HotelBooking.Controllers
 
         public ActionResult RoomType(int? page,int? pSize)
         {
-            if (Session.Keys.Count != 0)
-            {
+           
                 int? DefaultPageSize = 10;
                 IEnumerable<RoomType> RTListModel = new List<RoomType>();
                 RoomTypeController RTC = new RoomTypeController();
@@ -92,8 +92,8 @@ namespace HotelBooking.Controllers
                 }
                
                 int pageNumber = page ?? 1;
-
-                RTListModel = RTC.GetRoomTypes(branchId).Where(d => d.isDeleted == false); 
+            ViewBag.PageSize = DefaultPageSize;
+            RTListModel = RTC.GetRoomTypes(branchId).Where(d => d.isDeleted == false); 
                 Session["BranchId"] = branchId;
 
                 ViewBag.pSize = new List<SelectListItem>()
@@ -114,16 +114,11 @@ namespace HotelBooking.Controllers
                 ViewBag.pc = kk;
 
                 return View(rmlist);
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+           
         }
         public ActionResult AddRoomType(int RoomTypeId = 0)
         {
-            if (Session.Keys.Count != 0)
-            {
+            
                 List<Amenities> amListModel = new List<Amenities>();
                 AmenitiesController _am = new AmenitiesController();
                 RoomTypeController _rt = new RoomTypeController();
@@ -140,10 +135,7 @@ namespace HotelBooking.Controllers
                 }
                 mrtModel.AmenitiesData = amListModel;
                 return View(mrtModel);
-            }
-            else {
-                return RedirectToAction("index", "unProHome");
-            }
+            
 
         }
 
@@ -151,19 +143,14 @@ namespace HotelBooking.Controllers
         [ValidateInput(false)]
         public ActionResult SaveRoomType(RoomType roomTypeEntiry)
         {
-            if (Session.Keys.Count != 0)
-            {
+            
                 RoomTypeController RTC = new RoomTypeController();
                 int branchId = int.Parse(Session["BranchId"].ToString());
                 roomTypeEntiry.BranchId = branchId;
                 bool trn = RTC.AddRoomType(roomTypeEntiry);
                 Session["BranchId"] = branchId;
                 return RedirectToAction("RoomType");
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+           
 
         }
 
@@ -174,6 +161,7 @@ namespace HotelBooking.Controllers
                 int branchId = int.Parse(Session["BranchId"].ToString());
                 RoomTypeController   _rt = new RoomTypeController();
                 _rt.DeleteRoomtype(branchId, RoomTypeId);
+                Session["BranchId"] = branchId;
                 return RedirectToAction("RoomType");
             }
 
@@ -186,8 +174,7 @@ namespace HotelBooking.Controllers
 
         public ActionResult GetAmenities(int? page, int? pSize )
         {
-            if (Session.Keys.Count != 0)
-            {
+            
                 int? DefaultPageSize = 10;
                 ViewBag.pSize = new List<SelectListItem>()
                     {
@@ -208,22 +195,16 @@ namespace HotelBooking.Controllers
                 }
                 
                 int pageNumber = page ?? 1;
-
+                ViewBag.PageSize = DefaultPageSize;
                 Session["BranchId"] = branchId;
                 return View(amListModel.ToPagedList(pageNumber, (int)DefaultPageSize));
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+            
 
         }
 
         public ActionResult AddAmenities(int AmenitisId=0)
         {
-            if (Session.Keys.Count != 0)
-            {
-                
+             
                 Amenities am = new Amenities();
                 int branchId = int.Parse(Session["BranchId"].ToString());
 
@@ -238,11 +219,7 @@ namespace HotelBooking.Controllers
                 
                 am.DateCreated = DateTime.Now;
                 return View(am);
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+           
            
             
         }
@@ -250,8 +227,7 @@ namespace HotelBooking.Controllers
         [HttpPost]
         public ActionResult SaveAmenities(Amenities amenitiesEntity)
         {
-            if (Session.Keys.Count != 0)
-            {
+            
                 HttpPostedFileBase postedFile = Request.Files["amenityImage"];
                 byte[] bytes;
                 using (BinaryReader br = new BinaryReader(postedFile.InputStream))
@@ -265,11 +241,7 @@ namespace HotelBooking.Controllers
                 bool trn = _am.AddAmenities(amenitiesEntity);
                 Session["BranchId"] = branchId;
                 return RedirectToAction("GetAmenities");
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+           
 
         }
 
@@ -280,20 +252,20 @@ namespace HotelBooking.Controllers
                 int branchId = int.Parse(Session["BranchId"].ToString());
                 AmenitiesController _am = new AmenitiesController();
                 _am.DeleteAmenities(branchId, AmenitisId);
+                Session["BranchId"] = branchId;
                 return RedirectToAction("GetAmenities");
             }
 
             else
             {
-                return RedirectToAction("index", "unProHome");
+                return RedirectToAction("Error", "unProHome");
             }
 
         }
         public ActionResult RoomTypeImage(int RoomTypeId, int? page, int? pSize )
         {
             int? DefaultPageSize = 10;
-            if (Session.Keys.Count > 0)
-            {
+            
                 RoomTypeImageController _RTI = new RoomTypeImageController();
                 ViewBag.RoomTypeId = RoomTypeId;
                 IEnumerable<RoomeTypeImages> RTIS = _RTI.GetRoomTypeImages(RoomTypeId).Where(d=>d.isActive==true && d.isDeleted==false);
@@ -303,7 +275,7 @@ namespace HotelBooking.Controllers
                 }
                 
                 int pageNumber = page ?? 1;
-
+                ViewBag.PageSize = DefaultPageSize;
                 ViewBag.pSize = new List<SelectListItem>()
                     {
                         new SelectListItem() { Value="2", Text= "2" },
@@ -313,18 +285,13 @@ namespace HotelBooking.Controllers
                         new SelectListItem() { Value="20", Text= "20" },
                      };
                 return View(RTIS.ToPagedList(pageNumber, (int)DefaultPageSize));
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+           
         }
         [HttpPost]
         public ActionResult AddRoomTypeImage(FormCollection form)
         {
 
-            if (Session.Keys.Count > 0)
-            {
+           
                 HttpPostedFileBase postedFile = Request.Files["RTImageData"];
                 RoomTypeImageController _RTI = new RoomTypeImageController();
                 int branchId = int.Parse(Session["BranchId"].ToString());
@@ -341,22 +308,17 @@ namespace HotelBooking.Controllers
                 FVM.RoomTyepId = RoomTyepId;
                 FVM.BranchId = branchId;
 
-
+                Session["BranchId"] = branchId;
                 RD = _RTI.SaveRoomTypeImage(FVM);
 
                 return RedirectToAction("RoomTypeImage", "Home", new { RoomTypeId = RoomTyepId });
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+            
             
         }
 
         public ActionResult Floor(int FloorId=0)
         {
-            if (Session.Keys.Count > 0)
-            {
+            
                 int branchId = int.Parse(Session["BranchId"].ToString());
                 
                 Floor fl = new Floor();
@@ -366,50 +328,37 @@ namespace HotelBooking.Controllers
                 {
                     fl = fc.GetFloors(branchId).Where(f => f.FloorId == FloorId).SingleOrDefault();
                 }
+                Session["BranchId"] = branchId;
                 return View("MangeFloor", fl);
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+            
         }
         [HttpPost]
         public ActionResult SaveFloor(Floor floorEntity)
         {
-            if (Session.Keys.Count > 0)
-            {
                 int branchId = int.Parse(Session["BranchId"].ToString());
                 FloorController _fl = new FloorController();
                 bool rtn = _fl.AddFloor(floorEntity);
+                Session["BranchId"] = branchId;
                 return RedirectToAction("FloorDetails");
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+            
         }
 
        
         public ActionResult DelFloor(int FloorId)
         {
-            if (Session.Keys.Count > 0)
-            {
+            
                 int branchId = int.Parse(Session["BranchId"].ToString());
                 FloorController _fl = new FloorController();
                 _fl.DelFloor(FloorId);
+                Session["BranchId"] = branchId;
                 return RedirectToAction("FloorDetails");
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+            
         }
 
         public ActionResult FloorDetails(int? page, int? pSize )
         {
             int? DefaultPageSize = 10;
-            if (Session.Keys.Count > 0)
-            {
+            
                 
                 if (pSize != null)
                 {
@@ -431,39 +380,31 @@ namespace HotelBooking.Controllers
                 }
 
                 int pageNumber = page ?? 1;
+                ViewBag.PageSize = DefaultPageSize;
                 FloorController _fl = new FloorController();
                 IEnumerable<Floor> flrs = _fl.GetFloors(branchId).Where(d => d.isDeleted == false );
+                Session["BranchId"] = branchId;
                 return View("FloorDetails", flrs.ToPagedList(pageNumber, (int)DefaultPageSize));
-            }
-            
-                else
-                {
-                    return RedirectToAction("index", "unProHome");
-                }
+           
             
         }
 
         public ActionResult EditFloor(int FloorId)
         {
-            if (Session.Keys.Count > 0)
-            {
+            
                 int branchId = int.Parse(Session["BranchId"].ToString());
                 ViewBag.branchId = branchId;
                 FloorController fc = new FloorController();
 
                 Floor fl = fc.GetFloors(branchId).Where(f => f.FloorId == FloorId).SingleOrDefault();
+                Session["BranchId"] = branchId;
                 return View("MangeFloor", fl);
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+            
         }
 
         public ActionResult Room(int? page, int? pSize )
         {
-            if (Session.Keys.Count != 0)
-            {
+            
                 int? DefaultPageSize = 10;
                 int branchId = int.Parse(Session["BranchId"].ToString());
                 RoomController _rm = new RoomController();
@@ -486,28 +427,23 @@ namespace HotelBooking.Controllers
                 }
 
                 int pageNumber = page ?? 1;
-
-                //List<SelectListItem> RoomTypeitems = new List<SelectListItem>();
-                //RoomTypeitems.Add(new SelectListItem { Text = "Select a Room Type", Value = "0" });
-                //foreach (RoomType item in rtm)
-                //{
-                //    RoomTypeitems.Add(new SelectListItem { Text = item.Title, Value = item.RoomTypeId.ToString() + "~" + item.Title });
-                //}
-                //ViewBag.RTComboModel = RoomTypeitems;
-                ViewBag.RoomNumber = "";
-
+                ViewBag.PageSize = DefaultPageSize;
+            //List<SelectListItem> RoomTypeitems = new List<SelectListItem>();
+            //RoomTypeitems.Add(new SelectListItem { Text = "Select a Room Type", Value = "0" });
+            //foreach (RoomType item in rtm)
+            //{
+            //    RoomTypeitems.Add(new SelectListItem { Text = item.Title, Value = item.RoomTypeId.ToString() + "~" + item.Title });
+            //}
+            //ViewBag.RTComboModel = RoomTypeitems;
+            ViewBag.RoomNumber = "";
+                Session["BranchId"] = branchId;
                 return View(rmModel.ToPagedList(pageNumber, (int)DefaultPageSize));
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+           
         }
 
         public ActionResult AddRoom()
         {
-            if (Session.Keys.Count != 0)
-            {
+            
                
                 int branchId = int.Parse(Session["BranchId"].ToString());
                 RoomController _rm = new RoomController();
@@ -537,7 +473,7 @@ namespace HotelBooking.Controllers
                 RoomTypeController RTC = new RoomTypeController();
 
                 IEnumerable<RoomType> rtm = new List<RoomType>();
-
+                
                 rtm = RTC.GetRoomTypes(branchId).Where(d=>d.isDeleted==false && d.isActive==true);
 
 
@@ -551,18 +487,13 @@ namespace HotelBooking.Controllers
                 }
                 ViewBag.RTComboModel = RoomTypeitems;
                 ViewBag.RoomNumber = "";
-
+                Session["BranchId"] = branchId;
                 return View(rmModel);
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+            
         }
         public ActionResult EditRoom(int Roomid)
         {
-            if (Session.Keys.Count != 0)
-            {
+           
 
                 int branchId = int.Parse(Session["BranchId"].ToString());
                 RoomController _rm = new RoomController();
@@ -609,13 +540,9 @@ namespace HotelBooking.Controllers
                 }
                 ViewBag.RTComboModel = RoomTypeitems;
                 ViewBag.RoomNumber = "";
-
+                Session["BranchId"] = branchId;
                 return View(rmModel);
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+           
         }
         [HttpPost]
         public ActionResult SaveRoom(IEnumerable<Room> roomEntities)
@@ -628,7 +555,7 @@ namespace HotelBooking.Controllers
             }
 
             );
-
+            Session["BranchId"] = branchId;
             return Json("Success", JsonRequestBehavior.AllowGet);
            // return RedirectToAction("Room");
         }
@@ -638,9 +565,9 @@ namespace HotelBooking.Controllers
             RoomController _rm = new RoomController();
             
                 bool rtnVal = _rm.AddRoom(roomEntity);
-           
 
-            
+            Session["BranchId"] = branchId;
+
             return RedirectToAction("Room");
         }
         public ActionResult DelRoom(int RoomId)
@@ -649,14 +576,13 @@ namespace HotelBooking.Controllers
             RoomController _rm = new RoomController();
 
             _rm.DeleteRoom(RoomId);
-
+            Session["BranchId"] = branchId;
             return RedirectToAction("Room");
         }
 
         public ActionResult PaidServices(int? page, int? pSize )
         {
-            if (Session.Keys.Count != 0)
-            {
+            
                 int? DefaultPageSize = 10;
                 int branchId = int.Parse(Session["BranchId"].ToString());
                 if (pSize != null)
@@ -673,14 +599,12 @@ namespace HotelBooking.Controllers
                         new SelectListItem() { Value="20", Text= "20" },
                      };
                 int pageNumber = page ?? 1;
+                ViewBag.PageSize = DefaultPageSize;
                 PaidServicesController _psc = new PaidServicesController();
                 IEnumerable<PaidServices> rtm = _psc.GetpadServices(branchId).Where(d=>d.isDeleted==false);
+                Session["BranchId"] = branchId;
                 return View(rtm.ToPagedList(pageNumber, (int)DefaultPageSize));
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+            
         }
 
 
@@ -757,21 +681,16 @@ namespace HotelBooking.Controllers
                 PriceTypeitems.Add(new SelectListItem { Text = item.PriceTypeTitle, Value = item.PriceTypeId.ToString(),Selected=slt });
             }
             ViewBag.PriceTypeModel = PriceTypeitems;
-            
+            Session["BranchId"] = branchId;
             return View(ps);
         }
         public ActionResult DelPaidServices(int PaidServiceId = 0)
         {
-            if (Session.Keys.Count != 0)
-            {
+            
                 PaidServicesController _ps = new PaidServicesController();
                 _ps.DeletePaidServices(PaidServiceId);
                 return RedirectToAction("PaidServices");
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+           
         }
         
 
@@ -788,8 +707,7 @@ namespace HotelBooking.Controllers
         
         public ActionResult PriceManager(int? page, int? pSize )
         {
-            if (Session.Keys.Count != 0)
-            {
+            
                 int? DefaultPageSize = 10;
                 if (pSize != null)
                 {
@@ -805,20 +723,17 @@ namespace HotelBooking.Controllers
                         new SelectListItem() { Value="20", Text= "20" },
                      };
                 int pageNumber = page ?? 1;
+                ViewBag.PageSize = DefaultPageSize;
                 pmController _psc = new pmController();
                 IEnumerable<PriceManager> pcm = _psc.GetAllPrice(branchId).Where(d => d.isDeleted == false);
+                Session["BranchId"] = branchId;
                 return View(pcm.ToPagedList(pageNumber, (int)DefaultPageSize));
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+            
         }
 
         public ActionResult AddPrice(int PriceManagerId = 0,int tab=1)
         {
-            if (Session.Keys.Count != 0)
-            {
+            
                 int branchId = int.Parse(Session["BranchId"].ToString());
                 RoomTypeController RTC = new RoomTypeController();
                 PriceManager PM = new PriceManager();
@@ -848,12 +763,9 @@ namespace HotelBooking.Controllers
                 ViewBag.RTComboModel = RoomTypeitems;
                 ViewBag.SelectedTab = tab;
                 ViewBag.PriceManageId = PM.PriceManageId;
+                Session["BranchId"] = branchId;
                 return View();
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+            
         }
 
         
@@ -870,21 +782,16 @@ namespace HotelBooking.Controllers
                 ps = _pm.GetAllPrice(branchId).Where(p => p.PriceManageId == PriceManageId).SingleOrDefault();
             }
             ps.BranchId = branchId;
+            Session["BranchId"] = branchId;
             return PartialView("_RegularPrice", ps);
             
         }
         public ActionResult DelPrice(int PriceManageId )
         {
-            if (Session.Keys.Count != 0)
-            {
                 pmController _ps = new pmController();
                 _ps.DeletePrice(PriceManageId);
-                return RedirectToAction("PriceManager");
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+            return RedirectToAction("PriceManager");
+
         }
 
         public PartialViewResult _SpecialPrice(int PriceManageId = 0)
@@ -899,7 +806,7 @@ namespace HotelBooking.Controllers
                 SPMController _pm = new SPMController();
                 ps = _pm.GetAllSpecialPrice(branchId).Where(p => p.SpecialPriceManageId == PriceManageId).SingleOrDefault();
             }
-           
+            Session["BranchId"] = branchId;
             ps.BranchId1 = branchId;
             return PartialView("_SpecialPrice", ps);
         }
@@ -935,6 +842,7 @@ namespace HotelBooking.Controllers
             IEnumerable<SPM>  ps = _pm.GetAllSpecialPrice(branchId).Where(d=>d.isDeleted==false);
 
             int pageNumber = page ?? 1;
+            ViewBag.PageSize = DefaultPageSize;
             ViewBag.pSize = new List<SelectListItem>()
                     {
                         new SelectListItem() { Value="2", Text= "2" },
@@ -943,15 +851,14 @@ namespace HotelBooking.Controllers
                         new SelectListItem() { Value="15", Text= "15" },
                         new SelectListItem() { Value="20", Text= "20" },
                      };
-
+            Session["BranchId"] = branchId;
             return PartialView("_SpecialPriceGrid", ps.ToPagedList(pageNumber, (int)DefaultPageSize));
         }
 
         public ActionResult Coupon(int? page, int? pSize)
         {
             int? DefaultPageSize = 10;
-            if (Session.Keys.Count > 0)
-            {
+           
 
                 if (pSize != null)
                 {
@@ -972,21 +879,17 @@ namespace HotelBooking.Controllers
                 }
 
                 int pageNumber = page ?? 1;
+                ViewBag.PageSize = DefaultPageSize;
                 CouponController _cp = new CouponController();
                 IEnumerable<Coupon> cpModel = _cp.GetCoupons(branchId);
+                Session["BranchId"] = branchId;
                 return View("Coupons", cpModel.ToPagedList(pageNumber, (int)DefaultPageSize));
-            }
-
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+            
 
         }
         public ActionResult AddCoupon(int couponId=0)
         {
-            if (Session.Keys.Count != 0)
-            {
+            
                 int branchId = int.Parse(Session["BranchId"].ToString());
                 //Roomtypes
                 RoomTypeController RTC = new RoomTypeController();
@@ -1009,7 +912,8 @@ namespace HotelBooking.Controllers
                 IEnumerable<StaffTier> stm = new List<StaffTier>();
                 stm = stf.GetStaffTier(branchId).Where(d => d.isDeleted == false && d.isActive == true); ;
                 ViewBag.StaffModel = stm;
-                if(couponId>0)
+                Session["BranchId"] = branchId;
+                if (couponId>0)
                 {
                     CouponController pmc = new CouponController();
                     Coupon cModel = pmc.GetCoupon(branchId, couponId);
@@ -1025,11 +929,7 @@ namespace HotelBooking.Controllers
                 }
 
                
-            }
-            else
-            {
-                return RedirectToAction("index", "unProHome");
-            }
+            
         }
 
         [HttpPost]
@@ -1046,6 +946,7 @@ namespace HotelBooking.Controllers
             cpEntity.ImageData = bytes;
             CouponController pmc = new CouponController();
             bool rtnVal = pmc.SaveCoupon(cpEntity);
+            Session["BranchId"] = branchId;
             return RedirectToAction("Coupon");
         }
 
@@ -1056,6 +957,7 @@ namespace HotelBooking.Controllers
                 int branchId = int.Parse(Session["BranchId"].ToString());
                 CouponController _cp = new CouponController();
                 _cp.DeleteCoupon(branchId, couponId);
+                Session["BranchId"] = branchId;
                 return RedirectToAction("Coupon");
             }
 
@@ -1064,6 +966,1048 @@ namespace HotelBooking.Controllers
                 return RedirectToAction("index", "unProHome");
             }
 
+        }
+
+
+
+        public ActionResult Bookings(int? page, int? pSize)
+        {
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            RoomTypeController RTC = new RoomTypeController();
+
+            IEnumerable<RoomType> rtm = new List<RoomType>();
+
+            rtm = RTC.GetRoomTypes(branchId).Where(d => d.isDeleted == false && d.isActive == true);
+
+
+
+
+            List<SelectListItem> RoomTypeitems = new List<SelectListItem>();
+            RoomTypeitems.Add(new SelectListItem { Text = "Select a Room Type", Value = "0" });
+            foreach (RoomType item in rtm)
+            {
+                RoomTypeitems.Add(new SelectListItem { Text = item.Title, Value = item.RoomTypeId.ToString() + "~" + item.Title });
+            }
+            ViewBag.RTComboModel = RoomTypeitems;
+            int? DefaultPageSize = 10;
+            IEnumerable<Booking> bksListModel = new List<Booking>();
+            BookingController _bks = new BookingController();
+
+            if (pSize != null)
+            {
+                DefaultPageSize = pSize;
+            }
+
+            int pageNumber = page ?? 1;
+            ViewBag.PageSize = DefaultPageSize;
+            var dateCriteria = DateTime.Now.Date.AddDays(-7);// last 7 days booking
+
+
+            bksListModel = _bks.GetBookings(branchId);//.Where(d => d.isDeleted == false);
+            var QueryDeatils = from tmpBooking in bksListModel
+                               orderby tmpBooking.BookingDate descending
+                               where tmpBooking.BookingDate >= dateCriteria
+
+                               select tmpBooking;
+
+           /* var QueryDeatils1 = from tmpBooking1 in bksListModel
+                                orderby DateTime.Parse(tmpBooking1.CheckIn) ascending
+                                where DateTime.Parse(tmpBooking1.CheckIn) >= dateCriteria
+
+                                select tmpBooking1;*/
+
+            Session["BranchId"] = branchId;
+
+            ViewBag.pSize = new List<SelectListItem>()
+                    {
+                        new SelectListItem() { Value="2", Text= "2" },
+                        new SelectListItem() { Value="5", Text= "5" },
+                        new SelectListItem() { Value="10", Text= "10" },
+                        new SelectListItem() { Value="15", Text= "15" },
+                        new SelectListItem() { Value="20", Text= "20" },
+                     };
+            IPagedList<Booking> bkslist = QueryDeatils.ToPagedList(pageNumber, (int)DefaultPageSize);
+
+
+
+            return View(bkslist);
+
+        }
+        public ActionResult AddBooking(int bookingId = 0)
+        {
+
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            RoomTypeController RTC = new RoomTypeController();
+            GuestsController _gs = new GuestsController();
+            BookingController _bk = new BookingController();
+            Booking bk = new Booking();
+
+            if (bookingId > 0)
+            {
+                bk = _bk.GetBooking(bookingId);
+
+            }
+            bk.BranchId = branchId;
+            IEnumerable<RoomType> rtm = new List<RoomType>();
+
+            rtm = RTC.GetRoomTypes(branchId).Where(d => d.isDeleted == false && d.isActive == true); ;
+            List<SelectListItem> RoomTypeitems = new List<SelectListItem>();
+            RoomTypeitems.Add(new SelectListItem { Text = "Select a Room Type", Value = "0" });
+            foreach (RoomType item in rtm)
+            {
+                bool slt = false;
+                if (bookingId > 0)
+                {
+                    if (item.RoomTypeId.ToString() == bk.RoomTypeId)
+                        slt = true;
+                }
+                RoomTypeitems.Add(new SelectListItem { Text = item.Title.Trim(), Value = item.RoomTypeId.ToString(), Selected = slt });
+            }
+            ViewBag.RTComboModel = RoomTypeitems;
+            if (bookingId > 0)
+            {
+                PaidServicesController _ps = new PaidServicesController();
+                IEnumerable<PaidServices> ps = _ps.GetPaidServicesByRoomType(1).Where(i => i.isActive == true && i.BranchId == branchId && i.isDeleted == false);
+
+                ViewBag.PS = ps;
+
+            }
+            IEnumerable<Guests> gst = new List<Guests>();
+            gst = _gs.GetAllGuests(branchId).Where(d => d.isDeleted == false && d.isActive == true); ;
+            List<SelectListItem> AllGuest = new List<SelectListItem>();
+            AllGuest.Add(new SelectListItem { Text = "Select a Guest", Value = "0" });
+            foreach (Guests item in gst)
+            {
+                bool slt = false;
+                if (bookingId > 0)
+                {
+                    if (item.GuestId == bk.GuestId)
+                        slt = true;
+                }
+                AllGuest.Add(new SelectListItem { Text = item.Name.Trim(), Value = item.GuestId.ToString(), Selected = slt });
+            }
+            ViewBag.GSComboModel = AllGuest;
+
+            Session["BranchId"] = branchId;
+            return View("CreateBooking", bk);
+            //return View(bk);
+
+        }
+        public bool SaveBooking(BookingRequest bookingEntity)
+        {
+            BookingController _bk = new BookingController();
+            return _bk.AddBooking(bookingEntity);
+        }
+        public enum BookingStatus
+        {
+            Select = 0,
+            New = 1,
+            Pending = 2,
+            Rejected = 3,
+            Success = 4
+        }
+        public enum PaymentStatus
+        {
+            Select = 0,
+            Waiting = 1,
+            Pending = 2,
+            Confirm = 3,
+            Success = 4
+        }
+
+        
+        public ActionResult BookingProcess(int BookingId, string BookingRef)
+        {
+            try
+            {
+                ViewBag.BookingId = BookingId;
+                ViewBag.BookingRef = BookingRef;
+                int branchId = int.Parse(Session["BranchId"].ToString());
+                ViewBag.BranchId = branchId;
+                IEnumerable<BookingStatus> bkStatus = Enum.GetValues(typeof(BookingStatus))
+                                              .Cast<BookingStatus>();
+                IEnumerable<PaymentStatus> pmtStatus = Enum.GetValues(typeof(PaymentStatus))
+                                             .Cast<PaymentStatus>();
+                BookingController _bc = new BookingController();
+                VM_BookingDetails VMB = _bc.GetBookingDetails(branchId, BookingId);
+
+                ViewBag.bkStatus = from bk in bkStatus
+                                   select new SelectListItem
+                                   {
+                                       Text = bk.ToString(),
+                                       Value = bk.ToString(),
+                                       Selected = (bk.ToString().ToUpper() == VMB.BookingStatus.ToUpper())
+                                   };
+
+                ViewBag.pmtStatus = from bk in pmtStatus
+                                    select new SelectListItem
+                                    {
+                                        Text = bk.ToString(),
+                                        Value = bk.ToString(),
+                                        Selected = (bk.ToString().ToUpper() == VMB.PaymnentStatus.ToUpper())
+                                    };
+                Session["BranchId"] = branchId;
+                return View(VMB);
+            }
+            catch (Exception)
+            {
+
+                return View("LogOff");
+            }
+
+
+        }
+
+
+        public PartialViewResult _BookingDetails(int BookingId, string RoomTypeId, string cinDate, string coutDate)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            BookingController _bc = new BookingController();
+            IEnumerable<BookingCost> _pr = _bc.GetBookingsCost(BookingId);
+            Session["BranchId"] = branchId;
+            return PartialView("_BookingDetails", _pr);
+
+        }
+        public PartialViewResult _Payments(int BranchId, int BookingId, int? page, int? pSize)
+        {
+            IPagedList<BookingPayments> bkplist = null;
+            if (Session.Keys.Count != 0)
+            {
+                int branchId = int.Parse(Session["BranchId"].ToString());
+                int? DefaultPageSize = 10;
+                BookingController _bc = new BookingController();
+                if (pSize != null)
+                {
+                    DefaultPageSize = pSize;
+                }
+
+                int pageNumber = page ?? 1;
+                IEnumerable<BookingPayments> _BP = _bc.GetBookingPayments(BranchId, BookingId);
+                ViewBag.pSize = new List<SelectListItem>()
+                    {
+                        new SelectListItem() { Value="2", Text= "2" },
+                        new SelectListItem() { Value="5", Text= "5" },
+                        new SelectListItem() { Value="10", Text= "10" },
+                        new SelectListItem() { Value="15", Text= "15" },
+                        new SelectListItem() { Value="20", Text= "20" },
+                     };
+                decimal PaidAmount = _BP.Select(t => t.paymentAmount).Sum();
+                ViewBag.PaidAmount = PaidAmount;
+                bkplist = _BP.ToPagedList(pageNumber, (int)DefaultPageSize);
+
+            }
+
+            return PartialView("_Payments", bkplist);
+        }
+        public PartialViewResult _AllocateRooms(int BookingId, string RoomTypeId, int nor)
+        {
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            RoomController _rc = new RoomController();
+
+            //IEnumerable<Room> rm = _rc.GetRoomsByRoomTypeIds(branchId, RoomTypeId, BookingId);
+            AllocateRoomResponse rm = _rc.GetRoomsByRoomTypeIds(branchId, RoomTypeId, BookingId);
+            List<SelectListItem> Roomitems = new List<SelectListItem>();
+            Roomitems.Add(new SelectListItem { Text = "Select a Room", Value = "0" });
+            foreach (Room item in rm.AvailableRooms)
+            {
+                Roomitems.Add(new SelectListItem { Text = item.RoomTypeName + "-" + item.RoomNumber + "-" + item.FloorName, Value = item.RoomId.ToString() + "-" + item.floor.ToString() });
+            }
+            ViewBag.RMComboModel = Roomitems;
+            // ViewBag.AllocatedRoomNotCheckOut=
+            ViewBag.AllocatedRoomModel = rm.BookedRooms.Where(c => c.isCheckout == false).ToArray();
+            int alreadyallocated = rm.BookedRooms.Count();
+            ViewBag.nRooms = nor - alreadyallocated;
+            Session["BranchId"] = branchId;
+
+
+            return PartialView("_AllocateRooms");
+
+        }
+
+        public PartialViewResult _Documents(int BookingId, int noPax, int noRooms, int? page, int? pSize)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            int? DefaultPageSize = 10;
+            if (pSize != null)
+            {
+                DefaultPageSize = pSize;
+            }
+            int pageNumber = page ?? 1;
+
+            DocumentController DC = new DocumentController();
+            IEnumerable<DocumentType> DocTypeList = DC.GetDocumentTypes(branchId);
+
+            List<SelectListItem> avlDocs = new List<SelectListItem>();
+            avlDocs.Add(new SelectListItem { Text = "Select Document Type", Value = "0", Selected = true });
+            foreach (DocumentType item in DocTypeList)
+            {
+                bool slt = false;
+
+                avlDocs.Add(new SelectListItem { Text = item.DocumentTypeName.Trim(), Value = item.DocumentTypeId.ToString(), Selected = slt });
+            }
+            ViewBag.DocsComboModel = avlDocs;
+
+            VM_DocumentResponse vM_DocumentResponse = new VM_DocumentResponse();
+            vM_DocumentResponse.BookingId = BookingId;
+            vM_DocumentResponse.Pax = noPax;
+            vM_DocumentResponse.Rooms = noRooms;
+            vM_DocumentResponse.Documents = DC.GetDocuments(BookingId).ToPagedList(pageNumber, (int)DefaultPageSize); ;
+
+            return PartialView("_Documents", vM_DocumentResponse);
+
+        }
+
+        public bool SaveAllocatedRoom(BookedRoom bkdEntity)
+        {
+            BookingController _bk = new BookingController();
+            return _bk.AllocateRoom(bkdEntity);
+        }
+
+        public bool Addpayments(BookingPayments bkpEntity)
+        {
+            BookingController _bk = new BookingController();
+            return _bk.AddBookingPayments(bkpEntity);
+        }
+
+        public bool UpdateBookingStatus(int BookingId, string status)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            BookingController _bk = new BookingController();
+            return _bk.updateBookingStatus(branchId, BookingId, status);
+        }
+
+        public bool UpdatePaymentStatus(int BookingId, string status)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            BookingController _bk = new BookingController();
+            return _bk.updatePaymentStatus(branchId, BookingId, status);
+        }
+
+
+        public PartialViewResult _PricePerRoom(int nOfr, int todalNight)
+        {
+
+
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            RoomTypeController RTC = new RoomTypeController();
+            IEnumerable<RoomType> rtm = new List<RoomType>();
+
+            rtm = RTC.GetRoomTypes(branchId).Where(d => d.isDeleted == false && d.isActive == true); ;
+            List<SelectListItem> RoomTypeitems = new List<SelectListItem>();
+            RoomTypeitems.Add(new SelectListItem { Text = "Select a Room Type", Value = "0" });
+            foreach (RoomType item in rtm)
+            {
+                bool slt = false;
+                //if (bookingId > 0)
+                //{
+                //    if (item.RoomTypeId == bk.RoomTypeId)
+                //        slt = true;
+                //}
+                RoomTypeitems.Add(new SelectListItem { Text = item.Title.Trim(), Value = item.RoomTypeId.ToString(), Selected = slt });
+            }
+            ViewBag.RTComboModel1 = RoomTypeitems;
+
+            ViewBag.NOR = nOfr;
+            ViewBag.todalNight = todalNight;
+
+            return PartialView("_PricePerRoom");
+
+        }
+        public PartialViewResult _PricePerNight(string RoomTypeId, string cinDate, string coutDate, string refDiv)
+        {
+
+            PriceRequest pr = new PriceRequest();
+            pr.CheckInDate = cinDate;
+            pr.CheckOutDate = coutDate;
+            pr.roomTypeId = int.Parse(RoomTypeId);
+            pr.nOfRoom = int.Parse(refDiv);
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            BookingController _bc = new BookingController();
+            IEnumerable<PriceResponse> _pr = _bc.GetPricesForNight(pr);
+
+
+            return PartialView("_PricePerNightNew", _pr);
+
+        }
+        public PartialViewResult _PaidServices(string RoomTypeId)
+        {
+
+            int roomTypeId = int.Parse(RoomTypeId);
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            PaidServicesController _ps = new PaidServicesController();
+            IEnumerable<PaidServices> ps = _ps.GetPaidServicesByRoomType(roomTypeId).Where(i => i.isActive == true && i.BranchId == branchId && i.isDeleted == false);
+
+
+            return PartialView("_PaidServices", ps);
+
+        }
+
+
+        [HttpPost]
+        public decimal ApplyCoupon(int BranchId, string couponCode)
+        {
+            CouponController CC = new CouponController();
+            CouponResponse cr = CC.ApplyCoupon(couponCode);
+
+            return cr.CouponValue;
+        }
+
+
+        public ActionResult BookedRoom(int? page, int? pSize)
+        {
+
+            int? DefaultPageSize = 10;
+            if (pSize != null)
+            {
+                DefaultPageSize = pSize;
+            }
+
+            int pageNumber = page ?? 1;
+            ViewBag.PageSize = DefaultPageSize;
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            BookedRoomController _bm = new BookedRoomController();
+            IEnumerable<BookedRoom> VBR = _bm.GetAllBookedRoom(branchId);
+
+            List<SelectListItem> RoomTypeitems = new List<SelectListItem>();
+            var rst = (from item in VBR
+                       select new
+                       {
+                           item.RoomTypeId,
+                           item.RoomTypeName
+                       }).Distinct();
+            RoomTypeitems.Add(new SelectListItem { Text = "Filter by  Room Type", Value = "0" });
+            foreach (var item in rst)
+            {
+                RoomTypeitems.Add(new SelectListItem { Text = item.RoomTypeName, Value = item.RoomTypeId.ToString() });
+            }
+            ViewBag.RTComboModel = RoomTypeitems;
+            ViewBag.pSize = new List<SelectListItem>()
+                    {
+                        new SelectListItem() { Value="2", Text= "2" ,Selected=(2==pSize)},
+                        new SelectListItem() { Value="5", Text= "5",Selected=(5==pSize) },
+                        new SelectListItem() { Value="10", Text= "10" ,Selected=(10==pSize)},
+                        new SelectListItem() { Value="15", Text= "15",Selected=(15==pSize)},
+                        new SelectListItem() { Value="20", Text= "20" ,Selected=(20==pSize)},
+                     };
+
+            IPagedList<BookedRoom> bkslist = VBR.ToPagedList(pageNumber, (int)DefaultPageSize);
+            return View(bkslist);
+
+        }
+
+
+        public ActionResult Checkout(int bookingId = 0)
+        {
+
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            ViewBag.BranchId = branchId;
+            BookingController _bc = new BookingController();
+            VM_BookingDetails VMB = _bc.GetBookingDetails(branchId, bookingId);
+
+            return View("CheckOut", VMB);
+
+        }
+
+        public ActionResult Guests(int? page, int? pSize)
+        {
+
+            int? DefaultPageSize = 10;
+            if (pSize != null)
+            {
+                DefaultPageSize = pSize;
+            }
+
+            int pageNumber = page ?? 1;
+            ViewBag.PageSize = DefaultPageSize;
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            GuestsController _bm = new GuestsController();
+            IEnumerable<Guests> GS = _bm.GetAllGuests(branchId);
+
+            ViewBag.NumberOfVIP = GS.Where(v => v.isVIP == true).Count();
+            ViewBag.NumberOfGuest = GS.Count();
+
+
+            ViewBag.pSize = new List<SelectListItem>()
+                    {
+                        new SelectListItem() { Value="2", Text= "2" },
+                        new SelectListItem() { Value="5", Text= "5" },
+                        new SelectListItem() { Value="10", Text= "10" },
+                        new SelectListItem() { Value="15", Text= "15" },
+                        new SelectListItem() { Value="20", Text= "20" },
+                     };
+
+            IPagedList<Guests> gslist = GS.ToPagedList(pageNumber, (int)DefaultPageSize);
+            return View(gslist);
+
+        }
+        public ActionResult AddGuest(int GuestId = 0)
+        {
+
+            //bookingId = 2;
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            GuestsController _pg = new GuestsController();
+            Guests bk = new Guests();
+
+            if (GuestId > 0)
+            {
+                bk = _pg.GetGuest(branchId, GuestId);
+
+            }
+            bk.BranchId = branchId;
+
+            ViewBag.StaticCountry = new List<SelectListItem>()
+                    {
+                       new SelectListItem() { Value="0", Text= "Select Country"  },
+                        new SelectListItem() { Value="India", Text= "India", Selected=(bk.country=="India") },
+                        new SelectListItem() { Value="USA", Text= "USA", Selected=(bk.country=="USA") },
+                        new SelectListItem() { Value="UK", Text= "UK" , Selected=(bk.country=="UK")},
+                        new SelectListItem() { Value="Canada", Text= "Canada" , Selected=(bk.country=="Canada")},
+                        new SelectListItem() { Value="France", Text= "France", Selected=(bk.country=="France") },
+                     };
+
+
+
+
+            return View(bk);
+
+        }
+        public ActionResult SaveGuest(Guests guestEntity)
+        {
+
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            guestEntity.BranchId = branchId;
+            GuestsController _bk = new GuestsController();
+            bool rtn = _bk.AddGuest(guestEntity);
+            return RedirectToAction("Guests");
+
+        }
+        public ActionResult MakeVIP(int GuestId)
+        {
+
+            if (Session.Keys.Count != 0)
+            {
+                int branchId = int.Parse(Session["BranchId"].ToString());
+
+                GuestsController _bk = new GuestsController();
+                _bk.SetAsVip(branchId, GuestId);
+                return RedirectToAction("Guests");
+            }
+            else
+            {
+                return RedirectToAction("index", "unProHome");
+            }
+        }
+
+        public ActionResult DelGuest(int GuestId)
+        {
+
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            GuestsController _bk = new GuestsController();
+            _bk.DeleteGuest(branchId, GuestId);
+            return RedirectToAction("Guests");
+
+        }
+        public ActionResult SaveBookingDocuments()
+        {
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            DocumentController _dc = new DocumentController();
+            int BookingId = int.Parse(Request.Form["BookingId"].ToString());
+            string BookingRef = Request.Form["BookingRef1"].ToString();
+            bool isRCRequired = bool.Parse(Request.Form["isRCRequired"].ToString());
+            if (Request.Files.Count > 0)
+            {
+
+                for (int i = 0; i < Request.Files.Count; i++)
+                {
+
+                    if (isRCRequired)
+                    {
+                        if (Request.Files.Keys[i].Contains("RC"))
+                        {
+                            string DocTypeName1 = Request.Form["PaxIdRC"].ToString();
+                            HttpPostedFileBase postedFile1 = Request.Files["FileRC"];
+                            byte[] bytes1;
+                            using (BinaryReader br = new BinaryReader(postedFile1.InputStream))
+                            {
+                                bytes1 = br.ReadBytes(postedFile1.ContentLength);
+                            }
+                            BookingDocuments bdRC = new BookingDocuments();
+                            bdRC.DocumentName = "Vechele Registration" + DocTypeName1;
+                            bdRC.DocumentData = bytes1;
+                            bdRC.BookingId = BookingId;
+                            bdRC.DocumentTypeId = 4;
+                            bdRC.PaxName = DocTypeName1;
+                            bdRC.isActive = true;
+                            _dc.AddDocuments(bdRC);
+                        }
+
+                    }
+
+                    if (Request.Files.Keys[i].Contains("Doc"))
+                    {
+                        string _DocTypeid = "DocSelType" + i.ToString();
+                        string _DocTypeName = "DocTypeName" + i.ToString();
+                        string _PaxId = "Pax" + i.ToString();
+
+                        string DocTypeId = Request.Form[_DocTypeid].ToString();
+                        string DocTypeName = Request.Form[_DocTypeName].ToString();
+                        string PaxName = Request.Form[_PaxId].ToString();
+                        string fileName = "DocFile" + i.ToString();
+                        HttpPostedFileBase postedFile = Request.Files[fileName];
+                        byte[] bytes;
+
+
+                        using (BinaryReader br = new BinaryReader(postedFile.InputStream))
+                        {
+                            bytes = br.ReadBytes(postedFile.ContentLength);
+                        }
+                        if (bytes.Length>0)
+                        {
+                            BookingDocuments bd = new BookingDocuments();
+                            bd.DocumentName = DocTypeName;
+                            bd.DocumentData = bytes;
+                            bd.BookingId = BookingId;
+                            bd.DocumentTypeId = int.Parse(DocTypeId);
+                            bd.PaxName = PaxName;
+                            bd.isActive = true;
+                            _dc.AddDocuments(bd);
+                        }
+                    }
+
+
+
+
+                }
+
+            }
+
+            Session["BranchId"] = branchId;
+            return RedirectToAction("BookingProcess", new { BookingId = BookingId, BookingRef = BookingRef });
+
+
+        }
+
+        [HttpGet]
+        public JsonResult GetNoOfBookings()
+        {
+            DashBoardData ds = new DashBoardData();
+
+            try
+            {
+
+                int branchId = int.Parse(Session["BranchId"].ToString());
+
+                IEnumerable<Booking> bksListModel = new List<Booking>();
+                BookingController _bks = new BookingController();
+                ds = _bks.DashboardData(branchId);//.Where(d => d.isDeleted == false);
+
+            }
+            catch (Exception)
+            {
+
+                return Json("Error");
+            }
+
+
+            return Json(ds, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpPost]
+        public bool CheckOut(int BookingId, int RoomId)
+        {
+            bool rtnVal = false;
+            try
+            {
+                int branchId = int.Parse(Session["BranchId"].ToString());
+                CheckOutRequest CR = new CheckOutRequest();
+                CR.BranchId = branchId;
+                CR.BookedRoomId = RoomId;
+                CR.BookingId = BookingId;
+                BookedRoomController BRC = new BookedRoomController();
+                BRC.checkOut(CR);
+                rtnVal = true;
+            }
+            catch (Exception)
+            {
+
+                rtnVal = false;
+            }
+
+
+            return rtnVal;
+        }
+
+        public PartialViewResult _RoomCheckout(int BookingId, int noRooms, int? page, int? pSize)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            int? DefaultPageSize = 10;
+            if (pSize != null)
+            {
+                DefaultPageSize = pSize;
+            }
+            int pageNumber = page ?? 1;
+
+            BookedRoomController DC = new BookedRoomController();
+            IEnumerable<BookedRoom> BR = DC.GetAllBookedRoomByBookingId(branchId, BookingId);
+            IEnumerable<BookedRoom> OccupiedRoom = BR.Where(c => c.isCheckout == false).ToArray();
+            IEnumerable<BookedRoom> ReleasedRoom = BR.Where(c => c.isCheckout == true).ToArray();
+
+            VM_BookedRoomResponse vM_BRResponse = new VM_BookedRoomResponse();
+            vM_BRResponse.BookingId = BookingId;
+            //vM_BRResponse.Pax = noPax;
+            vM_BRResponse.Rooms = noRooms;
+            vM_BRResponse.BookedRooms = OccupiedRoom.ToPagedList(pageNumber, (int)DefaultPageSize);
+            vM_BRResponse.ReleasedRoom = ReleasedRoom.ToPagedList(pageNumber, (int)DefaultPageSize);
+
+            return PartialView("_RoomCheckout", vM_BRResponse);
+
+        }
+
+
+        public ActionResult Employees(int? page, int? pSize)
+        {
+
+
+            if (Session.Keys.Count != 0)
+            {
+                int? DefaultPageSize = 10;
+                if (pSize != null)
+                {
+                    DefaultPageSize = pSize;
+                }
+
+                int pageNumber = page ?? 1;
+                ViewBag.PageSize = DefaultPageSize;
+                ViewBag.pSize = new List<SelectListItem>()
+                    {
+                        new SelectListItem() { Value="2", Text= "2" },
+                        new SelectListItem() { Value="5", Text= "5" },
+                        new SelectListItem() { Value="10", Text= "10" },
+                        new SelectListItem() { Value="15", Text= "15" },
+                        new SelectListItem() { Value="20", Text= "20" },
+                     };
+
+                int branchId = int.Parse(Session["BranchId"].ToString());
+                StaffController _stf = new StaffController();
+                IEnumerable<VM_Staff> stafs = _stf.GetStaffs(branchId);
+
+                return View("Employees", stafs.ToPagedList(pageNumber, (int)DefaultPageSize));
+            }
+            else
+            {
+                return RedirectToAction("index", "unProHome");
+            }
+
+
+        }
+
+        public ActionResult Designation(int? page, int? pSize)
+        {
+            if (Session.Keys.Count != 0)
+            {
+                int? DefaultPageSize = 10;
+                if (pSize != null)
+                {
+                    DefaultPageSize = pSize;
+                }
+
+                int pageNumber = page ?? 1;
+                ViewBag.PageSize = DefaultPageSize;
+                ViewBag.pSize = new List<SelectListItem>()
+                    {
+                        new SelectListItem() { Value="2", Text= "2" },
+                        new SelectListItem() { Value="5", Text= "5" },
+                        new SelectListItem() { Value="10", Text= "10" },
+                        new SelectListItem() { Value="15", Text= "15" },
+                        new SelectListItem() { Value="20", Text= "20" },
+                     };
+
+                int branchId = int.Parse(Session["BranchId"].ToString());
+                DesigController _dg = new DesigController();
+                IEnumerable<Designation> dg = _dg.GetAllDesignation(branchId);
+
+                return View("Designation", dg.ToPagedList(pageNumber, (int)DefaultPageSize));
+            }
+            else
+            {
+                return RedirectToAction("index", "unProHome");
+            }
+        }
+
+        public ActionResult Dept(int? page, int? pSize)
+        {
+            if (Session.Keys.Count != 0)
+            {
+                int? DefaultPageSize = 10;
+                if (pSize != null)
+                {
+                    DefaultPageSize = pSize;
+                }
+
+                int pageNumber = page ?? 1;
+                ViewBag.PageSize = DefaultPageSize;
+                ViewBag.pSize = new List<SelectListItem>()
+                    {
+                       new SelectListItem() { Value="2", Text= "2"},
+                        new SelectListItem() { Value="5", Text= "5"},
+                        new SelectListItem() { Value="10", Text= "10" },
+                        new SelectListItem() { Value="15", Text= "15"},
+                        new SelectListItem() { Value="20", Text= "20" },
+                     };
+
+                int branchId = int.Parse(Session["BranchId"].ToString());
+                DeptController _dpt = new DeptController();
+                IEnumerable<Dept> dpts = _dpt.GetDeptDetails(branchId);
+
+                return View("Dept", dpts.ToPagedList(pageNumber, (int)DefaultPageSize));
+            }
+            else
+            {
+                return RedirectToAction("index", "unProHome");
+            }
+        }
+        public ActionResult AddEmployees(int EmpId = 0)
+        {
+            StaffController _stf = new StaffController();
+            Staff stf = new Staff();
+            int dptId=0;
+            int teamId = 0;
+            int desigId = 0;
+            int roleid = 0;
+
+            if (EmpId > 0)
+            {
+                stf = _stf.GetStaff(EmpId);
+                dptId = stf.DepartmentId;
+                teamId = stf.TeamId;
+                desigId = stf.DesignationId;
+                roleid = stf.PrimaryRoleID;
+
+            }
+            int branchId = int.Parse(Session["BranchId"].ToString());
+           
+            DeptController _dpt = new DeptController();
+            DesigController _dsg = new DesigController();
+            TeamController _tm = new TeamController();
+            RolesController _roles = new RolesController();
+           
+
+            IEnumerable<Dept> dpt = _dpt.GetDeptDetails(branchId);
+            IEnumerable<Designation> dsg = _dsg.GetAllDesignation(branchId);
+            IEnumerable<Team> tm=_tm.GetTeams(branchId);
+            IEnumerable<RoleMaster> rl=_roles.GetRoles(branchId);
+
+            List<SelectListItem> dptitems = new List<SelectListItem>();
+            dptitems.Add(new SelectListItem { Text = "Select a Department", Value = "0" });
+            foreach (var item in dpt)
+            {
+                bool seleted = (dptId == item.Id);
+                dptitems.Add(new SelectListItem { Text = item.DepartmentName, Value = item.Id.ToString(),Selected= seleted });
+            }
+
+            ViewBag.DEPTComboModel = dptitems;
+
+            List<SelectListItem> dsgitems = new List<SelectListItem>();
+            dsgitems.Add(new SelectListItem { Text = "Select a Designation", Value = "0" });
+            foreach (var item in dsg)
+            {
+                bool seleted = (desigId == item.Id);
+                dsgitems.Add(new SelectListItem { Text = item.DesignationName, Value = item.Id.ToString(), Selected = seleted });
+            }
+
+            ViewBag.DesigComboModel = dsgitems;
+
+            List<SelectListItem> tmitems = new List<SelectListItem>();
+            tmitems.Add(new SelectListItem { Text = "Select a team", Value = "0" });
+            foreach (var item in tm)
+            {
+                bool seleted = (teamId == item.Id);
+                tmitems.Add(new SelectListItem { Text = item.TeamName, Value = item.Id.ToString() , Selected = seleted });
+            }
+
+
+            ViewBag.TeamComboModel = tmitems;
+
+            List<SelectListItem> rlitems = new List<SelectListItem>();
+            rlitems.Add(new SelectListItem { Text = "Select Primary  Role", Value = "0" });
+            foreach (var item in rl)
+            {bool seleted = (roleid == item.Id);
+                rlitems.Add(new SelectListItem { Text = item.RoleName, Value = item.Id.ToString(), Selected = seleted });
+            }
+
+
+            ViewBag.RoleComboModel = rlitems;
+
+
+
+            
+            return View(stf);
+        }
+
+
+        public ActionResult SaveEmployee(Staff staffEntity)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            StaffController _stf = new StaffController();
+            staffEntity.BranchId = branchId;
+
+
+            _stf.AddStaff(staffEntity);
+
+            return RedirectToAction("Employees", "Home");
+        }
+
+
+        public ActionResult AddDept(int DeptId = 0)
+        {
+            DeptController _stf = new DeptController();
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            Dept dpt = new Dept();
+            dpt.BranchId = branchId;
+            if (DeptId > 0)
+            {
+                dpt = _stf.GetDeptById(DeptId);
+            }
+
+            return View("AddDept", dpt);
+        }
+        public ActionResult SaveDept(Dept DeptEntity)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            DeptController _stf = new DeptController();
+            _stf.AddDeptDetails(DeptEntity, branchId);
+
+            return RedirectToAction("Dept", "Home");
+        }
+
+        public ActionResult DelDept(int DeptId)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            DeptController _stf = new DeptController();
+            _stf.DeleteDepartment(DeptId);
+
+            return RedirectToAction("Dept", "Home");
+        }
+
+        public ActionResult AddDesig(int DesigId = 0)
+        {
+            DesigController _stf = new DesigController();
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            Designation dsg = new Designation();
+            dsg.BranchId = branchId;
+            if (DesigId > 0)
+            {
+                dsg = _stf.GetDesignation(DesigId);
+            }
+
+            return View("AddDesig", dsg);
+        }
+        public ActionResult SaveDesig(Designation DesigEntity)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            DesigController _stf = new DesigController();
+            _stf.AddDesignation(DesigEntity);
+
+            return RedirectToAction("Designation", "Home");
+        }
+        public ActionResult DelDesig(int DesigId)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            DesigController _stf = new DesigController();
+            _stf.DelDesignation(DesigId);
+
+            return RedirectToAction("Dept", "Home");
+        }
+        public ActionResult Company()
+        {
+            return View();
+        }
+        public int SaveCompay(Company companyEntity)
+        {
+            CompanyInfoController _bk = new CompanyInfoController();
+            return _bk.AddCompanyDetails(companyEntity);
+        }
+
+        public ActionResult Branch()
+        {
+            return View();
+        }
+
+
+        public PartialViewResult _BookingInvoive(int BookingId)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            BookingController _bc = new BookingController();
+            
+            VM_BookingDetails bkDeials = _bc.GetBookingDetails(branchId, BookingId);
+            Session["BranchId"] = branchId;
+            return PartialView("_Invoice", bkDeials);
+
+        }
+        ///Currency
+        ///
+        public ActionResult SetCurrencyExchnage()
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            CurrencyController _curr = new CurrencyController();
+            IEnumerable<AvailableCurrency> avlCurr = _curr.AvailableCurrency(branchId);
+            List<SelectListItem> rlitems = new List<SelectListItem>();
+            rlitems.Add(new SelectListItem { Text = "Select Business Currency", Value = "0" });
+            foreach (var item in avlCurr)
+            {
+              
+                rlitems.Add(new SelectListItem { Text = item.CurrencyName, Value = item.CurrencyId.ToString()});
+            }
+            IEnumerable<CurrencyExchange> ExCurr = _curr.getExchnageRates(branchId);
+            /*
+                     var data = (from p in db.ProductMasters join sr in db.StoreMasters
+                     on p.StoreId equals sr.StoreId into lJ
+                     from res in lJ.DefaultIfEmpty()
+                     select new
+                     {
+                      ProductID = p.ProductId,
+                      ProductName = p.ProductName,
+                      StoreID=res.StoreId,
+                      StoreName=res.StoreName,
+                      StoreEmail=res.EmailId
+                     }).ToList();
+             */
+
+            var data = (from ACurr in _curr.AvailableCurrency(branchId)
+                        join ExCurr1 in _curr.getExchnageRates(branchId)
+                        on ACurr.CurrencyId equals ExCurr1.BaseCurrencyId into lJ
+                        from res in lJ.DefaultIfEmpty()
+                        select new CurrencyExchange
+                        {
+                            BaseCurrencyId = ACurr.CurrencyId,
+                            BaseCurrencyName = ACurr.CurrencyName,
+                             
+                            ExchangeCurrencyId = ACurr.CurrencyId,
+                            ExchangeCurrencyName = ACurr.CurrencyName,
+                            ExchangeValue = 0
+                        }).ToList();
+            
+
+            ViewBag.RateExCurrency = avlCurr;
+            ViewBag.AvailableCurrency = rlitems;
+            return View();
         }
     }
 }

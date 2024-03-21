@@ -14,10 +14,10 @@ namespace HotelBooking.Repository.Implementation
     public class RegionalSettingsRespository : IRegionalSettings
     {
         private readonly CompanyContext _context;
-        public RegionalSettingsRespository(CompanyContext context)
-        {
-            _context = context;
-        }
+        //public RegionalSettingsRespository(CompanyContext context)
+        //{
+        //    _context = context;
+        //}
         public RegionalSettingsRespository()
         {
             _context = new CompanyContext();

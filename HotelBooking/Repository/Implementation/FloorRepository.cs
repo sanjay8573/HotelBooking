@@ -10,11 +10,11 @@ namespace HotelBooking.Repository.Implementation
     public class FloorRepository : IFloor
     {
         private readonly CompanyContext _context;
-        public FloorRepository(CompanyContext context)
-        {
-            _context = context;
+        //public FloorRepository(CompanyContext context)
+        //{
+        //    _context = context;
 
-        }
+        //}
         public FloorRepository()
         {
             _context = new CompanyContext();

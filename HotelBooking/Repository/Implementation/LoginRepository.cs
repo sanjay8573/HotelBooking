@@ -43,6 +43,7 @@ namespace HotelBooking.Repository.Implementation
                 if (userId > 0)
                 {
                     Staff s = _istaff.GetStaff(userId);
+                    loginResponse.UserId = s.Id;
                     loginResponse.UserName = s.StaffName;
                     loginResponse.Email = s.Email;
                     loginResponse.BranchId = s.BranchId;

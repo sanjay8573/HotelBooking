@@ -9,10 +9,10 @@ namespace HotelBooking.Repository.Implementation
     public class DesignationRepository : IDesignation
     {
         private readonly DeptContext _context;
-        public DesignationRepository(DeptContext context)
-        {
-            _context = context;
-        }
+        //public DesignationRepository(DeptContext context)
+        //{
+        //    _context = context;
+        //}
 
         public DesignationRepository()
         {

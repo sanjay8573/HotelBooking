@@ -157,7 +157,7 @@
         var cout = $("#Addbookingdatepickerout").val();
         console.log(RoomTypeId + " c " + cin + " o  " + cout);
         if (RoomTypeId > 0) {
-            const url = "/BookingInterface/_PricePerNight?RoomTypeId=" + RoomTypeId + "&cinDate=" + cin + "&coutDate=" + cout + "&refDiv=" + idn;
+            const url = "/Home/_PricePerNight?RoomTypeId=" + RoomTypeId + "&cinDate=" + cin + "&coutDate=" + cout + "&refDiv=" + idn;
 
             $.ajax({
                 type: 'GET',

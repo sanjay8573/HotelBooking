@@ -99,7 +99,7 @@
 
             console.log("loading payment details");
             //$("#BookingPaymentCoutDIV").load("/BookingInterface/_Payments?BranchId=" + BranchId + "&BookingId=" + BookingId);
-            var URL = "/BookingInterface/_Payments?BranchId=" + BranchId + "&BookingId=" + BookingId;
+            var URL = "/Home/_Payments?BranchId=" + BranchId + "&BookingId=" + BookingId;
             $.ajax({
                 type: 'GET',
                 url: URL,
@@ -126,7 +126,7 @@
 
             console.log("loading checkout page details");
             
-            var URL = "/BookingInterface/_RoomCheckout?&BookingId=" + BookingId + "&noRooms=" + nor;
+            var URL = "/Home/_RoomCheckout?&BookingId=" + BookingId + "&noRooms=" + nor;
             $.ajax({
                 type: 'GET',
                 url: URL,

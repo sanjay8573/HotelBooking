@@ -67,7 +67,7 @@
                                                
                                                 <div class="pagination pull-right" style="display:inline-block; vertical-align:middle;">
                                                   
-                                                    @Html.PagedListPager(Model, page => Url.Action("GetAmenities", new { page }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+                                                    @Html.PagedListPager(Model, page => Url.Action("GetAmenities", new { page,pSize= ViewBag.PageSize }), PagedListRenderOptions.ClassicPlusFirstAndLast)
                                                    
                                                 </div>
                                             </div>

@@ -38,6 +38,14 @@ namespace HotelBooking.Controllers
 
 
         }
+        [HttpPost]
+        [Route("api/Staff/GetStaff")]
+        public Staff GetStaff(int StaffId)
+        {
+            return _istaff.GetStaff(StaffId);
+
+
+        }
 
         [HttpPost]
         [Route("api/Staff/StaffLoginSetup")]

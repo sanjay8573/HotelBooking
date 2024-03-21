@@ -1,0 +1,43 @@
+﻿<html>
+<head>
+    <meta charset="utf-8">
+    <title>Hotels:I-Manage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="~/css/login-new.css" rel="stylesheet" />
+</head>
+<body class="home-intro">
+    <section class="login-form-wrap">
+        <h1>Seesion Logout</h1>
+
+        <div class="login-form">
+            <form method="post" action="./" id="form1">
+                <p>
+                    Click here to return to the <a href="/">Login</a> page
+                </p>
+
+                <span id="lblMsg" style="color:Red;"></span>
+            </form>
+        </div>
+    </section>
+</body>
+</html>
+<script src="~/js/jquery-3.3.1.js" type="text/javascript"></script>
+<script type="text/javascript">
+    function randomImage() {
+        var images = [
+            'images/bg1.jpg',
+            'images/bg2.jpg',
+            'images/bg3.jpg',
+            'images/bg4.jpg',
+            'images/bg5.jpg',
+            'images/bg6.jpg'];
+        var size = images.length;
+        var x = Math.floor(size * Math.random());
+        console.log(x);
+        var element = document.getElementsByClassName('home-intro');
+        console.log(element);
+        element[0].style["background-image"] = "url(" + images[x] + ")";
+    }
+    document.addEventListener("DOMContentLoaded", randomImage);
+</script>

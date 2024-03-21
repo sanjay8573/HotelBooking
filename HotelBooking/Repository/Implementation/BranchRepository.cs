@@ -11,10 +11,10 @@ namespace HotelBooking.Repository.Implementation
     public class BranchRepository : IBranch
     {
         private readonly CompanyContext _context;
-        public BranchRepository(CompanyContext context)
-        {
-            _context = context;
-        }
+        //public BranchRepository(CompanyContext context)
+        //{
+        //    _context = context;
+        //}
         public BranchRepository()
         {
             _context = new CompanyContext();

@@ -85,7 +85,7 @@
                                            
                                             @*@Html.DropDownList("pc")*@
                                             <div class="pagination pull-right">
-                                                @Html.PagedListPager(Model, page => Url.Action("RoomType", new { page, pageSize = @Model.PageSize }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+                                                @Html.PagedListPager(Model, page => Url.Action("RoomType", new { page, pSize = ViewBag.PageSize }), PagedListRenderOptions.ClassicPlusFirstAndLast)
                                             </div>
                                         </div>
                                     </td>

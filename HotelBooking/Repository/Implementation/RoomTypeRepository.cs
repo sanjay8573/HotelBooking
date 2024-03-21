@@ -11,11 +11,11 @@ namespace HotelBooking.Repository.Implementation
     public class RoomTypeRepository : IRoomType
     {
         private readonly CompanyContext _context;
-        public RoomTypeRepository(CompanyContext context)
-        {
-            _context = context;
+        //public RoomTypeRepository(CompanyContext context)
+        //{
+        //    _context = context;
 
-        }
+        //}
         public RoomTypeRepository()
         {
             _context = new CompanyContext();

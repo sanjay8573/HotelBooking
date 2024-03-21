@@ -61,7 +61,7 @@
                                             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                                 <span class="float-left restextpagin">Showing @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</span>
 
-                                                <div class="pagination pull-right">@Html.PagedListPager(Model, page => Url.Action("Coupon", new { page, pageSize = @Model.PageSize }), PagedListRenderOptions.ClassicPlusFirstAndLast) </div>
+                                                <div class="pagination pull-right">@Html.PagedListPager(Model, page => Url.Action("Coupon", new { page, pSize = ViewBag.PageSize }), PagedListRenderOptions.ClassicPlusFirstAndLast) </div>
                                             </div>
                                         </td>
                                     </tr>

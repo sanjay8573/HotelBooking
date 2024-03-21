@@ -10,11 +10,11 @@ namespace HotelBooking.Repository.Implementation
     {
         private readonly CompanyContext _context;
 
-        public RoomTypeImageRepository(CompanyContext context)
-        {
-            _context = context;
+        //public RoomTypeImageRepository(CompanyContext context)
+        //{
+        //    _context = context;
 
-        }
+        //}
         public RoomTypeImageRepository()
         {
             _context = new CompanyContext();

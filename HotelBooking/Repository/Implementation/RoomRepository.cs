@@ -81,7 +81,7 @@ namespace HotelBooking.Repository.Implementation
         public AllocateRoomResponse GetRoomsByRoomTypeIds(int branchId, string RoomTypeId, int BookingId)
         {
             AllocateRoomResponse avl = new AllocateRoomResponse();
-            IEnumerable<BookedRoom> lstBookedRoom = _context.BookedRoom.Where(r => RoomTypeId.Contains(r.RoomTypeId.ToString()) && r.isCheckout == false && r.BranchId == branchId).ToArray();
+            IEnumerable<BookedRoom> lstBookedRoom = _context.BookedRoom.Where(r => RoomTypeId.Contains(r.RoomTypeId.ToString()) && r.BranchId == branchId && r.BookingId== BookingId).ToArray();
             IEnumerable<BookedRoom> lstAllocatedRoom = lstBookedRoom.Where(b => b.BookingId == BookingId).ToArray();
             IEnumerable<Room> rms = _context.Rooms.Where(r => r.BranchId == branchId && RoomTypeId.Contains(r.RoomTypeId.ToString())).ToArray();
             IEnumerable<Room> rms1 = from r in rms

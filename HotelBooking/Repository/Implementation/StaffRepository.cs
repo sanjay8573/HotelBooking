@@ -11,10 +11,10 @@ namespace HotelBooking.Repository.Implementation
     {
 
         private readonly StaffContext _context;
-        public StaffRepository(StaffContext context)
-        {
-            _context = context;
-        }
+        //public StaffRepository(StaffContext context)
+        //{
+        //    _context = context;
+        //}
         public StaffRepository()
         {
             _context = new StaffContext();
@@ -34,6 +34,9 @@ namespace HotelBooking.Repository.Implementation
             {
                 VM_Staff tmpS = new VM_Staff();
                 tmpS.StaffId = s1.Id;
+                tmpS.StaffName = s1.StaffName;
+                tmpS.Phone1 = s1.Phone1;
+                tmpS.Phone2 = s1.Phone2;
                 tmpS.Name = s1.StaffName;
                 tmpS.LoginName = _context.StaffLogin.Where(s => s.StaffId == s1.Id).Select(n => n.LoginName).SingleOrDefault();
                 tmpS.Branch= _context.Branch.Where(b => b.Id == s1.BranchId).Select(n => n.BranchName).SingleOrDefault();
@@ -60,7 +63,15 @@ namespace HotelBooking.Repository.Implementation
             {
                 if (staffEntity.Id > 0)
                 {
-                    //_context.Staff.Update(staffEntity);
+                    Staff stf = _context.Staff.Find(staffEntity.Id);
+                    stf.StaffName = staffEntity.StaffName;
+                    stf.NickName=staffEntity.NickName;
+                    stf.Phone1=staffEntity.Phone1;  
+                    stf.Phone2=staffEntity.Phone2;
+                    stf.DepartmentId=staffEntity.DepartmentId;
+                    stf.DesignationId = staffEntity.DesignationId;
+                    stf.TeamId = staffEntity.TeamId;
+                    stf.Email = staffEntity.Email;
                 }
                 else
                 {

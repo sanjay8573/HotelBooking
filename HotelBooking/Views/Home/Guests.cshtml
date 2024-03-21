@@ -1,0 +1,158 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<HotelBooking.Model.Guests>
+@{
+    ViewBag.Title = "Guests";
+}
+
+<div class="row">
+    <div class="col-xl-3 col-lg-6 col-md-6 col-12">
+        <div class="card gradient-blackberry">
+            <div class="card-body">
+                <div class="card-block pt-2 ">
+                    <div class="media">
+                        <div class="media-body white text-left">
+                            <h3 class="font-large-1 mb-0">@ViewBag.NumberOfGuest</h3>
+                            <span>GUESTS</span>
+                        </div>
+                        <div class="media-right white text-right"> <i class="fa fa-leaf font-large-1"></i> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-md-6 col-12">
+        <div class="card gradient-ibiza-sunset">
+            <div class="card-body">
+                <div class="card-block pt-2 ">
+                    <div class="media">
+                        <div class="media-body white text-left">
+                            <h3 class="font-large-1 mb-0">@ViewBag.NumberOfVIP</h3>
+                            <span>VIP</span>
+                        </div>
+                        <div class="media-right white text-right"> <i class="fa fa-users font-large-1"></i> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<div class="col-xl-3 col-lg-6 col-md-6 col-12">
+        <div class="card gradient-green-tea">
+            <div class="card-body">
+                <div class="card-block pt-2 ">
+                    <div class="media">
+                        <div class="media-body white text-left">
+                            <h3 class="font-large-1 mb-0">7</h3>
+                            <span>Bookings</span>
+                        </div>
+                        <div class="media-right white text-right"> <i class="fa fa-list font-large-1"></i> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-md-6 col-12">
+        <div class="card gradient-pomegranate">
+            <div class="card-body">
+                <div class="card-block pt-2 ">
+                    <div class="media">
+                        <div class="media-body white text-left">
+                            <h3 class="font-large-1 mb-0">130979.60</h3>
+                            <span>INCOME</span>
+                        </div>
+                        <div class="media-right white text-right"> <i class="fa fa-dollar font-large-1"></i> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>*@
+</div>
+<!--Statistics cards Starts-->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Guests <small>Lists</small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Guests</small> </span></div>
+            <div class="widget-content padded text-center">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12 pull-right">
+                            <button type="button" class="allbtnin  form-group" onclick="location.href='@Url.Action("AddGuest","Home",new { m="A"})'"> +ADD</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 pull-left">
+                            <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-left text-left">
+                                @using (Html.BeginForm("Guests", "Home", FormMethod.Get, new { id = "form1" }))
+                                {
+                                    <div id="pro_pag2">
+                                        Show @* @Html.DropDownList("PageSize", new SelectList(new Dictionary<string, int> { { "5", 5 }, { "10", 10 }, { "20", 20 } }, "Key", "Value"), new { @class = "onlyinput", id = "RTpagesize" })*@
+                                        @Html.DropDownList("pSize", (IEnumerable<SelectListItem>)ViewBag.pSize, new { @class = "onlyinput" }) Records
+                                    </div>
+                                }
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
+                                Search
+                                <input type="text" id="txtUserName" class="onlyinput" placeholder="Search" runat="server">
+                            </div>
+                        </div>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th width="3%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">#</a></th>
+                                    <th width="21%" align="left" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Name</a></th>
+                                    <th width="17%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Country</a></th>
+                                    <th width="23%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Email</a></th>
+                                    <th width="15%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Mobile</a></th>
+                                    <th width="15%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">VIP</a></th>
+                                    <th width="20%" align="center" valign="middle" bgcolor="#003556" colspan="4" class="clrwhit"><a href="#">Action</a></th>
+
+                                </tr>
+                                @if (Model != null)
+                                {
+                                    var i = 1;
+                                    foreach (var gs in Model)
+                                    {
+                                        <tr>
+                                            <td align="center" valign="middle">@i</td>
+                                            <td align="left" valign="middle">@gs.Name</td>
+                                            <td align="left" valign="middle">@gs.country</td>
+                                            <td align="left" valign="middle">@gs.email</td>
+                                            <td align="left" valign="middle">@gs.Phone</td>
+                                            <td align="left" valign="middle">@gs.isVIP</td>
+                                            <td align="left" valign="middle"><a href="@Url.Action("MakeVIP","Home",new { @GuestId = gs.GuestId })" class="housekeeping"><i class="fa fa-check"></i> Add To VIP</a></td>
+                                            <td align="left" valign="middle"><a href="@Url.Action("AddGuest","Home",new {@GuestId = gs.GuestId,m="V"})" class="editbtn"><i class="fa fa-eye"></i> View</a></td>
+                                            <td align="left" valign="middle"><a href="@Url.Action("AddGuest","Home",new { @GuestId = gs.GuestId ,m="E"})" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
+                                            <td align="left" valign="middle"><a href="@Url.Action("DelGuest","Home",new { @GuestId = gs.GuestId })" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+
+
+                                <tr>
+                                    <td colspan="10">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <span class="float-left restextpagin">Showing @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount entries</span>
+
+                                            <div class="pagination pull-right">
+                                                @Html.PagedListPager(Model, page => Url.Action("Guests", new { page,pSize= ViewBag.PageSize }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#pSize").change(function () {
+        $("#form1").submit();
+    });
+
+</script>    

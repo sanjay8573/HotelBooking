@@ -15,10 +15,10 @@ namespace HotelBooking.Repository.Implementation
     public class TncRepository : ITnC
     {
         private readonly CompanyContext _context;
-        public TncRepository(CompanyContext context)
-        {
-            _context = context;
-        }
+        //public TncRepository(CompanyContext context)
+        //{
+        //    _context = context;
+        //}
         public TncRepository()
         {
             _context = new CompanyContext();

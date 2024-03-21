@@ -1,0 +1,189 @@
+﻿@model HotelBooking.Model.VM_DocumentResponse
+
+@{
+    var nDocUploaded = Model.Documents.Where(d=>d.DocumentTypeId!=4).Count();
+    var RequiedDoc = Model.Pax - nDocUploaded;
+    var k = 1;
+
+
+}
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left table-responsive">
+    <div class="widget-content padded text-center">
+        <div class="row">
+          
+            <h5 class="tabheading text-left"> Document Uploaded  for: <strong></strong><strong id="uploadedDoc">@nDocUploaded</strong> Pax<span class="primary" style="margin-left: 20px;">Pending Documents for :<strong> - </strong><strong id="PendingDocument">@RequiedDoc</strong> Pax</span></h5>
+
+
+            </div>
+
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left table-responsive">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left"><label style="margin-top: 10px;">Upload Documents</label></div>
+            @if (RequiedDoc > 0)
+            {
+            <form id="msform" runat="server" action="/Home/saveBookingDocuments" method="post" enctype="multipart/form-data" style=" margin:0px auto;">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left table-responsive">
+                    <table class="table table-bordered" style="width:100%">
+                        <tbody>
+                            <tr class="trthbgclr">
+                                <th class="text-center">#</th>
+                                <th class="text-center">Pax Name</th>
+                                <th class="text-center">Document Type</th>
+                                <th class="text-center">Browse a document</th>
+                            </tr>
+                            @for (int i = 0; i < RequiedDoc; i++)
+                            {
+                                var selname = "DocSelType" + i.ToString();
+                                var fileBName = "DocFile" + i.ToString();
+                                var PaxId = "Pax" + i.ToString();
+                                var DocTypeName = "DocTypeName" + i.ToString();
+                                <tr class="active">
+                                    <th class="text-center">@k</th>
+                                    <th class="text-center">
+                                        <input type="text" id="@PaxId" name="@PaxId" class="full-width" placeholder="Pax Name" runat="server">
+
+
+                                    </th>
+
+                                    <th class="text-center">
+                                        <select id="@selname" class="form-required full-width" onchange="GetSelectedTextValue('@i',this)" required name="@selname">
+                                            @if (ViewBag.DocsComboModel != null)
+                                            {
+                                                foreach (var item in ViewBag.DocsComboModel)
+                                                {
+                                                    if (item.Text != null)
+                                                    {
+                                                        <option value="@item.Value" selected="@item.Selected">
+                                                            @item.Text
+                                                        </option>
+
+                                                    }
+                                                }
+                                            }
+                                        </select>
+
+                                        <input type="hidden" id="@DocTypeName" name="@DocTypeName" value="" />
+                                    </th>
+                                    <th class="text-center">
+                                        <input type="file" id="@fileBName" name="@fileBName" class=" full-width">
+                                    </th>
+                                </tr>
+                                k++;
+                            }
+                            <tr >
+                                <th class="text-center" colspan="4">
+                                    
+                                                    <input class="styled-checkbox" type="checkbox"  name="CHK_RCR" id="CHK_RCR" />
+                                                    <label for="CHK_RCR">Vechile Registration - Required</label>
+                                            
+                                                    <input type="hidden" id="isRCRequired" name="isRCRequired" value="false" />
+                                </th>
+                                
+                            </tr>
+                            <tr id="RCId" class="active">
+                               
+                                <th class="text-center" colspan="3">
+                                    <input type="text" id="PaxIdRC" name="PaxIdRC" class="full-width" placeholder="Registration Number" runat="server">
+                                    
+
+                                </th>
+
+
+                                <th class="text-center">
+                                    <input type="file" id="FileRC" name="FileRC" class=" full-width">
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <input type="hidden" id="nDoc" name="nDoc" value="@RequiedDoc" />
+                <input type="hidden" id="BookingId" name="BookingId" value="@Model.BookingId" />
+                <input type="hidden" id="BookingRef1" name="BookingRef1" value="r" />
+
+                <input type="submit" name="SUBMIT" class="prev action-button" onclick="setDataonSubmit();" value="Save" runat="server">
+
+            </form>
+            }
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">&nbsp;</div>
+                <table class="table table-bordered">
+                    <tbody>
+
+                        <tr class="trthbgclr">
+                            <th class="text-center">#</th>
+                            <th class="text-center">Pax Name</th>
+                            <th class="text-center">Document Type</th>
+                            <th class="text-center">View</th>
+                        </tr>
+                        @if (Model != null)
+                        {
+                            var i = 1;
+                            foreach (var bk in Model.Documents)
+                            {
+                                <tr class="active">
+                                    <td>@i</td>
+                                    <td align="left" valign="middle">@bk.PaxName</td>
+                                    <td align="left" valign="middle">@bk.DocumentName</td>
+                                    <td align="center" valign="middle">
+                                       
+                                        <a href="#" class="editbtn"  data-toggle="modal" data-target="#@bk.DocumentId"><i class="fa fa-eye"></i> View</a>
+                                    </td>
+                                    <td>
+                                        <div class="modal fade" id="@bk.DocumentId" z-index="-1" role="dialog" aria-labelledby="personalModalLabel" aria-hidden="true">
+
+                                            <div class="modal-dialog">
+                                                <!-- Modal content-->
+                                                <div class="modal-content">
+                                                    <div class="modal-body">
+                                                        <div class="row">
+                                                            <img style="max-width:500px; max-height:500px;" src="data:image/*;base64,@(Convert.ToBase64String(bk.DocumentData))">
+                                                        </div>
+                                                       
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+
+                                                           
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+                        }
+
+
+                    </tbody>
+                </table>
+        </div>
+</div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#RCId").hide();
+         $('#CHK_RCR').change(function () {
+            if (this.checked) {
+                $("#RCId").show();
+                $("#isRCRequired").val("true");
+                
+            } else {
+                $("#RCId").hide();
+                $("#isRCRequired").val("false");
+            }
+        });
+    
+    });
+
+        function GetSelectedTextValue(idn, ddlSelect) {
+            var selectedText = ddlSelect.options[ddlSelect.selectedIndex].innerHTML;
+
+            const dtName = "DocTypeName" + idn;
+            $("#" + dtName).val(selectedText.trim());
+            console.log(idn + "   " + selectedText.trim() + "  " + dtName);
+        }
+        function setDataonSubmit() {
+            $("#BookingRef1").val($("#BookingRef").val());
+        }
+    
+</script>
+

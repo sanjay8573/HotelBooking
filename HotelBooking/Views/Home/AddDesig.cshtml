@@ -1,0 +1,70 @@
+﻿@model HotelBooking.Model.Designation
+@{
+    ViewBag.Title = "AddDesig";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-address-card" aria-hidden="true"></i> Add Departments</div>
+            <div class="widget-content padded text-center">
+
+                @using (Html.BeginForm("SaveDesig", "HR", FormMethod.Post, new { id = "msform", enctype = "multipart/form-data" }))
+                {
+                    <div class="row">
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required"> Name</label>
+                                @Html.TextBoxFor(m => m.DesignationName, new { @class = "full-width", placeholder = "Designation" })
+
+                            </div>
+
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required"> Name</label>
+                                @Html.TextBoxFor(m => m.DesignationCode, new { @class = "full-width", placeholder = "Code" })
+
+                            </div>
+
+                        </div>
+                        @Html.HiddenFor(model => model.isActive)
+                        @Html.HiddenFor(model => model.Id)
+                        @Html.HiddenFor(model => model.BranchId)
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                            <label for="edit-mail" class="form-required">&nbsp;</label>
+
+                            <ul class="unstyled">
+                                <li>
+                                    <input class="styled-checkbox" id="CHK_ACTIVE" type="checkbox" checked="@Model.isActive" name="CHK_ACTIVE">
+                                    <label for="CHK_ACTIVE">Active</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+                    <input type="submit" name="prev" id="btnAddDesig" class="prev action-button" onclick="setData();" value="SAVE" runat="server">
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+        function setData() {
+
+            $('input[type=checkbox]').each(function () {
+                if (this.name == "CHK_ACTIVE") {
+                    $('#IsActive').val(this.checked);
+
+                }
+            });
+        };
+    });
+
+</script>
+

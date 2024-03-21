@@ -11,11 +11,11 @@ namespace HotelBooking.Repository.Implementation
     {
         private readonly CompanyContext _context;
 
-        public CouponRepository(CompanyContext context)
-        {
-            _context = context;
+        //public CouponRepository(CompanyContext context)
+        //{
+        //    _context = context;
 
-        }
+        //}
         public CouponRepository()
         {
             _context = new CompanyContext();

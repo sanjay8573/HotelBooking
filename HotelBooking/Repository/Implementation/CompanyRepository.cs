@@ -15,10 +15,10 @@ namespace HotelBooking.Repository.Implementation
     {
         private readonly CompanyContext _context;
 
-        public CompanyRepository(CompanyContext context)
-        {
-            _context = context;
-        }
+        //public CompanyRepository(CompanyContext context)
+        //{
+        //    _context = context;
+        //}
         public CompanyRepository()
         {
             _context = new CompanyContext();

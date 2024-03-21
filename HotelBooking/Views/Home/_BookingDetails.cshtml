@@ -1,0 +1,134 @@
+﻿@model IEnumerable<HotelBooking.Model.BookingCost>
+
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered">
+    <tbody>
+        <tr class="trthbgclr">
+            <th>#</th>
+            <th>Date</th>
+
+            <th>Price</th>
+
+        </tr>
+        @if (Model != null)
+        {
+            var i = 1;
+            decimal totalAmount = decimal.Parse("0");
+            decimal totalTax = decimal.Parse("0");
+            foreach (var p in Model)
+            {
+                <tr>
+                    <td>@i</td>
+                    @if (@p.CostCategory == 1)
+                    {
+                        <td>@p.Date</td>
+                    }
+                    else
+                    {
+                        <td>@p.Description</td>
+                    }
+
+
+
+                    <td align="right">$ @p.OfferPrice</td>
+                    <input type="hidden" id="BookingCostId" value="@p.BookingCostId" />
+                </tr>
+                i++;
+                totalAmount = totalAmount + p.OfferPrice;
+                totalTax = totalTax + p.TaxAmount;
+
+            }
+
+            totalAmount = totalAmount + totalTax;
+
+
+            <tr>
+                <td colspan="2" align="right">
+                    Tax(18%) :
+                    <a href="#" id="taxBreakup" data-toggle="modal" data-target="#TXBRK">Break-up</a>
+                </td>
+                <td align="right">$ @totalTax</td>
+            </tr>
+            <tr>
+                <td colspan="2" align="right">Total : </td>
+                <td colspan="3" align="right">$ @totalAmount</td>
+            </tr>
+
+            <input type="hidden" id="TotalCostForNights" value="@totalAmount" />
+
+        }
+
+    </tbody>
+</table>
+<div class="modal fade" id="TXBRK" role="dialog">
+
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered">
+                        <tbody>
+                            <tr class="trthbgclr">
+                                <th>#</th>
+                                <th>Date/Description</th>
+
+                                <th>Price</th>
+                                <th>offer Price(Payable Amount)</th>
+                                <th>Tax(18%)</th>
+
+                            </tr>
+                            @if (Model != null)
+                            {
+                                var i = 1;
+                                decimal totalAmount = decimal.Parse("0");
+                                decimal totalTax = decimal.Parse("0");
+                                foreach (var p in Model)
+                                {
+                                    <tr>
+                                        <td>@i</td>
+                                        @if (@p.CostCategory == 1)
+                                        {
+                                            <td>@p.Date</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@p.Description</td>
+                                        }
+
+
+                                        <td align="right">$ @p.PerNightCost</td>
+                                        <td align="right">$ @p.OfferPrice</td>
+                                        <td align="right">$ @p.TaxAmount</td>
+
+                                    </tr>
+                                    i++;
+                                    totalAmount = totalAmount + p.OfferPrice;
+                                    totalTax = totalTax + p.TaxAmount;
+
+                                }
+                                <tr>
+                                    <td colspan="5" align="right">$ @totalTax</td>
+                                </tr>
+                            }
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $(document.body).append($("#TXBRK").clone());
+        $("#TXBRK").remove();
+    });
+</script>

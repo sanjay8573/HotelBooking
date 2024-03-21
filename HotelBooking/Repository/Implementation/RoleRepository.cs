@@ -9,10 +9,10 @@ namespace HotelBooking.Repository.Implementation
     public class RoleRepository : IRoles
     {
         private readonly RoleRightContext _context;
-        public RoleRepository(RoleRightContext context)
-        {
-            _context = context;
-        }
+        //public RoleRepository(RoleRightContext context)
+        //{
+        //    _context = context;
+        //}
         public RoleRepository()
         {
             _context = new RoleRightContext();

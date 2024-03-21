@@ -9,10 +9,10 @@ namespace HotelBooking.Repository.Implementation
     public class DeptRepository : IDept
     {
         private readonly DeptContext _context;
-        public DeptRepository(DeptContext context)
-        {
-            _context = context;
-        }
+        //public DeptRepository(DeptContext context)
+        //{
+        //    _context = context;
+        //}
         public DeptRepository()
         {
             _context = new DeptContext();

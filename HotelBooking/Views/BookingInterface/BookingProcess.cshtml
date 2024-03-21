@@ -200,7 +200,7 @@
             $(".tab-a").removeClass('active-a');
             $(this).parent().find(".tab-a").addClass('active-a');
         });
-        $("#BookingDetailsLink").click();
+       
 
         $("#BookingDetailsLink").click(function () {
             var BranchId = $("#BranchId").val();
@@ -208,8 +208,8 @@
             var cin = $("#cinDate").val();
             var cout = $("#coutDate").val();
             const RoomTypeId = $("#RoomTypeId").val();
-            console.log("test1.......");
-            var URL = "/BookingInterface/_BookingDetails?BookingId=" + BookingId + "&RoomTypeId=" + RoomTypeId + "&cinDate=" + cin + "&coutDate=" + cout;
+            console.log("test1.......1111");
+            var URL = "/Home/_BookingDetails?BookingId=" + BookingId + "&RoomTypeId=" + RoomTypeId + "&cinDate=" + cin + "&coutDate=" + cout;
             $.ajax({
                 type: 'GET',
                 url: URL,
@@ -235,7 +235,7 @@
             var BookingId = $("#BookingId").val();
             console.log("test2.......");
             console.log("Booking made for= " + RoomTypeId);
-            $("#BookingPaymentDIV").load("/BookingInterface/_Payments?BranchId=" + BranchId + "&BookingId=" + BookingId);
+            $("#BookingPaymentDIV").load("/Home/_Payments?BranchId=" + BranchId + "&BookingId=" + BookingId);
 
 
 
@@ -247,7 +247,7 @@
             console.log("test3.......");
             const RoomTypeId = $("#RoomTypeId").val();
             console.log("Booking made for= " + RoomTypeId);
-            var url = "/BookingInterface/_AllocateRooms?BookingId=" + BookingId + "&RoomTypeId='" + RoomTypeId + "'&nor=" + nRooms;
+            var url = "/Home/_AllocateRooms?BookingId=" + BookingId + "&RoomTypeId='" + RoomTypeId + "'&nor=" + nRooms;
             console.log("Url for alocate Room= " + url);
             $("#AllocateRoomDIV").load(url);
 
@@ -263,7 +263,7 @@
             console.log("test4......."+nPax+"    "+nRooms);
             const RoomTypeId = $("#RoomTypeId").val();
             console.log("Booking made for= " + RoomTypeId);
-            $("#BookingDocumentDIV").load("/BookingInterface/_Documents?BookingId=" + BookingId +  "&noPax=" + nPax + "&noRooms=" + nRooms);
+            $("#BookingDocumentDIV").load("/Home/_Documents?BookingId=" + BookingId +  "&noPax=" + nPax + "&noRooms=" + nRooms);
 
 
 
@@ -285,7 +285,7 @@
             console.log(selected + "   " + BranchId + "   " + BookingId);
             $.ajax({
                 type: "POST",
-                url: "/BookingInterface/UpdateBookingStatus",
+                url: "/Home/UpdateBookingStatus",
                 dataType: "text",
                 async: false,
                 data: JSON.stringify({ BookingId: BookingId, status: selected }),
@@ -325,7 +325,7 @@
                 console.log(selected + "   " + BranchId + "   " + BookingId);
                 $.ajax({
                     type: "POST",
-                    url: "/BookingInterface/UpdatePaymentStatus",
+                    url: "/Home/UpdatePaymentStatus",
                     dataType: "text",
                     async: false,
                     data: JSON.stringify({ BookingId: BookingId, status: selected }),
@@ -356,6 +356,9 @@
                 });
             }
         });
+        console.log("omload click detail");
+        $("#BookingDetailsLink").click();
+        console.log("omload click detail");
 
     });
 </script>

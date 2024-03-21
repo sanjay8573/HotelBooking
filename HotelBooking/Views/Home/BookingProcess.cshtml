@@ -1,0 +1,365 @@
+﻿@model HotelBooking.Model.VM_BookingDetails
+@{
+    ViewBag.Title = "BookingProcess";
+}
+@{
+
+
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Processing Booking <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Checkout</small> </span></div>
+            <div class="widget-content padded text-center">
+
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 pull-left">
+                        <div>
+                            Booking Ref# :<b> @ViewBag.BookingRef</b>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <label>Change Booking Status</label>
+
+                        <select id="bkStatus" class="full-width ddselect" required name="BkStatus">
+                            @if (ViewBag.bkStatus != null)
+                            {
+                                foreach (var item in ViewBag.BkStatus)
+                                {
+                                    if (item.Text != null)
+                                    {
+                                        <option value="@item.Value" selected="@item.Selected">
+                                            @item.Text
+                                        </option>
+
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                        <label>Change Payment Status</label>
+
+                        <select id="pmtStatus" class="full-width ddselect" required name="pmtStatus">
+                            @if (ViewBag.pmtStatus != null)
+                            {
+                                foreach (var item in ViewBag.pmtStatus)
+                                {
+                                    if (item.Text != null)
+                                    {
+                                        <option value="@item.Value" selected="@item.Selected">
+                                            @item.Text
+                                        </option>
+
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 table-responsive">
+                        <div class="tab-container bdrtab">
+                            <div class="tab-menu">
+                                <ul>
+                                    <li><a href="#" class="tab-a active-a" id="BookingDetailsLink" data-id="Details">Details</a></li>
+                                    <li><a href="#" class="tab-a" id="UploadDocLink" data-id="Docuemnts">Documents</a></li>
+                                    <li><a href="#" class="tab-a" id="AllocateRoomLink" data-id="Room">Allocate Room</a></li>
+                                    <li><a href="#" class="tab-a" id="BookingPaymentLink" data-id="Payments">Payments</a></li>
+                                </ul>
+                            </div>
+                            <!--end of tab-menu-->
+                            <div class="tab tab-active" data-id="Details">
+                                <h5 class="tabheading text-left" style="padding: 5px 15px">
+
+                                    <img src="~/images/avatar-08.png" width="150" height="25" alt="" /> @Model.CompanyName
+                                </h5>
+                                <div class="row">
+                                    <div class="col-12 col-md-12 col-lg-12">
+                                        <!--outer box -->
+                                        <div class="itnarydiv">
+                                            <!--title  -->
+                                            <div class="boundbox">
+                                                <p class="boundboxp"><i class="fa fa-building" aria-hidden="true"></i><span class="boundboxpspan">Booking Details</span></p>
+                                            </div>
+                                            <!--end title -->
+
+                                            <div class="full-width row">
+                                                <!--left column-->
+                                                <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8">
+                                                    <div class="table table-responsive smrytbled" style="margin-bottom:0px;">
+                                                        <table class="table table-bordered" style="font-size: 12px; margin-bottom: 0px;">
+                                                            <tbody>
+
+                                                                <tr>
+                                                                    <td width="50%">
+                                                                        <p class="depart">Hotels Details</p>
+                                                                        <p class="smrydatetime"><strong>@Model.CompanyName</strong></p>
+                                                                        <p class="full-width text-left pull-left depatd">@Model.CompanyAddress</p>.
+                                                                        <p class="full-width text-left pull-left depatd">Phone: @Model.CompanyPhone</p>
+                                                                        <p class="full-width text-left pull-left depatd">E-mail: @Model.CompanyEmail</p>
+                                                                    </td>
+                                                                    <td width="50%">
+                                                                        <p class="depart">Guest Details</p>
+                                                                        <p class="smrydatetime"><strong>&nbsp;</strong><span class="smrydate">@Model.GuestName</span></p>
+                                                                        <p class="full-width text-left pull-left depatd">@Model.GuestAddress</p>
+                                                                        <p class="full-width text-left pull-left depatd">@Model.GuestCity, @Model.Guestcountry - @Model.Guestpincode </p>
+                                                                        <p class="full-width text-left pull-left depatd">Phone: @Model.GuestPhone</p>
+                                                                        <p class="full-width text-left pull-left depatd">E-mail: @Model.Guestemail</p>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+
+                                                </div>
+                                                <!--end left column-->
+                                                <!--right column-->
+                                                <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 acddiv" style="padding: 10px 0px;">
+                                                    <div class="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7 p-0 pull-left">
+                                                        <p class="onlnckn"><strong>Room:</strong> @Model.Room</p>
+                                                        <p class="aerlnscnf">Booking #: @Model.BookingRef</p>
+                                                        <p class="arlnsnme"><strong>Check In:</strong> @Model.CheckIn</p>
+                                                        <p class="arlnsnme"><strong>Check Out:</strong> @Model.CheckOut</p>
+                                                        <p class="flitn"><strong>Payment Status:</strong> @Model.PaymnentStatus</p>
+                                                        <p class="fclasS"><strong>Booking Status:</strong> @Model.BookingStatus</p>
+                                                    </div>
+                                                    <div class="col-12 col-sm-6 col-md-5 col-lg-5 col-xl-5 p-0 pull-left">
+                                                        <p class="fclasS"><strong>Adults:</strong>@Model.Audlts</p>
+                                                        <p class="fclasS"><strong>Childs:</strong> @Model.Child</p>
+                                                        <p class="fclasS"><strong>Nights:</strong> @Model.Nights</p>
+                                                    </div>
+                                                </div>
+                                                <!--end right column-->
+                                                <!--Cost per nights details table-->
+                                                <div class="col-12 col-md-12 col-lg-12" id="BookingDetailsDIV"></div>
+                                            </div>
+
+
+                                        </div>
+                                        <!--outer box -->
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end of tab one-->
+
+                            <div class="tab" data-id="Payments">
+
+                                <div class="row" id="BookingPaymentDIV">
+
+                                </div>
+                            </div>
+                            <!--end of tab two-->
+                            <div class="tab " data-id="Room">
+                                <form id="msform" runat="server" action="" method="get" style=" margin:0px auto;">
+                                    <div class="row" id="AllocateRoomDIV">
+
+
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab" data-id="Docuemnts">
+
+                                <div class="row" id="BookingDocumentDIV">
+
+                                </div>
+                            </div>
+                            <!--end of tab three-->
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" id="SelectedTab" value="@ViewBag.SelectedTab" />
+                <input type="hidden" id="BookingId" value="@Model.BookingId" />
+                <input type="hidden" id="BookingRef" value="@ViewBag.BookingRef" />
+                <input type="hidden" id="BranchId" value="@ViewBag.BranchId" />
+                <input type="hidden" id="TotalPrice" value="@Model.TotalPrice" />
+                <input type="hidden" id="Amountpaid" value="@Model.Amountpaid" />
+                <input type="hidden" id="AmountPending" value="@Model.AmountPending" />
+                <input type="hidden" id="RoomTypeId" value="@Model.RoomTypeId" />
+                <input type="hidden" id="NoOfRooms" value="@Model.NoOfRooms" />
+                <input type="hidden" id="RoomTypeName" value="" />
+
+                <input type="hidden" id="GuestId" value="@Model.GuestId" />
+                <input type="hidden" id="GuestName" value="@Model.GuestName" />
+                <input type="hidden" id="cinDate" value="@Model.CheckIn" />
+                <input type="hidden" id="coutDate" value="@Model.CheckOut" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+       
+        $('.tab-a').click(function () {
+            $(".tab").removeClass('tab-active');
+            $(".tab[data-id='" + $(this).attr('data-id') + "']").addClass("tab-active");
+            $(".tab-a").removeClass('active-a');
+            $(this).parent().find(".tab-a").addClass('active-a');
+        });
+       
+
+        $("#BookingDetailsLink").click(function () {
+            var BranchId = $("#BranchId").val();
+            var BookingId = $("#BookingId").val();
+            var cin = $("#cinDate").val();
+            var cout = $("#coutDate").val();
+            const RoomTypeId = $("#RoomTypeId").val();
+            console.log("test1.......1111");
+            var URL = "/Home/_BookingDetails?BookingId=" + BookingId + "&RoomTypeId=" + RoomTypeId + "&cinDate=" + cin + "&coutDate=" + cout;
+            $.ajax({
+                type: 'GET',
+                url: URL,
+                success: function (data) {
+                    //console.log(data);
+                    
+                    //$("#overlay").fadeOut(300);
+                }
+            }).done(function (data) {
+                setTimeout(function () {
+                    // $("#overlay").fadeOut(300);
+                }, 500);
+                $("#BookingDetailsDIV").html(data);
+            });
+           
+
+
+        });
+
+        $("#BookingPaymentLink").click(function () {
+            var BranchId = $("#BranchId").val();           
+            const RoomTypeId = $("#RoomTypeId").val();
+            var BookingId = $("#BookingId").val();
+            console.log("test2.......");
+            console.log("Booking made for= " + RoomTypeId);
+            $("#BookingPaymentDIV").load("/Home/_Payments?BranchId=" + BranchId + "&BookingId=" + BookingId);
+
+
+
+        });
+        $("#AllocateRoomLink").click(function () {
+
+            var BookingId = $("#BookingId").val();
+            var nRooms = $("#NoOfRooms").val();
+            console.log("test3.......");
+            const RoomTypeId = $("#RoomTypeId").val();
+            console.log("Booking made for= " + RoomTypeId);
+            var url = "/Home/_AllocateRooms?BookingId=" + BookingId + "&RoomTypeId='" + RoomTypeId + "'&nor=" + nRooms;
+            console.log("Url for alocate Room= " + url);
+            $("#AllocateRoomDIV").load(url);
+
+
+
+        });
+        $("#UploadDocLink").click(function () {
+
+            var BookingId = $("#BookingId").val();
+            
+            var nPax = '@Model.Audlts';
+            var nRooms = '1';
+            console.log("test4......."+nPax+"    "+nRooms);
+            const RoomTypeId = $("#RoomTypeId").val();
+            console.log("Booking made for= " + RoomTypeId);
+            $("#BookingDocumentDIV").load("/Home/_Documents?BookingId=" + BookingId +  "&noPax=" + nPax + "&noRooms=" + nRooms);
+
+
+
+        });
+
+        /*
+        var seletedTab = $("#SelectedTab").val();
+        if (seletedTab == "1") {
+            $("#regularpriceLink").click();
+        }
+        else {
+            $("#specialpriceLink").click();
+        }*/
+
+        $("#bkStatus").change(function () {
+            var BranchId = $("#BranchId").val();
+            var BookingId = $("#BookingId").val();
+            var selected = this.value;
+            console.log(selected + "   " + BranchId + "   " + BookingId);
+            $.ajax({
+                type: "POST",
+                url: "/Home/UpdateBookingStatus",
+                dataType: "text",
+                async: false,
+                data: JSON.stringify({ BookingId: BookingId, status: selected }),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    console.log(data);
+
+                    $.toast({
+                        heading: 'Success',
+                        text: 'Booking Status updated Successfully ',
+                        icon: 'success',
+                        loader: false,        // Change it to false to disable loader
+                        position: 'top-right',
+                        loaderBg: '#9EC600'  // To change the background
+                    });
+                    $("#BookingDetailsLink").click();
+                },
+                error: function (textStatus, errorThrown) {
+                    $.toast({
+                        autoDismiss: true,
+                        heading: 'Error',
+                        text: 'Error on Updating Boooking Status',
+                        icon: 'warning',
+                        position: 'top-right',
+                        loader: false,        // Change it to false to disable loader
+                        loaderBg: '#9EC600'  // To change the background
+                    });
+                }
+            });
+        });
+
+        $("#pmtStatus").change(function () {
+            var BranchId = $("#BranchId").val();
+            var BookingId = $("#BookingId").val();
+            var selected = this.value;
+            if (selected != "Select") {
+                console.log(selected + "   " + BranchId + "   " + BookingId);
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/UpdatePaymentStatus",
+                    dataType: "text",
+                    async: false,
+                    data: JSON.stringify({ BookingId: BookingId, status: selected }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        console.log(data);
+                        $.toast({
+                            heading: 'Success',
+                            text: 'Payment Status updated Successfully ',
+                            icon: 'success',
+                            loader: false,        // Change it to false to disable loader
+                            position: 'top-right',
+                            loaderBg: '#9EC600'  // To change the background
+                        });
+                        $("#BookingDetailsLink").click();
+                    },
+                    error: function (textStatus, errorThrown) {
+                        $.toast({
+                            autoDismiss: true,
+                            heading: 'Error',
+                            text: 'Error on Updating payment Status',
+                            icon: 'warning',
+                            position: 'top-right',
+                            loader: false,        // Change it to false to disable loader
+                            loaderBg: '#9EC600'  // To change the background
+                        });
+                    }
+                });
+            }
+        });
+        console.log("omload click detail");
+        $("#BookingDetailsLink").click();
+        console.log("omload click detail");
+
+    });
+</script>

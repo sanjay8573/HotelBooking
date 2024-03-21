@@ -24,12 +24,5 @@ namespace HotelBooking.Model
         public int CompanyId { get; set; }
         public bool isActive { get; set; }
         public bool isDeleted { get; set; }
-
-
-
-
-
-
-
     }
 }

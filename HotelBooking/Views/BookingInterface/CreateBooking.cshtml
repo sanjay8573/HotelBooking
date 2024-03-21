@@ -67,7 +67,7 @@
                 </div>
 
                 <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 p-0 pull-left" style="margin-top: 15px;">
-                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
                         <label for="edit-mail" class="form-required">Adults</label>
                         <div class="number" id="nAdult">
                             <span class="minus">-</span>
@@ -75,7 +75,7 @@
                             <span class="plus">+</span>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
                         <label for="edit-mail" class="form-required">Child</label>
                         <div class="number" id="nChild">
                             <span class="minus">-</span>
@@ -83,7 +83,7 @@
                             <span class="plus">+</span>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-left" style="display:none" id="chdAge1">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left" style="display:none" id="chdAge1">
                         <label for="edit-mail" class="form-required">Child 1 Age?</label>
                         <select name="Child1Age" id="Child1Age" class="full-width freetrial">
                             <option selected="selected" value="1">1 Year</option>
@@ -183,7 +183,7 @@
                     </div>*@
                     <table class="table table-bordered">
                         <tr>
-                            <td  class="trthbgclr" align="left" valign="middle">&nbsp;</td>
+                            <td  class="trthbgclr" align="left" width="15%" valign="middle">&nbsp;</td>
                             <td>
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tbody>
@@ -294,7 +294,8 @@
 <script>
     var amt;
     function SaveBooking() {
-                    console.log("SAving Booking.....");
+        debugger;
+                   
         const GuestName = $("#Selguest option:selected").text().replace(/[\n\r]+/g, ' ').trim();
                     const GuestID = $("#Selguest option:selected").val();
 
@@ -315,9 +316,7 @@
             roomTypeIds = roomTypeIds + $("#" + nid + " option:selected").val() + ',';
             roomTypeNames = roomTypeNames + $("#" + nid + " option:selected").text().replace(/[\n\r]+/g, ' ').trim() + ',';
         }
-        //console.log(roomCostData);
-                    //const RoomType = $("#RoomType option:selected").text().trim();
-                    //const RoomTypeId = $("#RoomType option:selected").val();
+        
                     const CHDage1 = $("#Child1Age option:selected").val();
                     const CHDage2 = $("#Child2Age option:selected").val();
                     const CHDage3 = $("#Child3Age option:selected").val();
@@ -393,7 +392,7 @@
             var obj = $("#" + jId).val();
 
             var objData = JSON.parse(obj);
-            console.log(objData);
+            console.log("sanjay"+objData);
             objData.forEach(item => {
 
                 BookingCost = {
@@ -407,7 +406,7 @@
                     CostCategory: 1,
                     Qty: 0,
                     Tax: item.Tax,
-                    TaxAmount: item.TaxAmount
+                    TaxAmount: parseFloat(parseFloat((parseFloat(item.OfferPrice) * 0.18)))
                 }
                 Bookingitem.AllNights.push(BookingCost);
 
@@ -441,14 +440,14 @@
             }
 
         }); 
-        //console.log(Bookingitem);
-        //console.log(JSON.stringify(Bookingitem));
+        console.log("Sanjay Kumar....");
+        console.log(JSON.stringify(Bookingitem));
         ////
-       // return false;
+      
                    
-                    //console.log(JSON.stringify(Bookingitem));
+                   /*
 
-                    fetch('/BookingInterface/SaveBooking', {
+                    fetch('/Home/SaveBooking', {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
@@ -467,7 +466,7 @@
                                 position: 'top-right',
                                 loaderBg: '#9EC600'  // To change the background
                             });
-                            window.location.href = '/BookingInterface/Bookings/';
+                            window.location.href = '/Home/Bookings/';
                             
                         })
                         .catch(error => {
@@ -481,14 +480,14 @@
                                 loaderBg: '#9EC600'  // To change the background
                             });
                         });
-
+            */
      }
                 function AppyCoupon() {
 
                     const couponCode = $("#BK-CPNCODE").val();
                     //const CCBaseURI = 'BookingInterface';
 
-                    $.post("/BookingInterface/ApplyCoupon", { BranchId: 3, couponCode: couponCode }, function (data) {
+                    $.post("/Home/ApplyCoupon", { BranchId: 3, couponCode: couponCode }, function (data) {
                         _displayDiscount(data);
                     });
 
@@ -629,12 +628,12 @@
                         var totalRoomSelected = $('option:selected', this).val();
                         //console.log(RoomTypeId + "  " + cin + "   " + cout);
                         $("#PPR").html('');
-                        $("#PPR").load("/BookingInterface/_PricePerRoom?nOfr=" + totalRoomSelected + "&todalNight=" + todalNight);
+                        $("#PPR").load("/Home/_PricePerRoom?nOfr=" + totalRoomSelected + "&todalNight=" + todalNight);
                         //$("#ppn").load("/BookingInterface/_PricePerNight?RoomTypeId=" + RoomTypeId + "&cinDate=" + cin + "&coutDate=" + cout + "&nOfr=" + totalRoomSelected);
 
                         //console.log("....1");
                         //setTimeout(divLoaded, 100);
-                        $("#paidservices").load("/BookingInterface/_PaidServices?RoomTypeId=" + RoomTypeId);
+                        $("#paidservices").load("/Home/_PaidServices?RoomTypeId=" + RoomTypeId);
 
                     });
                 });

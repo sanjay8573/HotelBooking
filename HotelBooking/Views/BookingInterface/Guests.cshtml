@@ -75,7 +75,7 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12 pull-right">
-                            <button type="button" class="allbtnin  form-group" onclick="location.href='@Url.Action("AddGuest","BookingInterface",new { m="A"})'"> +ADD</button>
+                            <button type="button" class="allbtnin  form-group" onclick="location.href='@Url.Action("AddGuest","Home",new { m="A"})'"> +ADD</button>
                         </div>
                     </div>
                 </div>
@@ -83,7 +83,7 @@
                     <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 pull-left">
                             <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-left text-left">
-                                @using (Html.BeginForm("Guests", "BookingInterface", FormMethod.Get, new { id = "form1" }))
+                                @using (Html.BeginForm("Guests", "Home", FormMethod.Get, new { id = "form1" }))
                                 {
                                     <div id="pro_pag2">
                                         Show @* @Html.DropDownList("PageSize", new SelectList(new Dictionary<string, int> { { "5", 5 }, { "10", 10 }, { "20", 20 } }, "Key", "Value"), new { @class = "onlyinput", id = "RTpagesize" })*@
@@ -120,10 +120,10 @@
                                             <td align="left" valign="middle">@gs.email</td>
                                             <td align="left" valign="middle">@gs.Phone</td>
                                             <td align="left" valign="middle">@gs.isVIP</td>
-                                            <td align="left" valign="middle"><a href="@Url.Action("MakeVIP","BookingInterface",new { @GuestId = gs.GuestId })" class="housekeeping"><i class="fa fa-check"></i> Add To VIP</a></td>
-                                            <td align="left" valign="middle"><a href="@Url.Action("AddGuest","BookingInterface",new {@GuestId = gs.GuestId,m="V"})" class="editbtn"><i class="fa fa-eye"></i> View</a></td>
-                                            <td align="left" valign="middle"><a href="@Url.Action("AddGuest","BookingInterface",new { @GuestId = gs.GuestId ,m="E"})" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
-                                            <td align="left" valign="middle"><a href="@Url.Action("DelGuest","BookingInterface",new { @GuestId = gs.GuestId })" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
+                                            <td align="left" valign="middle"><a href="@Url.Action("MakeVIP","Home",new { @GuestId = gs.GuestId })" class="housekeeping"><i class="fa fa-check"></i> Add To VIP</a></td>
+                                            <td align="left" valign="middle"><a href="@Url.Action("AddGuest","Home",new {@GuestId = gs.GuestId,m="V"})" class="editbtn"><i class="fa fa-eye"></i> View</a></td>
+                                            <td align="left" valign="middle"><a href="@Url.Action("AddGuest","Home",new { @GuestId = gs.GuestId ,m="E"})" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
+                                            <td align="left" valign="middle"><a href="@Url.Action("DelGuest","Home",new { @GuestId = gs.GuestId })" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
                                         </tr>
                                         i++;
                                     }

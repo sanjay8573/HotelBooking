@@ -15,11 +15,11 @@ namespace HotelBooking.Repository.Implementation
     {
         private readonly CompanyContext _context;
 
-        public BookingRepository(CompanyContext context)
-        {
-            _context = context;
+        //public BookingRepository(CompanyContext context)
+        //{
+        //    _context = context;
 
-        }
+        //}
         public BookingRepository()
         {
             _context = new CompanyContext();
@@ -125,6 +125,9 @@ namespace HotelBooking.Repository.Implementation
                     tmpEntity.BookingTypeId = bookingEntity.BookingTypeId;
                     tmpEntity.BookingTypeName = bookingEntity.BookingTypeName;
                     tmpEntity.Child = bookingEntity.Child;
+                    tmpEntity.ChildAge1 = bookingEntity.ChildAge1;
+                    tmpEntity.ChildAge2 = bookingEntity.ChildAge2;
+                    tmpEntity.ChildAge3 = bookingEntity.ChildAge3;
                     tmpEntity.Adult = bookingEntity.Adult;
                     tmpEntity.CheckIn = bookingEntity.CheckIn;
                     tmpEntity.Checkout = bookingEntity.Checkout;
@@ -306,11 +309,12 @@ namespace HotelBooking.Repository.Implementation
 
                     PriceResponse p = new PriceResponse
                     {
+                       
                         roomTypeId = PM.RoomTypeId,
                         Tax = 0.18M,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
-                        TaxAmount = (PM.MON * 18 / 100),
+                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.MON) * 18 / 100),
                         Amount = spclAmount > 0? spclAmount : PM.MON,
                         OfferPrice = spclAmount > 0 ? spclAmount : PM.MON,
                         BookingCostId = req.nOfRoom,
@@ -329,7 +333,7 @@ namespace HotelBooking.Repository.Implementation
                         Tax = 0.18M,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
-                        TaxAmount = (PM.TUE * 18 / 100),
+                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.TUE) * 18 / 100),
                         Amount = spclAmount > 0 ? spclAmount : PM.TUE,
                         OfferPrice = spclAmount > 0 ? spclAmount : PM.TUE,
                         BookingCostId = req.nOfRoom,
@@ -347,7 +351,7 @@ namespace HotelBooking.Repository.Implementation
                         Tax = 0.18M,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
-                        TaxAmount = (PM.WED * 18 / 100),
+                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.WED) * 18 / 100),
                         Amount = spclAmount > 0 ? spclAmount : PM.WED,
                         OfferPrice = spclAmount > 0 ? spclAmount : PM.WED,
                         BookingCostId = req.nOfRoom,
@@ -365,7 +369,7 @@ namespace HotelBooking.Repository.Implementation
                         Tax = 0.18M,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
-                        TaxAmount = (PM.THUR * 18 / 100),
+                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.THUR) * 18 / 100),
                         Amount = spclAmount > 0 ? spclAmount : PM.THUR,
                         OfferPrice = spclAmount > 0 ? spclAmount : PM.THUR,
                         BookingCostId = req.nOfRoom,
@@ -382,7 +386,7 @@ namespace HotelBooking.Repository.Implementation
                         Tax = 0.18M,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
-                        TaxAmount = (PM.FRI * 18 / 100),
+                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.FRI) * 18 / 100),
                         Amount = spclAmount > 0 ? spclAmount : PM.FRI,
                         OfferPrice = spclAmount > 0 ? spclAmount : PM.FRI,
                         BookingCostId = req.nOfRoom,
@@ -399,7 +403,7 @@ namespace HotelBooking.Repository.Implementation
                         Tax = 0.18M,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
-                        TaxAmount = (PM.SAT * 18 / 100),
+                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.SAT) * 18 / 100),
                         Amount = spclAmount > 0 ? spclAmount : PM.SAT,
                         OfferPrice = spclAmount > 0 ? spclAmount : PM.SAT,
                         BookingCostId = req.nOfRoom,
@@ -416,7 +420,7 @@ namespace HotelBooking.Repository.Implementation
                         Tax = 0.18M,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
-                        TaxAmount = (PM.SUN * 18 / 100),
+                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.SUN) * 18 / 100),
                         Amount = spclAmount > 0 ? spclAmount : PM.SUN,
                         OfferPrice = spclAmount > 0 ? spclAmount : PM.SUN,
                         BookingCostId = req.nOfRoom,
@@ -535,7 +539,7 @@ namespace HotelBooking.Repository.Implementation
 
         public bool AddBookedRoom(BookedRoom BookedRoomEntity)
         {
-            IBookedRoom IB = new BookedRoomRepository(_context);
+            IBookedRoom IB = new BookedRoomRepository();
             bool rtnVal ;
 
             rtnVal=IB.AddBookedRoom(BookedRoomEntity);
@@ -570,8 +574,19 @@ namespace HotelBooking.Repository.Implementation
 
         public bool AddBookingPayment(BookingPayments bkpEntity)
         {
-            bkpEntity.InvoiceNumber = generateInvoiceNumber(bkpEntity.BranchId);
-            bkpEntity.OrderNumber = generateOrderNumber(bkpEntity.BranchId);
+
+            string rtnInvStr = string.Empty;
+            string rtnOrdStr = string.Empty;
+
+            Branch brdata = _context.Branch.Where(b => b.Id == bkpEntity.BranchId).SingleOrDefault();
+            DocType dc = _context.DocType.Where(b => b.BranchId == bkpEntity.BranchId && b.isActive == true && b.DocCategory == 1).SingleOrDefault();
+            int lastPaymentId = dc.DocNumber + 1;
+            dc.DocNumber = lastPaymentId;
+
+            rtnInvStr = "INV" + brdata.BranchName.Substring(0, 2) + brdata.Id.ToString() + lastPaymentId.ToString();
+            rtnOrdStr = "ORD" + brdata.BranchName.Substring(0, 2) + brdata.Id.ToString() + lastPaymentId.ToString();
+            bkpEntity.InvoiceNumber = rtnInvStr;//generateInvoiceNumber(bkpEntity.BranchId);
+            bkpEntity.OrderNumber = rtnOrdStr;//generateOrderNumber(bkpEntity.BranchId);
             _context.BookingPayments.Add(bkpEntity);
             _context.SaveChanges();
             return true;
@@ -621,8 +636,16 @@ namespace HotelBooking.Repository.Implementation
             VMB.Nights = b.Nights.ToString();
             VMB.Room = b.RoomTypeName;
             VMB.RoomTypeId = b.RoomTypeId;
-            VMB.GuestId = b.GuestId;
-            VMB.GuestName = b.GuestName;
+            Guests gst=_context.Guests.Where(g=>g.GuestId== b.GuestId).SingleOrDefault();
+            VMB.GuestId = gst.GuestId;
+            VMB.GuestName = gst.Name;
+            VMB.GuestAddress = gst.Address;
+            VMB.GuestCity = gst.city;
+            VMB.Guestcountry = gst.country;
+            VMB.Guestpincode = gst.pincode;
+            VMB.GuestPhone = gst.Phone;
+            VMB.Guestemail = gst.email;
+
             VMB.NoOfRooms = b.NoOfRooms;
             //Branch
             Branch br = _context.Branch.Where(br1 => br1.Id == BranchId).SingleOrDefault();
@@ -679,8 +702,10 @@ namespace HotelBooking.Repository.Implementation
             string rtnStr = string.Empty;
 
             Branch brdata= _context.Branch.Where(b=>b.Id== branchId).SingleOrDefault();
-            int lastPaymentId = _context.BookingPayments.Where(b=>b.BranchId== branchId).Select(p => p.BookingPaymentId).Max()+1;
-
+            DocType dc = _context.DocType.Where(b => b.BranchId == branchId && b.isActive == true && b.DocCategory == 1).SingleOrDefault();
+            int lastPaymentId = dc.DocNumber+1;
+            dc.DocNumber = lastPaymentId;
+            _context.SaveChanges();
             rtnStr = "INV"+brdata.BranchName.Substring(0, 2) + brdata.Id.ToString() + lastPaymentId.ToString();
 
             return rtnStr;
@@ -690,8 +715,10 @@ namespace HotelBooking.Repository.Implementation
             string rtnStr = string.Empty;
 
             Branch brdata = _context.Branch.Where(b => b.Id == branchId).SingleOrDefault();
-            int lastPaymentId = _context.BookingPayments.Where(b => b.BranchId == branchId).Select(p => p.BookingPaymentId).Max() + 1;
-
+            DocType dc = _context.DocType.Where(b => b.BranchId == branchId && b.isActive == true && b.DocCategory == 2).SingleOrDefault();
+            int lastPaymentId = dc.DocNumber + 1;
+            dc.DocNumber = lastPaymentId;
+            _context.SaveChanges();
             rtnStr = "ORD"+brdata.BranchName.Substring(0, 2) + brdata.Id.ToString() + lastPaymentId.ToString();
 
             return rtnStr;

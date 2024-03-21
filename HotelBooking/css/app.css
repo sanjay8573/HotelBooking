@@ -5661,14 +5661,12 @@ button.close {
   z-index : 1040;
   background-color : #000000;
 }
-    .modal-backdrop.fade {
-        opacity: 0;
-        z-index: -1;
-    }
-    .modal-backdrop.show {
-        opacity: 0.5;
-        z-index: -1;
-    }
+.modal-backdrop.fade {
+  opacity : 0;
+}
+.modal-backdrop.show {
+  opacity : 0.5;
+}
 
 .modal-header {
   display : -webkit-box;
@@ -5777,7 +5775,7 @@ button.close {
 
 @media (min-width: 992px) {
   .modal-lg {
-    max-width : 800px;
+    max-width : 900px;
   }
 }
 
@@ -39009,7 +39007,7 @@ body.inverse .modal, body.inverse .modal .form-control, body.inverse .panel-defa
 
 .wrapper.wrapper-full-page {
   height : auto;
-  /*min-height : 100vh;*/
+  min-height : 100vh;
 }
 
 .content-wrapper {
@@ -44867,7 +44865,7 @@ datetime .form-group {
 .wrapper {
   position : relative;
   top : 0;
- /* height : 100vh;*/
+  height : 100vh;
 }
 .wrapper .content-header {
   font-weight : 500;
@@ -45158,7 +45156,7 @@ datetime .form-group {
   text-transform : uppercase;
   padding : 5px 0;
   display : block;
-  font-size : 1.0rem;
+  font-size : 1.6rem;
   letter-spacing : 2px;
   color : #000000;
   text-align : left;

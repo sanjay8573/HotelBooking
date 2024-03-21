@@ -1,0 +1,258 @@
+﻿@model HotelBooking.Model.VM_BookingDetails
+    @{ 
+        decimal totalAmount = decimal.Parse("0");
+        decimal totalTax = decimal.Parse("0");
+    }
+<div class="col-12 col-md-12 col-lg-12">
+    <h5 class="tabheading text-left" style="padding: 5px 15px"><img src="~/images/avatar-08.png" width="150" height="25" alt="" /> @Model.CompanyName</h5>
+
+    <!--outer box -->
+    <div class="itnarydiv">
+        <!--title  -->
+        <div class="boundbox">
+            <p class="boundboxp"><i class="fa fa-building" aria-hidden="true"></i><span class="boundboxpspan">Booking Details</span></p>
+        </div>
+        <!--end title -->
+
+        <div class="full-width row">
+            <!--left column-->
+            <div class="col-12 col-sm-8 col-md-8 col-lg-8 col-xl-8">
+                <div class="table table-responsive smrytbled" style="margin-bottom:0px;">
+                    <table class="table table-bordered" style="font-size: 12px; margin-bottom: 0px;">
+                        <tbody>
+                            <tr>
+                                <td width="50%">
+                                    <p class="depart">Hotels Details</p>
+                                    <p class="smrydatetime"><strong>@Model.CompanyName</strong></p>
+                                    <p class="full-width text-left pull-left depatd">@Model.CompanyAddress</p>
+                                    .
+                                    <p class="full-width text-left pull-left depatd">Phone: @Model.CompanyPhone</p>
+                                    <p class="full-width text-left pull-left depatd">E-mail: @Model.CompanyEmail</p>
+                                </td>
+                                <td width="50%">
+                                    <p class="depart">Guest Details</p>
+                                    <p class="smrydatetime"><span class="smrydate">@Model.GuestName</span></p>
+                                    <p class="full-width text-left pull-left depatd">@Model.GuestAddress</p>
+                                    <p class="full-width text-left pull-left depatd">@Model.GuestCity, @Model.Guestcountry - @Model.Guestpincode </p>
+                                    <p class="full-width text-left pull-left depatd">Phone: @Model.GuestPhone</p>
+                                    <p class="full-width text-left pull-left depatd">E-mail:@Model.Guestemail </p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--end left column-->
+            <!--right column-->
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 acddiv" style="padding: 10px 0px;">
+                <div class="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7 p-0 pull-left">
+                    <p class="onlnckn"><strong>Room:</strong> @Model.Room</p>
+                    <p class="aerlnscnf">Booking Number: @Model.BookingRef</p>
+                    <p class="arlnsnme"><strong>Check In:</strong> @Model.CheckIn</p>
+                    <p class="arlnsnme"><strong>Check Out:</strong> @Model.CheckOut</p>
+                    <p class="flitn"><strong>Payment Status:</strong> @Model.PaymnentStatus</p>
+                    <p class="fclasS"><strong>Booking Status:</strong> @Model.BookingStatus</p>
+                </div>
+                <div class="col-12 col-sm-6 col-md-5 col-lg-5 col-xl-5 p-0 pull-left">
+                    <p class="fclasS"><strong>Adults:</strong> @Model.Audlts</p>
+                    <p class="fclasS"><strong>Childs:</strong> @Model.Child</p>
+                    <p class="fclasS"><strong>Nights:</strong> @Model.Nights</p>
+                </div>
+            </div>
+            <!--end right column-->
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered" style="margin: 10px;">
+                    <tbody>
+                        <tr>
+                            <th>#</th>
+                            <th>Date</th>
+                            <th>Price</th>
+                        </tr>
+                        @if (Model.BookedNiths != null)
+                        {
+                            int i = 1;
+                           
+
+                            foreach (var item in Model.BookedNiths)
+                            {
+
+                                    <tr>
+                                        <td>@i</td>
+                                        @if (@item.CostCategory == 1)
+                                        {
+                                            <td>@item.Date</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@item.Description</td>
+                                        }
+                                        <td>$@item.OfferPrice</td>
+                                    </tr>
+                                i++;
+                                totalAmount = totalAmount + item.OfferPrice;
+                                totalTax = totalTax + item.TaxAmount;
+                            }
+                        }
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <table class="table table-bordered" style="margin: 10px;">
+                    <tbody>
+                        <tr style="background: #eaeeef;">
+                            <td colspan="13" align="left" valign="middle"><div class="allheadingin">Taxes</div></td>
+                        </tr>
+                        <tr>
+                            <td align="left">1</td>
+                            <td align="left">
+                                Good and Services Tax (GST)
+                                <a href="#" id="taxBreakup" data-toggle="modal" data-target="#INVTXBRK">Break-up</a>
+                            </td>
+                            <td align="left">18.00%</td>
+                            <td align="left">$ @totalTax</td>
+                        </tr>
+                        <tr>
+                            <td align="left" colspan="3"><strong>Total Tax</strong></td>
+                            <td align="left"><strong>@totalTax</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <table class="table table-bordered" style="margin: 10px;">
+                    <tbody>
+                        <!-- <tr>
+                          <td width="22%" align="left" colspan="2" valign="middle" style="font-size: 17px; font-weight: 600; color: #003556;">Make Reservation</td>
+                        </tr>-->
+                        <tr>
+                            <td class="trthbgclr" width="22%" align="left" valign="middle">Payment Method</td>
+                            <td width="78%" align="left" valign="middle">Pay On Arrival</td>
+                        </tr>
+                        <tr>
+                            <td class="trthbgclr" align="left" valign="middle">Discount</td>
+                            <td align="left" valign="middle">$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td class="trthbgclr" align="left" valign="middle">Extra Amount</td>
+                            <td align="left" valign="middle">$ 200,00</td>
+                        </tr>
+                        <tr>
+                            <td class="trthbgclr" align="left" valign="middle">Total Amount</td>
+                            <td align="left" valign="middle"> $@Model.TotalPrice</td>
+                        </tr>
+                        <tr>
+                            <td class="trthbgclr" align="left" valign="middle">Advance Payment</td>
+                            <td align="left" valign="middle"> $@Model.Amountpaid</td>
+                        </tr>
+                        <tr>
+                            <td class="trthbgclr" align="left" valign="middle">Total Amount Due</td>
+                            <td align="left" valign="middle">$@Model.AmountPending</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                <input type="button" name="SUBMIT" class="prev diffult-button pull-right" onclick="printInvoice();" value="Print" runat="server">
+            </div>
+        </div>
+    </div>
+    <!--outer box -->
+</div>
+
+<div class="modal fade" id="INVTXBRK" role="dialog">
+
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered">
+                        <tbody>
+                            <tr class="trthbgclr">
+                                <th>#</th>
+                                <th>Date/Description</th>
+
+                                <th>Price</th>
+                                <th>offer Price(Payable Amount)</th>
+                                <th>Tax(18%)</th>
+
+                            </tr>
+                            @if (Model != null)
+                            {
+                                var i = 1;
+                                decimal totalAmount1 = decimal.Parse("0");
+                                decimal totalTax1 = decimal.Parse("0");
+                                foreach (var p in Model.BookedNiths)
+                                {
+                                    <tr>
+                                        <td>@i</td>
+                                        @if (@p.CostCategory == 1)
+                                        {
+                                            <td>@p.Date</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@p.Description</td>
+                                        }
+
+
+                                        <td align="right">$ @p.PerNightCost</td>
+                                        <td align="right">$ @p.OfferPrice</td>
+                                        <td align="right">$ @p.TaxAmount</td>
+
+                                    </tr>
+                                    i++;
+                                    totalAmount1 = totalAmount1 + p.OfferPrice;
+                                    totalTax1 = totalTax1 + p.TaxAmount;
+
+                                }
+                                <tr>
+                                    <td colspan="5" align="right">$ @totalTax1</td>
+                                </tr>
+                            }
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $(document.body).append($("#INVTXBRK").clone());
+        $("#INVTXBRK").remove();
+    });
+    function printInvoice() {
+        var divToPrint = document.getElementById('BookingInvoiceDIV');
+
+        var newWin = window.open('', 'Print-Window');
+
+        newWin.document.open();
+
+        newWin.document.write('<link rel="stylesheet" type="text/css" href="/css/prism.min.css">');
+        newWin.document.write('<link rel="stylesheet" type="text/css" href="/css/style.min.css">');
+        newWin.document.write('<link rel="stylesheet" type="text/css" href="/css/app.css">');
+        //newWin.document.write('<link rel="stylesheet" type="text/css" href="~/css/prism.min.css">');
+
+        newWin.document.write('<html><body onload="window.print()">' + divToPrint.innerHTML + '</body></html>');
+       
+        newWin.document.close();
+       
+
+        //setTimeout(function () { newWin.close(); }, 10);
+    }
+</script>
+
