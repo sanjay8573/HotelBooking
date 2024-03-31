@@ -15,6 +15,7 @@ namespace HotelBooking.Model
         public string CurrencyName { get; set; }
         public string CurrencySymbol { get; set; } = string.Empty;
         public string CurrencyCode { get; set; } = string.Empty;
+        public bool isBusinessCurrency { get; set; }
         public bool isActive { get; set; }
         public bool isDeleted { get; set; }
         public int BranchId { get; set; }

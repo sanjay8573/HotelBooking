@@ -189,6 +189,7 @@
     <Compile Include="Controllers\ModuleController.cs" />
     <Compile Include="Controllers\PaidServicesController.cs" />
     <Compile Include="Controllers\pmController.cs" />
+    <Compile Include="Controllers\Restaurant\RestaurantController.cs" />
     <Compile Include="Controllers\RightsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\RoomController.cs" />
@@ -226,11 +227,13 @@
     <Compile Include="Model\Coupon.cs" />
     <Compile Include="Model\CouponResponse.cs" />
     <Compile Include="Model\CurrencyExchange.cs" />
+    <Compile Include="Model\CurrResp.cs" />
     <Compile Include="Model\DashBoardData.cs" />
     <Compile Include="Model\Dept.cs" />
     <Compile Include="Model\Designation.cs" />
     <Compile Include="Model\DocType.cs" />
     <Compile Include="Model\DocumentType.cs" />
+    <Compile Include="Model\ExchangeTransaction.cs" />
     <Compile Include="Model\Floor.cs" />
     <Compile Include="Model\Guests.cs" />
     <Compile Include="Model\HouseKeeping.cs" />
@@ -243,6 +246,9 @@
     <Compile Include="Model\PriceManager.cs" />
     <Compile Include="Model\PriceRequest.cs" />
     <Compile Include="Model\PriceType.cs" />
+    <Compile Include="Model\Reatraurant\BillingMaster.cs" />
+    <Compile Include="Model\Reatraurant\Restaurant.cs" />
+    <Compile Include="Model\Reatraurant\RestaurantMenu.cs" />
     <Compile Include="Model\RegionalSettings.cs" />
     <Compile Include="Model\Regions.cs" />
     <Compile Include="Model\Rights.cs" />
@@ -266,6 +272,7 @@
     <Compile Include="Model\VM_Staff.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Implementation\AmenitiesRepository.cs" />
+    <Compile Include="Repository\Implementation\BillingRepository.cs" />
     <Compile Include="Repository\Implementation\BookedRoomRepository.cs" />
     <Compile Include="Repository\Implementation\BookingRepository.cs" />
     <Compile Include="Repository\Implementation\BranchRepository.cs" />
@@ -278,6 +285,7 @@
     <Compile Include="Repository\Implementation\FloorRepository.cs" />
     <Compile Include="Repository\Implementation\GuestRepository.cs" />
     <Compile Include="Repository\Implementation\HouseKeepingRepository.cs" />
+    <Compile Include="Repository\Implementation\ImageRepository.cs" />
     <Compile Include="Repository\Implementation\IssueRepository.cs" />
     <Compile Include="Repository\Implementation\ItemRepository.cs" />
     <Compile Include="Repository\Implementation\Logger.cs" />
@@ -287,6 +295,7 @@
     <Compile Include="Repository\Implementation\PriceManageRepository.cs" />
     <Compile Include="Repository\Implementation\PriceTypeRepository.cs" />
     <Compile Include="Repository\Implementation\RegionalSettingsRespository.cs" />
+    <Compile Include="Repository\Implementation\RestaurantRepository.cs" />
     <Compile Include="Repository\Implementation\RightsRepository.cs" />
     <Compile Include="Repository\Implementation\RoleRepository.cs" />
     <Compile Include="Repository\Implementation\RoomRepository.cs" />
@@ -297,6 +306,7 @@
     <Compile Include="Repository\Implementation\TeamRepository.cs" />
     <Compile Include="Repository\Implementation\TncRepository.cs" />
     <Compile Include="Repository\Interface\IAmenities.cs" />
+    <Compile Include="Repository\Interface\IBilling.cs" />
     <Compile Include="Repository\Interface\IBookedRoom.cs" />
     <Compile Include="Repository\Interface\IBooking.cs" />
     <Compile Include="Repository\Interface\IBookingDocument.cs" />
@@ -310,6 +320,7 @@
     <Compile Include="Repository\Interface\IFloor.cs" />
     <Compile Include="Repository\Interface\IGuests.cs" />
     <Compile Include="Repository\Interface\IHouseKeeping.cs" />
+    <Compile Include="Repository\Interface\IImage.cs" />
     <Compile Include="Repository\Interface\IIssueRegister.cs" />
     <Compile Include="Repository\Interface\IItemMaster.cs" />
     <Compile Include="Repository\Interface\ILogger.cs" />
@@ -319,6 +330,7 @@
     <Compile Include="Repository\Interface\IPriceManager.cs" />
     <Compile Include="Repository\Interface\IPriceTypeMaster.cs" />
     <Compile Include="Repository\Interface\IRegionalSettings.cs" />
+    <Compile Include="Repository\Interface\IRestaurant.cs" />
     <Compile Include="Repository\Interface\IRights.cs" />
     <Compile Include="Repository\Interface\IRoles.cs" />
     <Compile Include="Repository\Interface\IRoom.cs" />
@@ -542,11 +554,24 @@
     <Content Include="Views\store\AddItems.cshtml" />
     <Content Include="Views\store\RDItems.cshtml" />
     <Content Include="Views\store\IssuedItems.cshtml" />
-    <Content Include="Views\Home\SetCurrencyExchnage.cshtml" />
+    <Content Include="Views\Home\SetCurrencyExchange.cshtml" />
+    <Content Include="Views\Home\LoginSetup.cshtml" />
+    <Content Include="Views\Home\MoneyExchange.cshtml" />
+    <Content Include="Views\Home\TransExchange.cshtml" />
+    <Content Include="Views\Home\Restaurant.cshtml" />
+    <Content Include="Views\Home\_RestaurantTables.cshtml" />
+    <Content Include="Views\Home\RestaurantList.cshtml" />
+    <Content Include="Views\Home\ViewRestaurant.cshtml" />
+    <Content Include="Views\Home\_RestaurantImages.cshtml" />
+    <Content Include="Views\Home\RestaurantMenu.cshtml" />
+    <Content Include="Views\Home\RestaurantMenuList.cshtml" />
+    <Content Include="Views\Home\FoodCart.cshtml" />
+    <Content Include="Views\Home\_RestaurantMenuItems.cshtml" />
+    <Content Include="Views\Home\_FoodCarttables.cshtml" />
+    <Content Include="Views\Home\_FoodCartItems.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Model\Reatraurant\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\bootstrap.min.js.map" />

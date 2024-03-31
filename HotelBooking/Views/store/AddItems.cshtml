@@ -259,8 +259,32 @@
 
                  data: { items: items },
 
-                 success: function (recData) { console.log('Success'); window.location.href =  '/store/GetItems';  },
-                 error: function () { console.log('A error'); }
+                 success: function (recData) {
+                     console.log('Success');
+                     $.toast({
+                                heading: 'Success',
+                                text: 'Items Added Successfully ',
+                                icon: 'success',
+                                loader: false,        // Change it to false to disable loader
+                                position: 'top-right',
+                                loaderBg: '#9EC600'  // To change the background
+                            });
+                            setTimeout(function () {
+                               window.location.href = '@Url.Action("GetItems", "store")';
+                               }, 500);
+                    
+                 },
+                 error: function () {
+                     console.log('A error');
+                     $.toast({
+                         heading: 'Error',
+                         text: 'Error on Adding Items  ',
+                         icon: 'Error',
+                         loader: false,        // Change it to false to disable loader
+                         position: 'top-right',
+                         loaderBg: '#9EC600'  // To change the background
+                     });
+                 }
              });
     }
 </script>

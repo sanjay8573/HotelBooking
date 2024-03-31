@@ -1,0 +1,59 @@
+﻿@model IEnumerable<HotelBooking.Model.Reatraurant.RestaurantMenu>
+@{
+    ViewBag.Title = "RestaurantMenuList";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Restaurants <small></small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Restaurants</small> </span></div>
+            <div class="widget-content padded text-center">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12 pull-right">
+                            <button type="button" class="allbtnin form-group" onclick="location.href='@Url.Action("AddRestaurantMenu","Home")'"> +ADD</button>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
+                        
+                        <table id="RoomTypeTable" class="table table-bordered" >
+                            <tr>
+                                <th width="3%" align="center" valign="middle" bgcolor="#003556" class="clrwhit">#</th>
+                                <th width="25%" align="left" valign="middle" bgcolor="#003556" class="clrwhit">Name</th>
+
+                                <th width="5%" align="center" valign="middle" bgcolor="#003556" class="clrwhit">Active</th>
+                                
+                                <th width="8%" colspan="3" align="center" valign="middle" bgcolor="#003556" class="clrwhit">Action</th>
+
+                            </tr>
+                            @if (Model != null)
+                            {
+                                var i = 1;
+                                foreach (var rt in Model)
+                                {
+                                   
+                                    <tr>
+
+                                        <td align="center" valign="middle">@i</td>
+                                        <td align="left" valign="middle">@rt.RestaurantMenuName</td>
+                                        <td align="left" valign="middle">@rt.isActive</td>
+                                        <td align="center" valign="middle"><a class="viewbtn" href="@Url.Action("ViewRestaurant","Home",new { @RestaurantId = rt.RestaurantId })"><i class="fa fa-eye"></i> View</a></td>
+                                        <td align="center" valign="middle"><a href="@Url.Action("AddRestaurantMenu","Home",new { @RestaurantMenuId = rt.RestaurantMenuId })" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
+                                        <td align="center" valign="middle"><a href="@Url.Action("DelRestaurant","Home",new { @RestaurantId = rt.RestaurantId })" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
+
+                                    </tr>
+                                    i++;
+                                }
+                                
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

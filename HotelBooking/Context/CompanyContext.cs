@@ -1,5 +1,6 @@
 ﻿
 using HotelBooking.Model;
+using HotelBooking.Model.Reatraurant;
 using System.Data.Entity;
 
 namespace HotelBooking.Context
@@ -144,7 +145,53 @@ namespace HotelBooking.Context
             get;
             set;
         }
+        public DbSet<ExchangeTransaction> ExchangeTransaction
+        {
+            get;
+            set;
+        }
 
+        public DbSet<RestaurantModel> Restaurant
+        {
+            get;
+            set;
+        }
+        public DbSet<RestaurantTables> RestaurantTables
+        {
+            get;
+            set;
+        }
+        public DbSet<ImageMaster> ImageMaster
+        {
+            get;
+            set;
+        }
+        public DbSet<RestaurantMenu> RestaurantMenu
+        {
+            get;
+            set;
+        }
+        public DbSet<RestaurantMenuHeading> RestaurantMenuHeading
+        {
+            get;
+            set;
+        }
+        public DbSet<RestaurantMenuItem> RestaurantMenuItem
+        {
+            get;
+            set;
+        }
+
+        public DbSet<BillingMaster> BillingMaster
+        {
+            get;
+            set;
+        }
+        public DbSet<BillingDetails> BillingDetails
+        {
+            get;
+            set;
+        }
 
 
     }

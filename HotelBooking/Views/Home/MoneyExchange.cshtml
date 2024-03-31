@@ -1,0 +1,203 @@
+﻿
+@{
+    ViewBag.Title = "MoneyExchange";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Money <small>Exchange </small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Currency exchange </small> </span></div>
+            <div class="widget-content padded text-center">
+                <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div id="currExDiv" class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-right">
+                                    @*<button type="button" class="allbtnin form-group pull-right" > +ADD CURRENCY</button>*@
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="heading">
+                                        Business Currency - @ViewBag.BusinessCurrencyName [@ViewBag.BusinessCurrencyCode] Base rate -1  ( @ViewBag.BusinessCurrencySymbol)
+
+                                    </div>
+
+
+                                    <input type="hidden" id="BusinessCurrencyId" value="@ViewBag.BusinessCurrencyId" />
+                                    <input type="hidden" id="BranchId" value="@ViewBag.BranchId" />
+                                    <input type="hidden" id="CurrExchangeId" value="@ViewBag.CurrExchangeId" />
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 pull-left">
+                                    <ul class="unstyled">
+                                        <li>
+                                            <input class="styled-checkbox" id="CHK_INTERNAL" type="checkbox" name="CHK_INTERNAL">
+                                            <label for="CHK_INTERNAL">Internal Customer(for Internal Customer please enter room number)</label>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <label>Customer Name/Room Number  </label>
+                                    <input type="text" id="txtCustomer" class="full-width" placeholder="" runat="server">
+                                </div>
+
+                            </div>
+                            <div class="row">
+
+
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <label>Select Exchange Currency</label>
+                                    <select name="SeleExCurr" id="SeleExCurr" class="full-width freetrial">
+                                        @if (ViewBag.ExchangeCurrency != null)
+                                        {
+                                            foreach (var item in ViewBag.ExchangeCurrency)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text.Trim()
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+
+
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <label>Amount  </label>
+                                    <input type="text" id="txtFromValue" class="full-width" placeholder="Enter Amount to Exchange" value="1.00">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+
+                                    <label>@ViewBag.BusinessCurrencyCode ( @ViewBag.BusinessCurrencySymbol) </label>
+                                    <input type="text" id="txtExchangedValue" class="full-width" placeholder="" runat="server">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+
+                                    <label>Remarks</label>
+                                    <textarea multiple="true" id="txtRemarks" class="full-width" placeholder="" runat="server" ></textarea>
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                <input type="button" name="SUBMIT" class="prev action-button" onclick="SaveMoneyExchange();" value="Save" runat="server">
+                            </div>
+
+
+                        </div>
+</form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#SeleExCurr").change(function () {
+
+            CalculateValue()
+        });
+
+        $('#txtFromValue').on('keyup', function () {
+            console.log("Sanjay" + this.value);
+            CalculateValue();
+        });
+
+
+    });
+
+    function CalculateValue() {
+        var ArrVal = $("#SeleExCurr option:selected").val().split("-");
+        exVal = Number(ArrVal[1]).toFixed(5);
+        console.log("Selected Value" + exVal);
+        var fromVal = $("#txtFromValue").val();
+        console.log("From  Value" + fromVal);
+        var ExchangedValue = Number(fromVal) / Number(exVal);
+        console.log("Calculated Value" + ExchangedValue.toFixed(5));
+        $("#txtExchangedValue").val(ExchangedValue.toFixed(5));
+
+    }
+    function SaveMoneyExchange() {
+        var isInternal=false;
+        $('input[type=checkbox]').each(function () {
+
+            if (this.name == "CHK_INTERNAL") {
+                if (this.checked) {
+                    isInternal = true;
+                }
+            }
+
+        });
+        var branchId = $('#BranchId').val();
+        var txtCustName = $("#txtCustomer").val();
+        var exCurrName = $("#SeleExCurr option:selected").text().replace(/[\n\r]+/g, ' ').trim();;
+        var ArrVal = $("#SeleExCurr option:selected").val().split("-");
+        var ExCurrId = ArrVal[0];
+        var exCurrVal = Number(ArrVal[1]).toFixed(5);
+        var fromVal = $("#txtFromValue").val();
+        var toVal = $("#txtExchangedValue").val();
+        var remarks = $("#txtRemarks").val();
+        var exTran = {
+            CustomerName: txtCustName,
+            isInternal: isInternal,
+            ExchangeCurrencyId: Number(ExCurrId),
+            ExchangeCurrencyName: exCurrName,
+            CurrentValue: Number(exCurrVal).toFixed(5),
+            fromValue: Number(fromVal).toFixed(5),
+            toValue: Number(toVal).toFixed(5),
+            Remarks: remarks,
+            BranchId: branchId,
+            isActive: true
+        }
+        console.log(exTran);
+         $.ajax({
+            type: "POST",
+            url: '@Url.Action("SaveExchangeTrans", "HOME")',
+
+             data: { exCurrEntity: exTran },
+
+     success: function (recData) {
+         console.log('Success');
+         $.toast({
+                    heading: 'Success',
+                    text: 'Transaction saved successfully!! ',
+                    icon: 'success',
+                    loader: false,        // Change it to false to disable loader
+                    position: 'top-right',
+                    loaderBg: '#9EC600'  // To change the background
+         });
+                setTimeout(function () {
+                   window.location.href = '@Url.Action("MoneyExchange", "HOME")';
+                   }, 500);
+
+     },
+     error: function () {
+         console.log('A error');
+         $.toast({
+             heading: 'Error',
+             text: 'Error on completing transaction  ',
+             icon: 'Error',
+             loader: false,        // Change it to false to disable loader
+             position: 'top-right',
+             loaderBg: '#9EC600'  // To change the background
+         });
+     }
+ });
+
+    }
+</script>

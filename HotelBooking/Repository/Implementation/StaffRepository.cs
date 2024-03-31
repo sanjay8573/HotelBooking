@@ -35,6 +35,7 @@ namespace HotelBooking.Repository.Implementation
                 VM_Staff tmpS = new VM_Staff();
                 tmpS.StaffId = s1.Id;
                 tmpS.StaffName = s1.StaffName;
+                tmpS.Email = s1.Email;
                 tmpS.Phone1 = s1.Phone1;
                 tmpS.Phone2 = s1.Phone2;
                 tmpS.Name = s1.StaffName;
@@ -57,10 +58,10 @@ namespace HotelBooking.Repository.Implementation
         public int AddStaff(Staff staffEntity)
         {
             int result = -1;
-
+            
             if (staffEntity != null)
-                
             {
+                staffEntity.CompanyId = getCompanyIdByBarnchId(staffEntity.BranchId);
                 if (staffEntity.Id > 0)
                 {
                     Staff stf = _context.Staff.Find(staffEntity.Id);
@@ -90,13 +91,7 @@ namespace HotelBooking.Repository.Implementation
             if (stfLogin != null)
 
             {
-                if (stfLogin.Id > 0)
-                {
-                    //_context.StaffLogin.Update(stfLogin);
-                    _context.SaveChanges();
-                }
-                else
-                {
+               
                     StaffLogin  s=null;
                     s = _context.StaffLogin.Where(b => b.StaffId == stfLogin.StaffId).SingleOrDefault();
                     if (s!=null && s.StaffId>0)
@@ -118,7 +113,7 @@ namespace HotelBooking.Repository.Implementation
                     }
                     
 
-                }
+                
                 
                 result = stfLogin.Id;
             }
@@ -145,6 +140,39 @@ namespace HotelBooking.Repository.Implementation
         public IEnumerable<StaffTier> GetStaffTiers(int branchId)
         {
             return _context.StaffTier.Where(s => s.BranchId== branchId && s.isDeleted == false);
+        }
+        private int getCompanyIdByBarnchId(int BranchId)
+        {
+            int rtnVal = 0;
+            if (BranchId > 0)
+            {
+                rtnVal= _context.Branch.Where(b => b.Id == BranchId).SingleOrDefault().CompanyId;
+            }
+
+            return rtnVal;
+        }
+
+        private string getEmailforStaff(int staffId)
+        {
+            string  rtnVal = string.Empty;
+            if (staffId > 0)
+            {
+                rtnVal = _context.Staff.Where(b => b.Id == staffId).SingleOrDefault().Email;
+            }
+
+            return rtnVal;
+        }
+        public StaffLogin GetStaffLogin(int staffId)
+        {
+            StaffLogin stfLogin = new StaffLogin();
+            stfLogin = _context.StaffLogin.Where(s => s.StaffId == staffId).SingleOrDefault();
+            if (stfLogin == null)
+            {
+                stfLogin= new StaffLogin();
+                stfLogin.LoginName = getEmailforStaff(staffId);
+            }
+           
+            return stfLogin;
         }
     }
 }

@@ -6,11 +6,43 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="card widget-container">
-            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Relese / Depositive <small>Items</small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Stores Item</small> </span></div>
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Release / Deposit <small>Item</small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Stores Item</small> </span></div>
             <div class="widget-content padded text-center">
                 <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
                     <div class="row">
-                        <div id="dynDivContainer1" class="col-lg-12 col-md-12 col-sm-12">
+                        <div id="itemTop" class="row">
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                <label>Issued To</label>
+                                <select name="SeleIssueTo" id="SeleIssueTo" class="full-width freetrial">
+                                    @if (ViewBag.IssueTo != null)
+                                    {
+                                        foreach (var item in ViewBag.IssueTo)
+                                        {
+                                            if (item.Text != null)
+                                            {
+                                                <option value="@item.Value" selected="@item.Selected">
+                                                    @item.Text.Trim()
+                                                </option>
+
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                <label>Select Action</label>
+                                <select id="ddlEngine" class="full-width ddselect" runat="server">
+                                    <option selected="selected">Select</option>
+                                    <option value="0">Release Items</option>
+                                    <option value="1">Depositive Items</option>
+                                </select>
+
+                            </div>
+                            <div id="dynDivContainer1" class="col-lg-12 col-md-12 col-sm-12">
+
+
+                            
+
                             <div id="item1" class="row">
                                 <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12" style="align-self: center;">
 
@@ -49,35 +81,14 @@
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Issued Date</label>
-                                    <input type="text" id="Itemdatepicker" class="full-width allinputgo" placeholder="Issued Date" autocomplete="off">
-                                </div>
-                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                                    <label>Issued To</label>
-                                    <select name="SeleIssueTo" id="SeleIssueTo" class="full-width freetrial">
-                                        @if (ViewBag.IssueTo != null)
-                                        {
-                                            foreach (var item in ViewBag.IssueTo)
-                                            {
-                                                if (item.Text != null)
-                                                {
-                                                    <option value="@item.Value" selected="@item.Selected">
-                                                        @item.Text.Trim()
-                                                    </option>
+                                    <input type="text" id="Itemdatepicker1" class="full-width allinputgo" placeholder="Issued Date" autocomplete="off">
 
-                                                }
-                                            }
-                                        }
-                                    </select>
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                                    <label>Select</label>
-                                    <select id="ddlEngine" class="full-width ddselect" runat="server">
-                                        <option selected="selected">Select</option>
-                                        <option value="0">Release Items</option>
-                                        <option value="1">Depositive Items</option>
-                                    </select>
-                                    <button type="button" style="font-size:15px;width:20% !important" onclick="addItem();" class="full-width prev Addmorebtn"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                    <label>&nbsp;</label>
+                                    <button type="button" style="align-self:center; font-size: 15px; width: 30% !important" onclick="addItem();" class="full-width prev Addmorebtn"><i class="fa fa-plus" aria-hidden="true"></i></button>
                                 </div>
+
 
 
                             </div>
@@ -119,34 +130,12 @@
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Issued Date</label>
-                                    <input type="text" id="Itemdatepicker" class="full-width allinputgo" placeholder="Issued Date" autocomplete="off">
+                                    <input type="text" id="Itemdatepicker2" class="full-width allinputgo" placeholder="Issued Date" autocomplete="off">
                                 </div>
-                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                                    <label>Issued To</label>
-                                    <select name="SeleIssueTo" id="SeleIssueTo" class="full-width freetrial">
-                                        @if (ViewBag.IssueTo != null)
-                                        {
-                                            foreach (var item in ViewBag.IssueTo)
-                                            {
-                                                if (item.Text != null)
-                                                {
-                                                    <option value="@item.Value" selected="@item.Selected">
-                                                        @item.Text.Trim()
-                                                    </option>
 
-                                                }
-                                            }
-                                        }
-                                    </select>
-                                </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                                    <label>Select</label>
-                                    <select id="ddlEngine" class="full-width ddselect" runat="server">
-                                        <option selected="selected">Select</option>
-                                        <option value="0">Release Items</option>
-                                        <option value="1">Depositive Items</option>
-                                    </select>
-                                    <button type="button" style="font-size:15px;width:20% !important" class="full-width prev removebtn" onclick="RemoveItem(this);"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                    <label>&nbsp;</label>
+                                    <button type="button" style="align-self: center; font-size: 15px; width: 30% !important" class="full-width prev removebtn" onclick="RemoveItem(this);"><i class="fa fa-minus" aria-hidden="true"></i></button>
                                 </div>
 
 
@@ -190,34 +179,12 @@
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Issued Date</label>
-                                    <input type="text" id="Itemdatepicker" class="full-width allinputgo" placeholder="Issued Date" autocomplete="off">
+                                    <input type="text" id="Itemdatepicker3" class="full-width allinputgo" placeholder="Issued Date" autocomplete="off">
                                 </div>
-                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                                    <label>Issued To</label>
-                                    <select name="SeleIssueTo" id="SeleIssueTo" class="full-width freetrial">
-                                        @if (ViewBag.IssueTo != null)
-                                        {
-                                            foreach (var item in ViewBag.IssueTo)
-                                            {
-                                                if (item.Text != null)
-                                                {
-                                                    <option value="@item.Value" selected="@item.Selected">
-                                                        @item.Text.Trim()
-                                                    </option>
 
-                                                }
-                                            }
-                                        }
-                                    </select>
-                                </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                                    <label>Select</label>
-                                    <select id="ddlEngine" class="full-width ddselect" runat="server">
-                                        <option selected="selected">Select</option>
-                                        <option value="0">Release Items</option>
-                                        <option value="1">Depositive Items</option>
-                                    </select>
-                                    <button type="button" style="font-size:15px;width:20% !important" class="full-width prev removebtn" onclick="RemoveItem(this);"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                    <label>&nbsp;</label>
+                                    <button type="button" style="font-size:15px;width:30% !important" class="full-width prev removebtn" onclick="RemoveItem(this);"><i class="fa fa-minus" aria-hidden="true"></i></button>
                                 </div>
 
 
@@ -261,34 +228,12 @@
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Issued Date</label>
-                                    <input type="text" id="Itemdatepicker" class="full-width allinputgo" placeholder="Issued Date" autocomplete="off">
+                                    <input type="text" id="Itemdatepicker4" class="full-width allinputgo" placeholder="Issued Date" autocomplete="off">
                                 </div>
-                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                                    <label>Issued To</label>
-                                    <select name="SeleIssueTo" id="SeleIssueTo" class="full-width freetrial">
-                                        @if (ViewBag.IssueTo != null)
-                                        {
-                                            foreach (var item in ViewBag.IssueTo)
-                                            {
-                                                if (item.Text != null)
-                                                {
-                                                    <option value="@item.Value" selected="@item.Selected">
-                                                        @item.Text.Trim()
-                                                    </option>
 
-                                                }
-                                            }
-                                        }
-                                    </select>
-                                </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                                    <label>Select</label>
-                                    <select id="ddlEngine" class="full-width ddselect" runat="server">
-                                        <option selected="selected">Select</option>
-                                        <option value="0">Release Items</option>
-                                        <option value="1">Depositive Items</option>
-                                    </select>
-                                    <button type="button" style="font-size:15px;width:20% !important" class="full-width prev removebtn" onclick="RemoveItem(this);"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                    <label>&nbsp;</label>
+                                    <button type="button" style="font-size:15px;width:30% !important" class="full-width prev removebtn" onclick="RemoveItem(this);"><i class="fa fa-minus" aria-hidden="true"></i></button>
                                 </div>
 
 
@@ -332,34 +277,12 @@
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Issued Date</label>
-                                    <input type="text" id="Itemdatepicker" class="full-width allinputgo" placeholder="Issued Date" autocomplete="off">
+                                    <input type="text" id="Itemdatepicker5" class="full-width allinputgo" placeholder="Issued Date" autocomplete="off">
                                 </div>
-                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                                    <label>Issued To</label>
-                                    <select name="SeleIssueTo" id="SeleIssueTo" class="full-width freetrial">
-                                        @if (ViewBag.IssueTo != null)
-                                        {
-                                            foreach (var item in ViewBag.IssueTo)
-                                            {
-                                                if (item.Text != null)
-                                                {
-                                                    <option value="@item.Value" selected="@item.Selected">
-                                                        @item.Text.Trim()
-                                                    </option>
 
-                                                }
-                                            }
-                                        }
-                                    </select>
-                                </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                                    <label>Select</label>
-                                    <select id="ddlEngine" class="full-width ddselect" runat="server">
-                                        <option selected="selected">Select</option>
-                                        <option value="0">Release Items</option>
-                                        <option value="1">Depositive Items</option>
-                                    </select>
-                                    <button type="button" style="font-size:15px;width:20% !important" class="full-width prev removebtn" onclick="RemoveItem(this);"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                    <label>&nbsp;</label>
+                                    <button type="button" style="font-size:15px;width:30% !important" class="full-width prev removebtn" onclick="RemoveItem(this);"><i class="fa fa-minus" aria-hidden="true"></i></button>
                                 </div>
 
 
@@ -381,13 +304,19 @@
         var nRows = $("#dynDivContainer1 > div:visible").length;
         console.log("NRows" + nRows);
         var n = parseInt(nRows) + 1;
-        if (n > 5) { return; }
+        if (n > 6) { return; }
         console.log('sanjay' + n);
         var todsipalyDivId = 'item' + n;
         console.log(todsipalyDivId);
         $('#' + todsipalyDivId).show();
 
+        $("#Itemdatepicker"+n).datepicker({
+            dateFormat: "dd-mm-yy",
+            duration: "fast",
+            minDate: 0,
+            disabledDates: [new Date()],
 
+        });
         //console.log(itemIndex);
 
         return false;
@@ -402,16 +331,18 @@
     function SaveItem() {
         var items = [];
         var branchId = $('#BranchId').val();
+        var txtIssueToId = $('#SeleIssueTo').find(":selected").val();
+        var txtIssueToName = $('#SeleIssueTo').find(":selected").text().replace(/[\n\r]+/g, ' ').trim();
+        var txtInOut = $('#ddlEngine').find(":selected").val();
         $("#dynDivContainer1 > div:visible").each(function (idx, el) {
             var txtItemName;
             var txtItemId;
-            var txtInOut;
+
             var txtQty;
             var AQty;
             var BQty;
             var txtIssueDate;
-            var txtIssueToId;
-            var txtIssueToName;
+
             var txtIssueById='@ViewBag.IssueById';
             var txtIssueByName='@ViewBag.IssueByName';;
             console.log(idx);
@@ -432,8 +363,6 @@
                 if (el.id == "Itemdatepicker") {
                     txtIssueDate = $(el).val()
                 }
-
-
             });
             $("#" + cuurentDiv + " div > select").each(function (idx, el) {
                 if (el.id == "SeleIteName") {
@@ -441,19 +370,6 @@
                     txtItemName = $(el).find(":selected").text().replace(/[\n\r]+/g, ' ').trim();
 
                 }
-                if (el.id == "SeleIssueTo") {
-                    txtIssueToId = $(el).find(":selected").val();
-                    txtIssueToName = $(el).find(":selected").text().replace(/[\n\r]+/g, ' ').trim();
-
-                }
-                if (el.id == "ddlEngine") {
-                    txtInOut = $(el).find(":selected").val();
-
-
-                }
-
-
-
             });
 
 
@@ -477,15 +393,48 @@
             items.push(item);
         });
         console.log(items);
+         $.ajax({
+             type: "POST",
+             url: '@Url.Action("SaveRDItems", "store")',
 
-             $.ajax({
-                 type: "POST",
-                 url: '@Url.Action("SaveRDItems", "store")',
+             data: { items: items },
 
-                 data: { items: items },
+             success: function (recData) {
+                 $.toast({
+                     heading: 'Success',
+                     text: 'Items Saved Successfully ',
+                     icon: 'success',
+                     loader: false,        // Change it to false to disable loader
+                     position: 'top-right',
+                     loaderBg: '#9EC600'  // To change the background
+                 });
+                 setTimeout(function () {
+                    window.location.href = '@Url.Action("IssuedItems", "store")';
+                    }, 500);
+                 console.log('Success');
+             },
+             error: function () {
+                 $.toast({
+                     heading: 'Error',
+                     text: 'Error on Adding Items  ',
+                     icon: 'Error',
+                     loader: false,        // Change it to false to disable loader
+                     position: 'top-right',
+                     loaderBg: '#9EC600'  // To change the background
+                 });
+                 console.log('A error');
+             }
+        });
 
-                 success: function (recData) { console.log('Success'); window.location.href =  '/store/IssuedItems';  },
-                 error: function () { console.log('A error'); }
-             });
+
     }
+    $(function () {
+        $("#Itemdatepicker1").datepicker({
+            dateFormat: "dd-mm-yy",
+            duration: "fast",
+            minDate: 0,
+            disabledDates: [new Date()],
+
+        });
+    });
 </script>

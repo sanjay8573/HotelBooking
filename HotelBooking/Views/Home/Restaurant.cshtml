@@ -1,0 +1,259 @@
+﻿@model HotelBooking.Model.Reatraurant.RestaurantModel
+@{
+    ViewBag.Title = "Restaurant";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Restaurants <small>Configure  </small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Restaurants Configure  </small> </span></div>
+            <div class="widget-content padded text-center">
+                <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <label>Floor</label>
+                                    <input type="hidden" id="BranchId" value="@ViewBag.BranchId" />
+                                    <select name="SelFloor" id="SelFloor" class="full-width ddselect">
+                                        @if (ViewBag.FLCombo != null)
+                                        {
+                                            foreach (var item in ViewBag.FLCombo)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text.Trim()
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                               
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <label>&nbsp;</label>
+                                    <ul class="unstyled">
+                                        <li>
+                                            <input class="styled-checkbox" id="CHK_ISBAR" type="checkbox" checked="@Model.isBarAvailable" name="CHK_ISBAR">
+                                            <label for="CHK_ISBAR">Bar Available</label>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    
+                                    <label>&nbsp;</label>
+                                    <ul class="unstyled">
+                                        <li>
+                                            <input class="styled-checkbox" id="CHK_ISBSA" type="checkbox" checked="@Model.isBreakfastServe" name="CHK_ISBSA">
+                                            <label for="CHK_ISBSA">Breakfast Service Available</label>
+                                        </li>
+                                    </ul>
+                                </div>
+                               
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <label>Restaurants Name</label>
+                                    <input type="text" id="txtRoomNumber" value="@Model.Name" class="full-width" placeholder="Restaurants Name" runat="server">
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <label>Area</label>
+                                    <input type="text" id="txtArea" value="@Model.Area" class="full-width" placeholder="Area sq foot" runat="server">
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <label>Order Time (Last Order)</label>
+                                    <input type="text" id="txtOrderAcceptedTill" value="@Model.lastOrderAcceptedTill" class="full-width" placeholder="Order Time (Last Order)" runat="server">
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <label>Opening Time (Walk m...)</label>
+                                    <input type="text" id="txtOpeningTime" value="@Model.OpeningTime" class="full-width" placeholder="Order Time (Last Order)" runat="server">
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <label>Closing Time (...)</label>
+                                    <input type="text" id="txtClosingTime" value="@Model.ClosingTime" class="full-width" placeholder="Order Time (Last Order)" runat="server">
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <label>Images</label>
+                                    <input type="file" id="restImage" multiple  class="full-width" placeholder="Order Time (Last Order)" runat="server">
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <label>Total Table</label>
+                                    <select id="SelNtable" class="full-width ddselect" runat="server">
+                                        <option value="0" selected="selected">Select Table</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <label>Seating Capacity(Per table)</label>
+                                    <div id="RestroTabalesDIV" class="row">
+
+
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <button type="button" class="allbtnin full-width" onclick="SaveRestaurant();">Update</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        var nT = '@ViewBag.NoOfTables';
+        var ACT = '@ViewBag.Action';
+        if (ACT == "EDIT") {
+            if (nT != '0') {
+                $("#SelNtable").val(nT);
+                loadTbales(nT);
+            }
+        }
+
+        $("#SelNtable").change(function () {
+            console.log(this.value);
+            loadTbales(this.value);
+        });
+    });
+    function loadTbales(nt) {
+        var restroId ='@Model.RestaurantId';
+        $("#RestroTabalesDIV").load("/Home/_RestaurantTables?nTables=" + nt + "&RestaurantId=" + restroId);
+    }
+    function SaveRestaurant() {
+         var restroId ='@Model.RestaurantId';
+        const branchId = $("#BranchId").val();
+        const FloorName = $("#SelFloor option:selected").text().replace(/[\n\r]+/g, ' ').trim();
+        const FloorID = $("#SelFloor option:selected").val();
+        const restName = $("#txtRoomNumber").val();
+        const restArea = $("#txtArea").val();
+        const restLastOrder = $("#txtOrderAcceptedTill").val();
+        const restpeningtime = $("#txtOpeningTime").val();
+        const restClosingtime = $("#txtClosingTime").val();
+        const nTables = $("#SelNtable option:selected").val();
+        var isbar=false;
+        var isBreakfast=false;
+        var fileUpload = $("#restImage").get(0);
+        var files = fileUpload.files;
+
+        // Create FormData object  
+        var fileData = new FormData();
+
+
+       
+
+        
+        // Looping over all files and add it to FormData object  
+        for (var i = 0; i < files.length; i++) {
+            fileData.append("httpPostedFileBase", files[i]);
+        }  
+        $('input[type=checkbox]').each(function () {
+
+            if (this.name == "CHK_ISBAR") {
+                if (this.checked) {
+
+                    isbar = true;
+                }
+            }
+            if (this.name == "CHK_ISBSA") {
+                if (this.checked) {
+
+                    isBreakfast = true;
+                }
+            }
+
+        });
+        var restaurant = {
+            RestaurantId: Number(restroId),
+            Name: restName,
+            FloorId: Number(FloorID),
+            FloorName: FloorName,
+            Area: restArea,
+            isBarAvailable:isbar,
+            isBreakfastServe: isBreakfast,
+            lastOrderAcceptedTill: restLastOrder,
+            OpeningTime: restpeningtime,
+            ClosingTime: restClosingtime,
+            NoOfTable: Number(nTables),
+            BranchId: Number(branchId),
+            isActive: true,
+            ImageData: fileData,
+            AvailableTables:[],
+            ImageData:[]
+        }
+
+
+        $("#RestroTabalesDIV div > input:text").each(function (idx, el) {
+            var ArrVal = el.id.split("-");
+            var tmpTableId = ArrVal[0];
+            var RestroId = ArrVal[1];
+            var tmpName = "Table" + (idx + 1);
+            var txtSeatVal = $(el).val();
+            var tables = {
+                TableId: tmpTableId,
+                RestaurantId: RestroId,
+                Name: tmpName,
+                NoOfSeat: txtSeatVal,
+                BranchId: Number(branchId),
+                isActive: true
+
+            };
+            restaurant.AvailableTables.push(tables);
+
+        });
+        fileData.append("restroEntity", JSON.stringify(restaurant));
+        console.log(restaurant);
+             $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("SaveRestaurant", "Home")',
+
+                 data: fileData,
+                 contentType: false,
+                 processData: false,
+                         //data: { restroEntity: restaurant },
+
+                    success: function (recData) {
+                     $.toast({
+                         heading: 'Success',
+                         text: 'Restaurant configured Successfully ',
+                         icon: 'success',
+                         loader: false,        // Change it to false to disable loader
+                         position: 'top-right',
+                         loaderBg: '#9EC600'  // To change the background
+                     });
+                     setTimeout(function () {
+                        window.location.href = '@Url.Action("Restaurant", "HOME")';
+                        }, 500);
+                     console.log('Success');
+                 },
+                 error: function () {
+                     $.toast({
+                         heading: 'Error',
+                         text: 'Error on configuring Restaurant  ',
+                         icon: 'Error',
+                         loader: false,        // Change it to false to disable loader
+                         position: 'top-right',
+                         loaderBg: '#9EC600'  // To change the background
+                     });
+                     console.log('A error');
+                 }
+            });
+    }
+</script>

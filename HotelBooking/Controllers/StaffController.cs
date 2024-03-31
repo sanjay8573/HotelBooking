@@ -55,7 +55,15 @@ namespace HotelBooking.Controllers
 
 
         }
-        
+        [HttpGet]
+        [Route("api/Staff/LoginSetup")]
+        public StaffLogin LoginSetup(int staffid)
+        {
+            return _istaff.GetStaffLogin(staffid);
+
+
+        }
+
         [HttpPost]
         
         private int validateStaff(LoginRequestModel lr)

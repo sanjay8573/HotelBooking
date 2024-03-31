@@ -17,7 +17,7 @@ namespace HotelBooking.Model
         public string BaseCurrencyName { get; set; }
         public int ExchangeCurrencyId { get; set; }
         public string ExchangeCurrencyName { get; set;}
-        public decimal ExchangeValue { get; set; }
+        public double ExchangeValue { get; set; }
         public int BranchId { get; set; }
         public bool isActive { get; set; }
         public bool isDeleted { get; set; }

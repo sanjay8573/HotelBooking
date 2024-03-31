@@ -1,0 +1,65 @@
+﻿@model IEnumerable<HotelBooking.Model.Reatraurant.RestaurantMenu>
+<div id="CartFirst" class="row">
+<table>
+    <tr>
+        <th>Choose Item</th>
+        <th>Quantity</th>
+        <th>Total</th>
+        <th>Action</th>
+    </tr>
+    <tr id="ItemSelection">
+        <td><input type="text" id="txtItem" autocomplete="off" /></td>
+        <td><input type="text" id="txtQty" /></td>
+        <td><input type="text" id="txttotal" /></td>
+        <td><input type="button" id="btnAddItem" onclick="addtoCart(this);" /></td>
+    </tr>
+    <tr>
+        <td colspan="3">
+            <input type="hidden" id="hdnItems" value="0" />
+            <div id="CartDetails">
+
+
+            </div>
+            <div id="CartTotal">
+
+                <input type="text" id="txtTotalAmount" />
+            </div>
+        </td>
+    </tr>
+</table>
+</div>
+
+    
+    <script>
+        
+        
+        $(document).ready(function () {
+            var selectedLabel = null;
+            var yerler = [
+                { "value": 3, "label": "Adana Seyhan" },
+                { "value": 78, "label": "Seyhan Adana" },
+                { "value": 17, "label": "Paris Fransa" },
+                { "value": 123, "label": "Tokyo Japan" }
+            ];
+
+            $("#txtItem").autocomplete({
+                source: yerler,
+                success: function (data) {
+
+                    response($.map(data.result, function (item) {
+                        return {
+                            label: item.label,
+                            value: item.value
+                        }
+                    }));
+                },
+
+             select: function (event, ui) {
+                    var label = ui.item.label;
+                    var value = ui.item.value;
+                 console.log(ui.label);
+                }
+            });
+        });
+    </script>
+

@@ -1,0 +1,176 @@
+﻿@model HotelBooking.Model.Reatraurant.RestaurantMenu   
+@{
+    ViewBag.Title = "RestaurantMenu";
+}
+
+<div id="parent">
+    <div id="maingroup">
+        Menu Name :<input type="text" id="txtMenuName" autocomplete="off" />
+        <input type="hidden" id="RestroId" value="@ViewBag.RestaurantId" />
+        <div id="maingroup_1">
+           
+            <span class="add_field_button"><input type="button" name="prev" id="btnAddHeading" class="prev action-button"  value="Add Heading" runat="server"> </span>
+
+        </div>
+    </div>
+</div>
+<div id="EditMenu">
+    @if (Model != null)
+    {
+        <table id="Menu1" class="table table-bordered">
+            <tr>
+                <th width="50%" align="center" valign="middle" bgcolor="#003556" class="clrwhit">Menu - @Model.RestaurantMenuName</th>
+                
+            </tr>
+            <tr>
+                <td>
+                    <table id="MenuHeading" class="table table-bordered">
+
+                        @foreach (var h in Model.MenuHeading)
+                        {
+                            <tr>
+                                <th width="50%" align="center" valign="middle" bgcolor="#003556" class="clrwhit">Heading- @h.MenuHeadingName </th>
+                                <th width="50%" align="left" valign="middle" bgcolor="#003556" class="clrwhit">
+
+                                    <table id="MenuItem" class="table table-bordered">
+
+                                        @foreach (var m in h.MenuItems)
+                                        {
+                                            <tr>
+                                                <th width="50%" align="center" valign="middle" bgcolor="#003556" class="clrwhit">@m.MenuItemName </th>
+                                                <th width="50%" align="left" valign="middle" bgcolor="#003556" class="clrwhit">@m.ItemPrice </th>
+                                            </tr>
+                                        }
+                                    </table>
+                                </th>
+                            </tr>
+                        }
+                        </table>
+                 </td>
+
+            </tr>
+       </table>
+    }
+</div>
+<input type="button" name="prev" id="btnASave" class="prev action-button" onclick="SaveMenu();" value="Save" runat="server">
+<script>
+    var ItemDivId = 1;
+    $(document).ready(function () {
+        var divId = 1;
+
+        $("#btnAddHeading").click(function(e) {
+            e.preventDefault();
+
+            $("#maingroup_1").append('<div id="' + divId +'" class="Subgroupmain"><input id="txtHeadingName" type="text"><input type="button" name="prev" id="btnAddItem" class="prev action-button" onClick="Additems(this);"  value="Add Item" runat="server"> </div>');
+            divId = divId + 1;
+            return false;
+  });
+
+  $(document).on("click", "11.Subgroupmain", function(e) {
+    e.stopPropagation();
+      $(this).append('<div class="SubSubgroupmain" style="margin: 0 0 0 23px;">Menu Item <input id="txtItemName" type="text"> <input id="txtPrice" type="text"></div>');
+  });
+
+  //$(document).on("click", ".SubSubgroupmain", function(e) {
+  //  e.stopPropagation();
+  //  $(this).append('<div class="Sub3groupmain" style="margin: 0 0 0 53px;">Add 3<input type="text"></div>');
+  //});
+    });
+    function Additems(myDiv) {
+        //e.stopPropagation();
+        //console.log($(myDiv).parent());
+
+        var itemDiv = 'ItemDivId' + ItemDivId;
+        var txtItemNameId = 'txtItemName' + ItemDivId
+        var txtItemNPriceId = 'txtItemPrice' + ItemDivId
+        var pDiv = $(myDiv).parent();
+        $(pDiv).append('<div id="' + itemDiv + '" class="SubSubgroupmain" style="margin: 0 0 0 23px;"> Name : <input id="' + txtItemNameId + '" type="text"> Price : <input id="' + txtItemNPriceId +'" type="text"></div>');
+        ItemDivId = ItemDivId + 1;
+    };
+    function SaveMenu() {
+        var txtMenuName = $("#txtMenuName").val();
+        var RestroId = $("#RestroId").val();
+        var RestaurantMenu = {
+            RestaurantId: Number(RestroId),
+            RestaurantMenuName: txtMenuName,
+            isActive:true,
+            MenuHeading:[]
+        };
+        var MenuHeading1 = [];
+        $("#maingroup_1 > div").each(function (idx, el) {
+            var cuurentDiv = el.id  ;
+            //console.log("Heading" + cuurentDiv);
+            $("#" + cuurentDiv +" > input:text").each(function (idx, el) {
+                //console.log("Heading " + $(el).val());
+                var txtMenuHeading = $(el).val();
+                var txtItemName;
+                var txtItemPrice;
+                var MenuHeadings= {
+                    MenuHeadingName: txtMenuHeading,
+                    isActive:true,
+                    MenuItems:[]
+                };
+                $("#" + cuurentDiv + "> div").each(function (idx, el) {
+
+                    var currentItemDiv = el.id;
+                    $("#" + currentItemDiv + "> :text").each(function (idx,el1) {
+
+
+                        if (idx==0) {
+                            txtItemName= $(el1).val();
+                        }
+                        if (idx==1) {
+                            txtItemPrice=$(el1).val();
+                        }
+
+                        itm = {
+                            MenuItemName: txtItemName,
+                            ItemPrice: txtItemPrice,
+                            isActive: true
+                        }
+                    });
+                    MenuHeadings.MenuItems.push(itm);
+                });
+               
+
+                RestaurantMenu.MenuHeading.push(MenuHeadings);
+            });
+            
+        });
+        
+        console.log(RestaurantMenu);
+          $.ajax({
+     	    type: "POST",
+     	    url: '@Url.Action("SaveRestaurantMenu", "Home")',
+            data: { restroMenuEntity: RestaurantMenu },
+
+                     success: function (recData) {
+                         $.toast({
+                             heading: 'Success',
+                             text: 'Menu Saved Successfully ',
+                             icon: 'success',
+                             loader: false,        // Change it to false to disable loader
+                             position: 'top-right',
+                             loaderBg: '#9EC600'  // To change the background
+                         });
+                         setTimeout(function () {
+                            window.location.href = '@Url.Action("IssuedItems", "store")';
+                            }, 500);
+                         console.log('Success');
+                     },
+                     error: function () {
+                         $.toast({
+                             heading: 'Error',
+                             text: 'Error on Creating menu  ',
+                             icon: 'Error',
+                             loader: false,        // Change it to false to disable loader
+                             position: 'top-right',
+                             loaderBg: '#9EC600'  // To change the background
+                         });
+                         console.log('A error');
+                     }
+            });
+
+    }
+
+</script>

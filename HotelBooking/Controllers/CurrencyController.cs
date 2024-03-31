@@ -43,5 +43,19 @@ namespace HotelBooking.Controllers
             return _CURR.GetExchangeList(BranchId);
         }
 
+        [Route("api/Currency/SaveExchangeTrans")]
+        [HttpPost]
+        public bool SaveExchangeTrans(ExchangeTransaction exTans)
+        {
+            return _CURR.SaveExchangeCurrency(exTans);
+        }
+
+        [Route("api/Currency/GetExchangeTrans")]
+        [HttpPost]
+        public IEnumerable<ExchangeTransaction> GetExchangeTrans(int branchId)
+        {
+            return _CURR.GetExchangeTransList(branchId);
+        }
+
     }
 }

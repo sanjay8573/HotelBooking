@@ -86,7 +86,7 @@ namespace HotelBooking.Controllers.StoreManagement
             {
                
                 dptitems.Add(new SelectListItem { Text = item.ItemName, Value = item.ItemId.ToString() });
-            }
+            } 
             ViewBag.alltem = dptitems;
             StaffController stf = new StaffController();
             IEnumerable<VM_Staff> allstaff = stf.GetStaffs(branchId);

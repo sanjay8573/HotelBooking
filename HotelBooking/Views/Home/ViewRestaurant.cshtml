@@ -1,0 +1,109 @@
+﻿@model HotelBooking.Model.Reatraurant.RestaurantModel
+@{
+    ViewBag.Title = "EditRestaurant";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Restaurant <small>Details  </small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Restaurants Configure  </small> </span></div>
+            <div class="widget-content padded text-center">
+                <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="row">
+                                <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                                    <label>Restaurants Name : @Model.Name (@Model.Area sqft)</label>
+
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <label>Floor : @Model.FloorName</label>
+                                    <input type="hidden" id="BranchId" value="@ViewBag.BranchId" />
+
+                                </div>
+
+                                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+
+                                    <ul class="unstyled">
+                                        <li>
+                                            <input class="styled-checkbox" id="CHK_ISBAR" type="checkbox" checked="@Model.isBarAvailable" name="CHK_ISBAR">
+                                            <label for="CHK_ISBAR">Bar Available</label>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+
+
+                                    <ul class="unstyled">
+                                        <li>
+                                            <input class="styled-checkbox" id="CHK_ISBSA" type="checkbox" checked="@Model.isBreakfastServe" name="CHK_ISBSA">
+                                            <label for="CHK_ISBSA">Breakfast Service Available</label>
+                                        </li>
+                                    </ul>
+                                </div>
+
+
+
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <label>Order Time (Last Order) : @Model.lastOrderAcceptedTill </label>
+
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <label>Opening Time (Walk m...) : @Model.OpeningTime</label>
+
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <label>Closing Time (...) : @Model.ClosingTime</label>
+
+                                </div>
+
+
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <label>Total Table : @Model.NoOfTable</label>
+
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <label>Seating Capacity(Per table)</label>
+                                    <div id="RestroTabalesDIV" class="row">
+
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <label>Restaurant Pictures</label>
+                                    <div id="RestroImagesDIV" class="row">
+                                        
+
+                                    </div>
+                                </div>
+
+
+
+                               
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+    var nT = '@ViewBag.NoOfTables';
+        if (nT != '0') {
+            $("#SelNtable").val(nT);
+            loadTbales(nT);
+            loadImages(nT);
+        }
+    });
+    function loadTbales(nt) {
+    var restroId ='@Model.RestaurantId';
+    $("#RestroTabalesDIV").load("/Home/_RestaurantTables?nTables=" + nt + "&RestaurantId=" + restroId);
+    }
+    function loadImages(nt) {
+    var restroId ='@Model.RestaurantId';
+        $("#RestroImagesDIV").load("/Home/_RestaurantImages?RestaurantId=" + restroId);
+}
+</script>
+

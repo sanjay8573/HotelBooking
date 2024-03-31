@@ -1,0 +1,131 @@
+﻿
+@{
+    ViewBag.Title = "SetCurrencyExchnage";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Currency <small>Exchange </small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Currency exchange </small> </span></div>
+            <div class="widget-content padded text-center">
+                <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div id="currExDiv" class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-right">
+                                    @*<button type="button" class="allbtnin form-group pull-right" > +ADD CURRENCY</button>*@
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="heading">
+                                        Business Currency - @ViewBag.BusinessCurrencyName [@ViewBag.BusinessCurrencyCode] Base rate -1  ( @ViewBag.BusinessCurrencySymbol)
+                                        
+                                    </div>
+
+
+                                    <input type="hidden" id="BusinessCurrencyId" value="@ViewBag.BusinessCurrencyId" />
+                                    <input type="hidden" id="BranchId" value="@ViewBag.BranchId" />
+                                    <input type="hidden" id="CurrExchangeId" value="@ViewBag.CurrExchangeId" />
+
+                                </div>
+                                @*<div class="col-lg-12 col-md-12 col-lg-12 col-lg-12" id="CurrDiV">*@
+                                @if (ViewBag.ExchangeCurrency != null)
+                                {
+                                    foreach (var item in ViewBag.ExchangeCurrency)
+                                    {
+                                        if (item.CurrencyId > 0)
+                                        {
+                                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                                <label>@item.CurrencyName ( @item.CurrencySymbol )</label>
+                                                <input type="text" id="txtExchangeRate-@item.CurrencyId-@item.CurrExchangeId" name="@item.CurrencyName" class="full-width" placeholder="Currency" value="@item.ExchangeValue" runat="server">
+                                            </div>
+
+                                        }
+                                    }
+                                }
+                                @*</div>*@
+
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <button type="button" class="allbtnin full-width" onclick="getValues();">Update</button>
+                                </div>
+                            </div>
+                            </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function getValues() {
+
+        var items = [];
+        var branchId = $('#BranchId').val();
+        var CurrExchangeId;// = $('#CurrExchangeId').val();
+        var exCurrId;
+        var ExCurrName;
+        var bCurrId;
+        var bCurrName;
+        bCurrId = $('#BusinessCurrencyId').val();
+
+        bCurrName = '@ViewBag.BusinessCurrencyName';
+
+        $("#currExDiv input:text").each(function (idx, el) {
+            var tmpid = el.id;
+            var sArr = tmpid.split("-");
+            exCurrId = sArr[1];
+            ExCurrName = el.name;
+            ExCurrVal = $(el).val();
+            CurrExchangeId = sArr[2];
+            var tmpItem = {
+                CurrExchangeId: Number(CurrExchangeId),
+                BaseCurrencyId: Number(bCurrId),
+                BaseCurrencyName: bCurrName,
+                ExchangeCurrencyId: Number(exCurrId),
+                ExchangeCurrencyName: ExCurrName,
+                ExchangeValue: Number(ExCurrVal).toFixed(5),
+                BranchId: parseInt(branchId),
+                isActive: true
+
+            }
+            items.push(tmpItem);
+            console.log(tmpItem);
+        });
+        console.log("Exchnage Currency Details :" + items)
+
+        $.ajax({
+         type: "POST",
+         url: '@Url.Action("SaveCurrencyExchange", "Home")',
+
+         data: { exCurrEntitis: items },
+
+            success: function (recData) {
+                $.toast({
+                    heading: 'Success',
+                    text: 'Rate of Exchange Updated Successfully ',
+                    icon: 'success',
+                    loader: false,        // Change it to false to disable loader
+                    position: 'top-right',
+                    loaderBg: '#9EC600'  // To change the background
+                });
+                setTimeout(function () {
+                     window.location.href = '@Url.Action("SetCurrencyExchange", "Home")';
+                }, 500);
+
+            },
+            error: function () {
+                $.toast({
+                    heading: 'Error',
+                    text: 'Error on updating Rate of Exchange  ',
+                    icon: 'Error',
+                    loader: false,        // Change it to false to disable loader
+                    position: 'top-right',
+                    loaderBg: '#9EC600'  // To change the background
+                });
+                console.log('A error');
+            }
+        });
+
+    }
+
+</script>

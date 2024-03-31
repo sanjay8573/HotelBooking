@@ -1,0 +1,50 @@
+﻿@model HotelBooking.Model.StaffLogin
+@{
+    ViewBag.Title = "LoginSetup";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>User Login<small>Setup </small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; User Login </small> </span></div>
+            <div class="widget-content padded text-center">
+                @using (Html.BeginForm("SetupLogin", "Home", FormMethod.Post, new { id = "msform", enctype = "multipart/form-data" }))
+                {
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="row">
+
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                        <label>Login id</label>
+                                        @Html.HiddenFor(m=>m.StaffId)
+                                        
+                                        @Html.TextBoxFor(m => m.LoginName, new { @class = "full-width", readOnly=true, placeholder = "Login id/Email address" })
+                                    </div>
+
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                        <label>Password;</label>
+                                        @Html.PasswordFor(m => m.Password, new { @class = "full-width", placeholder = "Please use strong password" })
+                                        
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                        <label>Confirm Password</label>
+                                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "full-width", placeholder = "exact you entered above" })
+                                        
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <button type="submit" class="allbtnin full-width">Update</button>
+                            </div>
+                        </div>
+                }
+                </div>
+        </div>
+    </div>
+</div>
+

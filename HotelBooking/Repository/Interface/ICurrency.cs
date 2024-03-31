@@ -13,6 +13,8 @@ namespace HotelBooking.Repository.Interface
         bool SaveNewCurrency(AvailableCurrency currency);
         IEnumerable<CurrencyExchange> GetExchangeList(int branchId);
         bool SetExchange(IEnumerable<CurrencyExchange> exchanges);
+        bool SaveExchangeCurrency(ExchangeTransaction Excurrency);
+        IEnumerable<ExchangeTransaction> GetExchangeTransList(int branchId);
 
     }
 }

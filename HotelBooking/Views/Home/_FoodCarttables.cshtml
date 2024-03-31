@@ -1,0 +1,42 @@
+﻿@model IEnumerable<HotelBooking.Model.Reatraurant.RestaurantTables>
+<ul class="tablebook">
+    @if (Model != null)
+    {
+        var i = 1;
+        foreach (var rt in Model)
+        {
+            var bgcolor = rt.isOccupied ? "class=red" : "class=green";
+            <li id="@rt.TableId" onclick="LoadParkedItems('@rt.RestaurantId','@rt.TableId');">
+                <a @bgcolor href="#">
+                <p>Table @i</p>
+                <p>Seat @rt.NoOfSeat</p>
+                </a>
+            </li>
+            i++;
+        }
+    }
+    @*<li><a href="#" class="green"><p>Table 01</p><p>Seat 4</p></a></li>
+    <li><a href="#" class="orange"><p>Table 01</p><p>Seat 4</p></a></li>
+    <li><a href="#" class="red"><p>Table 01</p><p>Seat 4</p></a></li>
+
+    <li><a href="#"><p>Table 01</p><p>Seat 4</p></a></li>
+    <li><a href="#"><p>Table 01</p><p>Seat 4</p></a></li>
+    <li><a href="#"><p>Table 01</p><p>Seat 4</p></a></li>
+    <li><a href="#"><p>Table 01</p><p>Seat 4</p></a></li>
+    <li><a href="#"><p>Table 01</p><p>Seat 4</p></a></li>
+    <li><a href="#"><p>Table 01</p><p>Seat 4</p></a></li>*@
+</ul>
+
+ <script>
+    $(document).ready(function () {
+        
+    });
+     function LoadParkedItems(restroId, tblId) {
+         $("#hdnTableId").val(tblId);
+         $("#billdetails").load("/Home/_FoodCartItems?RestaurantId=" + restroId + "&tableId=" + tblId);
+         console.log("Park Item Loaded");
+       setTimeout(calculateTotal, 1000);
+     
+     }
+</script>
+

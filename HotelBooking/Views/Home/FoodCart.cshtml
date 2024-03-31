@@ -1,0 +1,308 @@
+﻿
+@{
+    ViewBag.Title = "FoodCart";
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Food <small>Cart  </small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Food Cart </small> </span></div>
+            <div class="widget-content padded text-center">
+                <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
+                    <div class="row">
+                        <div class="col-lg-5 col-md-5 col-sm-12">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <label>Select Restaurant</label>
+                                    <select name="SelRestaurant" id="SelRestaurant" class="full-width ddselect">
+                                        @if (ViewBag.RestroCmoboModel != null)
+                                        {
+                                            foreach (var item in ViewBag.RestroCmoboModel)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text.Trim()
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 form-group" style="margin-top:5px;">
+                                    <label><input type="radio" id="css" name="fav_language" value="CSS"> Room Service </label>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12  form-group" style="margin-top:5px;">
+                                    <label><input type="radio" id="css" name="fav_language" value="CSS"> Dining In</label>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <label>Room Number</label>
+                                    <input type="text" id="txtRoomNumber" class="full-width" placeholder="Room Number" runat="server">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="tableContainerDIV">
+                                   
+                                </div>
+                            </div>
+
+                            <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                              <button type="submit" class="allbtnin full-width">Update</button>
+                            </div>-->
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-sm-12" style="border-left:solid 1px #CCC;">
+                            <div class="row">
+                                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                                    <label>Choose Item</label>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Quantity</label>
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <label>Total</label>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>&nbsp;</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 form-group">
+                                    <input type="hidden" id="hdnItems" value="0" />
+                                    <input type="hidden" id="hdnTableId" value="0" />
+                                    <input type="hidden" id="hdnBiilingMaterId" value="0" />
+                                    <div class="dropdown full-width">
+                                        <input type="text" id="txtItemNameMaster" class="dropbtn full-width" placeholder="Choose Item" autocomplete="off" runat="server">
+                                        <div id="myDropdown" class="dropdown-content">
+                                            <a href="#home">Home</a>
+                                            <a href="#about">About</a>
+                                            <a href="#contact">Contact</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 form-group">
+                                    <input type="text" id="txtQty" class="full-width" placeholder="Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 form-group">
+                                    <input type="text" id="txtTotal" class="full-width" placeholder="Total" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 form-group">
+                                    <button type="button" class="addbtnitem full-width" onclick="addtoCart();">Add</button>
+                                </div>
+                            </div>
+                            <fieldset>
+                                <legend>Bill Details:</legend>
+                                <div class="billdetailsmaster" id="billdetails">
+
+
+
+
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-left">
+                                        <p>Total <strong class="pull-right" id="txtTotalAmount"> </strong></p>
+                                        <p>Tax <strong class="pull-right" id="txtTaxAmt"> </strong></p>
+                                        <p>Grand Total <strong class="pull-right" id="txtGTotal"></strong></p>
+                                    </div>
+                                   </div>
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="margin-top: 20px;">
+                                            <button type="button" class="allbtnin full-width orangebg" onclick="SaveCart();"><i class="ft-box"></i> Park</button>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="margin-top: 20px;">
+                                            <button type="submit" class="allbtnin full-width greenbg"><i class="ft-list"></i> Closing</button>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="margin-top: 20px;">
+                                            <button type="submit" class="allbtnin full-width"><i class="ft-book"></i> Print</button>
+                                        </div>
+                                    </div>
+
+
+                               
+                            </fieldset>
+                           
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#SelRestaurant").change(function () {
+            var restroId = $('option:selected').val();
+            console.log(restroId);
+            showTable(restroId);
+        });
+
+    });
+    function showTable(restroId) {
+        $("#tableContainerDIV").load("/Home/_FoodCartTables?RestaurantId=" + restroId);
+    }
+    function getMenuItems() {
+
+        var restroId = '1';
+        $("#foodMenuDIV").load("/Home/_RestaurantMenuItems?RestaurantId=" + restroId);
+        console.log("Item Loaded");
+    }
+    function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (event) {
+        if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+
+    function addtoCart() {
+        var divId;
+        var itemName;
+        var ItemQty;
+        var ItemTotal;
+        var TotalAmount;
+       
+        itemName = $("#txtItemNameMaster").val();
+        ItemQty = $("#txtQty").val();
+        ItemTotal = $("#txtTotal").val();
+       
+
+        var itmNo = Number($("#hdnItems").val()) + 1;
+        var foodItemId = "FoodItem_" + itmNo;
+        //$("#billdetails").append('<div id="' + foodItemId + '" class="Subgroupmain"><input id="txtItemName" type="text" value="' + itemName + '"> <input id="txtQty" type="text" value="' + ItemQty + '"><input id="txtTotal" type="text" value="' + ItemTotal + '"></div>');
+        console.log("Munish....1");
+        var divHtml = '<div class="row" id="' + foodItemId +'"><div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">';
+        divHtml += '<input type="text" id="' + itmNo +'" class="full-width height35"  disabled runat="server" value="' + itemName +'"></div>';
+        divHtml += '<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12"><input type="text" id="0" class="full-width height35" placeholder="Quantity" runat="server" value="' + ItemQty +'"> </div>';
+        divHtml += '<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"><input type="text" id="txtRoomNumber" class="full-width height35" placeholder="Total" disabled runat="server" value="' + ItemTotal +'"></div> </div>';
+        console.log("Munish....2");
+        $("#billdetails").append(divHtml);
+        console.log("Munish....3");
+        $("#hdnItems").val(itmNo);
+        calculateTotal();
+    }
+    function calculateTotal() {
+        var totalAmount = 0;
+        $("#billdetails > div").each(function (idx, el) {
+            divId = el.id;
+            var cuurenDivId = el.id
+            $("#" + cuurenDivId + " input:text").each(function (idx, el1) {
+                if (idx == 2) {
+                    var itemval = $(el1).val();
+                    totalAmount = Number(totalAmount) + Number(itemval);
+                    //console.log("TTTT" + $(el1).val());
+                }
+            });
+        });
+
+        $("#txtTotalAmount").text(Number(totalAmount).toFixed(2));
+        var txtTaxAmt = (totalAmount * 18) / 100;
+        $("#txtTaxAmt").text(Number(txtTaxAmt).toFixed(2))
+        var gTotal = totalAmount + txtTaxAmt;
+        $("#txtGTotal").text(Number(gTotal).toFixed(2))
+    }
+    function SaveCart() {
+        var txtRestroId = $("#SelRestaurant option:selected").val();
+        var txtRoom_tableId = $("#txtRoomNumber").val();
+        var tableId = $("#hdnTableId").val();
+        var BiilingMaterId;
+        BiilingMaterId = $("#hdnBiilingMaterId").val();
+        var BillingMaster = {
+            BillingId: BiilingMaterId,
+            RestaurantId: txtRestroId,
+            TableNo_RoomNumber: txtRoom_tableId,
+            TotalAmount: Number($("#txtTotalAmount").text()).toFixed(2),
+            Tax: Number(18 / 100).toFixed(),
+            TaxAmount: Number($("#txtTaxAmt").text()).toFixed(),
+            GrantTotal: Number($("#txtGTotal").text()),
+            isPark: true,
+            TableId: tableId,
+            BillingDetails: []
+
+        };
+        var txtItemNmae;
+        var txtItemId;
+        var txtQty;
+        var txtAount;
+        var ItemDetailsId;
+
+        $("#billdetails > div").each(function (idx, el) {
+            divId = el.id;
+            var cuurenDivId = el.id
+            $("#" + cuurenDivId + " input:text").each(function (idx, el1) {
+                if (idx == 0) {
+                    txtItemNmae = $(el1).val();
+                    txtItemId = el1.id;
+                }
+                if (idx == 1) {
+                    ItemDetailsId = el1.id;
+                    txtQty = $(el1).val();
+
+                }
+                if (idx == 2) {
+                    txtAmount = $(el1).val();
+                    txtAount = Number(txtAmount * 18 / 100).toFixed();
+
+                }
+            });
+            var items = {
+                BillingDetailsId: ItemDetailsId,
+                BillingMasterId: BiilingMaterId,
+                ItemId: txtItemId,
+                ItemName: txtItemNmae,
+                Quantity: txtQty,
+                Amount: txtAmount,
+                Tax: Number(18 / 100).toFixed(2),
+                TaxAmount: txtAount
+            }
+            BillingMaster.BillingDetails.push(items);
+        });
+        console.log(BillingMaster);
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("SaveFoodCart", "Home")',
+
+            data: { billingmasterEntity: BillingMaster }
+,
+                    
+                     //data: { restroEntity: restaurant },
+
+                        success: function (recData) {
+                         $.toast({
+                             heading: 'Success',
+                             text: 'Food Cart  Successfully ',
+                             icon: 'success',
+                             loader: false,        // Change it to false to disable loader
+                             position: 'top-right',
+                             loaderBg: '#9EC600'  // To change the background
+                         });
+                         setTimeout(function () {
+                            window.location.href = '@Url.Action("FoodCart", "HOME")';
+                            }, 500);
+                         console.log('Success');
+                     },
+                     error: function () {
+                         $.toast({
+                             heading: 'Error',
+                             text: 'Error on configuring Restaurant  ',
+                             icon: 'Error',
+                             loader: false,        // Change it to false to disable loader
+                             position: 'top-right',
+                             loaderBg: '#9EC600'  // To change the background
+                         });
+                         console.log('A error');
+                     }
+            });
+    }
+</script>
