@@ -22,15 +22,15 @@
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Total Quantity</label>
-                                    <input type="text" id="txtQty" class="full-width" placeholder="Total Quantity" runat="server">
+                                    <input type="text" id="txtQty" onkeyup="calculateTotal(this);" class="full-width" placeholder="Total Quantity" runat="server">
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Price</label>
-                                    <input type="text" id="txtPrice" class="full-width" placeholder="Price" runat="server">
+                                    <input type="text" id="txtPrice" onkeyup="calculateTotal(this);" class="full-width" placeholder="Price" runat="server">
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Total Amount</label>
-                                    <input type="text" id="txtTotalAmount" class="full-width" placeholder="Total Amount" runat="server">
+                                    <input type="text" id="txtTotalAmount"  class="full-width" placeholder="Total Amount" runat="server">
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                     <label>By Alert At</label>
@@ -50,11 +50,11 @@
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Total Quantity</label>
-                                    <input type="text" id="txtQty" class="full-width" placeholder="Total Quantity" runat="server">
+                                    <input type="text" id="txtQty" class="full-width" onkeyup="calculateTotal(this);" placeholder="Total Quantity" runat="server">
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Price</label>
-                                    <input type="text" id="txtPrice" class="full-width" placeholder="Price" runat="server">
+                                    <input type="text" id="txtPrice" class="full-width" onkeyup="calculateTotal(this);" placeholder="Price" runat="server">
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Total Amount</label>
@@ -82,11 +82,11 @@
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Total Quantity</label>
-                                    <input type="text" id="txtQty" class="full-width" placeholder="Total Quantity" runat="server">
+                                    <input type="text" id="txtQty" class="full-width" onkeyup="calculateTotal(this);" placeholder="Total Quantity" runat="server">
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Price</label>
-                                    <input type="text" id="txtPrice" class="full-width" placeholder="Price" runat="server">
+                                    <input type="text" id="txtPrice" class="full-width" onkeyup="calculateTotal(this);" placeholder="Price" runat="server">
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Total Amount</label>
@@ -113,11 +113,11 @@
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Total Quantity</label>
-                                    <input type="text" id="txtQty" class="full-width" placeholder="Total Quantity" runat="server">
+                                    <input type="text" id="txtQty" class="full-width" onkeyup="calculateTotal(this);" placeholder="Total Quantity" runat="server">
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Price</label>
-                                    <input type="text" id="txtPrice" class="full-width" placeholder="Price" runat="server">
+                                    <input type="text" id="txtPrice" class="full-width" onkeyup="calculateTotal(this);" placeholder="Price" runat="server">
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Total Amount</label>
@@ -144,11 +144,11 @@
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Total Quantity</label>
-                                    <input type="text" id="txtQty" class="full-width" placeholder="Total Quantity" runat="server">
+                                    <input type="text" id="txtQty" class="full-width" onkeyup="calculateTotal(this);" placeholder="Total Quantity" runat="server">
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Price</label>
-                                    <input type="text" id="txtPrice" class="full-width" placeholder="Price" runat="server">
+                                    <input type="text" id="txtPrice" class="full-width" onkeyup="calculateTotal(this);" placeholder="Price" runat="server">
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Total Amount</label>
@@ -179,6 +179,36 @@
 </div>
 
 <script>
+
+    function calculateTotal(currItem)
+    {
+        var parentDivId = $(currItem).parent().parent().attr("id");
+        //console.log("You are there...." + $(parentDiv).attr("id"));
+        var rate = 0;
+        var qty = 0;
+        var total;
+        $("#" + parentDivId + " > div > input:text").each(function (idx, el2) {
+
+            if (idx == 1) {
+               
+                qty = $(el2).val();
+                //console.log("..." + rate);
+            }
+            if (idx == 2) {
+                rate = $(el2).val();
+
+                //console.log("..." + rate * qty);
+            }
+            if (idx == 3) {
+
+                total = rate * qty;
+                $(el2).val(Number(total).toFixed(2));
+                //console.log("..." + total);
+            }
+        });
+        
+    }
+    
     function addItem() {
 
         var nRows = $("#dynDivContainer > div:visible").length;

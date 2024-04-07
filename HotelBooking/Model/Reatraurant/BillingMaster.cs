@@ -17,7 +17,7 @@ namespace HotelBooking.Model.Reatraurant
         [Key]
         public int BillingId { get; set; }
         public int RestaurantId { get; set; }
-        public string TableNo_RoomNumber { get; set; }
+        public int TableNo_RoomNumber { get; set; }
         public double TotalAmount { get; set; }
         public double Tax { get; set; }
         public double TaxAmount { get; set; }

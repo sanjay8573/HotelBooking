@@ -2346,13 +2346,12 @@ namespace HotelBooking.Controllers
 
             return View("RestaurantMenuList", rstMenus);
         }
-        public ActionResult AddRestaurantMenu(int RestaurantMenuId=0)
+        public ActionResult AddRestaurantMenu(int RestaurantId,int RestaurantMenuId=0)
         {
             int branchId = int.Parse(Session["BranchId"].ToString());
-            int RestaurantId = 0;
-            if (ViewBag.RestaurantId != null)
+            if (RestaurantId > 0)
             {
-                RestaurantId = int.Parse(ViewBag.RestaurantId);
+                ViewBag.RestaurantId = RestaurantId;
             }
             RestaurantMenu rsm = new RestaurantMenu();
             RestaurantController _rt = new RestaurantController();
@@ -2371,6 +2370,32 @@ namespace HotelBooking.Controllers
             ViewBag.BranchId = branchId;
 
             return View("RestaurantMenu", rsm);
+        }
+        public ActionResult EditRestaurantMenu(int RestaurantId,int RestaurantMenuId = 0)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+           
+            if (RestaurantId >0)
+            {
+                ViewBag.RestaurantId= RestaurantId;
+            }
+            RestaurantMenu rsm = new RestaurantMenu();
+            RestaurantController _rt = new RestaurantController();
+            if (RestaurantMenuId > 0)
+            {
+
+                rsm = _rt.GetRestaurantMenu(RestaurantMenuId);
+            }
+            //RestaurantModel rts = ne w RestaurantModel();
+            //
+
+            //rts = _rt.GetRestaurant(branchId, RestaurantId);
+            //ViewBag.NoOfTables = rts.NoOfTable;
+
+
+            ViewBag.BranchId = branchId;
+
+            return View("EditRestaurantMenu", rsm);
         }
 
         public bool SaveRestaurantMenu(RestaurantMenu restroMenuEntity)
@@ -2431,14 +2456,29 @@ namespace HotelBooking.Controllers
 
         }
 
-        public PartialViewResult _FoodCartItems(int RestaurantId = 0,int tableId=0)
+        public PartialViewResult _FoodCartRoomServices(int RestaurantId = 0)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            //IEnumerable<RestaurantTables> rts;
+            List<RestaurantRoomService> rts1 = new List<RestaurantRoomService>();
+            RestaurantController _rt = new RestaurantController();
+            rts1 = _rt.GetRestaurantRoomServices(RestaurantId, branchId).ToList();
+            //ViewBag.nTables = nTables;
+
+            return PartialView("_FoodCartRoomServices", rts1);
+
+        }
+
+        public PartialViewResult _FoodCartItems(int RestaurantId = 0,int tableId=0,bool isRMS=false)
         {
             int branchId = int.Parse(Session["BranchId"].ToString());
 
             //IEnumerable<RestaurantTables> rts;
           
             RestaurantController _rt = new RestaurantController();
-            IEnumerable<BillingDetails> rts1 = _rt.GetParkItems(RestaurantId,tableId);
+            
+            IEnumerable<BillingDetails> rts1 = _rt.GetParkItems(RestaurantId,tableId, isRMS);
            
 
             return PartialView("_FoodCartItems", rts1);
@@ -2455,6 +2495,188 @@ namespace HotelBooking.Controllers
             rtnVal = _rt.SaveFoodCart(billingmasterEntity);
 
             return rtnVal;
+        }
+        public bool ReleaseTable(int RestaurantId,int tableId)
+        {
+            bool rtnVal;
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            RestaurantController _rt = new RestaurantController();
+
+            rtnVal = _rt.releaseTable(RestaurantId, tableId);
+
+            return rtnVal;
+        }
+
+        [HttpGet]
+        public JsonResult AutoCompleteServiceProviders(int RestaurantId)
+        {
+           
+           
+
+            List<string> servicesList = new List<string>();
+            RestaurantController _rt = new RestaurantController();
+            IEnumerable<RestaurantMenu> rsm = _rt.GetRestaurantMenus(RestaurantId);
+            foreach (var item in rsm)
+            {
+                foreach(var menuHeading in item.MenuHeading) {
+
+                    foreach (var menuItem in menuHeading.MenuItems)
+                    {
+                        servicesList.Add((menuItem.MenuItemName + "-" + menuItem.ItemPrice+"~"+ menuItem.MenuItemId ));
+
+                    }
+                }
+               
+            }
+
+            
+            return Json(servicesList.ToArray(), JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public ActionResult GetCalendarData(int selectedMonth,int selectedYear)
+        {
+            // Initialization.  
+            JsonResult result = new JsonResult();
+
+            try
+            {
+                // Loading.  
+
+                List<AvailabilityCalendar> data = GetCalData(selectedYear, selectedMonth);
+                List<AvailabilityCalendar> data1 = new List<AvailabilityCalendar>()
+                {
+                    new AvailabilityCalendar()
+                    {
+                     Sr=1,
+                     Title="Room Status",
+                     Start_Date="2024/04/06",
+                     End_Date="2024/04/06",
+                     Desc="Available",
+                     backgroundColor="#065a18eb !important",
+                     textColor="#000000 !important",
+                     AvalDate= new DateTime(2024,04,06),
+                     AvailableRooms=20,
+                     BookedRooms=10
+                    },
+                     new AvailabilityCalendar()
+                    {
+                      Sr=1,
+                     Title="Room Status",
+                     Start_Date="2024/04/07",
+                     End_Date="2024/04/07",
+                     Desc="Available",
+                     backgroundColor="#065a18eb !important",
+                     textColor="#000000 !important",
+                     AvalDate= new DateTime(2024,04,06),
+                     AvailableRooms=20,
+                     BookedRooms=10
+                    },
+                      new AvailabilityCalendar()
+                    {
+                     Sr=3,
+                     Title="First",
+                     Start_Date="2004/04/08",
+                     End_Date="2004/04/08",
+                     Desc="Available",
+                     AvalDate= new DateTime(2024,04,08),
+                     AvailableRooms=20,
+                     BookedRooms=10
+                    },
+                       new AvailabilityCalendar()
+                    {
+                      Sr=4,
+                     Title="First",
+                     Start_Date="2004/04/09",
+                     End_Date="2004/04/09",
+                     Desc="Available",
+                     AvalDate= new DateTime(2024,04,09),
+                     AvailableRooms=20,
+                     BookedRooms=10
+                    },
+                        new AvailabilityCalendar()
+                    {
+                      Sr=5,
+                     Title="First",
+                     Start_Date="2004/04/10",
+                     End_Date="2004/04/10",
+                     Desc="Available",
+                     AvalDate= new DateTime(2024,04,06),
+                     AvailableRooms=20,
+                     BookedRooms=10
+                    },
+                };
+                
+
+                // Processing.  
+                result = this.Json(data, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                // Info  
+                Console.Write(ex);
+            }
+
+            // Return info.  
+            return result;
+        }
+        public List<AvailabilityCalendar> GetCalData(int year, int month)
+        {
+            var dates = new List<DateTime>();
+
+            IEnumerable<DashBoardData> ds = new List<DashBoardData>();
+            BookingController _bk = new BookingController();
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            ds = _bk.CalendarData(branchId);
+
+            List<AvailabilityCalendar> data = new List<AvailabilityCalendar>();
+            int i = 1;
+            // Loop from the first day of the month until we hit the next month, moving forward a day at a time
+            for (var date = new DateTime(year, month, 1); date.Month == month; date = date.AddDays(1))
+            {
+                foreach(var item in ds)
+                {
+                    if (item.AvailabilityDate == date.ToString("MM-dd-yyyy"))
+                    {
+                        AvailabilityCalendar kk = new AvailabilityCalendar()
+                        {
+                            Sr = 1,
+                            Title = "Room Status",
+                            Start_Date = item.AvailabilityDate,
+                            End_Date = item.AvailabilityDate,
+                            Desc = "Available",
+                            backgroundColor = "#065a18eb !important",
+                            textColor = "#000000 !important",
+                            AvalDate = new DateTime(2024, 04, 06),
+                            AvailableRooms = item.AvailableRooms,
+                            BookedRooms = item.BookedRooms
+                        };
+                        data.Add(kk);
+                    }
+                    //else
+                    //{
+                    //    AvailabilityCalendar kk = new AvailabilityCalendar()
+                    //    {
+                    //        Sr = 1,
+                    //        Title = "Room Status",
+                    //        Start_Date = date.ToString("yyyy-MM-dd"),
+                    //        End_Date = date.ToString("yyyy-MM-dd"),
+                    //        Desc = "Available",
+                    //        backgroundColor = "#065a18eb !important",
+                    //        textColor = "#000000 !important",
+                    //        AvalDate = new DateTime(2024, 04, 06),
+                    //        AvailableRooms =item.NoOfRooms,
+                    //        BookedRooms = 0
+                    //    };
+                    //    data.Add(kk);
+                    //}
+                }
+                
+               
+                i++;
+            }
+
+            return data;
         }
     }
 }

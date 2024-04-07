@@ -1,0 +1,34 @@
+﻿@model IEnumerable<HotelBooking.Model.Reatraurant.RestaurantRoomService>
+<ul class="tablebook">
+    @if (Model != null)
+    {
+        var i = 1;
+        foreach (var rt in Model)
+        {
+            var bgcolor = rt.isOrdered ? "class=red" : "class=green";
+            <li id="@rt.RoomId" onclick="LoadParkedItemsRMS('@rt.RestaurantId','@rt.RoomId','@rt.RoomNumber');">
+                <a @bgcolor href="#">
+                    <p>Room </p>
+                    <p>@rt.RoomNumber</p>
+                </a>
+            </li>
+            i++;
+        }
+    }
+
+</ul>
+<script>
+    $(document).ready(function () {
+
+    });
+    function LoadParkedItemsRMS(restroId, rmId,rmNo) {
+        $("#hdnRoomId").val(rmId);
+        $("#hdnRoomNumber").val(rmNo);
+        $("#hdnisRoomService").val(true);
+        $("#billdetails").load("/Home/_FoodCartItems?RestaurantId=" + restroId + "&tableId=" + rmNo +"&isRMS=true");
+        console.log("Park Item Loaded for RoomService");
+        $('#btnAdd').prop('disabled', false);
+        setTimeout(calculateTotal, 2000);
+
+    }
+</script>

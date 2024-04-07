@@ -94,7 +94,12 @@ namespace HotelBooking.Repository.Implementation
             bool rtnVal = false;
             try
             {
-                _contex.IssueRegister.AddRange(items);
+                    _contex.IssueRegister.AddRange(items);
+                    foreach (var itm in items)
+                    {
+                        ItemMaster it = _contex.ItemMaster.Find(itm.ItemId);
+                        it.QuantityAvailable = itm.BalanceQuantity;
+                    }
                     _contex.SaveChanges();
                     rtnVal = true;
 

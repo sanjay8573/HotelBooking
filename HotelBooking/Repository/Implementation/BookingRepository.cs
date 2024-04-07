@@ -696,6 +696,26 @@ namespace HotelBooking.Repository.Implementation
             
             return ds;
         }
+        public IEnumerable<DashBoardData> CalendarData(int BranchId)
+        {
+            IEnumerable<DashBoardData> ds= new List<DashBoardData>();
+            int totalRooms = _context.Rooms.Where(b => b.BranchId == BranchId).Count();
+            var bkedRoom = _context.BookedRoom.Where(b => b.BranchId == BranchId && b.isCheckout == false)
+                            .GroupBy(g => new { dt = g.CheckIn })
+                            .Select( entity=>
+                                    new DashBoardData
+                                    {
+                                        NoOfRooms= totalRooms,
+                                        AvailableRooms = totalRooms- entity.Count(),
+                                        BookedRooms =entity.Count(),
+                                        AvailabilityDate=entity.Key.dt
+                                    }
+                                ).ToList();
+
+            return bkedRoom;
+
+        }
+        
 
         private string generateInvoiceNumber(int branchId)
         {

@@ -212,6 +212,7 @@
     <Compile Include="Model\AllocateRoomResponse.cs" />
     <Compile Include="Model\Amenities.cs" />
     <Compile Include="Model\AppLogs.cs" />
+    <Compile Include="Model\AvailabilityCalendar.cs" />
     <Compile Include="Model\AvailableCurrency.cs" />
     <Compile Include="Model\BookedRoom.cs" />
     <Compile Include="Model\Booking.cs" />
@@ -370,10 +371,13 @@
     <Content Include="css\font-awesome.min-old.css" />
     <Content Include="css\font-awesome.min.css" />
     <Content Include="css\froala_editor.pkgd.min.css" />
+    <Content Include="css\fullcalendar.min.css" />
+    <Content Include="css\fullcalendar.print.css" />
     <Content Include="css\jquery.toast.css" />
     <Content Include="css\login-new.css" />
     <Content Include="css\perfect-scrollbar.min.css" />
     <Content Include="css\prism.min.css" />
+    <Content Include="css\qtip.css" />
     <Content Include="css\simple-line-icons.css" />
     <Content Include="css\social.css" />
     <Content Include="css\style.css" />
@@ -417,16 +421,19 @@
     <Content Include="JS\customizer.js" />
     <Content Include="JS\dashboard1.js" />
     <Content Include="JS\froala_editor.pkgd.min.js" />
+    <Content Include="JS\fullcalendar.min.js" />
     <Content Include="JS\jquery.toast.js" />
     <Content Include="JS\jquery-3.2.1.min.js" />
     <Content Include="JS\jquery-3.3.1.js" />
     <Content Include="JS\jquery-ui.min.js" />
     <Content Include="JS\jquery.matchHeight-min.js" />
+    <Content Include="JS\moment.min.js" />
     <Content Include="JS\notification-sidebar.js" />
     <Content Include="JS\pace.min.js" />
     <Content Include="JS\perfect-scrollbar.jquery.min.js" />
     <Content Include="JS\popper.min.js" />
     <Content Include="JS\prism.min.js" />
+    <Content Include="JS\qtip.min.js" />
     <Content Include="JS\screenfull.min.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -569,6 +576,9 @@
     <Content Include="Views\Home\_RestaurantMenuItems.cshtml" />
     <Content Include="Views\Home\_FoodCarttables.cshtml" />
     <Content Include="Views\Home\_FoodCartItems.cshtml" />
+    <Content Include="Views\Home\EditRestaurantMenu.cshtml" />
+    <Content Include="Views\Home\_FoodCartRoomServices.cshtml" />
+    <Content Include="Views\Home\_availabilityCalendar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

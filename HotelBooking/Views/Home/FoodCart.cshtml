@@ -2,6 +2,65 @@
 @{
     ViewBag.Title = "FoodCart";
 }
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font: 16px Arial;
+    }
+
+    .autocomplete {
+        position: relative;
+        display: inline-block;
+    }
+
+    input {
+        border: 1px solid transparent;
+        background-color: #f1f1f1;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+        input[type=text] {
+            background-color: #f1f1f1;
+            width: 100%;
+        }
+
+        input[type=submit] {
+            background-color: DodgerBlue;
+            color: #fff;
+            cursor: pointer;
+        }
+
+    .autocomplete-items {
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        top: 100%;
+        left: 0;
+        right: 0;
+    }
+
+        .autocomplete-items div {
+            padding: 10px;
+            cursor: pointer;
+            background-color: #fff;
+            border-bottom: 1px solid #d4d4d4;
+        }
+
+            .autocomplete-items div:hover {
+                background-color: #e9e9e9;
+            }
+
+    .autocomplete-active {
+        background-color: DodgerBlue !important;
+        color: #ffffff;
+    }
+</style>
 <div class="row">
     <div class="col-sm-12">
         <div class="card widget-container">
@@ -29,7 +88,7 @@
                                         }
                                     </select>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 form-group" style="margin-top:5px;">
+                                @*<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 form-group" style="margin-top:5px;">
                                     <label><input type="radio" id="css" name="fav_language" value="CSS"> Room Service </label>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12  form-group" style="margin-top:5px;">
@@ -38,14 +97,18 @@
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <label>Room Number</label>
                                     <input type="text" id="txtRoomNumber" class="full-width" placeholder="Room Number" runat="server">
-                                </div>
+                                </div>*@
                             </div>
                             <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="tableContainerDIV">
-                                   
+
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="RoomContainerDIV">
 
+                                </div>
+                            </div>
                             <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                               <button type="submit" class="allbtnin full-width">Update</button>
                             </div>-->
@@ -69,24 +132,27 @@
                                 <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 form-group">
                                     <input type="hidden" id="hdnItems" value="0" />
                                     <input type="hidden" id="hdnTableId" value="0" />
+                                    <input type="hidden" id="hdnRoomId" value="0" />
+                                    <input type="hidden" id="hdnRoomNumber" value="0" />
+                                    <input type="hidden" id="hdnisRoomService" value="0" />
                                     <input type="hidden" id="hdnBiilingMaterId" value="0" />
                                     <div class="dropdown full-width">
-                                        <input type="text" id="txtItemNameMaster" class="dropbtn full-width" placeholder="Choose Item" autocomplete="off" runat="server">
-                                        <div id="myDropdown" class="dropdown-content">
+                                        <input type="text" tabindex="1" id="txtItemNameMaster" class="dropbtn full-width" placeholder="Choose Item" autocomplete="off" runat="server">
+                                        @*<div id="myDropdown" class="dropdown-content">
                                             <a href="#home">Home</a>
                                             <a href="#about">About</a>
                                             <a href="#contact">Contact</a>
-                                        </div>
+                                        </div>*@
                                     </div>
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 form-group">
-                                    <input type="text" id="txtQty" class="full-width" placeholder="Quantity" runat="server">
+                                    <input type="text" tabindex="2" id="MtxtQty" class="full-width" placeholder="Quantity" runat="server">
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 form-group">
-                                    <input type="text" id="txtTotal" class="full-width" placeholder="Total" runat="server">
+                                    <input type="text" id="MtxtTotal" readonly="readonly" class="full-width" placeholder="Total" runat="server">
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 form-group">
-                                    <button type="button" class="addbtnitem full-width" onclick="addtoCart();">Add</button>
+                                    <button type="button" tabindex="3" disabled="true" id="btnAdd" class="addbtnitem full-width" onclick="addtoCart();">Add</button>
                                 </div>
                             </div>
                             <fieldset>
@@ -104,23 +170,23 @@
                                         <p>Tax <strong class="pull-right" id="txtTaxAmt"> </strong></p>
                                         <p>Grand Total <strong class="pull-right" id="txtGTotal"></strong></p>
                                     </div>
-                                   </div>
-                                    <div class="row">
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="margin-top: 20px;">
-                                            <button type="button" class="allbtnin full-width orangebg" onclick="SaveCart();"><i class="ft-box"></i> Park</button>
-                                        </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="margin-top: 20px;">
-                                            <button type="submit" class="allbtnin full-width greenbg"><i class="ft-list"></i> Closing</button>
-                                        </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="margin-top: 20px;">
-                                            <button type="submit" class="allbtnin full-width"><i class="ft-book"></i> Print</button>
-                                        </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="margin-top: 20px;">
+                                        <button type="button" class="allbtnin full-width orangebg" onclick="SaveCart();"><i class="ft-box"></i> Park</button>
                                     </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="margin-top: 20px;">
+                                        <button type="button" class="allbtnin full-width greenbg" onclick="ReleaseTable();"><i class="ft-list"></i> Closing</button>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="margin-top: 20px;">
+                                        <button type="submit" class="allbtnin full-width"><i class="ft-book"></i> Print</button>
+                                    </div>
+                                </div>
 
 
-                               
+
                             </fieldset>
-                           
+
                         </div>
                     </div>
                 </form>
@@ -131,40 +197,108 @@
 
 
 <script>
+    var MenuItemArray=[];
     $(document).ready(function () {
         $("#SelRestaurant").change(function () {
             var restroId = $('option:selected').val();
             console.log(restroId);
             showTable(restroId);
+            showRoomsForRestaurant(restroId);
+            getMenuItems(restroId);
+        });
+
+
+        ///txtQTY change//
+        $('#MtxtQty').on('keyup', function (event) {
+
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            //if (keycode == '13') {
+            //    console.log('You pressed a "enter" key in textbox');
+            //    $("#btnAdd").focus();
+            //}
+            console.log("HHHHHH");
+            console.log("HHHHHH" + $('#txtItemNameMaster').val());
+            var ArrVal = $('#txtItemNameMaster').val();
+            console.log(ArrVal);
+
+            var ArrData = ArrVal.split("-");
+            var rate = ArrData[1];
+            var number = document.getElementById("MtxtQty").value;
+            console.log("qty" + number);
+            if (number != 0) {
+                document.getElementById("MtxtTotal").value = Number(Number(number) * Number(rate)).toFixed(2);
+            } else {
+                document.getElementById("MtxtTotal").value = 0;
+            }
         });
 
     });
+
+
+    function myCALFunction(cuttenItem) {
+        //console.log(cuttenItem);
+        var parentDivId = $(cuttenItem).parent().parent().attr("id");
+        //console.log("You are there...." + $(parentDiv).attr("id"));
+        var rate = 0;
+        var qty = 0;
+        var total ;
+        $("#" + parentDivId + " > div > input:text").each(function (idx, el2) {
+            
+            if (idx == 0) {
+                var tmpN = $(el2).val();
+                var tmpArr = tmpN.split("-");
+                rate = tmpArr[1];
+                //console.log("..." + rate);
+            }
+            if (idx == 1) {
+                 qty = $(el2).val();
+             
+                //console.log("..." + rate * qty);
+            }
+            if (idx == 2) {
+               
+                total = rate * qty;
+                $(el2).val(Number(total).toFixed(2));
+                //console.log("..." + total);
+            }
+        });
+        calculateTotal();
+    }
     function showTable(restroId) {
         $("#tableContainerDIV").load("/Home/_FoodCartTables?RestaurantId=" + restroId);
     }
-    function getMenuItems() {
 
-        var restroId = '1';
-        $("#foodMenuDIV").load("/Home/_RestaurantMenuItems?RestaurantId=" + restroId);
+    function showRoomsForRestaurant(restroId) {
+        $("#RoomContainerDIV").load("/Home/_FoodCartRoomServices?RestaurantId=" + restroId);
+    }
+    function getMenuItems(restroId) {
+
+        
+      
+                $.ajax({
+                type: "GET",
+                url: '@Url.Action("AutoCompleteServiceProviders", "Home")',
+
+                    data: { RestaurantId: restroId },
+
+                    success: function (recData) {
+                        //MenuItemArray = JSON.stringify(recData);
+                        //console.log('Success Menu Item' + JSON.stringify(recData));
+                        for (var i in recData) {
+                            MenuItemArray.push(recData[i]);
+                        }
+                        //console.log('Success Menu Item Arr' + MenuItemArray);
+                     },
+                     error: function () {
+                         
+                         console.log('A error');
+                     }
+            });
         console.log("Item Loaded");
     }
-    function myFunction() {
-        document.getElementById("myDropdown").classList.toggle("show");
-    }
 
-    // Close the dropdown if the user clicks outside of it
-    window.onclick = function (event) {
-        if (!event.target.matches('.dropbtn')) {
-            var dropdowns = document.getElementsByClassName("dropdown-content");
-            var i;
-            for (i = 0; i < dropdowns.length; i++) {
-                var openDropdown = dropdowns[i];
-                if (openDropdown.classList.contains('show')) {
-                    openDropdown.classList.remove('show');
-                }
-            }
-        }
-    }
+
+
 
     function addtoCart() {
         var divId;
@@ -172,25 +306,30 @@
         var ItemQty;
         var ItemTotal;
         var TotalAmount;
-       
-        itemName = $("#txtItemNameMaster").val();
-        ItemQty = $("#txtQty").val();
-        ItemTotal = $("#txtTotal").val();
-       
 
-        var itmNo = Number($("#hdnItems").val()) + 1;
+        itemName = $("#txtItemNameMaster").val();
+        ItemQty = $("#MtxtQty").val();
+        ItemTotal = $("#MtxtTotal").val();
+
+
+        //var itmNo = Number($("#hdnItems").val()) + 1;
+        var itmNo = $("#txtItemNameMaster").attr('menuitemid');
         var foodItemId = "FoodItem_" + itmNo;
         //$("#billdetails").append('<div id="' + foodItemId + '" class="Subgroupmain"><input id="txtItemName" type="text" value="' + itemName + '"> <input id="txtQty" type="text" value="' + ItemQty + '"><input id="txtTotal" type="text" value="' + ItemTotal + '"></div>');
-        console.log("Munish....1");
+
         var divHtml = '<div class="row" id="' + foodItemId +'"><div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">';
         divHtml += '<input type="text" id="' + itmNo +'" class="full-width height35"  disabled runat="server" value="' + itemName +'"></div>';
-        divHtml += '<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12"><input type="text" id="0" class="full-width height35" placeholder="Quantity" runat="server" value="' + ItemQty +'"> </div>';
+        divHtml += '<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12"><input type="text" id="0" onkeyup="myCALFunction(this)" class="full-width height35" placeholder="Quantity" runat="server" value="' + ItemQty +'"> </div>';
         divHtml += '<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"><input type="text" id="txtRoomNumber" class="full-width height35" placeholder="Total" disabled runat="server" value="' + ItemTotal +'"></div> </div>';
-        console.log("Munish....2");
+
         $("#billdetails").append(divHtml);
-        console.log("Munish....3");
+
         $("#hdnItems").val(itmNo);
         calculateTotal();
+        $("#txtItemNameMaster").val('');
+        $("#MtxtQty").val('');
+        $("#MtxtTotal").val('');
+        $("#txtItemNameMaster").focus();
     }
     function calculateTotal() {
         var totalAmount = 0;
@@ -214,8 +353,9 @@
     }
     function SaveCart() {
         var txtRestroId = $("#SelRestaurant option:selected").val();
-        var txtRoom_tableId = $("#txtRoomNumber").val();
+        var txtRoom_tableId = $("#hdnRoomNumber").val();
         var tableId = $("#hdnTableId").val();
+        var isRoomService = $("#hdnisRoomService").val();
         var BiilingMaterId;
         BiilingMaterId = $("#hdnBiilingMaterId").val();
         var BillingMaster = {
@@ -227,6 +367,7 @@
             TaxAmount: Number($("#txtTaxAmt").text()).toFixed(),
             GrantTotal: Number($("#txtGTotal").text()),
             isPark: true,
+            isRoomService: isRoomService,
             TableId: tableId,
             BillingDetails: []
 
@@ -275,7 +416,7 @@
 
             data: { billingmasterEntity: BillingMaster }
 ,
-                    
+
                      //data: { restroEntity: restaurant },
 
                         success: function (recData) {
@@ -305,4 +446,127 @@
                      }
             });
     }
+
+    function ReleaseTable() {
+        var txtRestroId = $("#SelRestaurant option:selected").val();
+        var tableId = $("#hdnTableId").val();
+                $.ajax({
+            type: "POST",
+            url: '@Url.Action("ReleaseTable", "Home")',
+
+                    data: { RestaurantId: txtRestroId, tableId: tableId }
+,
+
+                     //data: { restroEntity: restaurant },
+
+                        success: function (recData) {
+                         $.toast({
+                             heading: 'Success',
+                             text: 'Food Cart  Successfully ',
+                             icon: 'success',
+                             loader: false,        // Change it to false to disable loader
+                             position: 'top-right',
+                             loaderBg: '#9EC600'  // To change the background
+                         });
+                         setTimeout(function () {
+                            window.location.href = '@Url.Action("FoodCart", "HOME")';
+                            }, 500);
+                         console.log('Success');
+                     },
+                     error: function () {
+                         $.toast({
+                             heading: 'Error',
+                             text: 'Error on configuring Restaurant  ',
+                             icon: 'Error',
+                             loader: false,        // Change it to false to disable loader
+                             position: 'top-right',
+                             loaderBg: '#9EC600'  // To change the background
+                         });
+                         console.log('A error');
+                     }
+            });
+    }
+
+
+    /////AutoComplete///
+    function autocomplete(inp, arr) {
+        var currentFocus;
+        inp.addEventListener("input", function (e) {
+            var a, b, i, val = this.value;
+            closeAllLists();
+            if (!val) { return false; }
+            currentFocus = -1;
+            a = document.createElement("DIV");
+            a.setAttribute("id", this.id + "autocomplete-list");
+            a.setAttribute("class", "autocomplete-items");
+            this.parentNode.appendChild(a);
+            //console.log("Items ::" + MenuItemArray);
+            for (i = 0; i < arr.length; i++) {
+                
+                if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                    var tmpArr = arr[i].split("~");
+                    b = document.createElement("DIV");
+                    b.innerHTML = "<strong>" + tmpArr[0].substr(0, val.length) + "</strong>";
+                    b.innerHTML += tmpArr[0].substr(val.length);
+                    b.innerHTML += "<input type='hidden' id='" + tmpArr[1] + "' value='" + tmpArr[0] + "'>";
+
+                    b.addEventListener("click", function (e) {
+                        inp.value = this.getElementsByTagName("input")[0].value;
+                        inp.setAttribute("MenuItemId", this.getElementsByTagName("input")[0].id);
+
+                        $("#MtxtQty").focus();
+                        closeAllLists();
+                    });
+                    a.appendChild(b);
+                }
+            }
+        });
+
+        inp.addEventListener("keydown", function (e) {
+            var x = document.getElementById(this.id + "autocomplete-list");
+            if (x) x = x.getElementsByTagName("div");
+            if (e.keyCode == 40) {
+                currentFocus++;
+                addActive(x);
+            } else if (e.keyCode == 38) {
+                currentFocus--;
+                addActive(x);
+            } else if (e.keyCode == 13) {
+                e.preventDefault();
+                if (currentFocus > -1) {
+                    if (x) x[currentFocus].click();
+                }
+            }
+        });
+        function addActive(x) {
+            if (!x) return false;
+            removeActive(x);
+            if (currentFocus >= x.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = (x.length - 1);
+            x[currentFocus].classList.add("autocomplete-active");
+        }
+        function removeActive(x) {
+            for (var i = 0; i < x.length; i++) {
+                x[i].classList.remove("autocomplete-active");
+            }
+        }
+        function closeAllLists(elmnt) {
+            var x = document.getElementsByClassName("autocomplete-items");
+            for (var i = 0; i < x.length; i++) {
+                if (elmnt != x[i] && elmnt != inp) {
+                    x[i].parentNode.removeChild(x[i]);
+                }
+            }
+        }
+        document.addEventListener("click", function (e) {
+            closeAllLists(e.target);
+        });
+    }
+
+
+    var countries = ["Roti-50~1", "Butter roti-70~2", "Naan-170~3", "Rice-150~4", "Jeera Rice-170~5", "Lemon Rice-180~6", "Dal-240~7"];
+    console.log(countries);
+    autocomplete(document.getElementById("txtItemNameMaster"), MenuItemArray);
+    /////////
+
 </script>

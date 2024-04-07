@@ -31,5 +31,6 @@ namespace HotelBooking.Repository.Interface
         bool UpdateBookingStatus(int BranchId, int Bookingid, string bookingStatus);
         bool UpdatePaymentStatus(int BranchId, int Bookingid, string paymentStatus);
         DashBoardData DashboardData(int BranchId);
+        IEnumerable<DashBoardData> CalendarData(int BranchId);
     }
 }

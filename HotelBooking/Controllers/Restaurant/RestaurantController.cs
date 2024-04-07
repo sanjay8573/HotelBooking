@@ -46,6 +46,12 @@ namespace HotelBooking.Controllers.Restaurant
         {
             return _REST.GetAllRestaurantTables(RestaurantId);
         }
+        [Route("api/restaurant/GetRestaurantRoomServices/{RestaurantId}")]
+        [HttpGet]
+        public IEnumerable<RestaurantRoomService> GetRestaurantRoomServices(int RestaurantId,int branchId)
+        {
+            return _REST.GetAllRestaurantRoomServices(RestaurantId, branchId);
+        }
 
         [Route("api/restaurant/GetRestaurantImagess/{RestaurantId}")]
         [HttpGet]
@@ -76,15 +82,22 @@ namespace HotelBooking.Controllers.Restaurant
 
         [Route("api/restaurant/GetParkItems/{RestaurantId}/{tableId}")]
         [HttpGet]
-        public IEnumerable<BillingDetails> GetParkItems(int RestaurantId,int tableId)
+        public IEnumerable<BillingDetails> GetParkItems(int RestaurantId,int tableId,bool isRMS)
         {
-            return _REST.getParkItems(RestaurantId, tableId);   
+            return _REST.getParkItems(RestaurantId, tableId,isRMS);   
         }
         [Route("api/restaurant/SaveFoodCart")]
         [HttpPost]
         public bool SaveFoodCart(BillingMaster bmEntity)
         {
             return _billing.SaveBilling(bmEntity);
+        }
+
+        [Route("api/restaurant/releaseTable")]
+        [HttpPost]
+        public bool releaseTable(int restaurantId,int tableId)
+        {
+            return _REST.ReleaseTable(restaurantId, tableId);
         }
     }
 }

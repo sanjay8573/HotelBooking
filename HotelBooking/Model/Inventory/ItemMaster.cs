@@ -18,7 +18,7 @@ namespace HotelBooking.Model.Inventory
         public int Quantity { get; set; }
         public int QuantityAvailable { get; set; }
         public int ReorderPoint { get; set; }
-        public DateTime date_created { get; set; } = DateTime.Now;
+        public DateTime date_created { get; set; } 
         public int BranchId { get; set; }
         public decimal Price {  get; set; }
         public decimal TotalAmount { get; set; }

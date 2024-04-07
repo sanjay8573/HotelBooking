@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<HotelBooking.Model.Reatraurant.RestaurantMenu>
 @{
     ViewBag.Title = "RestaurantMenuList";
+    var RestroId = Model.First().RestaurantId;
 }
 
 <div class="row">
@@ -11,7 +12,7 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12 pull-right">
-                            <button type="button" class="allbtnin form-group" onclick="location.href='@Url.Action("AddRestaurantMenu","Home")'"> +ADD</button>
+                            <button type="button" class="allbtnin form-group" onclick="location.href='@Url.Action("AddRestaurantMenu","Home",new {@RestaurantId=RestroId,@RestaurantMenuId=0})'"> +ADD</button>
 
                         </div>
                     </div>
@@ -40,9 +41,9 @@
                                         <td align="center" valign="middle">@i</td>
                                         <td align="left" valign="middle">@rt.RestaurantMenuName</td>
                                         <td align="left" valign="middle">@rt.isActive</td>
-                                        <td align="center" valign="middle"><a class="viewbtn" href="@Url.Action("ViewRestaurant","Home",new { @RestaurantId = rt.RestaurantId })"><i class="fa fa-eye"></i> View</a></td>
-                                        <td align="center" valign="middle"><a href="@Url.Action("AddRestaurantMenu","Home",new { @RestaurantMenuId = rt.RestaurantMenuId })" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
-                                        <td align="center" valign="middle"><a href="@Url.Action("DelRestaurant","Home",new { @RestaurantId = rt.RestaurantId })" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
+                                        <td align="center" valign="middle"><a class="viewbtn" href="@Url.Action("ViewRestaurantMenu","Home",new {@RestaurantId=rt.RestaurantId, @RestaurantMenuId = rt.RestaurantMenuId })"><i class="fa fa-eye"></i> View</a></td>
+                                        <td align="center" valign="middle"><a href="@Url.Action("EditRestaurantMenu","Home",new {@RestaurantId=rt.RestaurantId, @RestaurantMenuId = rt.RestaurantMenuId })" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
+                                        <td align="center" valign="middle"><a href="@Url.Action("DelRestaurant","Home",new {@RestaurantId=rt.RestaurantId, @RestaurantMenuId = rt.RestaurantMenuId })" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
 
                                     </tr>
                                     i++;

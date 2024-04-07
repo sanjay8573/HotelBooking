@@ -129,7 +129,8 @@ function showPostsInMonth(dateInMonth, posts, cells) {
       const channelIcon = document.createElement('i');
       channelIcon.classList.add('fab');
       channelIcon.classList.add(icon4channel(post.channelID));
-      postBlock.appendChild(channelIcon);
+        postBlock.appendChild(channelIcon);
+       
 
       postBlock.classList.add(`channel-${post.channelID}`);
     }
@@ -138,7 +139,8 @@ function showPostsInMonth(dateInMonth, posts, cells) {
     const postTitle = document.createElement('span');
     const postTime = getLocalTimestring(post.publishAt);
     postTitle.textContent = `${postTime}`;
-    postBlock.appendChild(postTitle);
+      //postBlock.appendChild(postTitle);
+      //postBlock.appendChild('sanjay');
 
     postBlock.classList.add('post-item');
     postBlock.setAttribute('id', `post-${post.id}`); // eg id='post-1'
@@ -311,11 +313,10 @@ function getPosts() {
   const posts = [
   {
     id: 1, // must be unique - UUID recommended. if not unique, dragging misbehaves.
-          title: 'Facebook Post 1',
+    title: 'Facebook Post 1',
     RoomType: 'Standard-10',
-          publishAt: new Date('2024-03-05T12:00:00-03:30'),
-        
-          channelID: 1
+    publishAt: new Date('2024-03-05T12:00:00-03:30'),
+    channelID: 1
       },
 
   {

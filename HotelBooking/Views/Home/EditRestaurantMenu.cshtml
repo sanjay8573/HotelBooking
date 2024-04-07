@@ -1,0 +1,259 @@
+﻿@model HotelBooking.Model.Reatraurant.RestaurantMenu
+@{
+    ViewBag.Title = "EditRestaurantMenu";
+    var nHeading = 0;
+    var nItem = 0;
+
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Menu <small>View  </small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Menu View</small> </span></div>
+            <div class="widget-content padded text-center">
+                <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-8 col-sm-12">
+                            <div class="row">
+                                <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+                                    <input type="hidden" id="RestroId" value="@Model.RestaurantId" />
+                                    <input type="hidden" id="RestaurantMenuId" value="@Model.RestaurantMenuId" />
+                                    <input type="text" id="txtMenuName" class="full-width" value="@Model.RestaurantMenuName" placeholder="Third Special Item" runat="server">
+                                </div>
+
+                            </div>
+                            <div class="row">
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <button type="button" id="btnAddHeading" class="allbtnin full-width">Add Heading</button>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <label>&nbsp;</label>
+                                </div>
+                            </div>
+                            <div class="addmenulist" id="maingroup_1">
+                                @foreach (var hItem in Model.MenuHeading)
+                                {
+                                    var headingId = "headingId" + nHeading;
+                                    <div class="row" id="@headingId">
+                                        <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+                                            <input type="text" id="txtHeading" class="full-width" value="@hItem.MenuHeadingName" placeholder="Third Special Item" runat="server">
+                                            <input type="hidden" id="HId" value="@hItem.MenuHeadingId" />
+                                            <input type="hidden" id="MenuId" value="@hItem.RestaurantMenuId" />
+                                        </div>
+
+                                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                            <button type="submit" class="allbtnin full-width" onClick="Additems(this);">Add Menu</button>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                            @foreach (var mItem in hItem.MenuItems)
+                                            {
+                                                var itemDIVId = "ItemDivId" + nItem;
+                                                var chkId = "CHK" + mItem.MenuItemId;
+                                                <div class="row" id="@itemDIVId">
+                                                    <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+                                                        <input type="text" id="item" class="full-width" value="@mItem.MenuItemName" placeholder="Burgar" runat="server">
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                        <input type="text" id="Price" class="full-width" value="@mItem.ItemPrice" placeholder="NPR 250" runat="server">
+                                                    </div>
+                                                    <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12 activecb">
+                                                        <input class="styled-checkbox" id="@chkId" type="checkbox" name="CHK_ISACTIVE" checked="@mItem.isActive">
+                                                        <label for="@chkId">&nbsp;</label>
+                                                        <input type="hidden" id="HeadingId" value="@mItem.MenuHeadingId" />
+                                                        <input type="hidden" id="MenuItemId" value="@mItem.MenuItemId" />
+                                                    </div>
+                                                </div>
+                                                nItem++;
+                                            }
+
+
+                                        </div>
+                                    </div>
+                                    nHeading++;
+                                }
+
+                                <input type="hidden" id="HeadingId" value="@nHeading" />
+                                <input type="hidden" id="ItemId" value="@nItem" />
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0">
+                                <button type="button" class="allbtnin full-width" onclick="SaveMenu();">Update</button>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12"><img src="images/food-banner.jpg" style="Width:100%;"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+
+
+        $("#btnAddHeading").click(function (e) {
+            e.preventDefault();
+            var divId = $("#HeadingId").val() +1;
+            console.log("Edit Menu....");
+            var divhtml = '<div class="row" id="' + divId + '" ><div class="col-lg-7 col-md-7 col-sm-12 col-xs-12"><input type="text" id="txtRoomNumber" class="full-width" placeholder="Add Menu Heading" runat="server">';
+            divhtml += '</div><div  class="col-lg-3 col-md-3 col-sm-12 col-xs-12"><button type="button" class="allbtnin full-width" onClick="Additems(this);">Add Item</button></div> <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"></div></div>'
+            $("#maingroup_1").append(divhtml);
+            divId = divId + 1;
+            $("#HeadingId").val(divId);
+            return false;
+        });
+
+    });
+    function Additems(myDiv) {
+
+        var ItemDivId = $("#ItemId").val() + 1;
+        var itemDiv = 'ItemDivId' + ItemDivId;
+        var txtItemNameId = 'txtItemName' + ItemDivId
+        var txtItemNPriceId = 'txtItemPrice' + ItemDivId
+        var pDiv = $(myDiv).parent().parent().children().last();
+        var HeadingId = $('input:hidden[id^="HId"]').last().val();
+        var chkId = "CHK" + ItemDivId;
+        var childDivHtml = '<div class="row" id="' + itemDiv + '"><div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">';
+        childDivHtml += '<input type="text" id="ItemName" class="full-width" placeholder="Item Name" runat="server"></div>';
+        childDivHtml += '<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"><input type="text" id="Price" class="full-width" placeholder="Price" runat="server"></div> <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12 activecb"><input class="styled-checkbox" id="' + chkId + '" type="checkbox" name="CHK_ISACTIVE" checked="false"><label for="' + chkId + '">&nbsp;</label> ';
+        childDivHtml += '<input type="hidden" id="HeadingId" value="' + HeadingId +'" /> <input type="hidden" id="MenuItemId" value="0" /></div ></div > ';
+        $(pDiv).append(childDivHtml);
+        ItemDivId = ItemDivId + 1;
+        $("#ItemId").val(ItemDivId);
+    }
+    function SaveMenu() {
+        var txtMenuName = $("#txtMenuName").val();
+        var RestroId = $("#RestroId").val();
+        var restaurantMenuId = $("#RestaurantMenuId").val();
+        var RestaurantMenu = {
+            RestaurantMenuId: Number(restaurantMenuId),
+            RestaurantId: Number(RestroId),
+            RestaurantMenuName: txtMenuName,
+            isActive: true,
+            MenuHeading: []
+        };
+        var MenuHeading1 = [];
+        $("#maingroup_1 > div").each(function (idx, el) {
+            var cuurentDiv = el.id;
+            var MenuHeadingId=0;
+            var RestaurantMenuId;
+
+            $("#" + cuurentDiv + " > div > input ").each(function (idx1, el2) {
+                //console.log("Item >> " + el2.id);
+                //console.log("Item >> " + idx1);
+
+                if (idx1 == 0) {
+                    txtMenuHeading = $(el2).val();
+                }
+                if (idx1 == 1) {
+                    MenuHeadingId = $(el2).val();
+                    //console.log("Item >> " + idx1);
+                }
+                if (idx1 == 2) {
+                    //console.log($(el2))
+                    RestaurantMenuId = $(el2).val();
+                    //console.log("Item >> " + idx1);
+                }
+
+            });
+                //var txtMenuHeading = $(el).val();
+
+            var MenuHeadings = {
+                    MenuHeadingId: Number(MenuHeadingId),
+                    RestaurantMenuId: Number(RestaurantMenuId),
+                    MenuHeadingName: txtMenuHeading,
+                    isActive: true,
+                    MenuItems: []
+                };
+
+
+
+
+                var MenuItems1 = [];
+                var txtItemName;
+                var txtItemPrice;
+                var chkVal;
+                var MenuHeadingId1;
+                var MenuItemId;
+                $("#" + cuurentDiv + "> div > div").each(function (idx, el1) {
+                    //console.log("Item DIV " + el1.id);
+                    var currentItemDiv = el1.id;
+                    //var nn = $("#" + currentItemDiv + " > div > input:text ").val();
+                    //console.log("VALUE" + nn);
+
+                    $("#" + currentItemDiv + " > div > input ").each(function (idx1, el2) {
+                        //console.log("Item >> " + el2.id);
+                        //console.log("Item >> " + idx1);
+                        if (idx1 == 0) {
+                            txtItemName = $(el2).val();
+                        }
+                        if (idx1 == 1) {
+                            txtItemPrice = $(el2).val();
+                        }
+                        if (idx1 == 2) {
+                            //console.log($(el2))
+                            chkVal = $(el2).is(":checked");
+                        }
+                        if (idx1 == 3) {
+                            //console.log($(el2))
+                            //chkVal = $(el2).is(":checked");
+                            MenuHeadingId1 = $(el2).val();
+                        }
+                        if (idx1 == 4) {
+                            //console.log($(el2))
+                            MenuItemId=$(el2).val();
+                        }
+
+                    });
+
+                    itm = {
+                        MenuHeadingId: Number(MenuHeadingId1),
+                        MenuItemId: Number(MenuItemId),
+                        MenuItemName: txtItemName,
+                        ItemPrice: txtItemPrice,
+                        isActive: chkVal
+                    }
+                    MenuHeadings.MenuItems.push(itm);
+                });
+                RestaurantMenu.MenuHeading.push(MenuHeadings);
+            });
+
+        //});
+
+        console.log(RestaurantMenu);
+        $.ajax({
+    type: "POST",
+    url: '@Url.Action("SaveRestaurantMenu", "Home")',
+    data: { restroMenuEntity: RestaurantMenu },
+
+   success: function (recData) {
+       $.toast({
+           heading: 'Success',
+           text: 'Menu Saved Successfully ',
+           icon: 'success',
+           loader: false,        // Change it to false to disable loader
+           position: 'top-right',
+           loaderBg: '#9EC600'  // To change the background
+       });
+       setTimeout(function () {
+          var restId= $("#RestroId").val();
+          window.location.href = '/Home/RestaurantMenu?RestaurantId='+ restId ;
+                             }, 500);
+       console.log('Success');
+   },
+   error: function () {
+       $.toast({
+           heading: 'Error',
+           text: 'Error on Creating menu  ',
+           icon: 'Error',
+           loader: false,        // Change it to false to disable loader
+           position: 'top-right',
+           loaderBg: '#9EC600'  // To change the background
+       });
+       console.log('A error');
+   }
+});
+
+    }
+</script>

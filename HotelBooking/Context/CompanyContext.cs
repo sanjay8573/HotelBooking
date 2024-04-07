@@ -181,6 +181,11 @@ namespace HotelBooking.Context
             get;
             set;
         }
+        public DbSet<RestaurantRoomService> RestaurantRoomService
+        {
+            get;
+            set;
+        }
 
         public DbSet<BillingMaster> BillingMaster
         {

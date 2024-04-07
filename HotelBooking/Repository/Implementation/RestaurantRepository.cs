@@ -1,4 +1,5 @@
 ﻿using HotelBooking.Context;
+using HotelBooking.Model;
 using HotelBooking.Model.Reatraurant;
 using HotelBooking.Repository.Interface;
 using System;
@@ -26,6 +27,31 @@ namespace HotelBooking.Repository.Implementation
         public IEnumerable<RestaurantTables> GetAllRestaurantTables(int RestaurantId)
         {
             return _context.RestaurantTables.Where(b=>b.RestaurantId == RestaurantId).ToArray();
+        }
+
+        public IEnumerable<RestaurantRoomService> GetAllRestaurantRoomServices(int RestaurantId,int branchId)
+        {
+            IEnumerable<RestaurantRoomService> rrs= _context.RestaurantRoomService.Where(b => b.RestaurantId == RestaurantId).ToArray();
+            if (rrs.Count() <=0)
+            {
+                IEnumerable<BookedRoom> bkRooms = _context.BookedRoom.Where(b => b.isCheckout == false && b.BranchId == branchId).ToArray();
+                foreach(var bkr in bkRooms)
+                {
+                    RestaurantRoomService RRR= new RestaurantRoomService
+                    {
+                        BranchId = bkr.BranchId,
+                        RestaurantId= RestaurantId,
+                        RoomId=bkr.RoomId,
+                        isOrdered=false,
+                        RoomNumber=bkr.RoomNumber,
+                        isActive=true,
+                        isDeleted=false
+                    };
+                    _context.RestaurantRoomService.Add(RRR);
+                    _context.SaveChanges();
+                }
+            }
+            return _context.RestaurantRoomService.Where(b => b.RestaurantId == RestaurantId).ToArray();
         }
         public IEnumerable<ImageMaster> GetAllRestaurantImages(int RestaurantId)
         {
@@ -184,7 +210,16 @@ namespace HotelBooking.Repository.Implementation
             bool rtnVal = false;
             try
             {
-                _context.RestaurantMenu.Add(menuEntity);
+                RestaurantMenu RM = _context.RestaurantMenu.Find(menuEntity.RestaurantMenuId);
+                if (RM != null)
+                {
+                    RM.RestaurantMenuName=menuEntity.RestaurantMenuName;
+                }
+                else
+                {
+                    _context.RestaurantMenu.Add(menuEntity);
+                }
+                
                 _context.SaveChanges();
                 int MenuId = menuEntity.RestaurantMenuId;
                 if (menuEntity.MenuHeading.Count > 0)
@@ -210,8 +245,15 @@ namespace HotelBooking.Repository.Implementation
             bool rtnVal = false;
             try
             {
-                
+                RestaurantMenuHeading RMH = _context.RestaurantMenuHeading.Find(menuHeadingEntity.MenuHeadingId); 
+                if (RMH != null) {
+                    RMH.MenuHeadingName = menuHeadingEntity.MenuHeadingName;
+                }
+                else
+                {
                     _context.RestaurantMenuHeading.Add(menuHeadingEntity);
+                }
+                   
                     _context.SaveChanges();
                     int headingid= menuHeadingEntity.MenuHeadingId;
                     foreach(var m in menuHeadingEntity.MenuItems)
@@ -235,7 +277,18 @@ namespace HotelBooking.Repository.Implementation
             bool rtnVal = false;
             try
             {
-                _context.RestaurantMenuItem.Add(menuItemEntity);
+                RestaurantMenuItem RMI = _context.RestaurantMenuItem.Find(menuItemEntity.MenuItemId);
+                if (RMI != null)
+                {
+                    RMI.MenuItemName= menuItemEntity.MenuItemName;
+                    RMI.ItemPrice= menuItemEntity.ItemPrice;
+                    RMI.isActive = menuItemEntity.isActive;
+                }
+                else
+                {
+                    _context.RestaurantMenuItem.Add(menuItemEntity);
+                }
+                
                 _context.SaveChanges();
                 
 
@@ -274,9 +327,18 @@ namespace HotelBooking.Repository.Implementation
             return rm;
         }
 
-        public IEnumerable<BillingDetails> getParkItems(int RetaurantId, int tableid)
+        public IEnumerable<BillingDetails> getParkItems(int RetaurantId, int tableid,bool isRMS=false)
         {
-            BillingMaster BM = _context.BillingMaster.Where(b => b.RestaurantId == RetaurantId && b.Tableid == tableid && b.isPark == true).SingleOrDefault();
+            BillingMaster BM = new BillingMaster();
+            if (isRMS)
+            {
+                BM = _context.BillingMaster.Where(b => b.RestaurantId == RetaurantId && b.TableNo_RoomNumber == tableid && b.isPark == true).SingleOrDefault();
+            }
+            else
+            {
+                BM = _context.BillingMaster.Where(b => b.RestaurantId == RetaurantId && b.Tableid == tableid && b.isPark == true).SingleOrDefault();
+            }
+             
             IEnumerable<BillingDetails> BD = new List<BillingDetails>();
             if (BM != null)
             {
@@ -286,6 +348,27 @@ namespace HotelBooking.Repository.Implementation
                 
             return BD;
         }
-        
+        public bool ReleaseTable(int restaurantId,int tableId)
+        {
+            bool rtnVal = false;
+            try
+            {
+
+                BillingMaster BM = _context.BillingMaster.Where(b => b.RestaurantId == restaurantId && b.Tableid == tableId).SingleOrDefault();
+                BM.isPark = false;
+                RestaurantTables restaurantTables = _context.RestaurantTables.Where(b => b.RestaurantId == restaurantId && b.TableId == tableId).SingleOrDefault();
+                restaurantTables.isOccupied = false;
+                _context.SaveChanges();
+                rtnVal = true;
+            }
+            catch (Exception)
+            {
+
+                rtnVal = false;
+            }
+
+
+            return rtnVal;
+        }
     }
 }

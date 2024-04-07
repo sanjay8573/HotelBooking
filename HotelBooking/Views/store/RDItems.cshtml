@@ -31,10 +31,10 @@
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                 <label>Select Action</label>
-                                <select id="ddlEngine" class="full-width ddselect" runat="server">
+                                <select id="SelecAction" class="full-width ddselect" runat="server">
                                     <option selected="selected">Select</option>
-                                    <option value="0">Release Items</option>
-                                    <option value="1">Depositive Items</option>
+                                    <option value="0">Release Item</option>
+                                    <option value="1">Deposite Item</option>
                                 </select>
 
                             </div>
@@ -50,7 +50,7 @@
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Item Name</label>
-                                    <select name="SeleIteName" id="SeleIteName" class="full-width freetrial">
+                                    <select name="SeleIteName" id="SeleIteName" onchange="selectAvailableQTY(this);" class="full-width freetrial">
                                         @if (ViewBag.alltem != null)
                                         {
                                             foreach (var item in ViewBag.alltem)
@@ -69,15 +69,15 @@
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
                                     <label>Avl.Qty</label>
-                                    <input type="text" id="txtAvlQty" class="full-width" placeholder="Available Quantity" runat="server">
+                                    <input type="text" id="txtAvlQty" class="full-width" disabled="disabled" placeholder="Available Quantity" runat="server">
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
                                     <label>Qty</label>
-                                    <input type="text" id="txtQty" class="full-width" placeholder="Issued Quantity" runat="server">
+                                    <input type="text" id="txtQty" class="full-width" onkeyup="calculateBalacneQty(this);" placeholder="Issued Quantity" runat="server">
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
                                     <label>Bal.Qty</label>
-                                    <input type="text" id="txtBalQty" class="full-width" placeholder="Balance  Quantity" runat="server">
+                                    <input type="text" id="txtBalQty" class="full-width" disabled="disabled" placeholder="Balance  Quantity" runat="server">
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Issued Date</label>
@@ -99,7 +99,7 @@
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Item Name</label>
-                                    <select name="SeleIteName" id="SeleIteName" class="full-width freetrial">
+                                    <select name="SeleIteName" id="SeleIteName" onchange="selectAvailableQTY(this);" class="full-width freetrial">
                                         @if (ViewBag.alltem != null)
                                         {
                                             foreach (var item in ViewBag.alltem)
@@ -122,7 +122,7 @@
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
                                     <label>Qty</label>
-                                    <input type="text" id="txtQty" class="full-width" placeholder="Issued Quantity" runat="server">
+                                    <input type="text" id="txtQty" class="full-width" onkeyup="calculateBalacneQty(this);" placeholder="Issued Quantity" runat="server">
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
                                     <label>Bal.Qty</label>
@@ -148,7 +148,7 @@
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Item Name</label>
-                                    <select name="SeleIteName" id="SeleIteName" class="full-width freetrial">
+                                    <select name="SeleIteName" id="SeleIteName" onchange="selectAvailableQTY(this);" class="full-width freetrial">
                                         @if (ViewBag.alltem != null)
                                         {
                                             foreach (var item in ViewBag.alltem)
@@ -171,7 +171,7 @@
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
                                     <label>Qty</label>
-                                    <input type="text" id="txtQty" class="full-width" placeholder="Issued Quantity" runat="server">
+                                    <input type="text" id="txtQty" class="full-width" onkeyup="calculateBalacneQty(this);" placeholder="Issued Quantity" runat="server">
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
                                     <label>Bal.Qty</label>
@@ -197,7 +197,7 @@
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Item Name</label>
-                                    <select name="SeleIteName" id="SeleIteName" class="full-width freetrial">
+                                    <select name="SeleIteName" id="SeleIteName" onchange="selectAvailableQTY(this);" class="full-width freetrial">
                                         @if (ViewBag.alltem != null)
                                         {
                                             foreach (var item in ViewBag.alltem)
@@ -220,7 +220,7 @@
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
                                     <label>Qty</label>
-                                    <input type="text" id="txtQty" class="full-width" placeholder="Issued Quantity" runat="server">
+                                    <input type="text" id="txtQty" class="full-width" onkeyup="calculateBalacneQty(this);" placeholder="Issued Quantity" runat="server">
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
                                     <label>Bal.Qty</label>
@@ -246,7 +246,7 @@
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Item Name</label>
-                                    <select name="SeleIteName" id="SeleIteName" class="full-width freetrial">
+                                    <select name="SeleIteName" id="SeleIteName" onchange="selectAvailableQTY(this);" class="full-width freetrial">
                                         @if (ViewBag.alltem != null)
                                         {
                                             foreach (var item in ViewBag.alltem)
@@ -269,7 +269,7 @@
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
                                     <label>Qty</label>
-                                    <input type="text" id="txtQty" class="full-width" placeholder="Issued Quantity" runat="server">
+                                    <input type="text" id="txtQty" class="full-width" onkeyup="calculateBalacneQty(this);" placeholder="Issued Quantity" runat="server">
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
                                     <label>Bal.Qty</label>
@@ -299,8 +299,10 @@
     </div>
 </div>
 <script>
-    function addItem() {
 
+
+    function addItem() {
+       
         var nRows = $("#dynDivContainer1 > div:visible").length;
         console.log("NRows" + nRows);
         var n = parseInt(nRows) + 1;
@@ -333,7 +335,7 @@
         var branchId = $('#BranchId').val();
         var txtIssueToId = $('#SeleIssueTo').find(":selected").val();
         var txtIssueToName = $('#SeleIssueTo').find(":selected").text().replace(/[\n\r]+/g, ' ').trim();
-        var txtInOut = $('#ddlEngine').find(":selected").val();
+        var txtInOut = $('#SelecAction').find(":selected").val();
         $("#dynDivContainer1 > div:visible").each(function (idx, el) {
             var txtItemName;
             var txtItemId;
@@ -351,22 +353,25 @@
             console.log("Current Div Id"+cuurentDiv);
 
             $("#" + cuurentDiv + " div > input:text").each(function (idx, el) {
-                if (el.id == "txtAvlQty") {
+                if (idx==0) {
                     AQty =$(el).val()
                 }
-                if (el.id == "txtQty") {
+                if (idx == 1) {
                     txtQty = $(el).val()
                 }
-                if (el.id == "txtBalQty") {
+                if (idx == 2) {
                     BQty = $(el).val()
                 }
-                if (el.id == "Itemdatepicker") {
+                if (idx == 3) {
                     txtIssueDate = $(el).val()
                 }
             });
             $("#" + cuurentDiv + " div > select").each(function (idx, el) {
                 if (el.id == "SeleIteName") {
-                    txtItemId = $(el).find(":selected").val();
+                    var selVal = $(el).find(":selected").val();
+                    var ArrVal = selVal.split("-");
+                   
+                    txtItemId = ArrVal[0];
                     txtItemName = $(el).find(":selected").text().replace(/[\n\r]+/g, ' ').trim();
 
                 }
@@ -429,6 +434,8 @@
 
     }
     $(function () {
+       
+        
         $("#Itemdatepicker1").datepicker({
             dateFormat: "dd-mm-yy",
             duration: "fast",
@@ -437,4 +444,62 @@
 
         });
     });
+    function calculateBalacneQty(currentItem) {
+        var selectedAction = $('#SelecAction').val();
+        //console.log("Action ::" + selectedAction);
+            var parentDivId = $(currentItem).parent().parent().attr("id");
+            var avlqty = 0;
+            var qty = 0;
+            var balQty;
+            $("#" + parentDivId + " > div > input:text").each(function (idx, el2) {
+
+                if (idx == 0) {
+                    avlqty=$(el2).val();
+
+                }
+                if (idx == 1) {
+                    qty = $(el2).val();
+
+                }
+                if (idx == 2) {
+                    if (selectedAction == 0) {
+                        if (Number(avlqty) > Number(qty)) {
+                            balQty = Number(avlqty) - Number(qty);
+                        } else {
+                            balQty = 0;
+                        }
+                      
+                    } else {
+                        balQty = Number(avlqty) + Number(qty);
+                    }
+                   
+                    $(el2).val(Number(balQty));
+
+                }
+
+            });
+        }
+       
+   
+
+    function selectAvailableQTY(currentItem) {
+        var selVal = currentItem.value;
+        var parentDivId = $(currentItem).parent().parent().attr("id");
+        var ArrVal = selVal.split("-");
+        var AvlQty = ArrVal[1];
+
+        var rate = 0;
+        var qty = 0;
+        var total;
+        $("#" + parentDivId + " > div > input:text").each(function (idx, el2) {
+
+            if (idx == 0) {
+                $(el2).val(AvlQty);
+
+            }
+
+        });
+     
+
+    }
 </script>

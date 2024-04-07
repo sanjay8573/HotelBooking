@@ -748,7 +748,7 @@ pre[class*="language-"] {
 }
 
 .pagination {
-    display: inline-block !important;
+    /*display: inline-block !important;*/
     margin: 0px 0;
 }
 

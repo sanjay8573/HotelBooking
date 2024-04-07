@@ -1,0 +1,102 @@
+﻿
+
+    <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-12">
+                <!-- THE CALENDAR -->
+                <div id="calendar"></div>
+            </div><!-- /.box-body -->
+        </div><!-- /. box -->
+    </div><!-- /.col -->
+
+<script>
+    $(document).ready(function () {
+        $('#calendar').fullCalendar({
+           
+            header:
+            {
+                left: '',
+                center: 'title',
+                right: 'prev,today,next ',
+                weekends: false,
+               
+            },
+            buttonText: {
+                today: 'today',
+                month: 'month',
+                week: 'week',
+                day: 'day'
+            },
+
+            events: function (start, end, timezone, callback) {
+                var selectedMonth = $('#calendar').fullCalendar('getView').intervalStart.format('MM');
+                var selectedYear = $('#calendar').fullCalendar('getView').intervalStart.format('YYYY');
+                console.log("selected Month :" + selectedMonth);
+                console.log("selected Year :" + selectedYear);
+                
+                $.ajax({
+                    url: '/Home/GetCalendarData',
+                    type: "GET",
+                    dataType: "JSON",
+                    data: {
+                        selectedMonth: selectedMonth,
+                        selectedYear: selectedYear
+                    },
+                    success: function (result) {
+                        var events = [];
+                        console.log(result);
+                        $.each(result, function (i, data) {
+                            events.push(
+                                {
+                                    title: data.Title,
+                                    description: data.Desc,
+                                    start: moment(data.Start_Date).format('YYYY-MM-DD'),
+                                    end: moment(data.End_Date).format('YYYY-MM-DD'),
+                                    backgroundColor: data.backgroundColor,
+                                    textcolor:data.textColor,
+                                    borderColor: "#fc0101",
+                                    bookedRooms: data.BookedRooms,
+                                    availableRooms: data.AvailableRooms
+                                });
+                        });
+                        console.log(events);
+                        callback(events);
+                    }
+                });
+            },
+
+            //eventRender: function (event, element) {
+            //    element.qtip(
+            //        {
+            //            content: event.description + "<br>" + event.bookedRooms
+            //        });
+            //},
+            eventAfterRender: function (event, element, view) {
+                element.append("<p style='font-size:11px;color:black'> <a style='color:#00FF00;' href='/home/Bookings'> Available Rooms : "+event.availableRooms+"</a></p>");
+                element.append("<p style='font-size:11px;color:red !important'> <a style='color:#FF0000;' href='/home/BookedRoom'> Booked Rooms : " + event.bookedRooms + "</a></p>");
+            },
+            //viewRender: function (view, element) {
+            //    var start = new Date("2016-09-01");
+            //    var end = new Date("2016-11-30");
+
+            //    if (end < view.end) {
+            //        $("#calendar .fc-next-button").hide();
+            //        return false;
+            //    } else {
+            //        $("#calendar .fc-next-button").show();
+            //    }
+
+            //    if (view.start < start) {
+            //        $("#calendar .fc-prev-button").hide();
+            //        return false;
+            //    } else {
+            //        $("#calendar .fc-prev-button").show();
+            //    }
+            //},
+
+            editable: false,
+            showNonCurrentDates: false
+        });
+    });
+
+</script>

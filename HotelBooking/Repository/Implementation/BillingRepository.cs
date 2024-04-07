@@ -1,4 +1,5 @@
-﻿using HotelBooking.Context;
+﻿using Antlr.Runtime;
+using HotelBooking.Context;
 using HotelBooking.Model.Reatraurant;
 using HotelBooking.Repository.Interface;
 using System;
@@ -16,7 +17,7 @@ namespace HotelBooking.Repository.Implementation
         }
         public BillingMaster getBilling(int restaurantId, int TableId)
         {
-            BillingMaster BM= _context.BillingMaster.Where(b => b.RestaurantId == restaurantId && int.Parse(b.TableNo_RoomNumber) == TableId).SingleOrDefault();
+            BillingMaster BM= _context.BillingMaster.Where(b => b.RestaurantId == restaurantId && b.TableNo_RoomNumber == TableId).SingleOrDefault();
             BM.BillingDetails = getBillingDetails(BM.BillingId);
             return BM;
          }
@@ -41,11 +42,21 @@ namespace HotelBooking.Repository.Implementation
                    
                      
                 }
+                if(billingMasterEntity.isRoomService==true)
+                {
+                    RestaurantRoomService rrs = _context.RestaurantRoomService.Where(r=>r.RoomNumber.ToString()==billingMasterEntity.TableNo_RoomNumber.ToString()).SingleOrDefault();
+                    rrs.isOrdered = true;
+                    _context.SaveChanges();
+
+                }
+                else
+                {
+                    RestaurantTables rt = _context.RestaurantTables.Find(billingMasterEntity.Tableid);
+                    rt.isOccupied = true;
+                    _context.SaveChanges();
+                }
+
                 
-                
-                RestaurantTables rt = _context.RestaurantTables.Find(billingMasterEntity.Tableid);
-                rt.isOccupied = true;
-                _context.SaveChanges();
                 MasterId = billingMasterEntity.BillingId;
                 foreach (var item in billingMasterEntity.BillingDetails) {
                     item.BillingMasterId = MasterId;

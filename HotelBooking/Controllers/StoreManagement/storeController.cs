@@ -85,7 +85,7 @@ namespace HotelBooking.Controllers.StoreManagement
             foreach (var item in alltem)
             {
                
-                dptitems.Add(new SelectListItem { Text = item.ItemName, Value = item.ItemId.ToString() });
+                dptitems.Add(new SelectListItem { Text = item.ItemName, Value = item.ItemId.ToString()+"-"+item.QuantityAvailable });
             } 
             ViewBag.alltem = dptitems;
             StaffController stf = new StaffController();

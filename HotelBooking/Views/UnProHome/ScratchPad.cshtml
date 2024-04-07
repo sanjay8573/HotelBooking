@@ -207,156 +207,66 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="card widget-container">
-                                <div class="heading"> <i class="fa fa-bar-chart-o"></i>Food <small>Cart  </small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Food Cart </small> </span></div>
+                                <div class="heading"> <i class="fa fa-bar-chart-o"></i>Menu <small>View  </small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Menu View</small> </span></div>
                                 <div class="widget-content padded text-center">
                                     <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
                                         <div class="row">
-                                            <div class="col-lg-5 col-md-5 col-sm-12">
-                                                <div class="row">
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <label>Select Restaurant</label>
-                                                        <select id="ddlEngine" class="onlyinput full-width" runat="server">
-                                                            <option selected="selected">Select Restaurant</option>
-                                                            <option>North Restaurant</option>
-                                                            <option>Bar & Food Restaurant</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 form-group" style="margin-top:5px;">
-                                                        <label><input type="radio" id="css" name="fav_language" value="CSS"> Room Service </label>
-                                                    </div>
-                                                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12  form-group" style="margin-top:5px;">
-                                                        <label><input type="radio" id="css" name="fav_language" value="CSS"> Dining In</label>
-                                                    </div>
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <label>Room Number</label>
-                                                        <input type="text" id="txtRoomNumber" class="full-width" placeholder="Room Number" runat="server">
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                        <ul class="tablebook">
-                                                            <li><a href="#" class="green"><p>Table 01</p><p>Seat 4</p></a></li>
-                                                            <li><a href="#" class="orange"><p>Table 01</p><p>Seat 4</p></a></li>
-                                                            <li><a href="#" class="red"><p>Table 01</p><p>Seat 4</p></a></li>
-                                                            <li><a href="#"><p>Table 01</p><p>Seat 4</p></a></li>
-                                                            <li><a href="#"><p>Table 01</p><p>Seat 4</p></a></li>
-                                                            <li><a href="#"><p>Table 01</p><p>Seat 4</p></a></li>
-                                                            <li><a href="#"><p>Table 01</p><p>Seat 4</p></a></li>
-                                                            <li><a href="#"><p>Table 01</p><p>Seat 4</p></a></li>
-                                                            <li><a href="#"><p>Table 01</p><p>Seat 4</p></a></li>
-                                                            <li><a href="#"><p>Table 01</p><p>Seat 4</p></a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
+                                            <div class="col-lg-8 col-md-8 col-sm-12">
 
-                                                <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                  <button type="submit" class="allbtnin full-width">Update</button>
-                                                </div>-->
-                                            </div>
-                                            <div class="col-lg-7 col-md-7 col-sm-12" style="border-left:solid 1px #CCC;">
-                                                <div class="row">
-                                                    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-                                                        <label>Choose Item</label>
+                                                <div class="addmenulist" id="sectiontohide">
+                                                    <div class="row">
+                                                        <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+                                                            <input type="text" id="txtRoomNumber" class="full-width" placeholder="Third Special Item" runat="server">
+                                                        </div>
+                                                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                                            <button type="submit" class="allbtnin full-width">Add Menu Heading</button>
+                                                        </div>
+                                                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                                            <button type="submit" class="allbtnin full-width">Add Menu</button>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                                                        <label>Quantity</label>
+                                                    <div class="row">
+                                                        <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+                                                            <input type="text" id="item" class="full-width" placeholder="Burgar" runat="server">
+                                                        </div>
+                                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                            <input type="text" id="Price" class="full-width" placeholder="NPR 250" runat="server">
+                                                        </div>
+                                                        <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12 activecb">
+                                                            <input class="styled-checkbox" id="styled-checkbox-2" type="checkbox" value="value2" checked="">
+                                                            <label for="styled-checkbox-2">&nbsp;</label>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                        <label>Total</label>
+                                                    <div class="row">
+                                                        <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+                                                            <input type="text" id="item" class="full-width" placeholder="Burgar" runat="server">
+                                                        </div>
+                                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                            <input type="text" id="Price" class="full-width" placeholder="NPR 250" runat="server">
+                                                        </div>
+                                                        <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12 activecb">
+                                                            <input class="styled-checkbox" id="styled-checkbox-2" type="checkbox" value="value2" checked="">
+                                                            <label for="styled-checkbox-2">&nbsp;</label>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                                                        <label>&nbsp;</label>
+                                                    <div class="row">
+                                                        <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+                                                            <input type="text" id="item" class="full-width" placeholder="Burgar" runat="server">
+                                                        </div>
+                                                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                                            <input type="text" id="Price" class="full-width" placeholder="NPR 250" runat="server">
+                                                        </div>
+                                                        <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12 activecb">
+                                                            <input class="styled-checkbox" id="styled-checkbox-2" type="checkbox" value="value2" checked="">
+                                                            <label for="styled-checkbox-2">&nbsp;</label>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 form-group">
-                                                        <div class="dropdown full-width">
-                                                            <input type="text" id="txtRoomNumber" onclick="myFunction()" class="dropbtn full-width" placeholder="Choose Item" runat="server">
-                                                            <div id="myDropdown" class="dropdown-content">
-                                                                <a href="#home">Home</a>
-                                                                <a href="#about">About</a>
-                                                                <a href="#contact">Contact</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 form-group">
-                                                        <input type="text" id="txtRoomNumber" class="full-width" placeholder="Quantity" runat="server">
-                                                    </div>
-                                                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 form-group">
-                                                        <input type="text" id="txtRoomNumber" class="full-width" placeholder="Total" runat="server">
-                                                    </div>
-                                                    <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 form-group">
-                                                        <button type="submit" class="addbtnitem full-width">Add</button>
-                                                    </div>
-                                                </div>
-                                                <fieldset>
-                                                    <legend>Bill Details:</legend>
-                                                    <div class="billdetailsmaster">
-                                                        <div class="row">
-                                                            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-                                                                <input type="text" id="txtRoomNumber" class="full-width height35" placeholder="Choose Item" disabled runat="server">
-                                                            </div>
-                                                            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                                                                <input type="text" id="txtRoomNumber" class="full-width height35" placeholder="Quantity" runat="server">
-                                                            </div>
-                                                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                                <input type="text" id="txtRoomNumber" class="full-width height35" placeholder="Total" disabled runat="server">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-                                                                <input type="text" id="txtRoomNumber" class="full-width height35" placeholder="Choose Item" disabled runat="server">
-                                                            </div>
-                                                            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                                                                <input type="text" id="txtRoomNumber" class="full-width height35" placeholder="Quantity" runat="server">
-                                                            </div>
-                                                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                                <input type="text" id="txtRoomNumber" class="full-width height35" placeholder="Total" disabled runat="server">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-                                                                <input type="text" id="txtRoomNumber" class="full-width height35" placeholder="Choose Item" disabled runat="server">
-                                                            </div>
-                                                            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                                                                <input type="text" id="txtRoomNumber" class="full-width height35" placeholder="Quantity" runat="server">
-                                                            </div>
-                                                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                                <input type="text" id="txtRoomNumber" class="full-width height35" placeholder="Total" disabled runat="server">
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-                                                                <input type="text" id="txtRoomNumber" class="full-width height35" placeholder="Choose Item" disabled runat="server">
-                                                            </div>
-                                                            <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
-                                                                <input type="text" id="txtRoomNumber" class="full-width height35" placeholder="Quantity" runat="server">
-                                                            </div>
-                                                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                                                <input type="text" id="txtRoomNumber" class="full-width height35" placeholder="Total" disabled runat="server">
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </fieldset>
-                                                <div class="row">
-                                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-left">
-                                                        <p>Total <strong class="pull-right"> NPR 2500</strong></p>
-                                                        <p>Tax <strong class="pull-right"> NPR 2500</strong></p>
-                                                        <p>Grand Total <strong class="pull-right"> NPR 2500</strong></p>
-                                                    </div>
-
-                                                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="margin-top: 20px;">
-                                                        <button type="submit" class="allbtnin full-width orangebg"><i class="ft-box"></i> Park</button>
-                                                    </div>
-                                                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="margin-top: 20px;">
-                                                        <button type="submit" class="allbtnin full-width greenbg"><i class="ft-list"></i> Closing</button>
-                                                    </div>
-                                                    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="margin-top: 20px;">
-                                                        <button type="submit" class="allbtnin full-width"><i class="ft-book"></i> Print</button>
-                                                    </div>
+                                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0">
+                                                    <button type="submit" class="allbtnin full-width">Update</button>
                                                 </div>
                                             </div>
+                                            <div class="col-lg-4 col-md-4 col-sm-12"><img src="images/food-banner.jpg" style="Width:100%;"></div>
                                         </div>
                                     </form>
                                 </div>
@@ -486,87 +396,72 @@
     <!--  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>-->
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
     <script>
-function myFunction() {
-  document.getElementById("AddBooking").style.display = "block";
-}
+        function myFunction() {
+            document.getElementById("AddBooking").style.display = "block";
+        }
     </script>
     <script>
+        $(function () {
+            $("#datepicker").datepicker({
+                dateFormat: "dd-mm-yy"
+                , duration: "fast"
+            });
+        });
+        $(function () {
+            $("#datepicker2").datepicker({
+                dateFormat: "dd-mm-yy"
+                , duration: "fast"
+            });
+        });
 
-$( function() {
-	$( "#datepicker" ).datepicker({
-		dateFormat: "dd-mm-yy"
-		,	duration: "fast"
-	});
-} );
-$( function() {
-	$( "#datepicker2" ).datepicker({
-		dateFormat: "dd-mm-yy"
-		,	duration: "fast"
-	});
-} );
+        $(function () {
+            $("#datepicker3").datepicker({
+                dateFormat: "dd-mm-yy"
+                , duration: "fast"
+            });
+        });
 
-$( function() {
-	$( "#datepicker3" ).datepicker({
-		dateFormat: "dd-mm-yy"
-		,	duration: "fast"
-	});
-} );
+        $(function () {
+            $("#Addbookingdatepickerinn").datepicker({
+                dateFormat: "dd-mm-yy"
+                , duration: "fast"
+            });
+        });
 
-$( function() {
-	$( "#Addbookingdatepickerinn" ).datepicker({
-		dateFormat: "dd-mm-yy"
-		,	duration: "fast"
-	});
-} );
-
-$( function() {
-	$( "#Addbookingdatepickerout" ).datepicker({
-		dateFormat: "dd-mm-yy"
-		,	duration: "fast"
-	});
-} );
+        $(function () {
+            $("#Addbookingdatepickerout").datepicker({
+                dateFormat: "dd-mm-yy"
+                , duration: "fast"
+            });
+        });
 
 
     </script>
     <script>
-	$(document).ready(function() {
-			$('.minus').click(function () {
-				var $input = $(this).parent().find('input');
-				var count = parseInt($input.val()) - 1;
-				count = count < 1 ? 1 : count;
-				$input.val(count);
-				$input.change();
-				return false;
-			});
-			$('.plus').click(function () {
-				var $input = $(this).parent().find('input');
-				$input.val(parseInt($input.val()) + 1);
-				$input.change();
-				return false;
-			});
-		});
-    </script>
+        $(document).ready(function () {
+            $('.minus').click(function () {
+                var $input = $(this).parent().find('input');
+                var count = parseInt($input.val()) - 1;
+                count = count < 1 ? 1 : count;
+                $input.val(count);
+                $input.change();
+                return false;
+            });
+            $('.plus').click(function () {
+                var $input = $(this).parent().find('input');
+                $input.val(parseInt($input.val()) + 1);
+                $input.change();
+                return false;
+            });
+        });
 
-    <script>
-/* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
-function myFunction() {
-  document.getElementById("myDropdown").classList.toggle("show");
-}
-
-// Close the dropdown if the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
-    }
-  }
-}
+        function toggle_div_fun(id) {
+            var divelement = document.getElementById(id);
+            if (divelement.style.display == 'block')
+                divelement.style.display = 'none';
+            else
+                divelement.style.display = 'block';
+        }
     </script>
 </body>
 </html>

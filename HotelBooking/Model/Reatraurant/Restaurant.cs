@@ -54,6 +54,21 @@ namespace HotelBooking.Model.Reatraurant
         public bool Status { get; set; }
 
     }
+    [Table("RestaurantRoomService")]
+    public class RestaurantRoomService
+    {
+        [Key]
+        public int RoomServiceId { get; set; }
+        public int RestaurantId { get; set; }
+        public int RoomId { get; set; }
+        public string  RoomNumber { get; set; }
+        public int BranchId { get; set; }
+        public bool isActive { get; set; }
+        public bool isDeleted { get; set; }
+        public bool isOrdered { get; set; }
+
+
+    }
 
     /// <summary>
     /// For RoomType image =1, for Restaurant image=2,

@@ -80,6 +80,7 @@
         </div>
     </div>
 </div>
+
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
@@ -88,160 +89,14 @@
                     <div class="card widget-container">
                         <div class="heading"> <i class="fa fa-address-card" aria-hidden="true"></i> Availability Calendar</div>
                         <div class="widget-content padded text-center">
-                           
+
                             <div class="row">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
-                                    <div class="calendar">
-                                        <header>
-                                            <label id="calendar-title" for="calendar-date" onClick="didClickTitle"></label>
-                                            <input type="date" id="calendar-date">
-                                            <div class="spacer"></div>
-                                            <button><i class="fas fa-chevron-left"></i></button>
-                                            <button>today</button>
-                                            <button><i class="fas fa-chevron-right"></i></button>
-                                        </header>
-                                        <ol class="day-names">
-                                            <li>Sun</li>
-                                            <li>Mon</li>
-                                            <li>Tue</li>
-                                            <li>Wed</li>
-                                            <li>Thu</li>
-                                            <li>Fri</li>
-                                            <li>Sat</li>
-                                        </ol>
-                                        <ol class="days">
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                            <li>
-                                                <div class="content"></div>
-                                            </li>
-                                        </ol>
-                                    </div>
-                                </div>
+                                <section class="col-xl-12 col-lg-12 col-md-12 col-12">
+                                    @Html.Partial("_availabilityCalendar")
+                                </section>
 
                             </div>
-                           
+
 
                         </div>
                     </div>
@@ -251,7 +106,7 @@
         </div>
     </div>
 </div>
-<script src="~/JS/calendar-monthview.js"></script>
+@*<script src="~/JS/calendar-monthview.js"></script>*@
 <script>
     $(document).ready(function () {
 
@@ -273,7 +128,7 @@
             contentType: 'application/json; charset=utf-8',
             type: "GET",
             success: function (response) {
-                console.log("Success.............." + JSON.stringify(response)+ "====");
+                console.log("Success.............." + JSON.stringify(response) + "====");
                 $("#BookingDiv h3").html(response.NoOfBooking);
                 $("#roomDiv h3").html(response.NoOfRooms);
                 $("#guestDiv h3").html(response.NoOfGuest);
@@ -281,11 +136,11 @@
                 //$("#check_1").hide(1000);
             },
             error: function () {
-                //do something else                
+                //do something else
             }
         }).done(function () {
             console.log("Done..............");
-           
+
             HideLoadingShowCheck(1)
         });
     });
