@@ -15,6 +15,11 @@ namespace HotelBooking.Model
         public string CompanyLog { get; set; }
         public int BranchId { get; set; }
         public string BranchName { get; set; }
+        public string BranchCurrencyName { get; set; }
+        public string BranchCurrencyCode { get; set; }
+        public string BranchCurrencySymbol { get; set; }
+        public double BranchTaxPercentage { get; set; }
+
         public int DesignationId { get; set; }
         public string DesignationName { get; set; }
         public int PrimaryRoleID { get; set; }

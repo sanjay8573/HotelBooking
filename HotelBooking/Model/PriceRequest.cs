@@ -24,6 +24,7 @@
         public decimal TaxAmount { get; set; }
         public int BookingCostId { get; set; }
         public string Description { get; set; }
+        public bool isAvailable { get; set; }
 
 
     }

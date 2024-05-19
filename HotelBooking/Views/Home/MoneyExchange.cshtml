@@ -44,6 +44,7 @@
                                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                     <label>Customer Name/Room Number  </label>
                                     <input type="text" id="txtCustomer" class="full-width" placeholder="" runat="server">
+                                    <input type="text" id="txtRoomNumber" class="full-width" placeholder="" runat="server">
                                 </div>
 
                             </div>
@@ -145,6 +146,7 @@
         });
         var branchId = $('#BranchId').val();
         var txtCustName = $("#txtCustomer").val();
+        var txtRoomNumber = $("#txtRoomNumber").val();
         var exCurrName = $("#SeleExCurr option:selected").text().replace(/[\n\r]+/g, ' ').trim();;
         var ArrVal = $("#SeleExCurr option:selected").val().split("-");
         var ExCurrId = ArrVal[0];
@@ -154,6 +156,7 @@
         var remarks = $("#txtRemarks").val();
         var exTran = {
             CustomerName: txtCustName,
+            RoomNumber: txtRoomNumber,
             isInternal: isInternal,
             ExchangeCurrencyId: Number(ExCurrId),
             ExchangeCurrencyName: exCurrName,

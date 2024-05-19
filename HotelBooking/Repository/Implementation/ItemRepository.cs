@@ -98,6 +98,10 @@ namespace HotelBooking.Repository.Implementation
             bool rtnVal = false;
             try
             {
+                foreach(var it in items)
+                {
+                    it.date_created = DateTime.Now;
+                }
                 _contex.ItemMaster.AddRange(items);
                 _contex.SaveChanges();
                 rtnVal = true;

@@ -13,6 +13,7 @@ namespace HotelBooking.Model
         [Key]
         public int ExchangeTransId { get; set; }
         public string CustomerName { get; set; }
+        public string RoomNumber { get; set; }
         public bool isInternal { get; set; }
         public int ExchangeCurrencyId { get; set; }
         public string ExchangeCurrencyName { get; set; }

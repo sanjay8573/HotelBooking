@@ -18,7 +18,7 @@
                     <label for="@chkId" ></label>
                 </td>
                     <td align="left" width="10%"><input type="text" id="@txtQTY" oninput="calculatePS();"  class="full-width mg-0" placeholder="0" runat="server"></td>
-                    <td align="left" width="10%" class="tpad"><span>$</span><span>@ps.Price</span></td>
+                    <td align="left" width="10%" class="tpad"><span>@ViewBag.CurrencySymbol</span><span>@ps.Price</span></td>
                 </tr>
                
                 i++;

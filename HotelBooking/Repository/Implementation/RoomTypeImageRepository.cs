@@ -3,6 +3,7 @@ using HotelBooking.Model;
 using HotelBooking.Model.Reatraurant;
 using HotelBooking.Repository.Interface;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace HotelBooking.Repository.Implementation
@@ -38,19 +39,23 @@ namespace HotelBooking.Repository.Implementation
         }
         public RoomeTypeImages[] GetRoomTypeImages(int roomTypeId)
         {
-            var rtimages = from a in _context.ImageMaster.Where(rt => rt.RefId == roomTypeId && rt.ImageTypeId==1)
-                           select new RoomeTypeImages
-                           {
-                               RoomTypeImageId = a.ImageId,
-                               RoomTypeId=a.RefId,
-                               ImageName = a.ImageName,
-                               ImageData = a.ImageData,
-                               ImageContentType = a.ImageContentType,
-                               BranchId = a.BranchId,
-                               isActive = a.isActive
-
-                           };
-            return rtimages.ToArray<RoomeTypeImages>();
+            List<ImageMaster> rtimages =_context.ImageMaster.Where(rt => rt.RefId == roomTypeId && rt.ImageTypeId == 1).ToList();
+            List<RoomeTypeImages> rtImages = new List<RoomeTypeImages>();    
+            
+            foreach (var image in rtimages)
+            {
+                rtImages.Add(new RoomeTypeImages()
+                {
+                    RoomTypeImageId = image.ImageId,
+                    ImageName=image.ImageName,
+                    RoomTypeId = image.RefId,
+                    ImageContentType = image.ImageContentType,
+                    ImageData=image.ImageData,
+                    isActive=image.isActive
+                }
+                );
+            }
+            return rtImages.ToArray<RoomeTypeImages>();
 
         }
 
@@ -83,6 +88,7 @@ namespace HotelBooking.Repository.Implementation
                     tmpimg.ImageTypeId = 1;
                     tmpimg.RefId= entityRoomeTypeImages.RoomTypeId;
                     tmpimg.BranchId= entityRoomeTypeImages.BranchId;
+                    tmpimg.isActive = true;
                     _context.ImageMaster.Add(tmpimg);
                     _context.SaveChanges();
                     rtnVal = true;

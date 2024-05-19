@@ -31,7 +31,7 @@
 
 
 
-                    <td align="right">$ @p.OfferPrice</td>
+                    <td align="right">@ViewBag.CurrencySymbol @p.OfferPrice</td>
                     <input type="hidden" id="BookingCostId" value="@p.BookingCostId" />
                 </tr>
                 i++;
@@ -45,14 +45,14 @@
 
             <tr>
                 <td colspan="2" align="right">
-                    Tax(18%) :
+                    Tax(@ViewBag.TaxPercentage %) :
                     <a href="#" id="taxBreakup" data-toggle="modal" data-target="#TXBRK">Break-up</a>
                 </td>
-                <td align="right">$ @totalTax</td>
+                <td align="right">@ViewBag.CurrencySymbol @totalTax</td>
             </tr>
             <tr>
                 <td colspan="2" align="right">Total : </td>
-                <td colspan="3" align="right">$ @totalAmount</td>
+                <td colspan="3" align="right">@ViewBag.CurrencySymbol @totalAmount</td>
             </tr>
 
             <input type="hidden" id="TotalCostForNights" value="@totalAmount" />
@@ -77,7 +77,7 @@
 
                                 <th>Price</th>
                                 <th>offer Price(Payable Amount)</th>
-                                <th>Tax(18%)</th>
+                                <th>Tax(@ViewBag.TaxPercentage %)</th>
 
                             </tr>
                             @if (Model != null)
@@ -99,9 +99,9 @@
                                         }
 
 
-                                        <td align="right">$ @p.PerNightCost</td>
-                                        <td align="right">$ @p.OfferPrice</td>
-                                        <td align="right">$ @p.TaxAmount</td>
+                                    <td align="right">@ViewBag.CurrencySymbol @p.PerNightCost</td>
+                                    <td align="right">@ViewBag.CurrencySymbol @p.OfferPrice</td>
+                                    <td align="right">@ViewBag.CurrencySymbol @p.TaxAmount</td>
 
                                     </tr>
                                     i++;
@@ -110,7 +110,7 @@
 
                                 }
                                 <tr>
-                                    <td colspan="5" align="right">$ @totalTax</td>
+                                    <td colspan="5" align="right">@ViewBag.CurrencySymbol @totalTax</td>
                                 </tr>
                             }
 

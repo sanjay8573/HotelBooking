@@ -1,0 +1,89 @@
+﻿@model HotelBooking.Model.Report.VM_ItemInShort
+@{
+    ViewBag.Title = "Item in Short Report";
+}
+
+<div class="row" id="Amenityform">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i> Item in Short Report</div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                    <div class="col-lg-8 col-md-8 col-sm-1 col-xs-12 pull-right">
+                        @using (Html.BeginForm("Export", "Home", FormMethod.Post, new { id = "msform" }))
+                        {
+                            <input type="hidden" name="GridHtml" />
+                            <input type="hidden" name="ReportName" value="ItemsInShortReport" />
+                            <input type="submit" class="prev action-button pull-right" id="btnExport" value="Export" />
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 table-responsive" id="Grid">
+
+                <table cellpadding="5" cellspacing="0" style="border: 1px solid #ccc;font-size: 9pt;">
+
+
+                    <tr>
+                        <td colspan="10">
+                            <table style="width:100%">
+                                <tr>
+                                    <td colspan="3" style="width: 120px; border: 1px solid #ccc"><b>Item in Short Report</b></td>
+
+                                </tr>
+                                <tr>
+                                    <td style="width: 120px; border: 1px solid #ccc">Issue Date</td>
+                                    <td style="width: 120px; border: 1px solid #ccc">From - @Model.REQ.fromDate</td>
+                                    <td style="width: 120px; border: 1px solid #ccc">To - @Model.REQ.toDate</td>
+                                </tr>
+                                
+
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc">#</th>                       
+                        <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc">Item Name</th>
+                        <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc; text-align: center"> CurrentQty</th>
+                       
+                        <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc; text-align: center">Reserved Qty</th>
+
+
+                    </tr>
+                    @if (Model != null)
+                    {
+                        var i = 1;
+                        foreach (var bk in Model.itemsInShorts)
+                        {
+                            <tr>
+                                <td style="width:10px;border: 1px solid #ccc">@i</td>
+                                <td style="width:120px;border: 1px solid #ccc">@bk.ItemName</td>
+                                <td style="width:120px;border: 1px solid #ccc">@bk.CurrentQty</td>
+                                <td style="width:120px;border: 1px solid #ccc; text-align: center">@bk.ReservedQty</td>
+                                
+                            </tr>
+
+                            i++;
+                        }
+
+                    }
+
+
+
+
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#btnExport").click(function () {
+            $("input[name='GridHtml']").val($("#Grid").html());
+        });
+    });
+</script>
+

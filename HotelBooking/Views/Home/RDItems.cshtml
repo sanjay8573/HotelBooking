@@ -1,0 +1,505 @@
+﻿
+@{
+    ViewBag.Title = "RDItems";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Release / Deposit <small>Item</small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Stores Item</small> </span></div>
+            <div class="widget-content padded text-center">
+                <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
+                    <div class="row">
+                        <div id="itemTop" class="row">
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                <label>Issued To</label>
+                                <select name="SeleIssueTo" id="SeleIssueTo" class="full-width freetrial">
+                                    @if (ViewBag.IssueTo != null)
+                                    {
+                                        foreach (var item in ViewBag.IssueTo)
+                                        {
+                                            if (item.Text != null)
+                                            {
+                                                <option value="@item.Value" selected="@item.Selected">
+                                                    @item.Text.Trim()
+                                                </option>
+
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                <label>Select Action</label>
+                                <select id="SelecAction" class="full-width ddselect" runat="server">
+                                    <option selected="selected">Select</option>
+                                    <option value="0">Release Item</option>
+                                    <option value="1">Deposite Item</option>
+                                </select>
+
+                            </div>
+                            <div id="dynDivContainer1" class="col-lg-12 col-md-12 col-sm-12">
+
+
+                            
+
+                            <div id="item1" class="row">
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12" style="align-self: center;">
+
+                                    <label class="text-center"><i class="fa fa-arrow-right" aria-hidden="true"></i></label>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Item Name</label>
+                                    <select name="SeleIteName" id="SeleIteName" onchange="selectAvailableQTY(this);" class="full-width freetrial">
+                                        @if (ViewBag.alltem != null)
+                                        {
+                                            foreach (var item in ViewBag.alltem)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text.Trim()
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Avl.Qty</label>
+                                    <input type="text" id="txtAvlQty" class="full-width" disabled="disabled" placeholder="Available Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Qty</label>
+                                    <input type="text" id="txtQty" class="full-width" onkeyup="calculateBalacneQty(this);" placeholder="Issued Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Bal.Qty</label>
+                                    <input type="text" id="txtBalQty" class="full-width" disabled="disabled" placeholder="Balance  Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Issued Date</label>
+                                    <input type="text" id="Itemdatepicker1" class="full-width allinputgo" placeholder="Issued Date" autocomplete="off">
+
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>&nbsp;</label>
+                                    <button type="button" style="align-self:center; font-size: 15px; width: 30% !important" onclick="addItem();" class="full-width prev Addmorebtn"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                </div>
+
+
+
+                            </div>
+                            <div id="item2" class="row" style="display:none !important">
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12" style="align-self: center;">
+
+                                    <label class="text-center"><i class="fa fa-arrow-right" aria-hidden="true"></i></label>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Item Name</label>
+                                    <select name="SeleIteName" id="SeleIteName" onchange="selectAvailableQTY(this);" class="full-width freetrial">
+                                        @if (ViewBag.alltem != null)
+                                        {
+                                            foreach (var item in ViewBag.alltem)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text.Trim()
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Avl.Qty</label>
+                                    <input type="text" id="txtAvlQty" class="full-width" placeholder="Available Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Qty</label>
+                                    <input type="text" id="txtQty" class="full-width" onkeyup="calculateBalacneQty(this);" placeholder="Issued Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Bal.Qty</label>
+                                    <input type="text" id="txtBalQty" class="full-width" placeholder="Balance  Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Issued Date</label>
+                                    <input type="text" id="Itemdatepicker2" class="full-width allinputgo" placeholder="Issued Date" autocomplete="off">
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>&nbsp;</label>
+                                    <button type="button" style="align-self: center; font-size: 15px; width: 30% !important" class="full-width prev removebtn" onclick="RemoveItem(this);"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                </div>
+
+
+                            </div>
+
+                            <div id="item3" class="row" style="display:none !important">
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12" style="align-self: center;">
+
+                                    <label class="text-center"><i class="fa fa-arrow-right" aria-hidden="true"></i></label>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Item Name</label>
+                                    <select name="SeleIteName" id="SeleIteName" onchange="selectAvailableQTY(this);" class="full-width freetrial">
+                                        @if (ViewBag.alltem != null)
+                                        {
+                                            foreach (var item in ViewBag.alltem)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text.Trim()
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Avl.Qty</label>
+                                    <input type="text" id="txtAvlQty" class="full-width" placeholder="Available Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Qty</label>
+                                    <input type="text" id="txtQty" class="full-width" onkeyup="calculateBalacneQty(this);" placeholder="Issued Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Bal.Qty</label>
+                                    <input type="text" id="txtBalQty" class="full-width" placeholder="Balance  Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Issued Date</label>
+                                    <input type="text" id="Itemdatepicker3" class="full-width allinputgo" placeholder="Issued Date" autocomplete="off">
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>&nbsp;</label>
+                                    <button type="button" style="font-size:15px;width:30% !important" class="full-width prev removebtn" onclick="RemoveItem(this);"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                </div>
+
+
+                            </div>
+
+                            <div id="item4" class="row" style="display:none !important">
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12" style="align-self: center;">
+
+                                    <label class="text-center"><i class="fa fa-arrow-right" aria-hidden="true"></i></label>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Item Name</label>
+                                    <select name="SeleIteName" id="SeleIteName" onchange="selectAvailableQTY(this);" class="full-width freetrial">
+                                        @if (ViewBag.alltem != null)
+                                        {
+                                            foreach (var item in ViewBag.alltem)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text.Trim()
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Avl.Qty</label>
+                                    <input type="text" id="txtAvlQty" class="full-width" placeholder="Available Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Qty</label>
+                                    <input type="text" id="txtQty" class="full-width" onkeyup="calculateBalacneQty(this);" placeholder="Issued Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Bal.Qty</label>
+                                    <input type="text" id="txtBalQty" class="full-width" placeholder="Balance  Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Issued Date</label>
+                                    <input type="text" id="Itemdatepicker4" class="full-width allinputgo" placeholder="Issued Date" autocomplete="off">
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>&nbsp;</label>
+                                    <button type="button" style="font-size:15px;width:30% !important" class="full-width prev removebtn" onclick="RemoveItem(this);"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                </div>
+
+
+                            </div>
+
+                            <div id="item5" class="row" style="display:none !important">
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12" style="align-self: center;">
+
+                                    <label class="text-center"><i class="fa fa-arrow-right" aria-hidden="true"></i></label>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Item Name</label>
+                                    <select name="SeleIteName" id="SeleIteName" onchange="selectAvailableQTY(this);" class="full-width freetrial">
+                                        @if (ViewBag.alltem != null)
+                                        {
+                                            foreach (var item in ViewBag.alltem)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text.Trim()
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Avl.Qty</label>
+                                    <input type="text" id="txtAvlQty" class="full-width" placeholder="Available Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Qty</label>
+                                    <input type="text" id="txtQty" class="full-width" onkeyup="calculateBalacneQty(this);" placeholder="Issued Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
+                                    <label>Bal.Qty</label>
+                                    <input type="text" id="txtBalQty" class="full-width" placeholder="Balance  Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Issued Date</label>
+                                    <input type="text" id="Itemdatepicker5" class="full-width allinputgo" placeholder="Issued Date" autocomplete="off">
+                                </div>
+
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>&nbsp;</label>
+                                    <button type="button" style="font-size:15px;width:30% !important" class="full-width prev removebtn" onclick="RemoveItem(this);"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px;">
+                            <input type="hidden" id="BranchId" value="@ViewBag.BranchId" />
+                            <button type="button" class="allbtnin full-width" onclick="SaveItem();">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+
+    function addItem() {
+       
+        var nRows = $("#dynDivContainer1 > div:visible").length;
+        console.log("NRows" + nRows);
+        var n = parseInt(nRows) + 1;
+        if (n > 6) { return; }
+        console.log('sanjay' + n);
+        var todsipalyDivId = 'item' + n;
+        console.log(todsipalyDivId);
+        $('#' + todsipalyDivId).show();
+
+        $("#Itemdatepicker"+n).datepicker({
+            dateFormat: "dd-mm-yy",
+            duration: "fast",
+            minDate: 0,
+            disabledDates: [new Date()],
+
+        });
+        //console.log(itemIndex);
+
+        return false;
+
+    }
+    function RemoveItem($currentItem) {
+
+        var id = $($currentItem).parent().parent().attr('id');
+        console.log(id);
+        $('#' + id).css('display', 'none');
+    }
+    function SaveItem() {
+        var items = [];
+        var branchId = $('#BranchId').val();
+        var txtIssueToId = $('#SeleIssueTo').find(":selected").val();
+        var txtIssueToName = $('#SeleIssueTo').find(":selected").text().replace(/[\n\r]+/g, ' ').trim();
+        var txtInOut = $('#SelecAction').find(":selected").val();
+        $("#dynDivContainer1 > div:visible").each(function (idx, el) {
+            var txtItemName;
+            var txtItemId;
+
+            var txtQty;
+            var AQty;
+            var BQty;
+            var txtIssueDate;
+
+            var txtIssueById='@ViewBag.IssueById';
+            var txtIssueByName='@ViewBag.IssueByName';;
+            console.log(idx);
+            //  $("#dynDivContainer > div:visible > div > input:text").each(function (idx, el)
+            var cuurentDiv = el.id;
+            console.log("Current Div Id"+cuurentDiv);
+
+            $("#" + cuurentDiv + " div > input:text").each(function (idx, el) {
+                if (idx==0) {
+                    AQty =$(el).val()
+                }
+                if (idx == 1) {
+                    txtQty = $(el).val()
+                }
+                if (idx == 2) {
+                    BQty = $(el).val()
+                }
+                if (idx == 3) {
+                    txtIssueDate = $(el).val()
+                }
+            });
+            $("#" + cuurentDiv + " div > select").each(function (idx, el) {
+                if (el.id == "SeleIteName") {
+                    var selVal = $(el).find(":selected").val();
+                    var ArrVal = selVal.split("-");
+                   
+                    txtItemId = ArrVal[0];
+                    txtItemName = $(el).find(":selected").text().replace(/[\n\r]+/g, ' ').trim();
+
+                }
+            });
+
+
+            var item = {
+
+                Branchid: branchId,
+                ItemName: txtItemName,
+                ItemId: txtItemId,
+                OpeningQuantity: Number(AQty),
+                IssueQuantity: Number(txtQty),
+                BalanceQuantity: Number(BQty),
+                IsInward: (txtInOut=="0")?false:true,
+                IssueDate: txtIssueDate,
+                IssuedBy: txtIssueById,
+                IssuedByName: txtIssueByName,
+                issuedTo: txtIssueToId,
+                issuedToName: txtIssueToName,
+                isActive:true
+
+            };
+            items.push(item);
+        });
+        console.log(items);
+         $.ajax({
+             type: "POST",
+             url: '@Url.Action("SaveRDItems", "Home")',
+
+             data: { items: items },
+
+             success: function (recData) {
+                 $.toast({
+                     heading: 'Success',
+                     text: 'Items Saved Successfully ',
+                     icon: 'success',
+                     loader: false,        // Change it to false to disable loader
+                     position: 'top-right',
+                     loaderBg: '#9EC600'  // To change the background
+                 });
+                 setTimeout(function () {
+                    window.location.href = '@Url.Action("IssuedItems", "store")';
+                    }, 500);
+                 console.log('Success');
+             },
+             error: function () {
+                 $.toast({
+                     heading: 'Error',
+                     text: 'Error on Adding Items  ',
+                     icon: 'Error',
+                     loader: false,        // Change it to false to disable loader
+                     position: 'top-right',
+                     loaderBg: '#9EC600'  // To change the background
+                 });
+                 console.log('A error');
+             }
+        });
+
+
+    }
+    $(function () {
+       
+        
+        $("#Itemdatepicker1").datepicker({
+            dateFormat: "dd-mm-yy",
+            duration: "fast",
+            minDate: 0,
+            disabledDates: [new Date()],
+
+        });
+    });
+    function calculateBalacneQty(currentItem) {
+        var selectedAction = $('#SelecAction').val();
+        //console.log("Action ::" + selectedAction);
+            var parentDivId = $(currentItem).parent().parent().attr("id");
+            var avlqty = 0;
+            var qty = 0;
+            var balQty;
+            $("#" + parentDivId + " > div > input:text").each(function (idx, el2) {
+
+                if (idx == 0) {
+                    avlqty=$(el2).val();
+
+                }
+                if (idx == 1) {
+                    qty = $(el2).val();
+
+                }
+                if (idx == 2) {
+                    if (selectedAction == 0) {
+                        if (Number(avlqty) > Number(qty)) {
+                            balQty = Number(avlqty) - Number(qty);
+                        } else {
+                            balQty = 0;
+                        }
+                      
+                    } else {
+                        balQty = Number(avlqty) + Number(qty);
+                    }
+                   
+                    $(el2).val(Number(balQty));
+
+                }
+
+            });
+        }
+       
+   
+
+    function selectAvailableQTY(currentItem) {
+        var selVal = currentItem.value;
+        var parentDivId = $(currentItem).parent().parent().attr("id");
+        var ArrVal = selVal.split("-");
+        var AvlQty = ArrVal[1];
+
+        var rate = 0;
+        var qty = 0;
+        var total;
+        $("#" + parentDivId + " > div > input:text").each(function (idx, el2) {
+
+            if (idx == 0) {
+                $(el2).val(AvlQty);
+
+            }
+
+        });
+     
+
+    }
+</script>

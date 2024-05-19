@@ -17,6 +17,8 @@ namespace HotelBooking.Repository.Implementation
         private readonly ICompany _cmp;
         private readonly IDesignation _desig;
         private readonly IRoles _irole;
+        private readonly ITaxMaster _tax;
+        private readonly ICurrency _currency;
 
         public LoginRepository()
         {
@@ -25,6 +27,8 @@ namespace HotelBooking.Repository.Implementation
             _cmp= new CompanyRepository();
             _desig= new DesignationRepository();
             _irole= new RoleRepository();
+            _tax = new TaxMasterRespository();
+            _currency= new CurrencyRepository();
         }
         public LoginResponse ValidateLogin(LoginRequestModel lognReq)
         {
@@ -50,6 +54,20 @@ namespace HotelBooking.Repository.Implementation
                     try
                     {
                         loginResponse.BranchName = (_ib.GetBranchById(s.BranchId) != null) ? _ib.GetBranchById(s.BranchId).BranchName : "";
+                        loginResponse.BranchTaxPercentage = _tax.GetTaxForBranch(s.BranchId).Value;
+                        AvailableCurrency avlCurr = _currency.GetAvailableCurrency(s.BranchId).Where(b=>b.isBusinessCurrency==true).SingleOrDefault();
+                        if(avlCurr != null)
+                        {
+                            loginResponse.BranchCurrencyName = avlCurr.CurrencyName;
+                            loginResponse.BranchCurrencyCode = avlCurr.CurrencyCode;
+                            loginResponse.BranchCurrencySymbol = avlCurr.CurrencySymbol;
+                        }
+                        else
+                        {
+                            loginResponse.BranchCurrencyName = "Rupees";
+                            loginResponse.BranchCurrencyCode = "INR";
+                            loginResponse.BranchCurrencySymbol = "R";
+                        }
                          
                     }
                     catch (Exception)

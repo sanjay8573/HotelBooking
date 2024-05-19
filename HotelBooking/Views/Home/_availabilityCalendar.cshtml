@@ -54,7 +54,8 @@
                                     end: moment(data.End_Date).format('YYYY-MM-DD'),
                                     backgroundColor: data.backgroundColor,
                                     textcolor:data.textColor,
-                                    borderColor: "#fc0101",
+                                    borderColor: "#002d37",
+                                   
                                     bookedRooms: data.BookedRooms,
                                     availableRooms: data.AvailableRooms
                                 });
@@ -72,8 +73,8 @@
             //        });
             //},
             eventAfterRender: function (event, element, view) {
-                element.append("<p style='font-size:11px;color:black'> <a style='color:#00FF00;' href='/home/Bookings'> Available Rooms : "+event.availableRooms+"</a></p>");
-                element.append("<p style='font-size:11px;color:red !important'> <a style='color:#FF0000;' href='/home/BookedRoom'> Booked Rooms : " + event.bookedRooms + "</a></p>");
+                element.append("<p style='font-size:11px;color:black'> <a style='color:#00ff00;' href='/home/Bookings'> Available Rooms : "+event.availableRooms+"</a></p>");
+                element.append("<p style='font-size:11px;color:red !important'> <a style='color:#fff000;' href='/home/BookedRoom'> Booked Rooms : " + event.bookedRooms + "</a></p>");
             },
             //viewRender: function (view, element) {
             //    var start = new Date("2016-09-01");

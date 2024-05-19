@@ -4,23 +4,7 @@
     ViewBag.Title = "AddBooking";
 }
 
-@{
-    IEnumerable<PriceResponse> allN = Model.AllNights.Select(x =>
-         new PriceResponse
-         {
-             roomTypeId = x.RoomTypeId,
-             Amount = x.PerNightCost,
-             Date = x.Date,
-             BookingCostId = x.BookingCostId,
-             Tax = decimal.Parse(x.Tax),
-             TaxAmount = x.TaxAmount
 
-         }
-        );
-
-    IEnumerable<PaidServices> ediTPS = ViewBag.PS;
-
-}
 
 <div class="row" id="AddBooking">
     <div class="col-sm-12" >
@@ -35,7 +19,7 @@
                     </tbody>
                 </table>
 
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
                     <label for="edit-mail" class="form-required">Guest</label>
                     <select name="Selguest" id="Selguest" class="full-width freetrial">
                         @if (ViewBag.GSComboModel != null)
@@ -53,7 +37,7 @@
                         }
                     </select>
                 </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-left" style="margin-top: 15px;">
                     <label for="edit-mail" class="form-required">Booking Type</label>
                     <select name="categories" id="SelBtype" class="full-width freetrial">
                         <option selected="selected" value="1">Select Booking Type</option>
@@ -61,7 +45,25 @@
                         <option value="3">Hall Booking</option>
                     </select>
                 </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
+                    <label for="edit-mail" class="form-required">Booking Source</label>
+                    <select name="SelBookingSource" id="SelBookingSource" class="full-width freetrial">
+                        @if (ViewBag.BookingSourceComboModel != null)
+                        {
+                            foreach (var item in ViewBag.BookingSourceComboModel)
+                            {
+                                if (item.Text != null)
+                                {
+                                    <option value="@item.Value" selected="@item.Selected">
+                                        @item.Text.Trim()
+                                    </option>
+
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
                     <label for="edit-mail" class="form-required">GST?</label>
                     <input type="text" id="txtGSTNumber" class="full-width" placeholder="GST Number" runat="server">
                 </div>
@@ -153,7 +155,7 @@
                         <label for="edit-mail" class="form-required">Number of Room</label>
                         <select name="NumberofRoom" id="NumberofRoom" class="full-width freetrial">
                             <option selected="selected" value="0">Select</option>
-                            <option  value="1">1</option>
+                            <option value="1">1</option>
                             <option value="2">2 </option>
                             <option value="3">3 </option>
                             <option value="4">4 </option>
@@ -174,16 +176,16 @@
                     </div>
                 </div>
 
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left"  style="margin-top: 15px;">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left" style="margin-top: 15px;">
 
                     @*<div id="overlay">
-                        <div class="cv-spinner">
-                            <span class="spinner"></span>
-                        </div>
-                    </div>*@
+                <div class="cv-spinner">
+                    <span class="spinner"></span>
+                </div>
+            </div>*@
                     <table class="table table-bordered">
                         <tr>
-                            <td  class="trthbgclr" align="left" width="15%" valign="middle">&nbsp;</td>
+                            <td class="trthbgclr" align="left" width="15%" valign="middle">&nbsp;</td>
                             <td>
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tbody>
@@ -214,7 +216,7 @@
                             <td class="trthbgclr" align="left" valign="middle">Amount </td>
                             <td align="left" valign="middle">
                                 <input type="hidden" id="hdnRoomCost" />
-                            <strong>$</strong><strong id="totAmt">0.00</strong>
+                                <strong>@ViewBag.CurrencySymbol</strong><strong id="totAmt">0.00</strong>
                             </td>
                         </tr>
                         <tr>
@@ -225,12 +227,13 @@
                                         <tr>
                                             <td align="left">1</td>
                                             <td align="left">Tax(s)</td>
-                                            <td align="left">18.00</td>
-                                            <td align="left" width="30%"><strong>$</strong><strong id="taxVal">0.00</strong> <a href="#" data-toggle="modal" data-target="#AmountBreakup" class="pull-right">Amount/Breakup</a></td>
+                                            <td align="left">@ViewBag.Taxpercentage</td>
+                                            <input type="hidden" id="hdnTP" value="@ViewBag.Taxpercentage" />
+                                            <td align="left" width="30%"><strong>@ViewBag.CurrencySymbol</strong><strong id="taxVal">0.00</strong> <a href="#" data-toggle="modal" data-target="#AmountBreakup" class="pull-right">Amount/Breakup</a></td>
                                         </tr>
                                         <tr>
                                             <td align="left" colspan="3"><strong>Total Tax</strong></td>
-                                            <td align="left"><strong>$</strong><strong id="taxTotal">0.00</strong></td>
+                                            <td align="left"><strong>@ViewBag.CurrencySymbol</strong><strong id="taxTotal">0.00</strong></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -238,7 +241,7 @@
                         </tr>
                         <tr>
                             <td class="trthbgclr" align="left" valign="middle">Total Amount</td>
-                            <td align="left" valign="middle"><strong>$</strong><strong id="gTot">0.00</strong></td>
+                            <td align="left" valign="middle"><strong>@ViewBag.CurrencySymbol</strong><strong id="gTot">0.00</strong></td>
                         </tr>
                     </table>
 
@@ -265,7 +268,7 @@
                         </tr>
                         <tr>
                             <td class="trthbgclr" align="left" valign="middle">Total Amount</td>
-                            <td align="left" valign="middle"><strong>$</strong><strong id="gTotal1">0.00</strong></td>
+                            <td align="left" valign="middle"><strong>@ViewBag.CurrencySymbol</strong><strong id="gTotal1">0.00</strong></td>
                         </tr>
                         <tr>
                             <td class="trthbgclr" align="left" valign="middle">Coupon</td>
@@ -276,16 +279,16 @@
                         </tr>
                         <tr>
                             <td class="trthbgclr" align="left" valign="middle">Coupon Applied</td>
-                            <td align="left" valign="middle">-<strong>$</strong><strong id="BK-DISC">-0.00</strong></td>
+                            <td align="left" valign="middle">-<strong>@ViewBag.CurrencySymbol</strong><strong id="BK-DISC">-0.00</strong></td>
                         </tr>
                         <tr>
                             <td class="trthbgclr" align="left" valign="middle">Amount Payable</td>
-                            <td align="left" valign="middle"><strong>$</strong><strong id="BK-PayAMT">0.00</strong></td>
+                            <td align="left" valign="middle"><strong>@ViewBag.CurrencySymbol</strong><strong id="BK-PayAMT">0.00</strong></td>
                         </tr>
                     </tbody>
                 </table>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
-                    <input type="button" name="SUBMIT" class="prev action-button pull-right" onclick="SaveBooking();" value="Book" runat="server">
+                    <input type="button" name="SUBMIT" class="prev action-button pull-right" onclick="SaveBooking(this);" value="Book" runat="server">
                 </div>
             </form>
         </div>
@@ -293,21 +296,23 @@
 </div>
 <script>
     var amt;
-    function SaveBooking() {
-                    console.log("SAving Booking.....");
+    function SaveBooking(btn) {
+       
+        $(btn).prop("disabled", true);
+        console.log("SAving Booking.....");
         const GuestName = $("#Selguest option:selected").text().replace(/[\n\r]+/g, ' ').trim();
-                    const GuestID = $("#Selguest option:selected").val();
+        const GuestID = $("#Selguest option:selected").val();
 
         const bTypeName = $("#SelBtype option:selected").text().replace(/[\n\r]+/g, ' ').trim();
-                    const BtypeID = $("#SelBtype option:selected").val();
-                    const txtGSTNumber = $("#txtGSTNumber").val();
+        const BtypeID = $("#SelBtype option:selected").val();
+        const txtGSTNumber = $("#txtGSTNumber").val();
         const NumberOfRoom = $("#NumberofRoom option:selected").val();
         const CouponAmount = $("#BK-DISC").text();
         const BookingId = $("#BookingId").val();
         const branchId = $("#BranchId").val();
         const BookingNumber = $("#BookingNumber").val();
-                    var roomTypeIds = "";
-                    var roomTypeNames = "";
+        var roomTypeIds = "";
+        var roomTypeNames = "";
                         
         const roomCostData = [];
         for (i = 1; i <= Number(NumberOfRoom); i++) {
@@ -317,7 +322,12 @@
         }
         //console.log(roomCostData);
                     //const RoomType = $("#RoomType option:selected").text().trim();
-                    //const RoomTypeId = $("#RoomType option:selected").val();
+        const bookingSource = $("#SelBookingSource option:selected").val();
+        var bksArr = bookingSource.split("-");
+        var bksId = bksArr[0];
+        var commissioType = bksArr[1];
+        var commission = bksArr[2];
+        var commissionPaid = 0;
                     const CHDage1 = $("#Child1Age option:selected").val();
                     const CHDage2 = $("#Child2Age option:selected").val();
                     const CHDage3 = $("#Child3Age option:selected").val();
@@ -334,10 +344,16 @@
 
                     const TotalAmount = $("#BK-PayAMT").text();
                     const couponCode = $("#BK-CPNCODE").val();
-       
+                    const tp = $("#hdnTP").val();
+                    const tpp =parseFloat(tp/100);
                     const psSelected = [];
                     var selectedPS='';
-                    
+        if (commissioType == 'P') {
+            commissionPaid = (TotalAmount * commission) / 100;
+        }
+        if (commissioType == 'F') {
+            commissionPaid = commission;
+        }
                         //console.log(psSelected);
         //console.log(selectedPS);
         $('input[type=checkbox]').each(function () {
@@ -377,7 +393,9 @@
                         CouponAmount: parseFloat(CouponAmount).toFixed(2),
                         PaidServices: ps1,
                         BookingNumber: BookingNumber,
-                        APyableAmount: parseFloat(TotalAmount).toFixed(2),
+                        PayableAmount: parseFloat(TotalAmount).toFixed(2),
+                        BookingSourceId: bksId,
+                        CommissionPaid: parseFloat(commissionPaid).toFixed(2),
                         ChildAge1: CHDage1,
                         ChildAge1: CHDage2,
                         ChildAge1: CHDage3,
@@ -407,7 +425,7 @@
                     CostCategory: 1,
                     Qty: 0,
                     Tax: item.Tax,
-                    TaxAmount: parseFloat(parseFloat((parseFloat(item.OfferPrice) * 0.18)))
+                    TaxAmount: parseFloat(parseFloat((parseFloat(item.OfferPrice) * (parseFloat(tpp))))).toFixed(2)
                 }
                 Bookingitem.AllNights.push(BookingCost);
 
@@ -432,8 +450,8 @@
                         OfferPrice: this.value,
                         CostCategory: 2,
                         Qty: qty,
-                        Tax: 0.18,
-                        TaxAmount: parseFloat(parseFloat(this.value * 0.18))
+                        Tax: Number(tp).toFixed(2),
+                        TaxAmount: parseFloat(parseFloat(this.value * parseFloat(tpp))).toFixed(2)
                     }
                     Bookingitem.AllNights.push(BookingCost);
                    
@@ -441,7 +459,7 @@
             }
 
         }); 
-        //console.log(Bookingitem);
+        console.log(Bookingitem);
         console.log(JSON.stringify(Bookingitem));
         ////
        // return false;
@@ -734,8 +752,9 @@
 
         //console.log("Current total Amount on selection :" + amt);
         var tottalAmount = $("#totAmt").text();
+        var tp = $("#hdnTP").val();
         //var taxpercentage = $("#txPct").text();
-        var totaltax = ((Number(tottalAmount) * Number(18)) / 100).toFixed(2);
+        var totaltax = ((Number(tottalAmount) * Number(tp)) / 100).toFixed(2);
         $("#taxVal").text(totaltax);
         $("#taxTotal").text(totaltax);
         var gTotalAmount = ((Number(tottalAmount) + Number(totaltax)));

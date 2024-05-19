@@ -1,0 +1,321 @@
+﻿
+@{
+    ViewBag.Title = "Add Items";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Stores Management <small>Lists</small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Stores Management</small> </span></div>
+            <div class="widget-content padded text-center">
+                <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
+                    <div class="row">
+                        <div id="dynDivContainer" class="col-lg-12 col-md-12 col-sm-12">
+                            <div id="item1" class="row">
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12" style="align-self: center;">
+                                   
+                                    <label class="text-center"><i class="fa fa-arrow-right" aria-hidden="true"></i></label>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12" >
+                                    <label>Item Name</label>
+                                    <input type="text" id="txtItemName" class="full-width" placeholder="Item Name" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Total Quantity</label>
+                                    <input type="text" id="txtQty" onkeyup="calculateTotal(this);" class="full-width" placeholder="Total Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Price</label>
+                                    <input type="text" id="txtPrice" onkeyup="calculateTotal(this);" class="full-width" placeholder="Price" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Total Amount</label>
+                                    <input type="text" id="txtTotalAmount"  class="full-width" placeholder="Total Amount" runat="server">
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <label>By Alert At</label>
+                                    <input type="text" id="txtByAlertAt" style="width:73% !important" class="full-width" placeholder="By Alert At" runat="server">
+                                    <button type="button" style="font-size:15px;width:20% !important" onclick="addItem();" class="full-width prev Addmorebtn"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                </div>
+                               
+
+                            </div>
+                            <div id="item2" class="row" style="display:none !important">
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12" style="align-self: center;">
+                                    <label class="text-center"><i class="fa fa-arrow-right" aria-hidden="true"></i></label>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Item Name</label>
+                                    <input type="text" id="txtItemName" class="full-width" placeholder="Item Name" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Total Quantity</label>
+                                    <input type="text" id="txtQty" class="full-width" onkeyup="calculateTotal(this);" placeholder="Total Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Price</label>
+                                    <input type="text" id="txtPrice" class="full-width" onkeyup="calculateTotal(this);" placeholder="Price" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Total Amount</label>
+                                    <input type="text" id="txtTotalAmount" class="full-width" placeholder="Total Amount" runat="server">
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <label>By Alert At</label>
+                                    <input type="text" id="txtByAlertAt" style="width:73% !important" class="full-width" placeholder="By Alert At" runat="server">
+                                    <button type="button" style="font-size:15px;width:20% !important" class="full-width prev removebtn" onclick="RemoveItem(this);"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                    @*<button type="submit" class="addbtnstore">Remove Items</button>*@
+                                </div>
+
+                            </div>
+                            <div id="item3" class="row" style="display:none">
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12" style="align-self: center;">
+                                   
+                                    <label class="text-center"> <i class="fa fa-arrow-right" aria-hidden="true"></i></label>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Item Name</label>
+                                    <input type="text" id="txtItemName" class="full-width" placeholder="Item Name" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Total Quantity</label>
+                                    <input type="text" id="txtQty" class="full-width" onkeyup="calculateTotal(this);" placeholder="Total Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Price</label>
+                                    <input type="text" id="txtPrice" class="full-width" onkeyup="calculateTotal(this);" placeholder="Price" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Total Amount</label>
+                                    <input type="text" id="txtTotalAmount" class="full-width" placeholder="Total Amount" runat="server">
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <label>By Alert At</label>
+                                    <input type="text" id="txtByAlertAt" style="width:73% !important" class="full-width" placeholder="By Alert At" runat="server">
+                                    <button type="submit" style="font-size:15px;width:20% !important" class="full-width prev removebtn" onclick="RemoveItem(this);"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                    @*<button type="submit" class="addbtnstore">Remove Items</button>*@
+                                </div>
+
+                            </div>
+                            <div id="item4" class="row" style="display:none">
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12" style="align-self: center;">
+                                    <label class="text-center"><i class="fa fa-arrow-right" aria-hidden="true"></i></label>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Item Name</label>
+                                    <input type="text" id="txtItemname" class="full-width" placeholder="Item Name" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Total Quantity</label>
+                                    <input type="text" id="txtQty" class="full-width" onkeyup="calculateTotal(this);" placeholder="Total Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Price</label>
+                                    <input type="text" id="txtPrice" class="full-width" onkeyup="calculateTotal(this);" placeholder="Price" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Total Amount</label>
+                                    <input type="text" id="txtTotalAmount" class="full-width" placeholder="Total Amount" runat="server">
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <label>By Alert At</label>
+                                    <input type="text" id="TxtByAlertAt" style="width:73% !important" class="full-width" placeholder="By Alert At" runat="server">
+                                    <button type="submit" style="font-size:15px;width:20% !important" class="full-width prev removebtn" onclick="RemoveItem(this);"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                    @*<button type="submit" class="addbtnstore">Remove Items</button>*@
+                                </div>
+
+                            </div>
+                            <div id="item5" class="row" style="display:none">
+                                <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12" style="align-self: center;">
+                                    <label class="text-center"><i class="fa fa-arrow-right" aria-hidden="true"></i></label>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Item Name</label>
+                                    <input type="text" id="txtItemName" class="full-width" placeholder="Item Name" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Total Quantity</label>
+                                    <input type="text" id="txtQty" class="full-width" onkeyup="calculateTotal(this);" placeholder="Total Quantity" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Price</label>
+                                    <input type="text" id="txtPrice" class="full-width" onkeyup="calculateTotal(this);" placeholder="Price" runat="server">
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label>Total Amount</label>
+                                    <input type="text" id="txtTotalAmount" class="full-width" placeholder="Total Amount" runat="server">
+                                </div>
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <label>By Alert At</label>
+                                    <input type="text" id="txtByAlertAt" style="width:73% !important" class="full-width" placeholder="By Alert At" runat="server">
+                                    <button type="submit" style="font-size:15px;width:20% !important" class="full-width prev removebtn" onclick="RemoveItem(this);"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                                    @*<button type="submit" class="addbtnstore">Remove Items</button>*@
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px;">
+                           <input type="hidden" id="BranchId" value="@ViewBag.BranchId" />
+                            <button type="button" class="allbtnin full-width" onclick="saveItem();">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function calculateTotal(currItem)
+    {
+        var parentDivId = $(currItem).parent().parent().attr("id");
+        //console.log("You are there...." + $(parentDiv).attr("id"));
+        var rate = 0;
+        var qty = 0;
+        var total;
+        $("#" + parentDivId + " > div > input:text").each(function (idx, el2) {
+
+            if (idx == 1) {
+               
+                qty = $(el2).val();
+                //console.log("..." + rate);
+            }
+            if (idx == 2) {
+                rate = $(el2).val();
+
+                //console.log("..." + rate * qty);
+            }
+            if (idx == 3) {
+
+                total = rate * qty;
+                $(el2).val(Number(total).toFixed(2));
+                //console.log("..." + total);
+            }
+        });
+        
+    }
+    
+    function addItem() {
+
+        var nRows = $("#dynDivContainer > div:visible").length;
+        console.log("NRows" + nRows);
+        var n = parseInt(nRows) + 1;
+        if (n > 5) { return; }
+        console.log('sanjay' + n);
+        var todsipalyDivId = 'item' + n;
+        console.log(todsipalyDivId);
+        $('#' + todsipalyDivId).show();
+
+
+        //console.log(itemIndex);
+
+        return false;
+
+    }
+    function RemoveItem($currentItem) {
+
+        var id = $($currentItem).parent().parent().attr('id');
+        console.log(id);
+        $('#' + id).css('display', 'none');
+    }
+    function saveItem() {
+        var items = [];
+        var branchId = $('#BranchId').val();
+        $("#dynDivContainer > div:visible").each(function (idx, el) {
+            var txtItemName;
+            var txtByAlertAt;
+             var txtQty;
+            var txtPrice;
+            var txtTotalAmount;
+            console.log(idx);
+            //  $("#dynDivContainer > div:visible > div > input:text").each(function (idx, el)
+            var cuurentDiv = el.id;
+            console.log("Current Div Id"+cuurentDiv);
+
+            $("#" + cuurentDiv + " div > input:text").each(function (idx, el) {
+                if (el.id == "txtItemName") {
+                    txtItemName=$(el).val()
+                }
+                if (el.id == "txtQty") {
+                    txtQty = $(el).val()
+                }
+                if (el.id == "txtPrice") {
+                    txtPrice = $(el).val()
+                }
+                if (el.id == "txtTotalAmount") {
+                    txtTotalAmount = $(el).val()
+                }
+                if (el.id == "txtByAlertAt") {
+                    txtByAlertAt = $(el).val()
+
+                }
+
+            });
+            console.log("=======");
+            console.log(txtItemName + "  " + txtQty + " " + txtPrice + "  "  + txtTotalAmount + " " + txtByAlertAt)
+            console.log("=======");
+            //console.log($(el).val());
+
+            var item = {
+
+                Branchid: branchId,
+                ItemName: txtItemName,
+                Quantity: Number(txtQty),
+                QuantityAvailable: Number(txtQty),
+                Price: Number(txtPrice).toFixed(2),
+                TotalAmount: Number(txtTotalAmount).toFixed(2),
+                ReorderPoint: txtByAlertAt
+            };
+            items.push(item);
+        });
+        console.log(items);
+
+             $.ajax({
+                 type: "POST",
+                 url: '@Url.Action("SaveItems", "Home")',
+
+                 data: { items: items },
+
+                 success: function (recData) {
+                     console.log('Success');
+                     $.toast({
+                                heading: 'Success',
+                                text: 'Items Added Successfully ',
+                                icon: 'success',
+                                loader: false,        // Change it to false to disable loader
+                                position: 'top-right',
+                                loaderBg: '#9EC600'  // To change the background
+                            });
+                            setTimeout(function () {
+                               window.location.href = '@Url.Action("GetItems", "Home")';
+                               }, 500);
+                    
+                 },
+                 error: function () {
+                     console.log('A error');
+                     $.toast({
+                         heading: 'Error',
+                         text: 'Error on Adding Items  ',
+                         icon: 'Error',
+                         loader: false,        // Change it to false to disable loader
+                         position: 'top-right',
+                         loaderBg: '#9EC600'  // To change the background
+                     });
+                 }
+             });
+    }
+</script>

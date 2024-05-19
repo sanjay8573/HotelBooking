@@ -1,0 +1,248 @@
+﻿
+@{
+    ViewBag.Title = "WhiteLabelHome";
+}
+
+<div id="booking" class="booking-area p-relative">
+    <div class="container">
+        @*<form action="rooms-and-suites.html" class="contact-form">*@
+            <div class="row align-items-center">
+                <div class="col-lg-12">
+                    <ul>
+                        <li>
+                            <div class="contact-field p-relative c-name">
+                                <label><i class="fal fa-badge-check"></i> Check In Date</label>
+                                <input type="date" id="chackin" name="date">
+                            </div>
+                        </li>
+                        <li>
+                            <div class="contact-field p-relative c-name">
+                                <label><i class="fal fa-times-octagon"></i> Check Out Date</label>
+                                <input type="date" id="chackout" name="date">
+                            </div>
+                        </li>
+                        <li>
+                            <div class="contact-field p-relative c-name">
+                                <label><i class="fal fa-users"></i> Adults</label>
+                                <select name="adults" id="adu">
+                                    <option value="sports-massage">Adults</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="contact-field p-relative c-name">
+                                <label><i class="fal fa-baby"></i> Child</label>
+                                <select name="child" id="cld">
+                                    <option value="sports-massage">Child</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="contact-field p-relative c-name">
+                                <label><i class="fal fa-concierge-bell"></i> Room</label>
+                                <select name="room" id="rm">
+                                    <option value="sports-massage">Room</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="slider-btn">
+                                <label><i class="fal fa-calendar-alt"></i></label>
+                                <button class="btn ss-btn" data-animation="fadeInRight" onclick="getData();" data-delay=".8s">Check Availability</button>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="slider-btn">
+                                <label><i class="fal fa-calendar-alt"></i></label>
+                                <button class="btn ss-btn" data-animation="fadeInRight" onclick="CreateBooking();" data-delay=".8s">BookNow</button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        @*</form>*@
+    </div>
+</div>
+<script>
+    function getData() {
+       
+       
+        const RoomRequest = {
+            "Authentication": {
+                "UserName": "qrtus",
+                "Password": "qrt2k17",
+                "APIKey": "CA2EzF2YPHrutanyVMx6Y3JbZBykjs3d",
+                "UserHostAddress": "",
+                "UserAgent": "",
+                "UserHostName": ""
+            },
+            "HotelID": "rppfk/0UPuBAG/z7NUKOLQ==",
+            "BranchID": "1",
+            "CheckOutDate":"20-05-2024",
+            "CheckInDate": "17-05-2024",
+            "RoomGroupAry": [
+                {
+                    "NumberOfAdults": 2,
+                    "NumberOfChildren": 0,
+                    "ChildrenAges": "0"
+                }
+            ]
+        };
+
+
+        fetch('/api/online/GetAvailableRooms', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(RoomRequest)
+        })
+            .then(response => {
+                let rData = response.json();
+                console.log(rData);
+                //$.toast({
+                //    heading: 'Success',
+                //    text: 'Payments Success ',
+                //    icon: 'success',
+                //    loader: false, // Change it to false to disable loader
+                //    position: 'top-right',
+                //    loaderBg: '#9EC600' // To change the background
+                //});
+                
+            })
+            .catch(error => {
+                $.toast({
+                    autoDismiss: true,
+                    heading: 'Error',
+                    text: 'Error on API Response',
+                    icon: 'warning',
+                    position: 'top-right',
+                    loader: false,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                });
+            });
+    }
+
+    function CreateBooking() {
+
+
+        const BookRequest = {
+            "GuestName": "Steve Talbot",
+            "GuestID": 7,
+            "BookingTypeName": "Room Booking",
+            "BookingTypeId": 2,
+            "RoomTypeId": "10",
+            "RoomTypeName": "Deluxe rooms",
+            "Adult": 2,
+            "Child": 0,
+            "CheckIn": "06-06-2024",
+            "Checkout": "07-06-2024",
+            "NoOfRooms": 1,
+            "Nights": "1",
+            "TotalAmount": "5907.20",
+            "TotalTax": "707.20",
+            "isActive": true,
+            "branchId": 1,
+            "BookingId": 0,
+            "CouponCode": "",
+            "CouponAmount": "0.00",
+            "PaidServices": "9,10",
+            "BookingNumber": "",
+            "PayableAmount": "5907.20",
+            "BookingSourceId": "3",
+            "CommissionPaid": "15.00",
+            "ChildAge1": "10",
+            "AllNights": [
+                {
+                    "BookingId": 0,
+                    "BookingCostId": 0,
+                    "RoomTypeId": 10,
+                    "Description": "Deluxe rooms",
+                    "Date": "06-06-2024",
+                    "PerNightCost": 200,
+                    "OfferPrice": 200,
+                    "CostCategory": 1,
+                    "Qty": 0,
+                    "Tax": 13.6,
+                    "TaxAmount": 27.20
+                },
+                {
+                    "BookingId": 0,
+                    "BookingCostId": 0,
+                    "RoomTypeId": "9",
+                    "Description": "Airport Pickup",
+                    "Date": "06-06-2024",
+                    "PerNightCost": "2500.00",
+                    "OfferPrice": "2500.00",
+                    "CostCategory": 2,
+                    "Qty": "1",
+                    "Tax": 13.6,
+                    "TaxAmount": 340
+                },
+                {
+                    "BookingId": 0,
+                    "BookingCostId": 0,
+                    "RoomTypeId": "10",
+                    "Description": "Airport Drop",
+                    "Date": "06-06-2024",
+                    "PerNightCost": "2500.00",
+                    "OfferPrice": "2500.00",
+                    "CostCategory": 2,
+                    "Qty": "1",
+                    "Tax": 13.6,
+                    "TaxAmount": 340
+                }
+            ]
+        }
+
+
+        fetch('/api/online/CreateBooking', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(BookRequest)
+        })
+            .then(response => {
+                let rData = response.json();
+                console.log(rData);
+                //$.toast({
+                //    heading: 'Success',
+                //    text: 'Payments Success ',
+                //    icon: 'success',
+                //    loader: false, // Change it to false to disable loader
+                //    position: 'top-right',
+                //    loaderBg: '#9EC600' // To change the background
+                //});
+
+            })
+            .catch(error => {
+                $.toast({
+                    autoDismiss: true,
+                    heading: 'Error',
+                    text: 'Error on API Response',
+                    icon: 'warning',
+                    position: 'top-right',
+                    loader: false,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                });
+            });
+    }
+</script>

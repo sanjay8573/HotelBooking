@@ -18,7 +18,7 @@ namespace HotelBooking.Model.Inventory
         public int OpeningQuantity  { get; set; }
         public int IssueQuantity { get; set; }
         public int BalanceQuantity { get; set; }
-        public bool IsInward { get; set; }//inward=1,outward=0
+        public string Action { get; set; }//I,O,S
         public DateTime IssueDate { get; set; }
         public int IssuedBy { get; set; } //logged in userId
         public string IssuedByName { get; set; }//logged in Name

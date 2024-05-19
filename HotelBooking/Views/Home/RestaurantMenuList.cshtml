@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<HotelBooking.Model.Reatraurant.RestaurantMenu>
 @{
     ViewBag.Title = "RestaurantMenuList";
-    var RestroId = Model.First().RestaurantId;
+    var RestroId = ViewBag.RestaurantId;
 }
 
 <div class="row">

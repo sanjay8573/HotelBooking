@@ -35,7 +35,7 @@ namespace HotelBooking.Repository.Implementation
                             tmpItem.OpeningQuantity = item.OpeningQuantity;
                             tmpItem.IssueQuantity = item.IssueQuantity;
                             tmpItem.BalanceQuantity = item.BalanceQuantity;
-                            tmpItem.IsInward = item.IsInward;
+                            tmpItem.Action = item.Action;
                             tmpItem.IssueDate = item.IssueDate;
                             tmpItem.isActive = item.isActive;
 
@@ -93,7 +93,11 @@ namespace HotelBooking.Repository.Implementation
         {
             bool rtnVal = false;
             try
-            {
+                {
+                    foreach(var it in items)
+                    {
+                        it.IssueDate = DateTime.Now;
+                    }
                     _contex.IssueRegister.AddRange(items);
                     foreach (var itm in items)
                     {

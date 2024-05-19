@@ -23,6 +23,7 @@ namespace HotelBooking.Repository.Implementation
         }
         public bool AddSpecialPrice(SPM SPMEntity)
         {
+            //SPMEntity.isActive1=true
             bool rtnVal = false;
             if (SPMEntity.SpecialPriceManageId > 0)
             {

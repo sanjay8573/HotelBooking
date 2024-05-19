@@ -8,8 +8,9 @@
             var bgcolor = rt.isOccupied ? "class=red" : "class=green";
             <li id="@rt.TableId" onclick="LoadParkedItems('@rt.RestaurantId','@rt.TableId');">
                 <a @bgcolor href="#">
-                <p>Table @i</p>
-                <p>Seat @rt.NoOfSeat</p>
+                    <p>@rt.TableId</p>
+                    <p>Table @i</p>
+                    <p>Seat @rt.NoOfSeat</p>
                 </a>
             </li>
             i++;
@@ -33,6 +34,7 @@
     });
      function LoadParkedItems(restroId, tblId) {
          $("#hdnTableId").val(tblId);
+         $("#slectedRoom_Table").text("Dining for Table # ::"+tblId);
          $("#hdnisRoomService").val(false);
          $("#billdetails").load("/Home/_FoodCartItems?RestaurantId=" + restroId + "&tableId=" + tblId);
          console.log("Park Item Loaded");

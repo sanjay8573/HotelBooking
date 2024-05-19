@@ -35,6 +35,8 @@ namespace HotelBooking.Model
         public decimal PayableAmount { get; set; }
         public string CouponCode { get; set; }
         public decimal CouponAmount { get; set; }
+        public int BookingSourceId { get; set; }
+        public double CommissionPaid { get; set; }
         public string BookingStatus { get; set; }
         public string PaymentStatus { get; set; }
         public DateTime BookingDate { get; set; }

@@ -32,7 +32,7 @@
                                             var txtId = "txtDay" + i.ToString();
                                                 <tr>
                                                     <th width="33%">Day #@i</th>
-                                                    <td><label>$@p.Amount</label></td>
+                                                    <td><label>@ViewBag.CurrencySymbol  @p.Amount</label></td>
                                                     <td>
                                                         @Html.TextBoxFor(m => p.OfferPrice, new { id = txtId, placeholder = "0.00",vTag=p.Date,basePrice=p.Amount })
                                                        

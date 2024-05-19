@@ -44,7 +44,7 @@ namespace HotelBooking.Repository.Implementation
                 }
                 if(billingMasterEntity.isRoomService==true)
                 {
-                    RestaurantRoomService rrs = _context.RestaurantRoomService.Where(r=>r.RoomNumber.ToString()==billingMasterEntity.TableNo_RoomNumber.ToString()).SingleOrDefault();
+                    RestaurantRoomService rrs = _context.RestaurantRoomService.Where(r=>r.RoomNumber.ToString()==billingMasterEntity.TableNo_RoomNumber.ToString() &&  r.RestaurantId==billingMasterEntity.RestaurantId).SingleOrDefault();
                     rrs.isOrdered = true;
                     _context.SaveChanges();
 

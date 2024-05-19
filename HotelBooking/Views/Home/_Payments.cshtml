@@ -3,7 +3,7 @@
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left table-responsive">
     <div class="widget-content padded text-center">
         <div class="row">
-            <h5 class="tabheading text-left"><i class="fa fa-address-card" aria-hidden="true"></i> Total Paid: <strong>$</strong><strong id="amtPaid">@ViewBag.PaidAmount</strong> <span class="primary" style="margin-left: 20px;">Pending:<strong>$ - </strong><strong id="amtPending">0.00</strong></span></h5>
+            <h5 class="tabheading text-left"><i class="fa fa-address-card" aria-hidden="true"></i> Total Paid: <strong>@ViewBag.CurrencySymbol</strong><strong id="amtPaid">@ViewBag.PaidAmount</strong> <span class="primary" style="margin-left: 20px;">Pending:<strong>@ViewBag.CurrencySymbol - </strong><strong id="amtPending">0.00</strong></span></h5>
 
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                 @*<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-right">
@@ -122,7 +122,7 @@
 
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <label for="edit-mail" class="form-required">Payment Due</label>
-                        <input type="text" id="txtAmtDue" class="full-width allinput" placeholder="-30" runat="server">
+                        <input type="text" id="txtAmtDue" class="full-width allinput" placeholder="0.00" runat="server">
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <label for="edit-mail" class="form-required">Amount</label>
@@ -184,9 +184,14 @@
                 PaymentDate: pmtDate,
                 //InvoiceNumber: txtInvNo,
                 paymentAmount: Number(txtAmt).toFixed(2),
+                paymentDue: Number(amtPending).toFixed(2),
+                paymentReturn: Number(Number(amtPending) - Number(txtAmt)).toFixed(2),
                 BranchId: parseInt(BranchId),
                 //OrderNumber: txtordNo,
                 PaymentType: parseInt(pmtTypeCode),
+                Table_Room_Number: Number(BookingId),
+                ServiceType: "RoomBooking",
+                PaymentFor: 1,//1 for booking payemtn and 2 for Restauranr payment
                 PaymentTypeName: pmtType
             };
            

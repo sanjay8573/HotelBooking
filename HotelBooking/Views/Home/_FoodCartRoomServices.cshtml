@@ -24,6 +24,7 @@
     function LoadParkedItemsRMS(restroId, rmId,rmNo) {
         $("#hdnRoomId").val(rmId);
         $("#hdnRoomNumber").val(rmNo);
+        $("#slectedRoom_Table").text("Room service for Room # ::" + rmNo);
         $("#hdnisRoomService").val(true);
         $("#billdetails").load("/Home/_FoodCartItems?RestaurantId=" + restroId + "&tableId=" + rmNo +"&isRMS=true");
         console.log("Park Item Loaded for RoomService");

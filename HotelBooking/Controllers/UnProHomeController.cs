@@ -1,12 +1,8 @@
 ﻿using HotelBooking.Model;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
-using System.Web.UI.WebControls;
+using System.Runtime;
 
 namespace HotelBooking.Controllers
 {
@@ -62,6 +58,11 @@ namespace HotelBooking.Controllers
                 HttpContext.Session["UserLoginResponse"] = model;
                 HttpContext.Session["CompanyId"] = model.CompanyId;
                 HttpContext.Session["BranchId"] = model.BranchId;
+                HttpContext.Session["BranchCurrencyName"] = model.BranchCurrencyName;
+                HttpContext.Session["BranchCurrencyCode"] = model.BranchCurrencyCode;
+                HttpContext.Session["BranchCurrencySymbol"] = model.BranchCurrencySymbol;
+                HttpContext.Session["BranchTax"] = model.BranchTaxPercentage;
+
 
                 HttpContext.Response.Cookies.Remove("LoginCookies");
                 HttpCookie userCookies = new HttpCookie("LoginCookies");

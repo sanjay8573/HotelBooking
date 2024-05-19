@@ -1,9 +1,15 @@
 ﻿using HotelBooking.Attribute;
+using HotelBooking.Controllers.BookingSourceApi;
+using HotelBooking.Controllers.ReportApi;
 using HotelBooking.Controllers.Restaurant;
 using HotelBooking.Desig;
 using HotelBooking.Model;
+using HotelBooking.Model.Inventory;
 using HotelBooking.Model.Reatraurant;
-using HotelBooking.Repository.Interface;
+using HotelBooking.Model.Report;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
+using iTextSharp.tool.xml;
 using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
 using PagedList;
@@ -11,14 +17,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Security.Policy;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using System.Web.SessionState;
-using System.Web.UI;
-using static System.Web.Razor.Parser.SyntaxConstants;
+using HotelBooking.Repository.Implementation;
+using System.Runtime.ConstrainedExecution;
+
 
 
 namespace HotelBooking.Controllers
@@ -29,7 +33,16 @@ namespace HotelBooking.Controllers
 
         public ActionResult Index()
         {
-            int branchId = int.Parse(Session["BranchId"].ToString());
+            try
+            {
+                int branchId = int.Parse(Session["BranchId"].ToString());
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
 
             return View();
 
@@ -41,6 +54,11 @@ namespace HotelBooking.Controllers
             HttpContext.Session["UserLoginResponse"] = null;
             HttpContext.Session["CompanyId"] = null;
             HttpContext.Session["BranchId"] = null;
+            HttpContext.Session["BranchCurrencyName"] = null;
+            HttpContext.Session["BranchCurrencyCode"] = null;
+            HttpContext.Session["BranchCurrencySymbol"] = null;
+            HttpContext.Session["BranchTax"] = null;
+
             HttpCookie uu = HttpContext.Request.Cookies.Get("LoginCookies");
             uu.Value = "";
             uu.Expires = DateTime.Now.AddDays(-2);
@@ -146,9 +164,9 @@ namespace HotelBooking.Controllers
         [ValidateInput(false)]
         public ActionResult SaveRoomType(RoomType roomTypeEntiry)
         {
-
+            
             RoomTypeController RTC = new RoomTypeController();
-            int branchId = int.Parse(Session["BranchId"].ToString());
+            int branchId = int.Parse(System.Web.HttpContext.Current.Session["BranchId"].ToString());
             roomTypeEntiry.BranchId = branchId;
             bool trn = RTC.AddRoomType(roomTypeEntiry);
             Session["BranchId"] = branchId;
@@ -310,6 +328,7 @@ namespace HotelBooking.Controllers
             FVM.ImageData = bytes;
             FVM.RoomTyepId = RoomTyepId;
             FVM.BranchId = branchId;
+            
 
             Session["BranchId"] = branchId;
             RD = _RTI.SaveRoomTypeImage(FVM);
@@ -1039,9 +1058,16 @@ namespace HotelBooking.Controllers
         }
         public ActionResult AddBooking(int bookingId = 0)
         {
+            //Logger _l = new Logger();
+           // _l.Log("AddBooking", " Before Session check BookingId" + bookingId.ToString(), DateTime.Now);
+          
 
-
-            int branchId = int.Parse(Session["BranchId"].ToString());
+            int branchId = int.Parse(System.Web.HttpContext.Current.Session["BranchId"].ToString());
+            //_l.Log("AddBooking", " After Session check for Branchid" + branchId.ToString(), DateTime.Now);
+            string CurrencySymbole = System.Web.HttpContext.Current.Session["BranchCurrencySymbol"].ToString();
+            //_l.Log("AddBooking", " After Session check for CurrencySymbole" + CurrencySymbole.ToString(), DateTime.Now);
+            double TaxPercentage= double.Parse(System.Web.HttpContext.Current.Session["BranchTax"].ToString());
+            //_l.Log("AddBooking", " After Session check TaxPercentage" + TaxPercentage.ToString(), DateTime.Now);
             RoomTypeController RTC = new RoomTypeController();
             GuestsController _gs = new GuestsController();
             BookingController _bk = new BookingController();
@@ -1092,8 +1118,21 @@ namespace HotelBooking.Controllers
                 AllGuest.Add(new SelectListItem { Text = item.Name.Trim(), Value = item.GuestId.ToString(), Selected = slt });
             }
             ViewBag.GSComboModel = AllGuest;
+            ViewBag.CurrencySymbol = CurrencySymbole;
+            ViewBag.TaxPercentage=TaxPercentage;
 
             Session["BranchId"] = branchId;
+            //Get Booking Source
+            BookingSourceController _bks = new BookingSourceController();
+            IEnumerable<BookingSource> bks = _bks.GetAllBookingSource(branchId).Where(b => b.isActive == true && b.isDeleted == false);
+            List<SelectListItem> BookingSourceitems = new List<SelectListItem>();
+            BookingSourceitems.Add(new SelectListItem { Text = "Select a Booking Source", Value = "0" });
+           foreach(BookingSource b in bks)
+            {
+                BookingSourceitems.Add(new SelectListItem { Text=b.Name,Value=b.BookingSourceId.ToString()+"-"+b.CommissionType+"-"+b.Commission.ToString()});
+            }
+            ViewBag.BookingSourceComboModel = BookingSourceitems;
+            //***
             return View("CreateBooking", bk);
             //return View(bk);
 
@@ -1101,6 +1140,21 @@ namespace HotelBooking.Controllers
         public bool SaveBooking(BookingRequest bookingEntity)
         {
             BookingController _bk = new BookingController();
+            //MailMessage mail = new MailMessage();
+            //mail.To.Add("sanjay.sanyash@gmail.com");
+            //mail.From = new MailAddress("info@logicfinders.com");
+            //mail.Subject = "Testing mail";
+            //string Body = "Test Booking Mail";
+            //mail.Body = Body;
+            //mail.IsBodyHtml = true;
+            //SmtpClient smtp = new SmtpClient();
+            //smtp.Host = "smtpout.secureserver.net";
+            //smtp.Port = 465;
+            //smtp.UseDefaultCredentials = false;
+            //smtp.Credentials = new System.Net.NetworkCredential("username", "password"); // Enter seders User name and password  
+            //smtp.EnableSsl = true;
+            //smtp.Send(mail);
+
             return _bk.AddBooking(bookingEntity);
         }
         public enum BookingStatus
@@ -1167,16 +1221,21 @@ namespace HotelBooking.Controllers
         public PartialViewResult _BookingDetails(int BookingId, string RoomTypeId, string cinDate, string coutDate)
         {
             int branchId = int.Parse(Session["BranchId"].ToString());
-
+            string CurrencySymbole = Session["BranchCurrencySymbol"].ToString();
+            double TaxPercentage = double.Parse(Session["BranchTax"].ToString());
             BookingController _bc = new BookingController();
             IEnumerable<BookingCost> _pr = _bc.GetBookingsCost(BookingId);
             Session["BranchId"] = branchId;
+            ViewBag.CurrencySymbol = CurrencySymbole;
+            ViewBag.TaxPercentage = TaxPercentage;
             return PartialView("_BookingDetails", _pr);
 
         }
         public PartialViewResult _Payments(int BranchId, int BookingId, int? page, int? pSize)
         {
             IPagedList<BookingPayments> bkplist = null;
+            string CurrencySymbole = Session["BranchCurrencySymbol"].ToString();
+            double TaxPercentage = double.Parse(Session["BranchTax"].ToString());
             if (Session.Keys.Count != 0)
             {
                 int branchId = int.Parse(Session["BranchId"].ToString());
@@ -1199,6 +1258,8 @@ namespace HotelBooking.Controllers
                      };
                 decimal PaidAmount = _BP.Select(t => t.paymentAmount).Sum();
                 ViewBag.PaidAmount = PaidAmount;
+                ViewBag.CurrencySymbol = CurrencySymbole;
+                ViewBag.TaxPercentage = TaxPercentage;
                 bkplist = _BP.ToPagedList(pageNumber, (int)DefaultPageSize);
 
             }
@@ -1323,17 +1384,21 @@ namespace HotelBooking.Controllers
         }
         public PartialViewResult _PricePerNight(string RoomTypeId, string cinDate, string coutDate, string refDiv)
         {
-
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            string CurrencySymbole = Session["BranchCurrencySymbol"].ToString();
+            double TaxPercentage = double.Parse(Session["BranchTax"].ToString());
             PriceRequest pr = new PriceRequest();
             pr.CheckInDate = cinDate;
             pr.CheckOutDate = coutDate;
             pr.roomTypeId = int.Parse(RoomTypeId);
+            pr.BranchId = branchId;
             pr.nOfRoom = int.Parse(refDiv);
-            int branchId = int.Parse(Session["BranchId"].ToString());
+           
 
             BookingController _bc = new BookingController();
             IEnumerable<PriceResponse> _pr = _bc.GetPricesForNight(pr);
-
+            ViewBag.CurrencySymbol = CurrencySymbole;
+            ViewBag.TaxPercentage = TaxPercentage;
 
             return PartialView("_PricePerNightNew", _pr);
 
@@ -1344,9 +1409,12 @@ namespace HotelBooking.Controllers
             int roomTypeId = int.Parse(RoomTypeId);
             int branchId = int.Parse(Session["BranchId"].ToString());
 
+            string CurrencySymbole = Session["BranchCurrencySymbol"].ToString();
+            double TaxPercentage = double.Parse(Session["BranchTax"].ToString());
             PaidServicesController _ps = new PaidServicesController();
             IEnumerable<PaidServices> ps = _ps.GetPaidServicesByRoomType(roomTypeId).Where(i => i.isActive == true && i.BranchId == branchId && i.isDeleted == false);
-
+            ViewBag.CurrencySymbol = CurrencySymbole;
+            ViewBag.TaxPercentage = TaxPercentage;
 
             return PartialView("_PaidServices", ps);
 
@@ -1980,11 +2048,14 @@ namespace HotelBooking.Controllers
         public PartialViewResult _BookingInvoive(int BookingId)
         {
             int branchId = int.Parse(Session["BranchId"].ToString());
-
+            string CurrencySymbole = Session["BranchCurrencySymbol"].ToString();
+            double TaxPercentage = double.Parse(Session["BranchTax"].ToString());
             BookingController _bc = new BookingController();
 
             VM_BookingDetails bkDeials = _bc.GetBookingDetails(branchId, BookingId);
             Session["BranchId"] = branchId;
+            ViewBag.CurrencySymbol = CurrencySymbole;
+            ViewBag.TaxPercentage = TaxPercentage;
             return PartialView("_Invoice", bkDeials);
 
         }
@@ -2036,8 +2107,16 @@ namespace HotelBooking.Controllers
             }
 
 
+
             ViewBag.ExchangeCurrency = lstData;
-            ViewBag.CurrExchangeId = lstData.First().CurrExchangeId;
+            if(lstData.Count>0)
+            {
+                ViewBag.CurrExchangeId = lstData.First().CurrExchangeId;
+            }
+            else
+            {
+                ViewBag.CurrExchangeId = 0;
+            }
 
 
             return View();
@@ -2412,13 +2491,22 @@ namespace HotelBooking.Controllers
         public ActionResult FoodCart()
         {
             int branchId = int.Parse(Session["BranchId"].ToString());
-            ViewBag.BranchId = branchId; 
-            int RestaurantId = 1;
-            int existingtables = 0;
-            //IEnumerable<RestaurantTables> rts;
-            List<RestaurantTables> rts1 = new List<RestaurantTables>();
+            string CurrencySymbole = Session["BranchCurrencySymbol"].ToString();
+            double TaxPercentage = double.Parse(Session["BranchTax"].ToString());
+            ViewBag.TaxPercentage = TaxPercentage;
+            ViewBag.CurrencySymbol = CurrencySymbole;
+            ViewBag.BranchId = branchId;
+            BranchController _br = new BranchController();
+            Branch br=_br.GetBranchDetailsByBranchId(branchId);
+            ViewBag.BranchName = br.BranchName;
+            ViewBag.BranchAddress = br.Address;
+            ViewBag.BranchPincode = br.Postcode.Trim();
+            ViewBag.BranchPhone1 = br.Phone1.Trim();
+            ViewBag.BranchPhone2 = br.Phone2.Trim();
+
             RestaurantController _rt = new RestaurantController();
             IEnumerable<RestaurantModel> lstModel = _rt.GetRestaurants(branchId);
+
 
             List<SelectListItem> rlitems = new List<SelectListItem>();
             rlitems.Add(new SelectListItem { Text = "Select a Restaurant", Value = "0" });
@@ -2544,68 +2632,7 @@ namespace HotelBooking.Controllers
                 // Loading.  
 
                 List<AvailabilityCalendar> data = GetCalData(selectedYear, selectedMonth);
-                List<AvailabilityCalendar> data1 = new List<AvailabilityCalendar>()
-                {
-                    new AvailabilityCalendar()
-                    {
-                     Sr=1,
-                     Title="Room Status",
-                     Start_Date="2024/04/06",
-                     End_Date="2024/04/06",
-                     Desc="Available",
-                     backgroundColor="#065a18eb !important",
-                     textColor="#000000 !important",
-                     AvalDate= new DateTime(2024,04,06),
-                     AvailableRooms=20,
-                     BookedRooms=10
-                    },
-                     new AvailabilityCalendar()
-                    {
-                      Sr=1,
-                     Title="Room Status",
-                     Start_Date="2024/04/07",
-                     End_Date="2024/04/07",
-                     Desc="Available",
-                     backgroundColor="#065a18eb !important",
-                     textColor="#000000 !important",
-                     AvalDate= new DateTime(2024,04,06),
-                     AvailableRooms=20,
-                     BookedRooms=10
-                    },
-                      new AvailabilityCalendar()
-                    {
-                     Sr=3,
-                     Title="First",
-                     Start_Date="2004/04/08",
-                     End_Date="2004/04/08",
-                     Desc="Available",
-                     AvalDate= new DateTime(2024,04,08),
-                     AvailableRooms=20,
-                     BookedRooms=10
-                    },
-                       new AvailabilityCalendar()
-                    {
-                      Sr=4,
-                     Title="First",
-                     Start_Date="2004/04/09",
-                     End_Date="2004/04/09",
-                     Desc="Available",
-                     AvalDate= new DateTime(2024,04,09),
-                     AvailableRooms=20,
-                     BookedRooms=10
-                    },
-                        new AvailabilityCalendar()
-                    {
-                      Sr=5,
-                     Title="First",
-                     Start_Date="2004/04/10",
-                     End_Date="2004/04/10",
-                     Desc="Available",
-                     AvalDate= new DateTime(2024,04,06),
-                     AvailableRooms=20,
-                     BookedRooms=10
-                    },
-                };
+                
                 
 
                 // Processing.  
@@ -2620,7 +2647,7 @@ namespace HotelBooking.Controllers
             // Return info.  
             return result;
         }
-        public List<AvailabilityCalendar> GetCalData(int year, int month)
+        private List<AvailabilityCalendar> GetCalData(int year, int month)
         {
             var dates = new List<DateTime>();
 
@@ -2645,7 +2672,7 @@ namespace HotelBooking.Controllers
                             Start_Date = item.AvailabilityDate,
                             End_Date = item.AvailabilityDate,
                             Desc = "Available",
-                            backgroundColor = "#065a18eb !important",
+                            backgroundColor = "#136476 !important",
                             textColor = "#000000 !important",
                             AvalDate = new DateTime(2024, 04, 06),
                             AvailableRooms = item.AvailableRooms,
@@ -2653,30 +2680,305 @@ namespace HotelBooking.Controllers
                         };
                         data.Add(kk);
                     }
-                    //else
-                    //{
-                    //    AvailabilityCalendar kk = new AvailabilityCalendar()
-                    //    {
-                    //        Sr = 1,
-                    //        Title = "Room Status",
-                    //        Start_Date = date.ToString("yyyy-MM-dd"),
-                    //        End_Date = date.ToString("yyyy-MM-dd"),
-                    //        Desc = "Available",
-                    //        backgroundColor = "#065a18eb !important",
-                    //        textColor = "#000000 !important",
-                    //        AvalDate = new DateTime(2024, 04, 06),
-                    //        AvailableRooms =item.NoOfRooms,
-                    //        BookedRooms = 0
-                    //    };
-                    //    data.Add(kk);
-                    //}
+                    else
+                    {
+                        AvailabilityCalendar kk = new AvailabilityCalendar()
+                        {
+                            Sr = 1,
+                            Title = "Room Status",
+                            Start_Date = date.ToString("yyyy-MM-dd"),
+                            End_Date = date.ToString("yyyy-MM-dd"),
+                            Desc = "Available",
+                            backgroundColor = "#136476 !important",
+                            textColor = "#000000 !important",
+                            AvalDate = new DateTime(2024, 04, 06),
+                            AvailableRooms = item.NoOfRooms,
+                            BookedRooms = 0
+                        };
+                        data.Add(kk);
+                    }
                 }
                 
                
                 i++;
             }
 
-            return data;
+            return data.DistinctBy(b=>b.Start_Date).ToList();
         }
+
+        //Store Management
+        public ActionResult GetItems(int? page, int? pSize)
+        {
+            int? DefaultPageSize = 10;
+            if (pSize != null)
+            {
+                DefaultPageSize = pSize;
+            }
+
+            int pageNumber = page ?? 1;
+            ViewBag.PageSize = DefaultPageSize;
+            ViewBag.pSize = new List<SelectListItem>()
+                    {
+                        new SelectListItem() { Value="2", Text= "2" },
+                        new SelectListItem() { Value="5", Text= "5" },
+                        new SelectListItem() { Value="10", Text= "10" },
+                        new SelectListItem() { Value="15", Text= "15" },
+                        new SelectListItem() { Value="20", Text= "20" },
+                     };
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            StoreController str = new StoreController();
+            IEnumerable<ItemMaster> ItemListModel = new List<ItemMaster>();
+            ItemListModel = str.GetItems(branchId);
+            IPagedList<ItemMaster> bitemlist = ItemListModel.ToPagedList(pageNumber, (int)DefaultPageSize);
+
+
+            return View("storeItems", bitemlist);
+        }
+        public ActionResult AddItems()
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            ViewBag.BranchId = branchId;
+            return View("AddItems");
+        }
+        public ActionResult SaveItems(IEnumerable<ItemMaster> items)
+        {
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            StoreController _rm = new StoreController();
+
+            bool rtnVal = _rm.AddItems(items);
+
+            Session["BranchId"] = branchId;
+
+            return RedirectToAction("GetItems");
+        }
+        public ActionResult RDItems()
+        {
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            StoreController str = new StoreController();
+            UserLoginResponse usr = Session["UserLoginResponse"] as UserLoginResponse;
+            ViewBag.IssueById = usr.UserId;
+            ViewBag.IssueByName = usr.UserName;
+
+            IEnumerable<ItemMaster> alltem = str.GetItems(branchId);
+
+            List<SelectListItem> dptitems = new List<SelectListItem>();
+            dptitems.Add(new SelectListItem { Text = "Select a Item", Value = "0" });
+            foreach (var item in alltem)
+            {
+
+                dptitems.Add(new SelectListItem { Text = item.ItemName, Value = item.ItemId.ToString() + "-" + item.QuantityAvailable });
+            }
+            ViewBag.alltem = dptitems;
+            StaffController stf = new StaffController();
+            IEnumerable<VM_Staff> allstaff = stf.GetStaffs(branchId);
+            List<SelectListItem> dstfitems = new List<SelectListItem>();
+            dstfitems.Add(new SelectListItem { Text = "Select a Staff", Value = "0" });
+            foreach (var item in allstaff)
+            {
+
+                dstfitems.Add(new SelectListItem { Text = item.StaffName, Value = item.StaffId.ToString() });
+            }
+            ViewBag.IssueTo = dstfitems;
+            ViewBag.BranchId = branchId;
+
+            return View("RDItems");
+        }
+        public ActionResult SaveRDItems(IEnumerable<IssueRegister> items)
+        {
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            StoreController _rm = new StoreController();
+
+            bool rtnVal = _rm.AddRDItems(items);
+
+            Session["BranchId"] = branchId;
+
+            return RedirectToAction("IssuedItems");
+        }
+        public ActionResult IssuedItems(int? page, int? pSize)
+        {
+            int? DefaultPageSize = 10;
+            if (pSize != null)
+            {
+                DefaultPageSize = pSize;
+            }
+
+            int pageNumber = page ?? 1;
+            ViewBag.PageSize = DefaultPageSize;
+            ViewBag.pSize = new List<SelectListItem>()
+                    {
+                        new SelectListItem() { Value="2", Text= "2" },
+                        new SelectListItem() { Value="5", Text= "5" },
+                        new SelectListItem() { Value="10", Text= "10" },
+                        new SelectListItem() { Value="15", Text= "15" },
+                        new SelectListItem() { Value="20", Text= "20" },
+                     };
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            StoreController str = new StoreController();
+            IEnumerable<IssueRegister> ItemListModel = new List<IssueRegister>();
+            ItemListModel = str.GetIssuedItems(branchId).OrderByDescending(b => b.IssueDate);
+            IPagedList<IssueRegister> bitemlist = ItemListModel.ToPagedList(pageNumber, (int)DefaultPageSize);
+
+
+            return View("IssuedItems", bitemlist);
+        }
+
+        //Reports 
+        public ActionResult SalesReport()
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            SalesReportRequest srr = new SalesReportRequest(); 
+            srr.BranchId = branchId;
+            BookingSourceController _bks = new BookingSourceController();
+            IEnumerable<BookingSource> bks = _bks.GetAllBookingSource(branchId).Where(b => b.isActive == true && b.isDeleted == false);
+            List<SelectListItem> BookingSourceitems = new List<SelectListItem>();
+            BookingSourceitems.Add(new SelectListItem { Text = "Select a Booking Source", Value = "0" });
+            foreach (BookingSource b in bks)
+            {
+                BookingSourceitems.Add(new SelectListItem { Text = b.Name, Value = b.BookingSourceId.ToString() + "-" + b.CommissionType + "-" + b.Commission.ToString() });
+            }
+            ViewBag.BookingSourceComboModel = BookingSourceitems;
+            return View("SalesReport",srr);
+        }
+        [HttpPost]
+        public ActionResult SalesReport(SalesReportRequest srr)
+        {
+            ReportController _rpt = new ReportController();
+            VM_SalesReport salesReportData = _rpt.GetSalesReport(srr);
+            return View("SRR", salesReportData);
+        }
+
+        public ActionResult CommissionReport()
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            CommissionReportRequest srr = new CommissionReportRequest();
+            srr.BranchId = branchId;
+            BookingSourceController _bks = new BookingSourceController();
+            IEnumerable<BookingSource> bks = _bks.GetAllBookingSource(branchId).Where(b => b.isActive == true && b.isDeleted == false);
+            List<SelectListItem> BookingSourceitems = new List<SelectListItem>();
+            BookingSourceitems.Add(new SelectListItem { Text = "Select a Booking Source", Value = "0" });
+            foreach (BookingSource b in bks)
+            {
+                BookingSourceitems.Add(new SelectListItem { Text = b.Name, Value = b.BookingSourceId.ToString() + "-" + b.CommissionType + "-" + b.Commission.ToString() });
+            }
+            ViewBag.BookingSourceComboModel = BookingSourceitems;
+            return View("CommissionReportQ", srr);
+        }
+        [HttpPost]
+        public ActionResult CommissionReport(CommissionReportRequest crr)
+        {
+            ReportController _rpt = new ReportController();
+            VM_CommissionReport CommReportData = _rpt.GetCommissionReport(crr);
+            
+            return View("CommissionReport", CommReportData);
+        }
+
+        public ActionResult StoreIOReport()
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            StoreINOUTReportRequest srr = new StoreINOUTReportRequest();
+            srr.BranchId = branchId;
+           
+            
+            List<SelectListItem> BookingSourceitems = new List<SelectListItem>();
+            BookingSourceitems.Add(new SelectListItem { Text = "Select Action", Value = " " });
+            BookingSourceitems.Add(new SelectListItem { Text = "IN", Value = "I"});
+            BookingSourceitems.Add(new SelectListItem { Text = "OUT", Value = "O" });
+            BookingSourceitems.Add(new SelectListItem { Text = "Scrap", Value = "S" });
+
+            ViewBag.ActionSelected = BookingSourceitems;
+            return View("StoreIOReportQ", srr);
+        }
+
+        [HttpPost]
+        public ActionResult StoreIOReport(StoreINOUTReportRequest srr)
+        {
+            ReportController _rpt = new ReportController();
+            VM_StoreINOUTReport storeIOData = _rpt.GetStoreIOReport(srr);
+            return View("StoreIOReport", storeIOData);
+        }
+
+
+
+        public ActionResult IteminShortReport()
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            ItemInShortRequest srr = new ItemInShortRequest();
+            srr.BranchId = branchId;
+
+            return View("IteminShortReportQ", srr);
+        }
+        [HttpPost]
+        public ActionResult IteminShortReport(ItemInShortRequest reg)
+        {
+            ReportController _rpt = new ReportController();
+            VM_ItemInShort storeIOData = _rpt.ItemInShortReport(reg);
+            return View("IteminShortReport", storeIOData);
+        }
+
+        public ActionResult CurrencyExchangeReport()
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            CurrencyController _curr = new CurrencyController();
+            IEnumerable<AvailableCurrency> avlCurr = _curr.AvailableCurrency(branchId);
+            var bCurr = from a in avlCurr
+                        where a.isBusinessCurrency == false
+                        select a;
+            List<SelectListItem> rlitems = new List<SelectListItem>();
+            rlitems.Add(new SelectListItem { Text = "Select Exchange Currency", Value = "0" });
+            foreach (var item in bCurr)
+            {
+
+                rlitems.Add(new SelectListItem { Text = item.CurrencyName, Value = item.CurrencyId.ToString()});
+            }
+            CurrencyExchangeReportRequest srr = new CurrencyExchangeReportRequest();
+            ViewBag.ExchangeCurrency = rlitems;
+            srr.BranchId = branchId;
+            return View("CurrencyExchangeReportQ", srr);
+        }
+        [HttpPost]
+        public ActionResult CurrencyExchangeReport(CurrencyExchangeReportRequest req)
+        {
+            ReportController _rpt = new ReportController();
+           
+            VM_CurrencyExchangeReport CurrencyExchangeData = _rpt.CurrencyExchangeReport(req);
+            return View("CurrencyExchangeReport", CurrencyExchangeData);
+        }
+        [HttpPost]
+        [ValidateInput(false)]
+        public FileResult Export(string GridHtml,string ReportName)
+        {
+            using (MemoryStream stream = new System.IO.MemoryStream())
+            {
+                string fileName = ReportName+"_" + DateTime.Now.ToString("dd-MM-yyyy")+".pdf";
+                StringReader sr = new StringReader(GridHtml);
+                //Document pdfDoc = new Document(PageSize.A4, 0, 0, 0, 0);
+                Document pdfDoc = new Document(new iTextSharp.text.Rectangle(910f, 700f), 10f, 10f, 10f, 10f);
+                
+                PdfWriter writer = PdfWriter.GetInstance(pdfDoc, stream);
+                pdfDoc.Open();
+                XMLWorkerHelper.GetInstance().ParseXHtml(writer, pdfDoc, sr);
+                pdfDoc.Close();
+                return File(stream.ToArray(), "application/pdf", fileName);
+            }
+        }
+
+        //online API Testing UI
+        public ActionResult WhiteLabelHome()
+        {
+            return View("WhiteLabelHome");
+        }
+
     }
 }

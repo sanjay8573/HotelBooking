@@ -1,0 +1,90 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<HotelBooking.Model.Inventory.ItemMaster>
+@{
+    ViewBag.Title = "Store Items";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Stores Item <small>Lists</small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Stores Item</small> </span></div>
+            <div class="widget-content padded text-center">
+                <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 table-responsive">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 pull-left">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left text-left">
+                                    @using (Html.BeginForm("GetItems", "Home", FormMethod.Get, new { id = "form1" }))
+                                    {
+                                        <div id="pro_pag2">
+                                            Show @* @Html.DropDownList("PageSize", new SelectList(new Dictionary<string, int> { { "5", 5 }, { "10", 10 }, { "20", 20 } }, "Key", "Value"), new { @class = "onlyinput", id = "RTpagesize" })*@
+                                            @Html.DropDownList("pSize", (IEnumerable<SelectListItem>)ViewBag.pSize, new { @class = "onlyinput" }) Records
+                                        </div>
+                                    }
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
+                                    Search
+                                    <input type="text" id="txtUserName" class="onlyinput" placeholder="Search" runat="server">
+                                </div>
+                            </div>
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr style="background: #eaeeef;">
+                                        <td colspan="13" align="left" valign="middle"><div class="allheadingin" style="padding: 5px;">Item Lists</div></td>
+                                    </tr>
+                                    <tr class="trthbgclr">
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">Item Name</th>
+                                        <th class="text-center">Total Quantity</th>
+                                        <th class="text-center">Price</th>
+                                        <th class="text-center">Total Amount</th>
+                                        <th class="text-center">By Alert At</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+
+                                    @if (Model != null)
+                                    {
+                                        var i = 1;
+                                        foreach (var rt in Model)
+                                        {
+
+                                            <tr class="active">
+                                                <td>@i</td>
+                                                <td><a href="#" data-toggle="modal" data-target="#NewStatus">@rt.ItemName</a></td>
+                                                <td align="center" valign="middle">@rt.Quantity</td>
+                                                <td align="center" valign="middle">@rt.Price</td>
+                                                <td align="center" valign="middle">@rt.TotalAmount</td>
+                                                <td align="center" valign="middle"> -----</td>
+                                                <td align="center" valign="middle"><a href="#" class="editbtn" data-toggle="modal" data-target="#NewStatus"><i class="fa fa-edit"></i> Edit</a></td>
+                                            </tr>
+
+                                            i++;
+                                        }
+
+
+                                    }
+
+                                <tr>
+
+                                    <td colspan="8">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <span class="float-left restextpagin">Showing Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount </span>
+
+                                            <div class="pagination pull-right" style="display:inline-block; vertical-align:middle;">
+
+                                                @Html.PagedListPager(Model, page => Url.Action("GetItems", new { page, pSize = ViewBag.PageSize }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

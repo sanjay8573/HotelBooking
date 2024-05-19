@@ -1,0 +1,93 @@
+﻿@model HotelBooking.Model.Report.CurrencyExchangeReportRequest
+@{
+    ViewBag.Title = "Currency Exchange Report";
+}
+
+
+
+<div class="row" id="Amenityform">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i> Currency Exchange Report</div>
+
+            <div class="widget-content padded text-center">
+
+                <div class="row">
+                    <div class="col-md-10 col-lg-10 col-sm-12 col-xs-12 table-responsive pull-left">
+                        <form id="msform" runat="server" action="/home/CurrencyExchangeReport" method="post" enctype="multipart/form-data" style=" margin:0px auto;">
+
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Issue Date From </label>
+                                <input type="text" id="txtfromDate" class="full-width allinputgo" placeholder="From Date" autocomplete="off">
+                                @Html.HiddenFor(model => model.fromDate)
+                                @Html.HiddenFor(model => model.BranchId)
+
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Issue Date To </label>
+                                <input type="text" id="txtToDate" class="full-width allinputgo" placeholder="To Date" autocomplete="off">
+                                @Html.HiddenFor(model => model.toDate)
+
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Exchnaged Currency</label>
+                                <select name="SelExchangeCurrency" id="SelExchangeCurrency" class="full-width freetrial">
+                                    @if (ViewBag.ExchangeCurrency != null)
+                                    {
+                                        foreach (var item in ViewBag.ExchangeCurrency)
+                                        {
+                                            if (item.Text != null)
+                                            {
+                                                <option value="@item.Value" selected="@item.Selected">
+                                                    @item.Text.Trim()
+                                                </option>
+
+                                            }
+                                        }
+                                    }
+                                </select>
+                                
+                                @Html.HiddenFor(model => model.ExchangeCurrencyId)
+                                </div>
+                                <input type="submit" name="SUBMIT" class="prev action-button" value="Search" runat="server">
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#txtfromDate").datepicker({
+            dateFormat: "dd-mm-yy"
+            , duration: "fast",
+            onSelect: function (selected) {
+
+                $('#fromDate').val($('#txtfromDate').val());
+
+
+
+            }
+        });
+
+        $("#txtToDate").datepicker({
+            dateFormat: "dd-mm-yy"
+            , duration: "fast",
+            onSelect: function (selected) {
+
+                $('#toDate').val($('#txtToDate').val());
+
+
+
+            }
+        });
+        $("#SelExchangeCurrency").change(function () {
+            
+            $('#ExchangeCurrencyId').val($('option:selected', this).val());
+
+        });
+
+    });
+</script>

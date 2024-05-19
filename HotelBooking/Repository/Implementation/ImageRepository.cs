@@ -19,6 +19,10 @@ namespace HotelBooking.Repository.Implementation
         {
             return _context.ImageMaster.Where(i=>i.ImageTypeId==ImageTypeId && i.BranchId==BranchId).ToArray();
         }
+        public IEnumerable<ImageMaster> GetImages(int ImageTypeId, int BranchId,int refId)
+        {
+            return _context.ImageMaster.Where(i => i.ImageTypeId == ImageTypeId && i.BranchId == BranchId && i.RefId==refId).ToArray();
+        }
 
         public bool SaveImages(IEnumerable<ImageMaster> images)
         {

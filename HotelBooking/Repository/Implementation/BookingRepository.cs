@@ -1,5 +1,6 @@
 ﻿using HotelBooking.Context;
 using HotelBooking.Model;
+using HotelBooking.Model.Reatraurant;
 using HotelBooking.Repository.Interface;
 using System;
 using System.Collections;
@@ -104,6 +105,8 @@ namespace HotelBooking.Repository.Implementation
                 TotalAmount = bookingRequestEntity.TotalAmount,
                 TotalTax = bookingRequestEntity.TotalTax,
                 PayableAmount = bookingRequestEntity.PayableAmount,
+                BookingSourceId= bookingRequestEntity.BookingSourceId,
+                CommissionPaid= bookingRequestEntity.CommissionPaid,
                 CouponCode = bookingRequestEntity.CouponCode,
                 CouponAmount = bookingRequestEntity.CouponAmount,
                 PaidServices = bookingRequestEntity.PaidServices,
@@ -293,6 +296,9 @@ namespace HotelBooking.Repository.Implementation
             DateTime startDate = new DateTime(yy,mm,dd);
             DateTime endDate = new DateTime(yy1, mm1, dd1);
 
+            //Tax for  branch
+            TaxMaster TM = _context.TaxMaster.Where(t => t.BranchId == req.BranchId).FirstOrDefault();
+            decimal taxVal =decimal.Parse(TM.Value.ToString());
             for (DateTime date = startDate; date < endDate; date = date.AddDays(1))
             {
                 allDates.Add(date.Date);
@@ -311,15 +317,16 @@ namespace HotelBooking.Repository.Implementation
                     {
                        
                         roomTypeId = PM.RoomTypeId,
-                        Tax = 0.18M,
+                        Tax = taxVal,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
-                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.MON) * 18 / 100),
+                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.MON) * taxVal / 100),
                         Amount = spclAmount > 0? spclAmount : PM.MON,
                         OfferPrice = spclAmount > 0 ? spclAmount : PM.MON,
                         BookingCostId = req.nOfRoom,
                         CostId=PM.PriceManageId,
-                        Description=PM.RoomTypeTitle
+                        Description=PM.RoomTypeTitle,
+                        isAvailable=true
                     };
                     ListpResp.Add(p);
 
@@ -330,15 +337,16 @@ namespace HotelBooking.Repository.Implementation
                     PriceResponse p = new PriceResponse
                     {
                         roomTypeId = PM.RoomTypeId,
-                        Tax = 0.18M,
+                        Tax = taxVal,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
-                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.TUE) * 18 / 100),
+                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.TUE) * taxVal / 100),
                         Amount = spclAmount > 0 ? spclAmount : PM.TUE,
                         OfferPrice = spclAmount > 0 ? spclAmount : PM.TUE,
                         BookingCostId = req.nOfRoom,
                         CostId = PM.PriceManageId,
-                        Description = PM.RoomTypeTitle
+                        Description = PM.RoomTypeTitle,
+                        isAvailable = true
                     };
                     ListpResp.Add(p);
 
@@ -348,34 +356,41 @@ namespace HotelBooking.Repository.Implementation
                     PriceResponse p = new PriceResponse
                     {
                         roomTypeId = PM.RoomTypeId,
-                        Tax = 0.18M,
+                        Tax = taxVal,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
-                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.WED) * 18 / 100),
+                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.WED) * taxVal / 100),
                         Amount = spclAmount > 0 ? spclAmount : PM.WED,
                         OfferPrice = spclAmount > 0 ? spclAmount : PM.WED,
                         BookingCostId = req.nOfRoom,
                         CostId = PM.PriceManageId,
-                        Description = PM.RoomTypeTitle
+                        Description = PM.RoomTypeTitle,
+                        isAvailable = true
                     };
                     ListpResp.Add(p);
 
                 }
                 if ("THU" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
                 {
+                    
                     PriceResponse p = new PriceResponse
                     {
                         roomTypeId = PM.RoomTypeId,
-                        Tax = 0.18M,
+                        Tax = taxVal,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
-                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.THUR) * 18 / 100),
+                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.THUR) * taxVal / 100),
                         Amount = spclAmount > 0 ? spclAmount : PM.THUR,
                         OfferPrice = spclAmount > 0 ? spclAmount : PM.THUR,
                         BookingCostId = req.nOfRoom,
                         CostId = PM.PriceManageId,
-                        Description = PM.RoomTypeTitle
+                        Description = PM.RoomTypeTitle,
+                        isAvailable = true
                     };
+                    if (!isRoomTypeAvailable(PM.RoomTypeId, req.BranchId, t))
+                    {
+                        p.isAvailable = false;
+                    }
                     ListpResp.Add(p);
                 }
                 if ("FRI" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
@@ -383,16 +398,21 @@ namespace HotelBooking.Repository.Implementation
                     PriceResponse p = new PriceResponse
                     {
                         roomTypeId = PM.RoomTypeId,
-                        Tax = 0.18M,
+                        Tax = taxVal,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
-                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.FRI) * 18 / 100),
+                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.FRI) * taxVal / 100),
                         Amount = spclAmount > 0 ? spclAmount : PM.FRI,
                         OfferPrice = spclAmount > 0 ? spclAmount : PM.FRI,
                         BookingCostId = req.nOfRoom,
                         CostId = PM.PriceManageId,
-                        Description = PM.RoomTypeTitle
+                        Description = PM.RoomTypeTitle,
+                        isAvailable = true
                     };
+                    if (!isRoomTypeAvailable(PM.RoomTypeId, req.BranchId, t))
+                    {
+                        p.isAvailable = false;
+                    }
                     ListpResp.Add(p);
                 }
                 if ("SAT" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
@@ -400,16 +420,21 @@ namespace HotelBooking.Repository.Implementation
                     PriceResponse p = new PriceResponse
                     {
                         roomTypeId = PM.RoomTypeId,
-                        Tax = 0.18M,
+                        Tax = taxVal,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
-                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.SAT) * 18 / 100),
+                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.SAT) * taxVal / 100),
                         Amount = spclAmount > 0 ? spclAmount : PM.SAT,
                         OfferPrice = spclAmount > 0 ? spclAmount : PM.SAT,
                         BookingCostId = req.nOfRoom,
                         CostId = PM.PriceManageId,
-                        Description = PM.RoomTypeTitle
+                        Description = PM.RoomTypeTitle,
+                        isAvailable = true
                     };
+                    if (isRoomTypeAvailable(PM.RoomTypeId, req.BranchId, t))
+                    {
+                        p.isAvailable = false;
+                    }
                     ListpResp.Add(p);
                 }
                 if ("SUN" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
@@ -417,15 +442,16 @@ namespace HotelBooking.Repository.Implementation
                     PriceResponse p = new PriceResponse
                     {
                         roomTypeId = PM.RoomTypeId,
-                        Tax = 0.18M,
+                        Tax = taxVal,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
-                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.SUN) * 18 / 100),
+                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.SUN) * taxVal / 100),
                         Amount = spclAmount > 0 ? spclAmount : PM.SUN,
                         OfferPrice = spclAmount > 0 ? spclAmount : PM.SUN,
                         BookingCostId = req.nOfRoom,
                         CostId = PM.PriceManageId,
-                        Description = PM.RoomTypeTitle
+                        Description = PM.RoomTypeTitle,
+                        isAvailable = true
                     };
                     ListpResp.Add(p);
                 }
@@ -587,7 +613,31 @@ namespace HotelBooking.Repository.Implementation
             rtnOrdStr = "ORD" + brdata.BranchName.Substring(0, 2) + brdata.Id.ToString() + lastPaymentId.ToString();
             bkpEntity.InvoiceNumber = rtnInvStr;//generateInvoiceNumber(bkpEntity.BranchId);
             bkpEntity.OrderNumber = rtnOrdStr;//generateOrderNumber(bkpEntity.BranchId);
+            bkpEntity.PaymentDate = DateTime.Now;
             _context.BookingPayments.Add(bkpEntity);
+            if (bkpEntity.PaymentFor == 2)
+            {
+                if (bkpEntity.paymentDue <= bkpEntity.paymentAmount)
+                {
+                    
+                    if (bkpEntity.ServiceType == "Dining")
+                    {
+                        BillingMaster BM = _context.BillingMaster.Where(b => b.RestaurantId == bkpEntity.BookingId && b.Tableid == bkpEntity.Table_Room_Number && b.isPark==true).SingleOrDefault();
+                        BM.isPark = false;
+                        RestaurantTables rt = _context.RestaurantTables.Find(bkpEntity.Table_Room_Number);
+                        rt.isOccupied = false;
+                    }
+                    if (bkpEntity.ServiceType == "RoomService")
+                    { 
+                        BillingMaster BM1 = _context.BillingMaster.Where(b => b.RestaurantId == bkpEntity.BookingId && b.TableNo_RoomNumber == bkpEntity.Table_Room_Number && b.isPark==true).SingleOrDefault();
+                        BM1.isPark = false;
+                        RestaurantRoomService rrs = _context.RestaurantRoomService.Where(b=>b.RoomNumber== bkpEntity.Table_Room_Number.ToString() && b.RestaurantId==bkpEntity.BookingId).SingleOrDefault();
+                        rrs.isOrdered = false;
+                    }
+
+                }
+                
+            }
             _context.SaveChanges();
             return true;
         }
@@ -742,6 +792,29 @@ namespace HotelBooking.Repository.Implementation
             rtnStr = "ORD"+brdata.BranchName.Substring(0, 2) + brdata.Id.ToString() + lastPaymentId.ToString();
 
             return rtnStr;
+        }
+
+        private bool isRoomTypeAvailable(int roomTypeId,int branchId,DateTime checkinDate)
+        {
+            bool rtnVal = true;
+            
+            List<Booking> extBk = _context.Booking.Where(b =>b.BranchId==branchId && b.RoomTypeId.Contains(roomTypeId.ToString())).ToList();
+            foreach(var item in extBk)
+            {
+                int yy = int.Parse(item.CheckIn.Substring(6, 4));
+                int dd = int.Parse(item.CheckIn.Substring(0, 2));
+                int mm = int.Parse(item.CheckIn.Substring(3, 2));
+                int yy1 = int.Parse(item.Checkout.Substring(6, 4));
+                int dd1 = int.Parse(item.Checkout.Substring(0, 2));
+                int mm1 = int.Parse(item.Checkout.Substring(3, 2));
+                DateTime bkChkinDateDate = new DateTime(yy, mm, dd);
+                DateTime bkChkOutDateDate = new DateTime(yy1, mm1, dd1);
+                if(checkinDate>= bkChkinDateDate && checkinDate<= bkChkOutDateDate)
+                {
+                    rtnVal = false;
+                }
+            }
+            return rtnVal;
         }
     }
     

@@ -36,6 +36,7 @@ namespace HotelBooking.Controllers
                         rti.ImageData = fileviewmodel.ImageData;
                         //rti.ImageContentType = fileviewmodel.roomTypeImage.ContentType;
                         rti.BranchId = fileviewmodel.BranchId;
+                        rti.isActive = true;
 
 
                         _rti.SaveRoomTypeImageFile(rti);

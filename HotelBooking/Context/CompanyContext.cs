@@ -197,6 +197,16 @@ namespace HotelBooking.Context
             get;
             set;
         }
+        public DbSet<TaxMaster> TaxMaster
+        {
+            get;
+            set;
+        }
+        public DbSet<BookingSource> BookingSource
+        {
+            get;
+            set;
+        }
 
 
     }
