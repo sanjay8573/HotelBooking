@@ -14,6 +14,8 @@ namespace HotelBooking.Model
         public string Slug { get; set; }
         public string ShortCode { get; set; }
         public string Description { get; set; }
+        public string ShortDescription { get; set; }
+        public string LongDescription { get; set; }
         public int BaseOccupancy { get; set; }
         public int HighOccupancy { get; set; }
         public int ExtraBed { get; set; }
@@ -26,6 +28,9 @@ namespace HotelBooking.Model
         public int BranchId { get; set; }
         public bool isActive { get; set; }
         public bool isDeleted { get; set; }
+        public bool isRefundable { get; set; }
+        public string CancellationPolicy { get; set; }
+        public string inclusion { get; set; }
         [NotMapped] public List<Amenities> AmenitiesData { get; set;}
 
     }

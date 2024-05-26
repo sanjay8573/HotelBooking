@@ -22,6 +22,12 @@ using System.Web.Mvc;
 using System.Web.Security;
 using HotelBooking.Repository.Implementation;
 using System.Runtime.ConstrainedExecution;
+using System.Net.Http.Headers;
+using System.Net.Http;
+using Microsoft.SqlServer.Server;
+using System.Web.Script.Serialization;
+using HotelBooking.Model.onlineAPI;
+using System.Data;
 
 
 
@@ -2977,6 +2983,47 @@ namespace HotelBooking.Controllers
         //online API Testing UI
         public ActionResult WhiteLabelHome()
         {
+           /* 
+            RoomRequest roomRequest = new RoomRequest();
+            RoomResponse _roomResponse = new RoomResponse();
+            roomRequest.BranchID = "1";
+            roomRequest.CheckInDate = "17-05-2024";
+            roomRequest.CheckOutDate = "20-05-2024";
+            roomRequest.RoomGroupAry = new RoomGroup() {
+                                         NumberOfAdults=2,
+                                         NumberOfChildren=1,
+                                         ChildrenAges="10"
+
+
+                                    };
+
+           
+            var handler = new HttpClientHandler();
+            handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+            handler.ServerCertificateCustomValidationCallback = (httpRequestMessage, cert, cetChain, policyErrors) => {return true;};
+
+
+            using (var client = new HttpClient(handler))
+            {
+
+                //string BaseUrl = "https://hapi.mybookingsbuddy.com";
+                string CouponCode = "HSPCL";
+                string BaseUrl = "https://localhost:44342";
+                string _baseurl = BaseUrl+ "/api/online/ApplyCoupon";
+                client.BaseAddress = new Uri(_baseurl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage response = client.PostAsJsonAsync(_baseurl, CouponCode).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    _roomResponse = JsonConvert.DeserializeObject<RoomResponse>(result);
+                }
+
+            }
+            */
+
             return View("WhiteLabelHome");
         }
 

@@ -12,5 +12,8 @@ namespace HotelBooking.Repository.Interface
     {
         RoomResponse getAvailableRooms(RoomRequest roomRequest);
         bool CreateBooking(BookingRequest bookingEntity);
+        string CreateOnlineBooking(BookingRequest bookingEntity);
+
+
     }
 }

@@ -139,6 +139,7 @@
 
                                     @Html.TextBoxFor(model => model.DailyBookingLimit, new { @class = "full-width", placeholder = "Booking Limit" })
                                 </div>
+                                @Html.HiddenFor(model => model.Id)
                                 @Html.HiddenFor(model => model.isActive)
                                 @Html.HiddenFor(model => model.DepartmentId)
                                 @Html.HiddenFor(model => model.DesignationId)

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using HotelBooking.Model.onlineAPI;
 
 namespace HotelBooking.Model
 {
@@ -14,6 +15,10 @@ namespace HotelBooking.Model
         public int BookingId { get; set; }
         public int GuestId { get; set; }
         public string GuestName { get; set; }
+        public string GuestFirstName { get; set; }
+        public string GuestLastName { get; set; }
+        public string GuestContactNumber { get; set; }
+        public string GuestEmail { get; set; }
         public int BookingTypeId { get; set; }
         public string BookingTypeName { get; set; }
         public string RoomTypeId { get; set; }
@@ -36,9 +41,31 @@ namespace HotelBooking.Model
         public decimal CouponAmount { get; set; }
         public string BookingNumber { get; set; }
         public int BranchId { get; set; }
-
+        public string BookingChannel { get; set; }
         public List<BookingCost> AllNights { get; set; }
         public string PaidServices { get; set; }
 
+    }
+    public class BookingResponse
+    {
+        public Error Errors { get; set; }
+       
+        public string BookingReference { get; set; }
+        public bool isMailSend { get; set; }
+    }
+    public class CouponValidationResponse
+    {
+        public Error Errors { get; set; }
+        public string CouponCode { get; set; }
+
+        public string CouponDiscountAmount { get; set; }
+        public bool isValidCoupon { get; set; }
+    }
+    public class CouponRequest
+    {
+      
+
+        public int BranchId { get; set; }
+        public string CouponCode  { get; set; }
     }
 }

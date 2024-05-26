@@ -84,6 +84,10 @@ namespace HotelBooking.Repository.Implementation
         {
             return _booking.AddBooking(bookingEntity);
         }
+        public string CreateOnlineBooking(BookingRequest bookingEntity)
+        {
+            return _booking.AddOnlineBooking(bookingEntity);
+        }
         private string getHotelCurrency(int BranchId)
         {
             string rtnVal = string.Empty;
@@ -163,8 +167,8 @@ namespace HotelBooking.Repository.Implementation
                     {
                         RoomType = r.RoomTypeId.ToString(),
                         RoomTypeDescription = r.Description,
-                        RoomShortDescription = r.Description,
-                        RoomLongDescription = r.Description,
+                        RoomShortDescription = r.ShortDescription,
+                        RoomLongDescription = r.LongDescription,
                         RoomRateAmount = double.Parse(rtAmount.ToString()),
                         RoomBaseAmount = double.Parse(baseAmount.ToString()),
                         RoomTaxAmount = double.Parse(taxAmount.ToString()),
@@ -176,6 +180,8 @@ namespace HotelBooking.Repository.Implementation
                         MaxOccupancy=r.HighOccupancy,
                         NonRefundable=true,
                         MealIncluded=false,
+                        inclusion=r.inclusion,
+                        CancellationPolicy=r.CancellationPolicy,
                         RoomImages= rtImg,
                         RoomAmenities= _amenities
 

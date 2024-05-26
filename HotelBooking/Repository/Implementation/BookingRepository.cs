@@ -177,33 +177,78 @@ namespace HotelBooking.Repository.Implementation
                
 
             }
-            //List<BookingCost> allBookingCostPS = new List<BookingCost>();
-            //if (bookingEntity.PaidServices !=null && bookingEntity.PaidServices.Length > 0)
-            //{
-               
-            //    IPaidServices IPS = new PaidServicesRepository();
-            //    IEnumerable<PaidServices> psList = IPS.GetPaidServicesByIds(bookingEntity.PaidServices);
-            //    foreach( PaidServices p in psList)
-            //    {
-            //        BookingCost b = new BookingCost
-            //        {
-            //            BookingId = BookingId,
-            //            CostCategory = 2,
-            //            PerNightCost = p.Price,
-            //            Description=p.Title,
-            //            Date = DateTime.Today.Date.ToString(),
-            //            RoomTypeId = p.PaidServiceId,
-                   
-            //        };
-            //        rtnBKC = AddAdditionalNight(b);
-
-            //    }
-
-            //}
+            
 
             return rtnVal;
         }
+        public string AddOnlineBooking(BookingRequest bookingRequestEntity)
+        {
+            int BookingId = 0;
+            string BookingNumber = string.Empty;
+            Booking bookingEntity = new Booking
+            {
+                BookingId = bookingRequestEntity.BookingId,
+                BookingDate = DateTime.Now,
+                BookingNumber = bookingRequestEntity.BookingNumber,
+                GuestId = CheckExistingGuest(bookingRequestEntity.GuestContactNumber, bookingRequestEntity.GuestEmail, bookingRequestEntity.GuestFirstName, bookingRequestEntity.GuestLastName, bookingRequestEntity.BranchId),
+                GuestName = bookingRequestEntity.GuestFirstName +" "+ bookingRequestEntity.GuestLastName,
+                BookingTypeId = bookingRequestEntity.BookingTypeId,
+                BookingTypeName = bookingRequestEntity.BookingTypeName,
+                RoomTypeId = bookingRequestEntity.RoomTypeId,
+                RoomTypeName = bookingRequestEntity.RoomTypeName,
+                Adult = bookingRequestEntity.Adult,
+                Child = bookingRequestEntity.Child,
+                ChildAge1 = bookingRequestEntity.ChildAge1,
+                ChildAge2 = bookingRequestEntity.ChildAge2,
+                ChildAge3 = bookingRequestEntity.ChildAge3,
+                CheckIn = bookingRequestEntity.CheckIn,
+                Checkout = bookingRequestEntity.Checkout,
+                NoOfRooms = bookingRequestEntity.NoOfRooms,
+                Nights = bookingRequestEntity.Nights,
+                TotalAmount = bookingRequestEntity.TotalAmount,
+                TotalTax = bookingRequestEntity.TotalTax,
+                PayableAmount = bookingRequestEntity.PayableAmount,
+                BookingSourceId = bookingRequestEntity.BookingSourceId,
+                CommissionPaid = bookingRequestEntity.CommissionPaid,
+                CouponCode = bookingRequestEntity.CouponCode,
+                CouponAmount = bookingRequestEntity.CouponAmount,
+                PaidServices = bookingRequestEntity.PaidServices,
+                BookingChannel = bookingRequestEntity.BookingChannel,
+                BookingStatus = "New",
+                PaymentStatus = "Pending",
+                BranchId = bookingRequestEntity.BranchId
+            };
+           
+            
+                try
+                {
+                    bookingEntity.BookingNumber = gererateBookingNumber();
+                    _context.Booking.Add(bookingEntity);
+                    _context.SaveChanges();
+                    BookingId = bookingEntity.BookingId;
+                    BookingNumber = bookingEntity.BookingNumber;
+                    
+                }
+                catch (Exception ex)
+                {
 
+                    return "Opps!! Smething went wrong...";
+                }
+
+            bool rtnBKC;
+            List<BookingCost> allBookingCost = new List<BookingCost>();
+            foreach (BookingCost bc in bookingRequestEntity.AllNights)
+            {
+                bc.BookingId = BookingId;
+
+                rtnBKC = AddAdditionalNight(bc);
+
+
+            }
+
+
+            return BookingNumber;
+        }
         public void DeleteBooking(int bookingid)
         {
             try
@@ -815,6 +860,34 @@ namespace HotelBooking.Repository.Implementation
                 }
             }
             return rtnVal;
+        }
+
+        private int CheckExistingGuest(string gContactNumber,string gEmail,string gFirstName,string gLastName,int branchId)
+        {
+            int rtnGuestId = 0;
+            string gName = gFirstName + " " + gLastName;
+            Guests gst = _context.Guests.Where(g => g.email == gEmail && g.Phone == gContactNumber && g.Name == gName && g.BranchId== branchId).FirstOrDefault();
+            if (gst!=null){
+                rtnGuestId = gst.GuestId;
+            }
+            else
+            {
+                Guests g = new Guests
+                {
+                    Name=gName,
+                    Phone= gContactNumber,
+                    email=gEmail,
+                    BranchId=branchId,
+                    isActive=true,
+                    isDeleted=false,
+                    isVIP=false
+
+                };
+                _context.Guests.Add(g);
+                _context.SaveChanges();
+                rtnGuestId = g.GuestId;
+            }
+            return rtnGuestId;
         }
     }
     

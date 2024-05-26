@@ -813,6 +813,8 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="SQL\DB_Create.sql" />
+    <Content Include="SQL\DB_Indexes.sql" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -943,6 +945,7 @@
     <Content Include="Views\Home\IteminShortReport.cshtml" />
     <Content Include="Views\Home\CurrencyExchangeReportQ.cshtml" />
     <Content Include="Views\Home\CurrencyExchangeReport.cshtml" />
+    <Content Include="WEBAPI_REQ_RES\roomREQ.json" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

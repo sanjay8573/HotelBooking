@@ -72,6 +72,12 @@
                                 <button class="btn ss-btn" data-animation="fadeInRight" onclick="CreateBooking();" data-delay=".8s">BookNow</button>
                             </div>
                         </li>
+                        <li>
+                            <div class="slider-btn">
+                                <label><i class="fal fa-calendar-alt"></i></label>
+                                <button class="btn ss-btn" data-animation="fadeInRight" onclick="ApplyCoupon();" data-delay=".8s">BookNow</button>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -107,11 +113,13 @@
 
         fetch('/api/online/GetAvailableRooms', {
             method: 'POST',
+           
+            dataType: 'json',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(RoomRequest)
+           body: JSON.stringify(RoomRequest)
         })
             .then(response => {
                 let rData = response.json();
@@ -127,6 +135,7 @@
                 
             })
             .catch(error => {
+                console.log(error);
                 $.toast({
                     autoDismiss: true,
                     heading: 'Error',
@@ -144,7 +153,11 @@
 
         const BookRequest = {
             "GuestName": "Steve Talbot",
-            "GuestID": 7,
+            "GuestFirstName": "Steve",
+            "GuestLastName": "Talbot",
+            "GuestContactNumber": "1122334455",
+            "GuestEmail": "steve.talbot@lg.com",
+            "GuestID":0,
             "BookingTypeName": "Room Booking",
             "BookingTypeId": 2,
             "RoomTypeId": "10",
@@ -164,6 +177,7 @@
             "CouponAmount": "0.00",
             "PaidServices": "9,10",
             "BookingNumber": "",
+            "BookingChannel":"ONLINE",
             "PayableAmount": "5907.20",
             "BookingSourceId": "3",
             "CommissionPaid": "15.00",
@@ -231,6 +245,38 @@
                 //    position: 'top-right',
                 //    loaderBg: '#9EC600' // To change the background
                 //});
+
+            })
+            .catch(error => {
+                $.toast({
+                    autoDismiss: true,
+                    heading: 'Error',
+                    text: 'Error on API Response',
+                    icon: 'warning',
+                    position: 'top-right',
+                    loader: false,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                });
+            });
+    }
+    function ApplyCoupon() {
+        const CouponReq = {
+            BranchId: 1,
+            CouponCode: "HSPCL"
+        };
+        
+        fetch('/api/online/ApplyCoupon', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(CouponReq)
+        })
+            .then(response => {
+                let rData = response.json();
+                console.log(rData);
+                
 
             })
             .catch(error => {

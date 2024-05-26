@@ -1,0 +1,23 @@
+[
+  {
+    "Authentication": {
+      "UserName": "qrtus",
+      "Password": "qrt2k17",
+      "APIKey": "CA2EzF2YPHrutanyVMx6Y3JbZBykjs3d",
+      "UserHostAddress": "",
+      "UserAgent": "",
+      "UserHostName": ""
+    },
+    "HotelID": "rppfk/0UPuBAG/z7NUKOLQ==",
+    "BranchID": "1",
+    "CheckOutDate": "20-05-2024",
+    "CheckInDate": "17-05-2024",
+    "RoomGroupAry": [
+      {
+        "NumberOfAdults": 2,
+        "NumberOfChildren": 0,
+        "ChildrenAges": "0"
+      }
+    ]
+  }
+]

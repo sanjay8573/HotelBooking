@@ -120,6 +120,7 @@
                             var i = 1;
                             foreach (var bk in Model.Documents)
                             {
+                                var DocDivId= "ViewDoc"+@bk.DocumentId;
                                 <tr class="active">
                                     <td>@i</td>
                                     <td align="left" valign="middle">@bk.PaxName</td>
@@ -129,22 +130,25 @@
                                         <a href="#" class="editbtn"  data-toggle="modal" data-target="#@bk.DocumentId"><i class="fa fa-eye"></i> View</a>
                                     </td>
                                     <td>
-                                        <div class="modal fade" id="@bk.DocumentId" z-index="-1" role="dialog" aria-labelledby="personalModalLabel" aria-hidden="true">
+                                        <div id="@DocDivId">
+                                            <div class="modal fade" id="@bk.DocumentId" z-index="-1" role="dialog" aria-labelledby="personalModalLabel" aria-hidden="true">
 
-                                            <div class="modal-dialog">
-                                                <!-- Modal content-->
-                                                <div class="modal-content">
-                                                    <div class="modal-body">
-                                                        <div class="row">
-                                                            <img style="max-width:500px; max-height:500px;" src="data:image/*;base64,@(Convert.ToBase64String(bk.DocumentData))">
+                                                <div class="modal-dialog">
+                                                    <!-- Modal content-->
+                                                    <div class="modal-content">
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <img style="max-width:500px; max-height:500px;" src="data:image/*;base64,@(Convert.ToBase64String(bk.DocumentData))">
+                                                            </div>
+                                                            <div class="row">
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            </div>
                                                         </div>
-                                                       
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        
 
+                                        </div>
                                                            
                                     </td>
                                 </tr>
@@ -160,6 +164,10 @@
 </div>
 <script>
     $(document).ready(function () {
+        var htmlData = $("div[id^='ViewDoc']").clone();
+        //var htmlDataNew = htmlData.replace('ViewDoc', '_ViewDoc');
+        //$(top.document.body).append(htmlData);
+        //$("div[id^='ViewDoc']").remove();
         $("#RCId").hide();
          $('#CHK_RCR').change(function () {
             if (this.checked) {

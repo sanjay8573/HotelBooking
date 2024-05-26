@@ -41,7 +41,7 @@ namespace HotelBooking.Model
         public string PaymentStatus { get; set; }
         public DateTime BookingDate { get; set; }
         public string PaidServices { get; set; }
-
+        public string BookingChannel { get; set; }
         public int BranchId {get;set;}
         [NotMapped]
         public String  BookingDateTime { get; set; }

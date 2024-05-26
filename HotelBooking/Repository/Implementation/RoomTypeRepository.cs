@@ -86,6 +86,10 @@ namespace HotelBooking.Repository.Implementation
                 tmpAmnt.Slug = RoomTypeEntity.Slug;
                 tmpAmnt.ShortCode = RoomTypeEntity.ShortCode;
                 tmpAmnt.Description = RoomTypeEntity.Description;
+                tmpAmnt.ShortDescription = RoomTypeEntity.ShortDescription;
+                tmpAmnt.LongDescription = RoomTypeEntity.LongDescription;
+                tmpAmnt.CancellationPolicy = RoomTypeEntity.CancellationPolicy;
+                tmpAmnt.inclusion = RoomTypeEntity.inclusion;
                 tmpAmnt.BaseOccupancy = RoomTypeEntity.BaseOccupancy;
                 tmpAmnt.HighOccupancy = RoomTypeEntity.HighOccupancy;
                 tmpAmnt.ExtraBed = RoomTypeEntity.ExtraBed;

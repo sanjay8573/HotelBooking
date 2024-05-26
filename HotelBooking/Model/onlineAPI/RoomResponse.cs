@@ -93,6 +93,7 @@ namespace HotelBooking.Model.onlineAPI
         public bool NonRefundable { get; set; }
         public string CancellationPolicy { get; set; }
         public bool MealIncluded { get; set; }
+        public string inclusion { get; set; }
 
         public RoomSurcharges RoomSurchargesAry { get; set; }
         public List<RoomImages> RoomImages { get; set; }
