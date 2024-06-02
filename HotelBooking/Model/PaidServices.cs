@@ -18,5 +18,6 @@ namespace HotelBooking.Model
         public bool isActive { get; set; }
         public int BranchId { get; set; }
         public bool isDeleted { get; set; }
+        public bool IsTourItem { get; set; }=false;
     }
 }

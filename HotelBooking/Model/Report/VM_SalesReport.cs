@@ -10,4 +10,10 @@ namespace HotelBooking.Model.Report
         public SalesReportRequest SalesReportRequestData { get; set; }
         public IEnumerable<SalesReport> salesReports { get; set; }
     }
+
+    public class VM_TourSalesReport
+    {
+        public TourSalesReportRequest TourSalesReportRequestData { get; set; }
+        public IEnumerable<TourSalesReport> ToursalesReports { get; set; }
+    }
 }

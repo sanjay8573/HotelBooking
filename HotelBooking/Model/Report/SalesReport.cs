@@ -18,4 +18,20 @@ namespace HotelBooking.Model.Report
         public decimal BookingAmount { get; set; }
         public double CommissionPaid { get; set; }
     }
+
+    public class TourSalesReport
+    {
+        public string BookingRef { get; set; }
+        public DateTime BookingDate { get; set; }      
+       
+        public string GuestName { get; set; }
+        public string StartDate { get; set; }
+        public string ENDDate { get; set; }
+        public decimal BookingAmount { get; set; }
+        public string BookingStatus { get; set; }
+        public string PaymentStatus { get; set; }
+
+    
+
+    }
 }

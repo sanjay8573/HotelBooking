@@ -1,6 +1,7 @@
 ﻿
 using HotelBooking.Model;
 using HotelBooking.Model.Reatraurant;
+using HotelBooking.Model.Tour;
 using System.Data.Entity;
 
 namespace HotelBooking.Context
@@ -207,6 +208,12 @@ namespace HotelBooking.Context
             get;
             set;
         }
+        public DbSet<Tour> Tours
+        {
+            get;
+            set;
+        }
+
 
 
     }

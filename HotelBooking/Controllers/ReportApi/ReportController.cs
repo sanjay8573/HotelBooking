@@ -55,5 +55,12 @@ namespace HotelBooking.Controllers.ReportApi
         {
             return _rpt.GetCurrencyExchangeReports(req);
         }
+
+        [Route("api/report/TourSalesReport")]
+        [HttpGet]
+        public VM_TourSalesReport TourSalesReport(TourSalesReportRequest srr)
+        {
+            return _rpt.TourSalesReport(srr);
+        }
     }
 }

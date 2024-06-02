@@ -525,6 +525,7 @@
     <Compile Include="Controllers\TaxApi\TaxController.cs" />
     <Compile Include="Controllers\TeamController.cs" />
     <Compile Include="Controllers\TnCController.cs" />
+    <Compile Include="Controllers\TourAPI\TourController.cs" />
     <Compile Include="Controllers\UnProHomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -604,6 +605,9 @@
     <Compile Include="Model\TaxMaster.cs" />
     <Compile Include="Model\Team.cs" />
     <Compile Include="Model\TNC.cs" />
+    <Compile Include="Model\Tour\Tour.cs" />
+    <Compile Include="Model\Tour\TourBookingRequest.cs" />
+    <Compile Include="Model\Tour\TourBookingResponse.cs" />
     <Compile Include="Model\UserLoginResponse.cs" />
     <Compile Include="Model\VM_BookingDetails.cs" />
     <Compile Include="Model\VM_DocumentResponse.cs" />
@@ -649,6 +653,7 @@
     <Compile Include="Repository\Implementation\TaxMasterRespository.cs" />
     <Compile Include="Repository\Implementation\TeamRepository.cs" />
     <Compile Include="Repository\Implementation\TncRepository.cs" />
+    <Compile Include="Repository\Implementation\TourRepository.cs" />
     <Compile Include="Repository\Interface\IAmenities.cs" />
     <Compile Include="Repository\Interface\IBilling.cs" />
     <Compile Include="Repository\Interface\IBookedRoom.cs" />
@@ -688,6 +693,7 @@
     <Compile Include="Repository\Interface\ITaxMaster.cs" />
     <Compile Include="Repository\Interface\Iteam.cs" />
     <Compile Include="Repository\Interface\ITnC.cs" />
+    <Compile Include="Repository\Interface\ITour.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -946,6 +952,13 @@
     <Content Include="Views\Home\CurrencyExchangeReportQ.cshtml" />
     <Content Include="Views\Home\CurrencyExchangeReport.cshtml" />
     <Content Include="WEBAPI_REQ_RES\roomREQ.json" />
+    <Content Include="Views\Home\AddTourItem.cshtml" />
+    <Content Include="Views\Home\GetTourItems.cshtml" />
+    <Content Include="Views\Home\BookTour.cshtml" />
+    <Content Include="Views\Home\TourBookings.cshtml" />
+    <Content Include="Views\Home\TSR.cshtml" />
+    <Content Include="Views\Home\TourSalesReport.cshtml" />
+    <Content Include="Views\Home\PreviewTour.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

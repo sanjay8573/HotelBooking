@@ -14,10 +14,12 @@ namespace HotelBooking.Controllers
     public class GuestsController : ApiController
     {
         private readonly IGuests _IGuest;
+        private readonly IBooking _IBK;
         public GuestsController()
         {
 
             _IGuest = new GuestRepository();
+            _IBK= new BookingRepository();
         }
         public GuestsController(IGuests ig)
         {
@@ -28,6 +30,17 @@ namespace HotelBooking.Controllers
         public IEnumerable<Guests> GetAllGuests(int BranchId)
         {
             return _IGuest.GetAllGuest(BranchId);
+        }
+        [Route("api/Guests/GetAllGuests/{BranchId}/{bookingId}")]
+        [HttpGet]
+        public Guests GetExistingGuest(int BranchId,int bookingId)
+        {
+           
+            Booking bk=_IBK.GetBooking(bookingId);
+            Guests gt = _IGuest.GetAllGuest(BranchId).Where(g => g.GuestId == bk.GuestId).SingleOrDefault(); ;
+            
+
+            return gt;
         }
 
         [Route("api/Guests/GetGuest/{BranchId}/{GuestId}")]

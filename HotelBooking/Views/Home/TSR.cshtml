@@ -1,0 +1,104 @@
+﻿@model HotelBooking.Model.Report.VM_TourSalesReport
+@{
+    ViewBag.Title = "Tour Sales Report";
+}
+<div class="row" id="Amenityform">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i> Tour Sales Report</div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                    <div class="col-lg-8 col-md-8 col-sm-1 col-xs-12 pull-right">
+                        @using (Html.BeginForm("Export", "Home", FormMethod.Post, new { id = "msform" }))
+                        {
+                            <input type="hidden" name="GridHtml" />
+                            <input type="hidden" name="ReportName" value="TourSalesReport" />
+                            <input type="submit" class="prev action-button pull-right" id="btnExport" value="Export" />
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 table-responsive" id="Grid">
+
+                <table cellpadding="5" cellspacing="0" style="border: 1px solid #ccc;font-size: 9pt;">
+
+
+                    <tr>
+                        <td colspan="10">
+                            <table style="width:90%">
+                                <tr>
+                                    <td colspan="3" style="width: 120px; border: 1px solid #ccc"><b>Sales Report</b></td>
+
+                                </tr>
+                                <tr>
+                                    <td style="width: 120px; border: 1px solid #ccc">Booking Date</td>
+                                    <td style="width: 120px; border: 1px solid #ccc">From - @Model.TourSalesReportRequestData.fromDate</td>
+                                    <td style="width: 120px; border: 1px solid #ccc">To - @Model.TourSalesReportRequestData.toDate</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td style="width: 120px; border: 1px solid #ccc">Booking Ref#</td>
+                                    <td style="width: 120px; border: 1px solid #ccc">@Model.TourSalesReportRequestData.bookingRef</td>
+                                    <td style="width: 120px; border: 1px solid #ccc"></tdstyle="width:>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc">#</th>
+                        <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc">Booking Number</th>
+                        <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc">Booking Date</th>
+                        
+                        <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc">Guest Name</th>
+
+                        <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc">Start Date</th>
+                        <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc">End Date </th>
+                        <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc">Booking Amount</th>
+                        
+
+                    </tr>
+                    @if (Model != null)
+                    {
+                        var i = 1;
+                        decimal totalBookingAmount = 0;
+                       
+                        foreach (var bk in Model.ToursalesReports)
+                        {
+                            <tr>
+                                <td style="width:10px;border: 1px solid #ccc">@i</td>
+                                <td style="width:120px;border: 1px solid #ccc">@bk.BookingRef</td>
+                                <td style="width:120px;border: 1px solid #ccc">@bk.BookingDate</td>
+                                 <td style="width:120px;border: 1px solid #ccc">@bk.GuestName</td>
+                                <td style="width:120px;border: 1px solid #ccc">@bk.StartDate</td>
+                                <td style="width:120px;border: 1px solid #ccc"> @bk.ENDDate</td>
+                                <td style="width:120px;border: 1px solid #ccc;text-align:right"> @bk.BookingAmount</td>
+                               
+
+                            </tr>
+                            totalBookingAmount = totalBookingAmount + bk.BookingAmount;
+                           
+                            i++;
+
+                        }
+                        <tr><td colspan="5">&nbsp;</td>
+                    <td style="background-color: #003556; color: #f9f5f5; width: 120px; border: 1px solid #ccc; text-align: right">Total :</td>
+                    <td style="background-color: #003556; color: #f9f5f5; width: 120px; border: 1px solid #ccc; text-align: right">@totalBookingAmount</td>
+                    </tr>
+
+                    }
+
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#btnExport").click(function () {
+            $("input[name='GridHtml']").val($("#Grid").html());
+        });
+    });
+</script>

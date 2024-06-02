@@ -69,6 +69,7 @@ namespace HotelBooking.Repository.Implementation
 
         public VM_SalesReport getSalesReport(SalesReportRequest srr)
         {
+
             VM_SalesReport vM_SalesReport = new VM_SalesReport();
             string strsql = "exec sp_getSalesReport @fromDate='" +  srr.fromDate + "',@toDate='" + srr.toDate + "',@BookingSourceid='" + srr.BookingSourceId + "',@BookingRef='" + srr.bookingRef + "',@BranchId=" + srr.BranchId;
             vM_SalesReport.SalesReportRequestData = srr;
@@ -86,6 +87,19 @@ namespace HotelBooking.Repository.Implementation
             vM_StoreINOUTReport.REQ = req;
             vM_StoreINOUTReport.StoreINOUTReport = _context.Database.SqlQuery<StoreINOUTReport>(strsql).ToList();
             return vM_StoreINOUTReport;
+        }
+
+        public VM_TourSalesReport TourSalesReport(TourSalesReportRequest req)
+        {
+            string fDate = req.fromDate.Substring(6, 4) + "-" + req.fromDate.Substring(3, 2) + "-" + req.fromDate.Substring(0, 2);
+            string tDate = req.toDate.Substring(6, 4) + "-" + req.toDate.Substring(3, 2) + "-" + req.toDate.Substring(0, 2);
+
+            VM_TourSalesReport vM_SalesReport = new VM_TourSalesReport();
+            string strsql = "exec sp_getTourSalesReport @fromDate='" + fDate + "',@toDate='" + tDate + "',@BookingRef='" + req.bookingRef + "',@BranchId=" + req.BranchId;
+            vM_SalesReport.TourSalesReportRequestData = req;
+            vM_SalesReport.ToursalesReports = _context.Database.SqlQuery<TourSalesReport>(strsql).ToList();
+            return vM_SalesReport;
+
         }
     }
 }

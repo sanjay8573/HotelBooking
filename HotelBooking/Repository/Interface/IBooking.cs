@@ -1,4 +1,5 @@
 ﻿using HotelBooking.Model;
+using HotelBooking.Model.Tour;
 using System.Collections.Generic;
 
 namespace HotelBooking.Repository.Interface
@@ -33,5 +34,6 @@ namespace HotelBooking.Repository.Interface
         bool UpdatePaymentStatus(int BranchId, int Bookingid, string paymentStatus);
         DashBoardData DashboardData(int BranchId);
         IEnumerable<DashBoardData> CalendarData(int BranchId);
+        IEnumerable<Tour> GetAllTourBooking(int BranchId);
     }
 }

@@ -1,0 +1,200 @@
+﻿@model HotelBooking.Model.Tour.TourBookingRequest
+@{
+    ViewBag.Title = "Tour Preview";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Preview <small>Tour</small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Preview Tour</small> </span></div>
+            <div class="widget-content padded text-center" id="Grid">
+                <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 table-responsive">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr style="background: #eaeeef;">
+                                        <td colspan="13" align="left" valign="middle"><div class="allheadingin" style="padding: 5px;">Tour Details</div></td>
+                                    </tr>
+
+                                    <tr class="active">
+                                        <td>BookingRef# </td>
+                                        <td>@Model.TourDetail.BookingNumber</td>
+                                        <td>Booking Date </td>
+                                        <td>@Model.TourDetail.BookingDate</td>
+
+
+
+                                    </tr>
+                                    <tr class="active">
+
+
+                                        <td>Start Date </td>
+                                        <td>@Model.TourDetail.StartDate </td>
+                                        <td>End Date </td>
+                                        <td>@Model.TourDetail.EndDate </td>
+
+                                    </tr>
+                                    <tr class="active">
+                                        <td>Booking Status </td>
+                                        <td>@Model.TourDetail.BookingStatus </td>
+                                        <td>Payments Status </td>
+                                        <td>@Model.TourDetail.PaymentStatus </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 table-responsive">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr style="background: #eaeeef;">
+                                        <td colspan="13" align="left" valign="middle"><div class="allheadingin" style="padding: 5px;">Customer Details</div></td>
+                                    </tr>
+
+                                    <tr class="active">
+                                        <td>Name </td>
+                                        <td>@Model.TourGuest.Name</td>
+                                        <td>Contact </td>
+                                        <td>@Model.TourGuest.Phone </td>
+
+                                    </tr>
+                                    <tr class="active">
+                                        <td>Address </td>
+                                        <td>@Model.TourGuest.Address , @Model.TourGuest.city - @Model.TourGuest.pincode</td>
+
+                                        <td>Country</td>
+                                        <td>@Model.TourGuest.country </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 table-responsive">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr style="background: #eaeeef;">
+                                        <td colspan="13" align="left" valign="middle"><div class="allheadingin" style="padding: 5px;">Services</div></td>
+                                    </tr>
+                                    <tr class="trthbgclr">
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">Added Service</th>
+                                        <th class="text-center">Price/Unit</th>
+                                        <th class="text-center">Qty.</th>
+                                        <th class="text-center">Item Total</th>
+
+                                    </tr>
+                                    @{
+                                        int i = 1;
+                                        decimal gTotal = 0;
+                                    }
+                                    @foreach (var item in Model.TourDetails)
+                                    {
+                                        var total = item.PerNightCost * item.Qty;
+                                        gTotal = gTotal + total;
+                                        <tr class="active">
+                                            <td>@i</td>
+                                            <td>@item.Description</td>
+                                            <td align="center" valign="middle">@item.PerNightCost</td>
+                                            <td align="center" valign="middle">@item.Qty</td>
+                                            <td align="center" valign="middle">@total</td>
+
+                                        </tr>
+                                        i++;
+                                    }
+
+                                    <tr>
+                                        <th class="text-right" colspan="4">Grand Total</th>
+                                        <th class="text-center" colspan="4">@gTotal</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 table-responsive">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr style="background: #eaeeef;">
+                                        <td colspan="13" align="left" valign="middle"><div class="allheadingin" style="padding: 5px;">Payment Details</div></td>
+                                    </tr>
+                                    @if (Model.TourPayment == null)
+                                    {
+                                        <tr class="active">
+                                            <td>Payment Details Not available </td>
+                                            
+
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr class="active">
+                                            <td>Invoice# </td>
+                                            <td>@Model.TourPayment.InvoiceNumber</td>
+                                            <td>Payment Date </td>
+                                            <td>@Model.TourPayment.PaymentDate</td>
+
+                                        </tr>
+                                        <tr class="active">
+                                            <td>Payment Amount </td>
+                                            <td>@Model.TourPayment.paymentAmount </td>
+                                            <td>Payment Pending </td>
+                                            <td>@Model.TourPayment.paymentDue </td>
+
+                                        </tr>
+                                        <tr class="active">
+                                            <td>Payment Received by </td>
+                                            <td>@Model.TourPayment.PaymentTypeName </td>
+                                            <td>Remarks</td>
+                                            <td>@Model.TourPayment.Remarks </td>
+                                        </tr>
+
+                                    }
+
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+           
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                <div class="col-lg-8 col-md-8 col-sm-1 col-xs-12 pull-right">
+
+                    @using (Html.BeginForm("Export", "Home", FormMethod.Post, new { id = "msform" }))
+                    {
+                        <input type="hidden" name="GridHtml" />
+                        <input type="hidden" name="ReportName" value="TourVoucher" />
+                        <button type="button" class="prev action-button pull-right" onclick="printTour();">Print</button>
+                        @*<input type="submit" class="prev action-button pull-right" id="btnExport" value="Export" />*@
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#btnExport").click(function () {
+            $("input[name='GridHtml']").val($("#Grid").html());
+        });
+    });
+
+    function printTour() {
+    var newWin = window.open('', 'Print-Window');
+    newWin.document.open();
+
+    newWin.document.write('<link rel="stylesheet" type="text/css" href="/css/prism.min.css">');
+    newWin.document.write('<link rel="stylesheet" type="text/css" href="/css/style.min.css">');
+    newWin.document.write('<link rel="stylesheet" type="text/css" href="/css/app.css">');
+    //newWin.document.write('<link rel="stylesheet" type="text/css" href="~/css/prism.min.css">');
+        var mainHTML = $("#Grid").html();
+        newWin.document.write('<html><body onload="window.print()">' + mainHTML );
+        newWin.document.write(mainHTML + '</body></html>');
+
+    newWin.document.close();
+}
+</script>
+     

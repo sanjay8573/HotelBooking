@@ -1,6 +1,7 @@
 ﻿using HotelBooking.Context;
 using HotelBooking.Model;
 using HotelBooking.Model.Reatraurant;
+using HotelBooking.Model.Tour;
 using HotelBooking.Repository.Interface;
 using System;
 using System.Collections;
@@ -86,7 +87,7 @@ namespace HotelBooking.Repository.Implementation
             {
                 BookingId = bookingRequestEntity.BookingId,
                 BookingDate = DateTime.Now,
-                BookingNumber= bookingRequestEntity.BookingNumber,
+                BookingNumber = bookingRequestEntity.BookingNumber,
                 GuestId = bookingRequestEntity.GuestId,
                 GuestName = bookingRequestEntity.GuestName,
                 BookingTypeId = bookingRequestEntity.BookingTypeId,
@@ -95,9 +96,9 @@ namespace HotelBooking.Repository.Implementation
                 RoomTypeName = bookingRequestEntity.RoomTypeName,
                 Adult = bookingRequestEntity.Adult,
                 Child = bookingRequestEntity.Child,
-                ChildAge1= bookingRequestEntity.ChildAge1,
-                ChildAge2= bookingRequestEntity.ChildAge2,
-                ChildAge3= bookingRequestEntity.ChildAge3,
+                ChildAge1 = bookingRequestEntity.ChildAge1,
+                ChildAge2 = bookingRequestEntity.ChildAge2,
+                ChildAge3 = bookingRequestEntity.ChildAge3,
                 CheckIn = bookingRequestEntity.CheckIn,
                 Checkout = bookingRequestEntity.Checkout,
                 NoOfRooms = bookingRequestEntity.NoOfRooms,
@@ -105,12 +106,13 @@ namespace HotelBooking.Repository.Implementation
                 TotalAmount = bookingRequestEntity.TotalAmount,
                 TotalTax = bookingRequestEntity.TotalTax,
                 PayableAmount = bookingRequestEntity.PayableAmount,
-                BookingSourceId= bookingRequestEntity.BookingSourceId,
-                CommissionPaid= bookingRequestEntity.CommissionPaid,
+                BookingSourceId = bookingRequestEntity.BookingSourceId,
+                CommissionPaid = bookingRequestEntity.CommissionPaid,
                 CouponCode = bookingRequestEntity.CouponCode,
                 CouponAmount = bookingRequestEntity.CouponAmount,
                 PaidServices = bookingRequestEntity.PaidServices,
-                BookingStatus = "New",
+                BookingStatus = "HN",
+                BookingChannel = "BO-DC",
                 PaymentStatus="Pending",
                 BranchId = bookingRequestEntity.BranchId
             };
@@ -570,7 +572,7 @@ namespace HotelBooking.Repository.Implementation
             return rtnVal;
         }
 
-        private string gererateBookingNumber()
+        public string gererateBookingNumber()
         {
             Random res = new Random();
 
@@ -888,6 +890,14 @@ namespace HotelBooking.Repository.Implementation
                 rtnGuestId = g.GuestId;
             }
             return rtnGuestId;
+        }
+
+        public IEnumerable<Tour> GetAllTourBooking(int BranchId)
+        {
+
+            IEnumerable<Tour> tempTourBooking = _context.Tours.Where(b => b.BranchId == BranchId).ToArray();
+           
+            return tempTourBooking;
         }
     }
     

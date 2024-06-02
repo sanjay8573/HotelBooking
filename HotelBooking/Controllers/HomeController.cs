@@ -28,6 +28,8 @@ using Microsoft.SqlServer.Server;
 using System.Web.Script.Serialization;
 using HotelBooking.Model.onlineAPI;
 using System.Data;
+using HotelBooking.Model.Tour;
+using HotelBooking.Controllers.TourAPI;
 
 
 
@@ -622,14 +624,14 @@ namespace HotelBooking.Controllers
                     {
                         new SelectListItem() { Value="2", Text= "2" },
                         new SelectListItem() { Value="5", Text= "5" },
-                        new SelectListItem() { Value="10", Text= "10" },
+                        new SelectListItem() { Value="10", Text= "10",Selected=true },
                         new SelectListItem() { Value="15", Text= "15" },
                         new SelectListItem() { Value="20", Text= "20" },
                      };
             int pageNumber = page ?? 1;
             ViewBag.PageSize = DefaultPageSize;
             PaidServicesController _psc = new PaidServicesController();
-            IEnumerable<PaidServices> rtm = _psc.GetpadServices(branchId).Where(d => d.isDeleted == false);
+            IEnumerable<PaidServices> rtm = _psc.GetpadServices(branchId).Where(d => d.isDeleted == false & d.IsTourItem==false);
             Session["BranchId"] = branchId;
             return View(rtm.ToPagedList(pageNumber, (int)DefaultPageSize));
 
@@ -1278,7 +1280,7 @@ namespace HotelBooking.Controllers
             int branchId = int.Parse(Session["BranchId"].ToString());
             RoomController _rc = new RoomController();
 
-            //IEnumerable<Room> rm = _rc.GetRoomsByRoomTypeIds(branchId, RoomTypeId, BookingId);
+            
             AllocateRoomResponse rm = _rc.GetRoomsByRoomTypeIds(branchId, RoomTypeId, BookingId);
             List<SelectListItem> Roomitems = new List<SelectListItem>();
             Roomitems.Add(new SelectListItem { Text = "Select a Room", Value = "0" });
@@ -2854,12 +2856,30 @@ namespace HotelBooking.Controllers
             ViewBag.BookingSourceComboModel = BookingSourceitems;
             return View("SalesReport",srr);
         }
+        
         [HttpPost]
         public ActionResult SalesReport(SalesReportRequest srr)
         {
             ReportController _rpt = new ReportController();
             VM_SalesReport salesReportData = _rpt.GetSalesReport(srr);
             return View("SRR", salesReportData);
+        }
+
+        public ActionResult TourSalesReport()
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            TourSalesReportRequest srr = new TourSalesReportRequest();
+            srr.BranchId = branchId;
+            
+            return View("TourSalesReport", srr);
+        }
+        [HttpPost]
+        public ActionResult TourSalesReport(TourSalesReportRequest srr)
+        {
+            ReportController _rpt = new ReportController();
+            VM_TourSalesReport salesReportData = _rpt.TourSalesReport(srr);
+            return View("TSR", salesReportData);
         }
 
         public ActionResult CommissionReport()
@@ -3026,6 +3046,226 @@ namespace HotelBooking.Controllers
 
             return View("WhiteLabelHome");
         }
+        public ActionResult AddTourItems(int PaidServiceId=0)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            PaidServices ps = new PaidServices();
+            if (PaidServiceId > 0)
+            {
+                PaidServicesController _ps = new PaidServicesController();
+                ps = _ps.GetpadServices(branchId).Where(p => p.PaidServiceId == PaidServiceId).SingleOrDefault();
+                ps.IsTourItem = true;
+            }
+            else
+            {
+                ps.BranchId = branchId;
+                ps.IsTourItem = true;
+            }
+
+
+            
+            List<PriceType> PTlist = new List<PriceType>()
+            {
+                new PriceType()
+                {
+                     BranchId = branchId,
+                     PriceTypeId=1,
+                     PriceTypeTitle= "Fix Price",
+                },
+                 new PriceType()
+                {
+                     BranchId = branchId,
+                     PriceTypeId=2,
+                     PriceTypeTitle= "Price Per Persom",
+                },
+                  new PriceType()
+                {
+                     BranchId = branchId,
+                     PriceTypeId=3,
+                     PriceTypeTitle= "Per Night",
+                }
+            };
+            List<SelectListItem> PriceTypeitems = new List<SelectListItem>();
+            PriceTypeitems.Add(new SelectListItem { Text = "Select a Price Type", Value = "0" });
+            foreach (PriceType item in PTlist)
+            {
+                bool slt = false;
+                if (PaidServiceId > 0)
+                {
+                    if (ps.PriceTypeId == item.PriceTypeId)
+                    {
+                        slt = true;
+                    }
+                }
+                PriceTypeitems.Add(new SelectListItem { Text = item.PriceTypeTitle, Value = item.PriceTypeId.ToString(), Selected = slt });
+            }
+            ViewBag.PriceTypeModel = PriceTypeitems;
+            Session["BranchId"] = branchId;
+            return View("AddTourItem", ps);
+        }
+        public ActionResult SaveServices(PaidServices paidServiceEntity)
+        {
+
+            PaidServicesController _psc = new PaidServicesController();
+            bool rtnVal = _psc.AddPaidServices(paidServiceEntity);
+            return RedirectToAction("AddTourItems");
+        }
+        public ActionResult GetTourItems(int? page, int? pSize)
+        {
+
+            int? DefaultPageSize = 10;
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            if (pSize != null)
+            {
+                DefaultPageSize = pSize;
+            }
+
+            ViewBag.pSize = new List<SelectListItem>()
+                    {
+                        new SelectListItem() { Value="2", Text= "2" },
+                        new SelectListItem() { Value="5", Text= "5" },
+                        new SelectListItem() { Value="10", Text= "10",Selected=true },
+                        new SelectListItem() { Value="15", Text= "15" },
+                        new SelectListItem() { Value="20", Text= "20" },
+                     };
+            int pageNumber = page ?? 1;
+            ViewBag.PageSize = DefaultPageSize;
+            PaidServicesController _psc = new PaidServicesController();
+            IEnumerable<PaidServices> rtm = _psc.GetpadServices(branchId).Where(d => d.isDeleted == false & d.IsTourItem == true );
+            Session["BranchId"] = branchId;
+            return View(rtm.ToPagedList(pageNumber, (int)DefaultPageSize));
+
+        }
+        public ActionResult DelTourServices(int PaidServiceId = 0)
+        {
+
+            PaidServicesController _ps = new PaidServicesController();
+            _ps.DeletePaidServices(PaidServiceId);
+            return RedirectToAction("GetTourItems");
+
+        }
+        public ActionResult BookTour()
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            BookedRoomController _rc = new BookedRoomController();
+            GuestsController _gst = new GuestsController();
+            
+            IEnumerable<BookedRoom> rm = _rc.GetAllBookedRoom(branchId).Where(r=>r.isActive==true && r.isCheckout==false);
+            List<SelectListItem> Roomitems = new List<SelectListItem>();
+            Roomitems.Add(new SelectListItem { Text = "Select a Room", Value = "0-0" });
+            foreach (BookedRoom item in rm)
+            {
+                Guests tmpGuest= _gst.GetExistingGuest(item.BranchId,item.BookingId);
+                string strGuest= tmpGuest.GuestId + "|" + tmpGuest.Name + "|" + tmpGuest.Phone + "|" + tmpGuest.email + "|" +  tmpGuest.Address  +"|"+ tmpGuest.city+"|"+ tmpGuest.pincode + "|" + tmpGuest.country;
+                Roomitems.Add(new SelectListItem { Text =  item.RoomNumber , Value = item.RoomId.ToString() +"-"+item.BookingId.ToString()+"-"+ strGuest });
+            }
+            ViewBag.RMComboModel = Roomitems;
+            ViewBag.BranchId = branchId;
+            Session["BranchId"] = branchId;
+
+            DocumentController DC = new DocumentController();
+            IEnumerable<DocumentType> DocTypeList = DC.GetDocumentTypes(branchId);
+
+            List<SelectListItem> avlDocs = new List<SelectListItem>();
+            avlDocs.Add(new SelectListItem { Text = "Select Document Type", Value = "0", Selected = true });
+            foreach (DocumentType item in DocTypeList)
+            {
+                bool slt = false;
+
+                avlDocs.Add(new SelectListItem { Text = item.DocumentTypeName.Trim(), Value = item.DocumentTypeId.ToString(), Selected = slt });
+            }
+            ViewBag.DocsComboModel = avlDocs;
+            return View("BookTour");
+        }
+        public TourBookingResponse SaveTourBooking(TourBookingRequest tourbookingEntity)
+        {
+            var rqst = Request.Form;
+            TourBookingResponse tbr = new TourBookingResponse();
+            TourController _tbk = new TourController();
+
+
+            return _tbk.createTourBooking(tourbookingEntity);
+        }
+        [HttpGet]
+        public JsonResult AutoCompleteForTourServices()
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            List<string> servicesList = new List<string>();
+            PaidServicesController _psc = new PaidServicesController();
+            IEnumerable<PaidServices> rtm = _psc.GetpadServices(branchId).Where(d => d.isDeleted == false & d.IsTourItem == true);
+            foreach (var item in rtm)
+            {
+               servicesList.Add((item.Title + "-" + item.Price + "~" + item.PaidServiceId));
+            }
+
+
+            return Json(servicesList.ToArray(), JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult BookedTours(int? page, int? pSize)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            
+            int? DefaultPageSize = 10;
+           
+           TourController _bks = new TourController();
+
+            if (pSize != null)
+            {
+                DefaultPageSize = pSize;
+            }
+            int pageNumber = page ?? 1;
+            IEnumerable<Tour> trList = _bks.GetTourBooking(branchId).OrderBy(d=>d.BookingDate);
+            Session["BranchId"] = branchId;
+
+            ViewBag.pSize = new List<SelectListItem>()
+                    {
+                        new SelectListItem() { Value="2", Text= "2" },
+                        new SelectListItem() { Value="5", Text= "5" },
+                        new SelectListItem() { Value="10", Text= "10" ,Selected=true },
+                        new SelectListItem() { Value="15", Text= "15" },
+                        new SelectListItem() { Value="20", Text= "20" },
+                     };
+            IPagedList<Tour> tbkslist = trList.ToPagedList(pageNumber, (int)DefaultPageSize);
+            return View("TourBookings", tbkslist);
+        }
+        public ActionResult PrintTour(int TourId)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            TourController _tr = new TourController();
+            TourBookingRequest tbr = _tr.GetTourBookingById(branchId, TourId);
+            
+            Session["BranchId"] = branchId;
+
+            
+            return View("PreviewTour", tbr);
+        }
+        public ActionResult CancellTour(int TourId)
+        {
+
+            
+                int branchId = int.Parse(Session["BranchId"].ToString());
+
+            TourController _bks = new TourController();
+            bool b=_bks.CancellTourBooking(TourId);
+            return RedirectToAction("BookedTours");
+            
+        }
+        public ActionResult MarkAsFullPayment(int TourId)
+        {
+
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            TourController _bks = new TourController();
+            bool b = _bks.MarkAsFullPayment(TourId);
+            return RedirectToAction("BookedTours");
+
+        }
+
 
     }
 }

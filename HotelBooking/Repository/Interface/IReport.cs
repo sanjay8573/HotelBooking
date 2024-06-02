@@ -10,6 +10,7 @@ namespace HotelBooking.Repository.Interface
     public interface IReport
     {
         VM_SalesReport getSalesReport(SalesReportRequest srr);
+        VM_TourSalesReport TourSalesReport(TourSalesReportRequest srr);
         VM_CommissionReport getCommissionReport(CommissionReportRequest crr);
         VM_StoreINOUTReport getStoreInoutReport(StoreINOUTReportRequest req);
         IEnumerable<RestaurantSalesReport> getRestaurantSalesReport(DateTime startDate, DateTime endDate,string restaurantName);
