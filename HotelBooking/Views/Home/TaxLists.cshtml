@@ -1,0 +1,100 @@
+﻿@using PagedList.Mvc
+@model PagedList.IPagedList<HotelBooking.Model.TaxMaster>
+@{
+    ViewBag.Title = "Tax Manager";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Taxes  <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Taxes</small> </span></div>
+            <div class="widget-content padded text-center">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12 pull-right">
+                            <button type="button" class="allbtnin  form-group" onclick="location.href='@Url.Action("TaxManager","Home")'"> +ADD</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 table-responsive">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 pull-left">
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left text-left">
+                                @using (Html.BeginForm("TaxLists", "Home", FormMethod.Get, new { id = "form1" }))
+                                {
+                                    <div id="pro_pag2">
+                                        Show @Html.DropDownList("pSize", (IEnumerable<SelectListItem>)ViewBag.pSize, new { @class = "onlyinput" }) Records
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr style="background: #eaeeef;">
+                                    <td colspan="13" align="left" valign="middle"><div class="allheadingin">Available Taxes</div></td>
+                                </tr>
+                                <tr class="trthbgclr">
+                                    <th class="text-center">#</th>
+                                    <th class="text-center">Tax Slab Name</th>
+                                    <th class="text-center">Display Name</th>
+                                    <th class="text-center">Start </th>
+                                    <th class="text-center">End </th>
+                                    <th class="text-center">Applied For</th>
+                                    <th class="text-center">Tax Type</th>
+                                    <th class="text-center">Tax Value</th>
+                                    <th class="text-center">Status</th>
+                                    <th colspan="2" class="text-center">Actions</th>
+                                </tr>
+                                @if (Model != null)
+                                {
+                                    var i = 1;
+                                    foreach (var bk in Model)
+                                    {
+                                        <tr class="active">
+                                            <td>@i</td>
+                                            <td align="center" valign="middle">@bk.Name</td>
+                                            <td align="center" valign="middle">@bk.Description</td>
+                                            <td align="center" valign="middle">@bk.RangeFrom</td>
+                                            <td align="center" valign="middle"> @bk.RangeTo</td>
+                                            <td align="center" valign="middle">@bk.appliedForName</td>
+                                            <td align="center" valign="middle">@bk.TaxType</td>
+                                            <td align="center" valign="middle">@bk.Value</td>
+                                            <td align="center" valign="middle">@bk.isActive</td>
+                                            <td align="center" valign="middle"><a href="@Url.Action("TaxManager","Home",new { @TaxId = bk.TaxId })">Edit</a></td>
+                                            <td align="center" valign="middle"><a href="@Url.Action("MakeTaxInActive","Home",new { @TaxId = bk.TaxId })">Make inActive</a></td>
+
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+
+                                <tr>
+                                    <td colspan="11">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <span class="float-left restextpagin">Showing Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount </span>
+
+                                            <div class="pagination pull-right">
+                                                @Html.PagedListPager(Model, page => Url.Action("TaxLists", new { page, pSize = ViewBag.PageSize }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        
+
+
+    });
+
+</script>

@@ -214,6 +214,7 @@ namespace HotelBooking.Repository.Implementation
                 if (RM != null)
                 {
                     RM.RestaurantMenuName=menuEntity.RestaurantMenuName;
+                    
                 }
                 else
                 {
@@ -248,6 +249,7 @@ namespace HotelBooking.Repository.Implementation
                 RestaurantMenuHeading RMH = _context.RestaurantMenuHeading.Find(menuHeadingEntity.MenuHeadingId); 
                 if (RMH != null) {
                     RMH.MenuHeadingName = menuHeadingEntity.MenuHeadingName;
+                    RMH.TaxSlabId= menuHeadingEntity.TaxSlabId;
                 }
                 else
                 {
@@ -321,7 +323,9 @@ namespace HotelBooking.Repository.Implementation
             foreach (var heading in rmh)
             {
                 List<RestaurantMenuItem> menuItemList = _context.RestaurantMenuItem.Where(mn => mn.MenuHeadingId == heading.MenuHeadingId).ToList();
+                double taxp = _context.TaxMaster.Where(m => m.TaxId == heading.TaxSlabId).SingleOrDefault().Value;
                 heading.MenuItems= menuItemList;
+                heading.TaxPercentage= taxp;
             }
             rm.MenuHeading = rmh;
             return rm;

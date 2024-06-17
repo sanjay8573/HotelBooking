@@ -214,7 +214,7 @@
                         </tr>
                         <tr>
                             <td class="trthbgclr" align="left" valign="middle">Amount </td>
-                            <td align="left" valign="middle">
+                            <td align="right" valign="middle">
                                 <input type="hidden" id="hdnRoomCost" />
                                 <strong>@ViewBag.CurrencySymbol</strong><strong id="totAmt">0.00</strong>
                             </td>
@@ -225,23 +225,23 @@
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tbody>
                                         <tr>
-                                            <td align="left">1</td>
-                                            <td align="left">Tax(s)</td>
-                                            <td align="left">@ViewBag.Taxpercentage</td>
+                                            <td align="right"></td>
+                                            
+                                            <input type="hidden" id="hdnRoomTax" />
                                             <input type="hidden" id="hdnTP" value="@ViewBag.Taxpercentage" />
-                                            <td align="left" width="30%"><strong>@ViewBag.CurrencySymbol</strong><strong id="taxVal">0.00</strong> @*<a href="#" data-toggle="modal" data-target="#AmountBreakup" class="pull-right">Amount/Breakup</a>*@</td>
+                                            <td align="right" width="30%"><strong>@ViewBag.CurrencySymbol</strong><strong id="taxVal">0.00</strong> @*<a href="#" data-toggle="modal" data-target="#AmountBreakup" class="pull-right">Amount/Breakup</a>*@</td>
                                         </tr>
-                                        <tr>
+                                        @*<tr>
                                             <td align="left" colspan="3"><strong>Total Tax</strong></td>
-                                            <td align="left"><strong>@ViewBag.CurrencySymbol</strong><strong id="taxTotal">0.00</strong></td>
-                                        </tr>
+                                            <td align="left"><strong>@ViewBag.CurrencySymbol</strong><strong id="taxTotal"> 0.00</strong></td>
+                                        </tr>*@
                                     </tbody>
                                 </table>
                             </td>
                         </tr>
                         <tr>
                             <td class="trthbgclr" align="left" valign="middle">Total Amount</td>
-                            <td align="left" valign="middle"><strong>@ViewBag.CurrencySymbol</strong><strong id="gTot">0.00</strong></td>
+                            <td align="right" valign="middle"><strong>@ViewBag.CurrencySymbol</strong><strong id="gTot">0.00</strong></td>
                         </tr>
                     </table>
 
@@ -425,7 +425,7 @@
                     CostCategory: 1,
                     Qty: 0,
                     Tax: item.Tax,
-                    TaxAmount: parseFloat(parseFloat((parseFloat(item.OfferPrice) * (parseFloat(tpp))))).toFixed(2)
+                    TaxAmount: parseFloat(parseFloat((parseFloat(item.OfferPrice) * (parseFloat(item.Tax/100))))).toFixed(2)
                 }
                 Bookingitem.AllNights.push(BookingCost);
 
@@ -438,9 +438,11 @@
 
             if (this.name == "CHK_PS_BK") {
                 if (this.checked) {
+                    var taxPercentage = $(this).attr("taxTag");
+                    const pstp = Number(taxPercentage / 100);
                     qtyid = this.id.replace("CHK_PS_BK", "QTY");
                     var qty = $("#" + qtyid).val();
-                    BookingCost = {
+                        BookingCost = {
                         BookingId: parseInt(BookingId),
                         BookingCostId: parseInt(0),
                         RoomTypeId: this.id.replace("CHK_PS_BK", ""),
@@ -450,8 +452,8 @@
                         OfferPrice: this.value,
                         CostCategory: 2,
                         Qty: qty,
-                        Tax: Number(tp).toFixed(2),
-                        TaxAmount: parseFloat(parseFloat(this.value * parseFloat(tpp))).toFixed(2)
+                        Tax: Number(pstp).toFixed(2),
+                        TaxAmount: parseFloat(parseFloat(this.value * parseFloat(pstp))*Number(qty)).toFixed(2)
                     }
                     Bookingitem.AllNights.push(BookingCost);
                    
@@ -550,31 +552,39 @@
                  function calculatePS() {
                     console.log('Calcuation for Paid services selected ');
                      var gTotal = $("#hdnRoomCost").val();
-                     
+                     var gTotalTax = $("#hdnRoomTax").val();
                      console.log('Current Total ' + gTotal);
-                     
+                     console.log('Current Tax ' + gTotalTax);
+                     var pdTaxes = 0;
                     $('input[type=checkbox]').each(function () {
 
                         
                         if (this.name == "CHK_PS_BK") {
                            
                             if (this.checked) {
+                                var taxPercentage = $(this).attr("taxTag");
                                 var txtId = this.id.replace("CHK_PS_BK", "QTY");
                                 var qty = $("#" + txtId).val();
-                                console.log('CHECKED id' + this.id + "  checked Value  " + this.value + " QTY=" + Number(qty));
+                               
+                                console.log('CHECKED id' + this.id + "  checked Value  " + this.value + " QTY=" + Number(qty) + " TAX=" + Number(taxPercentage));
                                 if (Number(qty) > 0) {
                                     var tmptotal = Number(qty) * Number(this.value);
-                                    gTotal = Number(gTotal) + Number(tmptotal);
-                                    console.log('gTotal' + gTotal);
+                                    tmppdTaxes = Number(tmptotal * taxPercentage / 100);
+                                    console.log("Taxex for " + tmppdTaxes)
+                                    gTotal = Number(gTotal) + Number(tmptotal) + Number(tmppdTaxes);
+                                    gTotalTax = Number(gTotalTax) + Number(tmppdTaxes);
+                                    console.log('gTotal::' + gTotal);
+                                    console.log("gTaxex ::" + gTotalTax)
                                 } 
                             }
                             
                         }
 
                     });
-
+                    
                     console.log('Final Total' + gTotal);
                      $("#totAmt").text(Number(gTotal).toFixed(2));
+                     $("#taxVal").text(Number(gTotalTax).toFixed(2));
                      $("#totAmt").trigger('change');  
     }
     
@@ -752,12 +762,13 @@
 
         //console.log("Current total Amount on selection :" + amt);
         var tottalAmount = $("#totAmt").text();
+        var totaltax = $("#taxVal").text();
         var tp = $("#hdnTP").val();
         //var taxpercentage = $("#txPct").text();
-        var totaltax = ((Number(tottalAmount) * Number(tp)) / 100).toFixed(2);
-        $("#taxVal").text(totaltax);
-        $("#taxTotal").text(totaltax);
-        var gTotalAmount = ((Number(tottalAmount) + Number(totaltax)));
+        //var totaltax = ((Number(tottalAmount) * Number(tp)) / 100).toFixed(2);
+        //$("#taxVal").text(totaltax);
+        //$("#taxTotal").text(totaltax);
+        var gTotalAmount = Number(tottalAmount);
         //console.log(" Grand Total  " + gTotalAmount);
         $("#gTot").text(gTotalAmount.toFixed(2));
 

@@ -82,32 +82,39 @@
                                         <th class="text-center">Added Service</th>
                                         <th class="text-center">Price/Unit</th>
                                         <th class="text-center">Qty.</th>
-                                        <th class="text-center">Item Total</th>
+                                        <th class="text-center">Total(incl.Tax)</th>
+                                        <th class="text-center">Tax</th>
 
                                     </tr>
                                     @{
                                         int i = 1;
                                         decimal gTotal = 0;
+                                        decimal gTax = 0;
                                     }
                                     @foreach (var item in Model.TourDetails)
                                     {
                                         var total = item.PerNightCost * item.Qty;
                                         gTotal = gTotal + total;
+                                        gTax = gTax + item.TaxAmount;
                                         <tr class="active">
                                             <td>@i</td>
                                             <td>@item.Description</td>
                                             <td align="center" valign="middle">@item.PerNightCost</td>
                                             <td align="center" valign="middle">@item.Qty</td>
                                             <td align="center" valign="middle">@total</td>
+                                            <td align="center" valign="middle">@item.TaxAmount</td>
 
                                         </tr>
                                         i++;
                                     }
 
-                                    <tr>
-                                        <th class="text-right" colspan="4">Grand Total</th>
-                                        <th class="text-center" colspan="4">@gTotal</th>
-                                    </tr>
+                                <tr>
+
+                                    <th class="text-right" colspan="4">Total Amount</th>
+                                    <th class="text-center" >@gTotal</th>
+                                   
+                                    <th class="text-center" >@gTax</th>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>

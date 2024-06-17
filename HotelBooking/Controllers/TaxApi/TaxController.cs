@@ -46,6 +46,18 @@ namespace HotelBooking.Controllers.TaxApi
         {
             _tax.DeleteTax(TaxId);
         }
+        [Route("api/Tax/GeTaxableItems/{BranchId}")]
+        [HttpGet]
+        public IEnumerable<TaxableItems> GeTaxableItems(int BranchId)
+        {
+            return _tax.GetAllTaxableItems(BranchId);
+        }
+        [Route("api/Tax/MakeTaxInActive/{BranchId}/{TaxId}")]
+        [HttpPost]
+        public bool MakeTaxInActive(int BranchId, int TaxId)
+        {
+            return _tax.MakeTaxInActive(TaxId);
+        }
 
     }
 }

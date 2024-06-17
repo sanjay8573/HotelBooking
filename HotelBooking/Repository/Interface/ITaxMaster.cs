@@ -13,6 +13,8 @@ namespace HotelBooking.Repository.Interface
         bool AddTax(TaxMaster taxMasterEntity);
         TaxMaster GetTaxForBranch(int branchId);
         bool DeleteTax(int taxId);
+        bool MakeTaxInActive(int taxId);
+        IEnumerable<TaxableItems> GetAllTaxableItems(int branchId);
 
     }
 }

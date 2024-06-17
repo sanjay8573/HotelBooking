@@ -114,6 +114,13 @@ namespace HotelBooking.Controllers
         {
             return _bk.CalendarData(Branchid);
         }
+        [HttpPost]
+        [Route("api/Booking/CalendarDataNew/{BranchId}")]
+        public IEnumerable<DashBoardData> CalendarDataNew(int Branchid,int month,int year)
+        {
+            return _bk.CalendarDataNew(Branchid, month, year);
+        }
+        
 
     }
 }

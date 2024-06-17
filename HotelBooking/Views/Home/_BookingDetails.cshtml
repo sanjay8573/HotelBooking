@@ -14,8 +14,10 @@
         @if (Model != null)
         {
             var i = 1;
+            decimal gtotalAmount = decimal.Parse("0");
             decimal totalAmount = decimal.Parse("0");
             decimal totalTax = decimal.Parse("0");
+            decimal calAmt =0;
             foreach (var p in Model)
             {
                 <tr>
@@ -29,33 +31,41 @@
                         <td>@p.Description</td>
                     }
 
+                    @if (@p.CostCategory == 1)
+                    {
+                        calAmt = @p.OfferPrice;
+                    }
+                    else
+                    {
+                        calAmt = @p.OfferPrice * @p.Qty;
+                    }
 
-
-                    <td align="right">@ViewBag.CurrencySymbol @p.OfferPrice</td>
+                    <td align="right">@ViewBag.CurrencySymbol @calAmt </td>
                     <input type="hidden" id="BookingCostId" value="@p.BookingCostId" />
                 </tr>
                 i++;
-                totalAmount = totalAmount + p.OfferPrice;
+                totalAmount = totalAmount + calAmt;
                 totalTax = totalTax + p.TaxAmount;
 
-            }
 
-            totalAmount = totalAmount + totalTax;
+            }
+            gtotalAmount = totalAmount + totalTax;
+
 
 
             <tr>
                 <td colspan="2" align="right">
-                    Tax(@ViewBag.TaxPercentage %) :
+                    Tax :
                     <a href="#" id="taxBreakup" data-toggle="modal" data-target="#TXBRK">Break-up</a>
                 </td>
                 <td align="right">@ViewBag.CurrencySymbol @totalTax</td>
             </tr>
             <tr>
                 <td colspan="2" align="right">Total : </td>
-                <td colspan="3" align="right">@ViewBag.CurrencySymbol @totalAmount</td>
+                <td colspan="3" align="right">@ViewBag.CurrencySymbol  @gtotalAmount</td>
             </tr>
 
-            <input type="hidden" id="TotalCostForNights" value="@totalAmount" />
+            <input type="hidden" id="TotalCostForNights" value="@gtotalAmount" />
 
         }
 

@@ -141,6 +141,11 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
+                                        <td class="text-right" colspan="4">Total Tax</td>
+                                        <td class="text-center" style="font-weight:bold" id="txtTotalTax">xxx.xx</td>
+                                        <td class="text-right">&nbsp;</td>
+                                    </tr>
+                                    <tr>
                                         <td class="text-right" colspan="4">Grand Total</td>
                                         <td class="text-center" style="font-weight:bold" id="txtTotalAmount">xxx.xx</td>
                                         <td class="text-right">&nbsp;</td>
@@ -364,11 +369,14 @@
                         b = document.createElement("DIV");
                         b.innerHTML = "<strong>" + tmpArr[0].substr(0, val.length) + "</strong>";
                         b.innerHTML += tmpArr[0].substr(val.length);
-                        b.innerHTML += "<input type='hidden' id='" + tmpArr[1] + "' value='" + tmpArr[0] + "'>";
+                        var arrData = tmpArr[1].split("-");
+                        b.innerHTML += "<input type='hidden' id='" + arrData[0] + "' value='" + tmpArr[0] + "'>";
+                        b.innerHTML += "<input type='hidden' id='" + arrData[1] + "' value='" + arrData[1] + "'>";
 
                         b.addEventListener("click", function (e) {
                             inp.value = this.getElementsByTagName("input")[0].value;
                             inp.setAttribute("ServiceId", this.getElementsByTagName("input")[0].id);
+                            inp.setAttribute("TaxP", this.getElementsByTagName("input")[1].id);
 
                             $("#MtxtQty").focus();
                             closeAllLists();
@@ -465,6 +473,7 @@
         //var itmNo = Number($("#hdnItems").val()) + 1;
         var itmNo = $("#txtServiceName").attr('ServiceId');
         var ServiceItemId = "ServiceItem_" + itmNo;
+        var TaxPercentage = $("#txtServiceName").attr('TaxP');
         //$("#billdetails").append('<div id="' + foodItemId + '" class="Subgroupmain"><input id="txtItemName" type="text" value="' + itemName + '"> <input id="txtQty" type="text" value="' + ItemQty + '"><input id="txtTotal" type="text" value="' + ItemTotal + '"></div>');
 
         
@@ -473,7 +482,7 @@
         divHtml1 += '<td align="center" valign="middle">' + ItemQty + '</td>';
         divHtml1 += '<td align="center" valign="middle">' + startDate + '</td>';
         divHtml1 += '<td align="center" valign="middle">' + endDate + '</td>';
-        divHtml1 += '<td align="center" valign="middle">' + ItemTotal +'</td>';
+        divHtml1 += '<td align="center" valign="middle">' + ItemTotal + '<input type="hidden" id="' + TaxPercentage + '" value="' + TaxPercentage +'" /></td>';
         divHtml1 += '<td align="center" valign="middle"><a href="#" class="closebtn deletebtn" onClick="removeRow(this)"><i class="fa fa-trash-o"></i></a></td>';
        
         divHtml1 += '</tr>';
@@ -491,17 +500,22 @@
     }
     function calculateTotal() {
         var totalAmount = 0;
-        const tp = $("#hdnTP").val();
+        
+        var taxAmount = 0;
+        
 
         $("#SelectedServiceTable > tbody > tr").each(function () {
             var itemval = $(this).find('td').eq(4).text();// + " " + $(this).find('td').eq(1).text());
-          
+            var TP = $(this).find('input[type=hidden]').val();
             totalAmount = Number(totalAmount) + Number(itemval);
+            taxAmount = Number(totalAmount) * Number(TP) / 100;
+            totalAmount = totalAmount + taxAmount;
            
         });
        
 
         $("#txtTotalAmount").text(Number(totalAmount).toFixed(2));
+        $("#txtTotalTax").text(Number(taxAmount).toFixed(2));
         
     }
     function removeRow(rr) {
@@ -526,7 +540,7 @@
         const RoomNumber = $.trim($("#SelRoomNumber option:selected").text()); 
       
         const TotalAmount = $("#txtTotalAmount").text();
-        const TotalTax = "0.00";
+        const TotalTax = $("#txtTotalTax").text();
         const PayableAmount = $("#txtTotalAmount").text();
         const discount = "0.00";
         const couponCode = "XXXX";
@@ -623,8 +637,10 @@
             var qty = $(this).find('td').eq(1).text();
             var sDate = $(this).find('td').eq(2).text();
             var eDate = $(this).find('td').eq(3).text();
+            var tp = $(this).find('input[type=hidden]').val();
             var itemval = $(this).find('td').eq(4).text();// + " " + $(this).find('td').eq(1).text());
-
+            var TaxAmount = Number(itemval) * Number(tp) / 100;
+            itemval = Number(itemval) + Number(TaxAmount);
             BookingCost = {
                 BookingId: parseInt(BookingId),
                 BookingCostId: parseInt(0),
@@ -635,8 +651,8 @@
                 OfferPrice: itemval,
                 CostCategory: 3,
                 Qty: qty,
-                Tax: 0,
-                TaxAmount:0.00
+                Tax: tp,
+                TaxAmount: TaxAmount
                 //TaxAmount: parseFloat(parseFloat((parseFloat(item.OfferPrice) * (parseFloat(tpp))))).toFixed(2)
             }
             TourBookingRwquest.TourDetails.push(BookingCost);

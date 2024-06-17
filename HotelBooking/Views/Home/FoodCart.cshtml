@@ -155,6 +155,7 @@
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 form-group">
                                     <input type="text" id="MtxtTotal" readonly="readonly" class="full-width" placeholder="Total" runat="server">
+                                    <input type="hidden" id="MTaxPer" value="0" />
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 form-group">
                                     <button type="button" tabindex="3" disabled="true" id="btnAdd" class="addbtnitem full-width" onclick="addtoCart();">Add</button>
@@ -171,9 +172,12 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-left">
-                                        <p>Total <strong class="pull-right" id="txtTotalAmount"> </strong></p>
-                                        <p>Tax <strong class="pull-right" id="txtTaxAmt"> </strong></p>
-                                        <p>Grand Total <strong class="pull-right" id="txtGTotal"></strong></p>
+                                        <p>Total(incl. of Tax) <strong class="pull-right" id="txtTotalAmount"> </strong></p>
+                                        <p style="visibility:hidden">Tax <strong class="pull-right" id="txtTaxAmt"> </strong></p>
+                                        <p style="visibility:hidden">Grand Total <strong class="pull-right" id="txtGTotal"></strong></p>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-left" id="TaxDetailsDiv">
+                                        
                                     </div>
                                 </div>
                                 <div class="row">
@@ -383,19 +387,23 @@
             //    console.log('You pressed a "enter" key in textbox');
             //    $("#btnAdd").focus();
             //}
-            console.log("HHHHHH");
-            console.log("HHHHHH" + $('#txtItemNameMaster').val());
+          
+            //console.log("HHHHHH" + $('#txtItemNameMaster').val());
             var ArrVal = $('#txtItemNameMaster').val();
-            console.log(ArrVal);
+            //console.log(ArrVal);
 
             var ArrData = ArrVal.split("-");
             var rate = ArrData[1];
+            var taxRate = ArrData[2];
             var number = document.getElementById("MtxtQty").value;
-            console.log("qty" + number);
+            
+            //console.log("qty" + number);
             if (number != 0) {
                 document.getElementById("MtxtTotal").value = Number(Number(number) * Number(rate)).toFixed(2);
+                document.getElementById("MTaxPer").value = taxRate; 
             } else {
                 document.getElementById("MtxtTotal").value = 0;
+                document.getElementById("MTaxPer").value = 0;; 
             }
         });
 
@@ -477,17 +485,17 @@
         itemName = $("#txtItemNameMaster").val();
         ItemQty = $("#MtxtQty").val();
         ItemTotal = $("#MtxtTotal").val();
+        ItemTaxRate = $("#MTaxPer").val();
 
-
-        //var itmNo = Number($("#hdnItems").val()) + 1;
-        var itmNo = $("#txtItemNameMaster").attr('menuitemid');
+        var itmNo = Number($("#hdnItems").val()) + 1;
+        //var itmNo = $("#txtItemNameMaster").attr('menuitemid');
         var foodItemId = "FoodItem_" + itmNo;
         //$("#billdetails").append('<div id="' + foodItemId + '" class="Subgroupmain"><input id="txtItemName" type="text" value="' + itemName + '"> <input id="txtQty" type="text" value="' + ItemQty + '"><input id="txtTotal" type="text" value="' + ItemTotal + '"></div>');
 
         var divHtml = '<div class="row" id="' + foodItemId +'"><div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">';
         divHtml += '<input type="text" id="' + itmNo +'" class="full-width height35"  disabled runat="server" value="' + itemName +'"></div>';
         divHtml += '<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12"><input type="text" id="0" onkeyup="myCALFunction(this)" class="full-width height35" placeholder="Quantity" runat="server" value="' + ItemQty +'"> </div>';
-        divHtml += '<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"><input type="text" id="txtRoomNumber" class="full-width height35" placeholder="Total" disabled runat="server" value="' + ItemTotal +'"></div> </div>';
+        divHtml += '<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"><input type="text" id="' + foodItemId+"-"+ItemTaxRate +'" class="full-width height35" placeholder="Total" disabled runat="server" value="' + ItemTotal +'"></div> </div>';
 
         $("#billdetails").append(divHtml);
 
@@ -500,6 +508,7 @@
     }
     function calculateTotal() {
         var totalAmount = 0;
+        const TaxDetails = [];
         const tp = $("#hdnTP").val();
         $("#billdetails > div").each(function (idx, el) {
             divId = el.id;
@@ -507,12 +516,47 @@
             $("#" + cuurenDivId + " input:text").each(function (idx, el1) {
                 if (idx == 2) {
                     var itemval = $(el1).val();
-                    totalAmount = Number(totalAmount) + Number(itemval);
-                    //console.log("TTTT" + $(el1).val());
+                    var tpArr = el1.id.split("-");
+                    //console.log("bbbbbbb" + tpArr[1]);
+                    var taxAmount = Number(itemval) * Number(tpArr[1]) / 100;
+                    var taxData = {
+                        TaxP: tpArr[1],
+                        TaxAmount: taxAmount
+                    };
+                    TaxDetails.push(taxData);
+
+                    console.log("Tax Amounts 11 ::" + JSON.stringify(taxData));
+                    totalAmount = Number(totalAmount) + Number(itemval) + Number(taxAmount);
+                   
                 }
             });
         });
+        console.log("Tax Amounts ::" + JSON.stringify(TaxDetails));
 
+        
+
+        var result = [];
+        TaxDetails.reduce(function (res, value) {
+            if (!res[value.TaxP]) {
+                res[value.TaxP] = { TaxP: value.TaxP, TaxAmount: 0 };
+                result.push(res[value.TaxP])
+            }
+            res[value.TaxP].TaxAmount += value.TaxAmount;
+            return res;
+        }, {});
+        var gTotalTax = 0;
+        var taxHtml = ' <p>Tax Details <strong class="pull-right"> </strong></p>';
+        $.each(result, function () {
+            console.log(this.TaxP)
+           
+            taxHtml += '<p> &#64;' + this.TaxP + ' % <strong  class="pull-right"> ' + Number(this.TaxAmount).toFixed(2) +'</strong></p>';
+            gTotalTax = Number(gTotalTax) + Number(this.TaxAmount);
+           
+        });
+        taxHtml += '<p>Total Tax  <strong id="txtTotalTaxtAmount" class="pull-right">' + Number(gTotalTax).toFixed(2) +'</strong></p>';
+        $('#TaxDetailsDiv').empty();
+        $("#TaxDetailsDiv").append(taxHtml);
+        console.log("Tax Group ::" + JSON.stringify(result));
         $("#txtTotalAmount").text(Number(totalAmount).toFixed(2));
         var txtTaxAmt = (totalAmount * Number(tp)) / 100;
         $("#txtTaxAmt").text(Number(txtTaxAmt).toFixed(2))
@@ -526,14 +570,15 @@
         var isRoomService = $("#hdnisRoomService").val();
         var BiilingMaterId;
         BiilingMaterId = $("#hdnBiilingMaterId").val();
-        const tp = $("#hdnTP").val();
+        var tAmount = Number($("#txtTotalAmount").text()) - Number($("#txtTotalTaxtAmount").text());
+        var tp = 0;
         var BillingMaster = {
             BillingId: BiilingMaterId,
             RestaurantId: txtRestroId,
             TableNo_RoomNumber: txtRoom_tableId,
-            TotalAmount: Number($("#txtTotalAmount").text()).toFixed(2),
+            TotalAmount: Number(tAmount).toFixed(2),
             Tax: Number(tp).toFixed(),
-            TaxAmount: Number($("#txtTaxAmt").text()).toFixed(),
+            TaxAmount: Number($("#txtTotalTaxtAmount").text()).toFixed(2),
             GrantTotal: Number($("#txtGTotal").text()),
             isPark: true,
             isRoomService: isRoomService,
@@ -561,8 +606,14 @@
 
                 }
                 if (idx == 2) {
+
+                    var tpArr = el1.id.split("-");
+                    //console.log("bbbbbbb" + tpArr[1]);
                     txtAmount = $(el1).val();
-                    txtAount = Number(txtAmount * tp / 100).toFixed();
+                    tp = Number(tpArr[1]).toFixed(2);
+                    txtAount = Number(txtAmount) * Number(tpArr[1]) / 100;
+                   
+                    
 
                 }
             });

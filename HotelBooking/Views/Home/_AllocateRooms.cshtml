@@ -9,7 +9,12 @@
     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">&nbsp;</div>
     <table class="table table-bordered">
         <tbody>
-
+            <thead>
+                <tr><td>
+    <input class="styled-checkbox" id="isPreUpgraded" checked="@ViewBag.isUpGraded" onclick="getAllRoomsTypes();" type="checkbox" name="CHK_UPGRADE">
+    <label for="isPreUpgraded"> UpGrade</label>
+</td></tr>
+            </thead>
 
             @if (ViewBag.nRooms != null)
             {
@@ -37,7 +42,7 @@
 
                         <td align="center" valign="middle">
                             <select id="@selname" required=required name="@selname" onchange="GetSelectedTextValue('@i',this);" class="full-width ddselect" runat="server">
-                                >
+                                
                                 @if (ViewBag.RMComboModel != null)
                                 {
                                     foreach (var item in ViewBag.RMComboModel)
@@ -228,6 +233,7 @@
         const CheckOut = $("#coutDate").val();
         const BookingId = $("#BookingId").val();
         const BranchId = $("#BranchId").val();
+        var isUpgraded = $("#isPreUpgraded").is(":checked");
         const BookedRoomitem = {
             BookingId: parseInt(BookingId),
             RoomId: parseInt(rmids[0]),
@@ -240,7 +246,8 @@
             CheckOut: CheckOut,
             RoomNumber: RoomNumber,
             BranchId: parseInt(BranchId),
-            isActive: 1
+            isActive: 1,
+            isPreUpgraded: isUpgraded
         };
 
         console.log(BookedRoomitem);
@@ -291,4 +298,12 @@
         $("#" + dtflr).text(rmTxtAryy[2].trim());
         console.log(idn + "   " + rmTxtAryy[1].trim() + "  " + dtflr + " Room Id   " + selectedVal);
     }
+
+    $("#isPreUpgraded").change(function () {
+        if (this.checked) {
+            UpdatetoAvailableRooms('true');
+        } else {
+            UpdatetoAvailableRooms('false');
+        }
+    });
 </script>

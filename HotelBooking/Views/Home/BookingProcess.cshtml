@@ -248,7 +248,7 @@
             console.log("test3.......");
             const RoomTypeId = $("#RoomTypeId").val();
             console.log("Booking made for= " + RoomTypeId);
-            var url = "/Home/_AllocateRooms?BookingId=" + BookingId + "&RoomTypeId='" + RoomTypeId + "'&nor=" + nRooms;
+            var url = "/Home/_AllocateRooms?BookingId=" + BookingId + "&RoomTypeId='" + RoomTypeId + "'&nor=" + nRooms +"&isUpGraded=0";
             console.log("Url for alocate Room= " + url);
             $("#AllocateRoomDIV").load(url);
 
@@ -362,4 +362,19 @@
         console.log("omload click detail");
 
     });
+
+   function UpdatetoAvailableRooms(up) {
+
+        var BookingId = $("#BookingId").val();
+        var nRooms = $("#NoOfRooms").val();
+        console.log("test3.......");
+        const RoomTypeId = $("#RoomTypeId").val();
+        console.log("Booking made for= " + RoomTypeId);
+       var url = "/Home/_AllocateRooms?BookingId=" + BookingId + "&RoomTypeId='" + RoomTypeId + "'&nor=" + nRooms + "&isUpGraded=" + up;
+        console.log("Url for alocate Room= " + url);
+        $("#AllocateRoomDIV").load(url);
+
+
+
+    }
 </script>

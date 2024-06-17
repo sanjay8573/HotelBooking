@@ -20,28 +20,31 @@ namespace HotelBooking.Repository.Implementation
             _context = new CompanyContext();
 
         }
-        public bool AddPrice(PriceManager PMEntity)
+        public string AddPrice(PriceManager PMEntity)
         {
-            bool rtnVal = false;
+            string rtnVal = string.Empty;
             if (PMEntity.PriceManageId > 0)
             {
                 int rtnVal1 = UpdatePrice(PMEntity);
                 if (rtnVal1 > 0)
                 {
-                    rtnVal = true;
+                    rtnVal = "Price updated Successfully!!";
                 }
 
             }
             else
             {
-                PriceManager tmpPM = _context.PriceManager.Where(r => r.RoomTypeId == PMEntity.RoomTypeId && r.isActive == true).SingleOrDefault<PriceManager>();
+                PriceManager tmpPM = _context.PriceManager.Where(r => r.RoomTypeId == PMEntity.RoomTypeId ).SingleOrDefault<PriceManager>();
                 if (tmpPM != null)
                 {
-                    int rtnVal1 = UpdatePrice(PMEntity);
-                    if (rtnVal1 > 0)
-                    {
-                        rtnVal = true;
-                    }
+
+                    //int rtnVal1 = UpdatePrice(PMEntity);
+                    //if (rtnVal1 > 0)
+                    //{
+                    //    rtnVal = true;
+                    //}
+                    rtnVal = "Price for this Room Type is Already Exists!!";
+
                 }
                 else
                 {
@@ -49,12 +52,12 @@ namespace HotelBooking.Repository.Implementation
                     {
                         _context.PriceManager.Add(PMEntity);
                         _context.SaveChanges();
-                        rtnVal = true;
+                        rtnVal = "Price added Successfully!!";
                     }
                     catch (Exception ex)
                     {
 
-                        return false;
+                        rtnVal = "Opp something went wrong!!";
                     }
                 }
 

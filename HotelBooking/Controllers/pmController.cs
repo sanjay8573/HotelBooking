@@ -30,7 +30,7 @@ namespace HotelBooking.Controllers
 
         [HttpPost]
         [Route("api/pm/AddPrice/{BranchId}")]
-        public bool AddPrice(PriceManager PriceManagerEntity)
+        public string AddPrice(PriceManager PriceManagerEntity)
         {
             return _IPM.AddPrice(PriceManagerEntity);
         }

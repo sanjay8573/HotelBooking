@@ -3,13 +3,25 @@
 @{
     ViewBag.Title = "PriceManager";
 }
+@{
 
+
+    var tdata = Session["ReturnValue"] as string;
+   
+
+
+}
 <div class="row">
     <div class="col-sm-12">
         <div class="card widget-container">
-            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Price Manager <small>Lists</small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Price Manager</small> </span></div>
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Price Manager <small></small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Price Manager</small> </span></div>
             <div class="widget-content padded text-center">
                 <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                        <div class="col-lg-8 col-md-8 col-sm-1 col-xs-12">
+                            <span>@ViewBag.ReturnValue </span>
+                        </div>
+                    </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12 pull-right">
                             <button type="button" class="allbtnin  form-group" onclick="location.href='@Url.Action("AddPrice","Home", new {@PriceManagerId = 0, tab=1 })'"> +ADD</button>
@@ -17,7 +29,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 pull-left">
                             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left text-left">
                                 @using (Html.BeginForm("PriceManager", "Home", FormMethod.Get, new { id = "form1" }))
@@ -68,13 +80,14 @@
                                             <td align="left" valign="middle"><a href="@Url.Action("DelPrice", "Home", new { @PriceManageId = ps.PriceManageId })" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
 
                                         </tr>
+                                        i++;
                                     }
                                 }
                                 <tr>
 
                                     <td colspan="11">
                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <span class="float-left restextpagin">@(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</span>
+                                            <span class="float-left restextpagin"> Showing Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</span>
                                            
                                             <div class="pagination pull-right">
                                                 @Html.PagedListPager(Model, page => Url.Action("PriceManager", new { page, pSize = ViewBag.PageSize }), PagedListRenderOptions.ClassicPlusFirstAndLast)

@@ -14,7 +14,7 @@
                     <td align="left" width="70%" class="tpad">@ps.Title</td>
                     @*<td align="left">@ps.PriceType</td>*@
                 <td align="left" width="5%" class="tpad">
-                    <input class="styled-checkbox" id="@chkId" onclick="calculatePS();" type="checkbox" value="@ps.Price" title="@ps.Title" name="CHK_PS_BK">
+                    <input class="styled-checkbox" id="@chkId" onclick="calculatePS();" taxTag="@ps.TaxPercentage" type="checkbox" value="@ps.Price" title="@ps.Title" name="CHK_PS_BK">
                     <label for="@chkId" ></label>
                 </td>
                     <td align="left" width="10%"><input type="text" id="@txtQTY" oninput="calculatePS();"  class="full-width mg-0" placeholder="0" runat="server"></td>

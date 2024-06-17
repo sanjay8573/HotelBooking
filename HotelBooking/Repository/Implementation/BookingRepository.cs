@@ -1,8 +1,10 @@
 ﻿using HotelBooking.Context;
 using HotelBooking.Model;
 using HotelBooking.Model.Reatraurant;
+using HotelBooking.Model.Report;
 using HotelBooking.Model.Tour;
 using HotelBooking.Repository.Interface;
+using Org.BouncyCastle.Ocsp;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -343,9 +345,11 @@ namespace HotelBooking.Repository.Implementation
             DateTime startDate = new DateTime(yy,mm,dd);
             DateTime endDate = new DateTime(yy1, mm1, dd1);
 
-            //Tax for  branch
-            TaxMaster TM = _context.TaxMaster.Where(t => t.BranchId == req.BranchId).FirstOrDefault();
-            decimal taxVal =decimal.Parse(TM.Value.ToString());
+            //Tax calcution  for  branch based on tax configured
+            //TaxMaster TM = _context.TaxMaster.Where(t => t.BranchId == req.BranchId).FirstOrDefault();
+            //IEnumerable<TaxMaster> allTax = _context.TaxMaster.Where(t => t.BranchId == req.BranchId).ToArray();
+
+            //decimal taxVal =decimal.Parse(TM.Value.ToString());
             for (DateTime date = startDate; date < endDate; date = date.AddDays(1))
             {
                 allDates.Add(date.Date);
@@ -358,77 +362,107 @@ namespace HotelBooking.Repository.Implementation
                 decimal spclAmount = GetSpecialRate(t, PM.RoomTypeId);
                 if ("MON" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
                 {
-                    
 
+                    decimal amt = (spclAmount > 0 ? spclAmount : PM.MON);                    
+                    TaxMaster _tm = getConfiguredTax("ROOMS", req.BranchId, double.Parse(amt.ToString()));
+                    decimal taxVal = Decimal.Parse(_tm.Value.ToString());                   
+                    string TextType = _tm.TaxType;
+                    decimal _TaxAmount = (TextType=="P")? amt* taxVal / 100: amt+ taxVal;
                     PriceResponse p = new PriceResponse
                     {
+                        
                        
                         roomTypeId = PM.RoomTypeId,
                         Tax = taxVal,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
-                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.MON) * taxVal / 100),
-                        Amount = spclAmount > 0? spclAmount : PM.MON,
-                        OfferPrice = spclAmount > 0 ? spclAmount : PM.MON,
+                        TaxAmount = _TaxAmount,
+                        Amount = amt,
+                        OfferPrice = amt,
                         BookingCostId = req.nOfRoom,
                         CostId=PM.PriceManageId,
                         Description=PM.RoomTypeTitle,
                         isAvailable=true
                     };
+                    if (!isRoomTypeAvailable(PM.RoomTypeId, req.BranchId, t))
+                    {
+                        p.isAvailable = false;
+                    }
                     ListpResp.Add(p);
 
                 }
                 if ("TUE" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
                 {
-
+                    decimal amt = (spclAmount > 0 ? spclAmount : PM.TUE);
+                    TaxMaster _tm = getConfiguredTax("ROOMS", req.BranchId, double.Parse(amt.ToString()));
+                    decimal taxVal = Decimal.Parse(_tm.Value.ToString());
+                    string TextType = _tm.TaxType;
+                    decimal _TaxAmount = (TextType == "P") ? amt * taxVal / 100 : amt + taxVal;
                     PriceResponse p = new PriceResponse
                     {
                         roomTypeId = PM.RoomTypeId,
                         Tax = taxVal,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
-                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.TUE) * taxVal / 100),
-                        Amount = spclAmount > 0 ? spclAmount : PM.TUE,
-                        OfferPrice = spclAmount > 0 ? spclAmount : PM.TUE,
+                        TaxAmount = _TaxAmount,
+                        Amount = amt,
+                        OfferPrice = amt,
                         BookingCostId = req.nOfRoom,
                         CostId = PM.PriceManageId,
                         Description = PM.RoomTypeTitle,
                         isAvailable = true
                     };
+                    if (!isRoomTypeAvailable(PM.RoomTypeId, req.BranchId, t))
+                    {
+                        p.isAvailable = false;
+                    }
                     ListpResp.Add(p);
 
                 }
                 if ("WED" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
                 {
+                    decimal amt = (spclAmount > 0 ? spclAmount : PM.WED);
+                    TaxMaster _tm = getConfiguredTax("ROOMS", req.BranchId, double.Parse(amt.ToString()));
+                    decimal taxVal = Decimal.Parse(_tm.Value.ToString());
+                    string TextType = _tm.TaxType;
+                    decimal _TaxAmount = (TextType == "P") ? amt * taxVal / 100 : amt + taxVal;
                     PriceResponse p = new PriceResponse
                     {
                         roomTypeId = PM.RoomTypeId,
                         Tax = taxVal,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
-                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.WED) * taxVal / 100),
-                        Amount = spclAmount > 0 ? spclAmount : PM.WED,
-                        OfferPrice = spclAmount > 0 ? spclAmount : PM.WED,
+                        TaxAmount = _TaxAmount,
+                        Amount = amt,
+                        OfferPrice = amt,
                         BookingCostId = req.nOfRoom,
                         CostId = PM.PriceManageId,
                         Description = PM.RoomTypeTitle,
                         isAvailable = true
                     };
+                    if (!isRoomTypeAvailable(PM.RoomTypeId, req.BranchId, t))
+                    {
+                        p.isAvailable = false;
+                    }
                     ListpResp.Add(p);
 
                 }
                 if ("THU" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
                 {
-                    
+                    decimal amt = (spclAmount > 0 ? spclAmount : PM.THUR);
+                    TaxMaster _tm = getConfiguredTax("ROOMS", req.BranchId, double.Parse(amt.ToString()));
+                    decimal taxVal = Decimal.Parse(_tm.Value.ToString());
+                    string TextType = _tm.TaxType;
+                    decimal _TaxAmount = (TextType == "P") ? amt * taxVal / 100 : amt + taxVal;
                     PriceResponse p = new PriceResponse
                     {
                         roomTypeId = PM.RoomTypeId,
                         Tax = taxVal,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
-                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.THUR) * taxVal / 100),
-                        Amount = spclAmount > 0 ? spclAmount : PM.THUR,
-                        OfferPrice = spclAmount > 0 ? spclAmount : PM.THUR,
+                        TaxAmount = _TaxAmount,
+                        Amount = amt,
+                        OfferPrice = amt,
                         BookingCostId = req.nOfRoom,
                         CostId = PM.PriceManageId,
                         Description = PM.RoomTypeTitle,
@@ -442,15 +476,20 @@ namespace HotelBooking.Repository.Implementation
                 }
                 if ("FRI" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
                 {
+                    decimal amt = (spclAmount > 0 ? spclAmount : PM.FRI);
+                    TaxMaster _tm = getConfiguredTax("ROOMS", req.BranchId, double.Parse(amt.ToString()));
+                    decimal taxVal = Decimal.Parse(_tm.Value.ToString());
+                    string TextType = _tm.TaxType;
+                    decimal _TaxAmount = (TextType == "P") ? amt * taxVal / 100 :  taxVal;
                     PriceResponse p = new PriceResponse
                     {
                         roomTypeId = PM.RoomTypeId,
                         Tax = taxVal,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
-                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.FRI) * taxVal / 100),
-                        Amount = spclAmount > 0 ? spclAmount : PM.FRI,
-                        OfferPrice = spclAmount > 0 ? spclAmount : PM.FRI,
+                        TaxAmount =_TaxAmount,
+                        Amount = amt,
+                        OfferPrice = amt,
                         BookingCostId = req.nOfRoom,
                         CostId = PM.PriceManageId,
                         Description = PM.RoomTypeTitle,
@@ -464,21 +503,26 @@ namespace HotelBooking.Repository.Implementation
                 }
                 if ("SAT" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
                 {
+                    decimal amt = (spclAmount > 0 ? spclAmount : PM.TUE);
+                    TaxMaster _tm = getConfiguredTax("ROOMS", req.BranchId, double.Parse(amt.ToString()));
+                    decimal taxVal = Decimal.Parse(_tm.Value.ToString());
+                    string TextType = _tm.TaxType;
+                    decimal _TaxAmount = (TextType == "P") ? amt * taxVal / 100 : amt + taxVal;
                     PriceResponse p = new PriceResponse
                     {
                         roomTypeId = PM.RoomTypeId,
                         Tax = taxVal,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
-                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.SAT) * taxVal / 100),
-                        Amount = spclAmount > 0 ? spclAmount : PM.SAT,
-                        OfferPrice = spclAmount > 0 ? spclAmount : PM.SAT,
+                        TaxAmount = _TaxAmount,
+                        Amount = amt,
+                        OfferPrice = amt,
                         BookingCostId = req.nOfRoom,
                         CostId = PM.PriceManageId,
                         Description = PM.RoomTypeTitle,
                         isAvailable = true
                     };
-                    if (isRoomTypeAvailable(PM.RoomTypeId, req.BranchId, t))
+                    if (!isRoomTypeAvailable(PM.RoomTypeId, req.BranchId, t))
                     {
                         p.isAvailable = false;
                     }
@@ -486,20 +530,29 @@ namespace HotelBooking.Repository.Implementation
                 }
                 if ("SUN" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
                 {
+                    decimal amt = (spclAmount > 0 ? spclAmount : PM.TUE);
+                    TaxMaster _tm = getConfiguredTax("ROOMS", req.BranchId, double.Parse(amt.ToString()));
+                    decimal taxVal = Decimal.Parse(_tm.Value.ToString());
+                    string TextType = _tm.TaxType;
+                    decimal _TaxAmount = (TextType == "P") ? amt * taxVal / 100 : amt + taxVal;
                     PriceResponse p = new PriceResponse
                     {
                         roomTypeId = PM.RoomTypeId,
                         Tax = taxVal,
                         Date = t.Date.ToString("d"),
                         Day = t.DayOfWeek.ToString(),
-                        TaxAmount = ((spclAmount > 0 ? spclAmount : PM.SUN) * taxVal / 100),
-                        Amount = spclAmount > 0 ? spclAmount : PM.SUN,
-                        OfferPrice = spclAmount > 0 ? spclAmount : PM.SUN,
+                        TaxAmount = _TaxAmount,
+                        Amount = amt,
+                        OfferPrice = amt,
                         BookingCostId = req.nOfRoom,
                         CostId = PM.PriceManageId,
                         Description = PM.RoomTypeTitle,
                         isAvailable = true
                     };
+                    if (!isRoomTypeAvailable(PM.RoomTypeId, req.BranchId, t))
+                    {
+                        p.isAvailable = false;
+                    }
                     ListpResp.Add(p);
                 }
                 
@@ -656,8 +709,8 @@ namespace HotelBooking.Repository.Implementation
             int lastPaymentId = dc.DocNumber + 1;
             dc.DocNumber = lastPaymentId;
 
-            rtnInvStr = "INV" + brdata.BranchName.Substring(0, 2) + brdata.Id.ToString() + lastPaymentId.ToString();
-            rtnOrdStr = "ORD" + brdata.BranchName.Substring(0, 2) + brdata.Id.ToString() + lastPaymentId.ToString();
+            rtnInvStr = "INV" + brdata.BranchName.Substring(0, 2).ToUpper() + brdata.Id.ToString() + lastPaymentId.ToString();
+            rtnOrdStr = "ORD" + brdata.BranchName.Substring(0, 2).ToUpper() + brdata.Id.ToString() + lastPaymentId.ToString();
             bkpEntity.InvoiceNumber = rtnInvStr;//generateInvoiceNumber(bkpEntity.BranchId);
             bkpEntity.OrderNumber = rtnOrdStr;//generateOrderNumber(bkpEntity.BranchId);
             bkpEntity.PaymentDate = DateTime.Now;
@@ -812,7 +865,18 @@ namespace HotelBooking.Repository.Implementation
             return bkedRoom;
 
         }
-        
+        public IEnumerable<DashBoardData> CalendarDataNew(int BranchId,int month, int Year)
+        {
+            string strsql = "exec FSP_GetBookedRoomMonthWise @Branchid=" + BranchId + ",@month=" + month + ",@year=" + Year;
+           
+            
+            IEnumerable<DashBoardData> ds = new List<DashBoardData>();
+            ds=_context.Database.SqlQuery<DashBoardData>(strsql).ToList();
+
+            return ds;
+
+        }
+
 
         private string generateInvoiceNumber(int branchId)
         {
@@ -898,6 +962,12 @@ namespace HotelBooking.Repository.Implementation
             IEnumerable<Tour> tempTourBooking = _context.Tours.Where(b => b.BranchId == BranchId).ToArray();
            
             return tempTourBooking;
+        }
+
+       private TaxMaster getConfiguredTax(string AppliedFor, int branchId, double _amount)
+        {
+           TaxMaster allTax = _context.TaxMaster.Where(t => t.BranchId == branchId && t.appliedForName.ToUpper()== AppliedFor.ToUpper() && (_amount>=t.RangeFrom && _amount<=t.RangeTo)).OrderByDescending(o=>o.Value).FirstOrDefault();
+            return allTax;
         }
     }
     

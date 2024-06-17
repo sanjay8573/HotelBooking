@@ -62,6 +62,7 @@ namespace HotelBooking.Controllers
                 HttpContext.Session["BranchCurrencyCode"] = model.BranchCurrencyCode;
                 HttpContext.Session["BranchCurrencySymbol"] = model.BranchCurrencySymbol;
                 HttpContext.Session["BranchTax"] = model.BranchTaxPercentage;
+                HttpContext.Session["BranchTaxDetails"] = model.TaxDetails;
 
 
                 HttpContext.Response.Cookies.Remove("LoginCookies");

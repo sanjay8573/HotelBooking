@@ -20,5 +20,6 @@ namespace HotelBooking.Model
         public int BranchId { get; set; }
         public bool isCheckout { get; set; }
         public bool isActive { get; set; }
+        public bool isPreUpgraded { get; set; }
     }
 }

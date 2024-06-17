@@ -6,7 +6,7 @@ namespace HotelBooking.Repository.Interface
         bool SaveRoomTypeImageFile(RoomeTypeImages entityRoomeTypeImages);
         RoomeTypeImages GetRoomTypeImageFiles(int imageId);
         RoomeTypeImages[] GetRoomTypeImages(int roomTypeId);
-
+        bool inActiveRoomTypeImage(int imageId,string act);
         bool DeleteRoomTypeImage(int imageId);
     }
 }

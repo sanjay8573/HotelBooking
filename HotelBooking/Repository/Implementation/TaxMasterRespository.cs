@@ -62,5 +62,21 @@ namespace HotelBooking.Repository.Implementation
         {
             return _context.TaxMaster.Where(b => b.BranchId == branchId).SingleOrDefault();
         }
+        public IEnumerable<TaxableItems> GetAllTaxableItems(int branchId)
+        {
+            return _context.TaxableItems.Where(b=>b.BranchId== branchId).ToArray();
+        }
+        public bool MakeTaxInActive(int taxId)
+        {
+            bool rtnVal = false;
+
+            if (taxId > 0)
+            {
+                TaxMaster tmptx = _context.TaxMaster.Find(taxId);
+                tmptx.isActive = false;
+                _context.SaveChanges();
+            }
+            return rtnVal;
+        }
     }
 }

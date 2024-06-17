@@ -51,6 +51,7 @@
                 var jsonDataId = "jsonDataId" + i.ToString();
 
                 var totalPerRoomCostId = "totalPerRoomCost" + i.ToString();
+                var totalPerRoomTaxId = "totalPerRoomTax" + i.ToString();
 
 
                 <tr>
@@ -74,8 +75,9 @@
                     </td>
                     <td width="15%" align="center" valign="middle">@ViewBag.todalNight</td>
                     <td width="15%" align="right" valign="middle" id="@totalPerRoomCostId"></td>
-                    <td width="30%" align="center" valign="middle">
-                        <a href="#" id="@VEPPL" data-toggle="modal" data-target="@divref">View/Edit Per Day Price</a>
+                    
+                    <td width="30%" align="center" valign="middle"><input type="hidden" id="@totalPerRoomTaxId" />
+                        <a href="#" id="@VEPPL" data-toggle="modal" style="display:none" data-target="@divref">View Per Day Price</a>
                         @Html.HiddenFor(m => jsonDataId, new { @id = jsonDataId })
                     </td>
                 </tr>
@@ -112,9 +114,18 @@
 
     function divLoaded() {
         //
-        var costing=Number(0);
+        var costing = Number(0);
+        var totalTax = Number(0);
         $('#tblCosting').find("tr").each(function () {
             var currentRow = $(this); 
+            var hiddenField = $(this).find("input[type='hidden']").val();
+            console.log("Tax Val: " + hiddenField)
+            //if not empty push to array
+            if (hiddenField != 'undefined' && hiddenField != null) {
+                totalTax = totalTax + Number(hiddenField);
+            }
+              
+
             var col3 = currentRow.find("td:eq(3)").text();
             if (col3 != '') {
                 //console.log("Value" + col3);
@@ -126,9 +137,13 @@
             
         });
         amt = costing;
-        //console.log("Amount :" + amt);
+        console.log("Amount :" + amt);
+        console.log("Tax :" + totalTax);
         $("#hdnRoomCost").val(amt.toFixed(2));
+        $("#hdnRoomTax").val(totalTax.toFixed(2));
+        
         $("#totAmt").text(amt.toFixed(2));
+        $("#taxVal").text(totalTax.toFixed(2));
         $("#totAmt").trigger('change');
         calculatePS();
         //
@@ -154,7 +169,7 @@
 
         var divId = "ViewEditPerDayPrice" + idn;
         var VeiwEditLink = "ViewEditPerDayPriceLink" + idn;
-        //console.log(divId);
+        console.log(VeiwEditLink);
         var RoomTypeId = $('#' + ddlSelect + ' option:selected').val();
         var cin = $("#Addbookingdatepickerinn").val();
         var cout = $("#Addbookingdatepickerout").val();
@@ -168,11 +183,15 @@
                 success: function (data) {
                     //console.log(data);
                     $('#' + divId).html(data);
+                    
+                    
                     //$("#overlay").fadeOut(300);
                 }
             }).done(function () {
                 setTimeout(function () {
                     // $("#overlay").fadeOut(300);
+                    $('#' + VeiwEditLink).css("display","block");
+                    $('#' + VeiwEditLink).show();
                     divLoaded();
                 }, 500);
                

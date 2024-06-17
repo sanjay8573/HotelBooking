@@ -41,7 +41,7 @@
                                         <td align="center" valign="middle">@i</td>
                                         <td align="left" valign="middle">@rt.RestaurantMenuName</td>
                                         <td align="left" valign="middle">@rt.isActive</td>
-                                        <td align="center" valign="middle"><a class="viewbtn" href="@Url.Action("ViewRestaurantMenu","Home",new {@RestaurantId=rt.RestaurantId, @RestaurantMenuId = rt.RestaurantMenuId })"><i class="fa fa-eye"></i> View</a></td>
+                                        
                                         <td align="center" valign="middle"><a href="@Url.Action("EditRestaurantMenu","Home",new {@RestaurantId=rt.RestaurantId, @RestaurantMenuId = rt.RestaurantMenuId })" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
                                         <td align="center" valign="middle"><a href="@Url.Action("DelRestaurant","Home",new {@RestaurantId=rt.RestaurantId, @RestaurantMenuId = rt.RestaurantMenuId })" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
 

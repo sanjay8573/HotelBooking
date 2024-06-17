@@ -30,6 +30,9 @@ using HotelBooking.Model.onlineAPI;
 using System.Data;
 using HotelBooking.Model.Tour;
 using HotelBooking.Controllers.TourAPI;
+using HotelBooking.Controllers.TaxApi;
+//using LF_COMM.WhatsApp;
+//using LF_COMM;
 
 
 
@@ -127,8 +130,7 @@ namespace HotelBooking.Controllers
 
             ViewBag.pSize = new List<SelectListItem>()
                     {
-                        new SelectListItem() { Value="2", Text= "2" },
-                        new SelectListItem() { Value="5", Text= "5" },
+                       
                         new SelectListItem() { Value="10", Text= "10" },
                         new SelectListItem() { Value="15", Text= "15" },
                         new SelectListItem() { Value="20", Text= "20" },
@@ -207,8 +209,7 @@ namespace HotelBooking.Controllers
             int? DefaultPageSize = 10;
             ViewBag.pSize = new List<SelectListItem>()
                     {
-                        new SelectListItem() { Value="2", Text= "2" },
-                        new SelectListItem() { Value="5", Text= "5" },
+                       
                         new SelectListItem() { Value="10", Text= "10" },
                         new SelectListItem() { Value="15", Text= "15" },
                         new SelectListItem() { Value="20", Text= "20" },
@@ -294,10 +295,10 @@ namespace HotelBooking.Controllers
         public ActionResult RoomTypeImage(int RoomTypeId, int? page, int? pSize)
         {
             int? DefaultPageSize = 10;
-
+            
             RoomTypeImageController _RTI = new RoomTypeImageController();
             ViewBag.RoomTypeId = RoomTypeId;
-            IEnumerable<RoomeTypeImages> RTIS = _RTI.GetRoomTypeImages(RoomTypeId).Where(d => d.isActive == true && d.isDeleted == false);
+            IEnumerable<RoomeTypeImages> RTIS = _RTI.GetRoomTypeImages(RoomTypeId);
             if (pSize != null)
             {
                 DefaultPageSize = pSize;
@@ -307,8 +308,7 @@ namespace HotelBooking.Controllers
             ViewBag.PageSize = DefaultPageSize;
             ViewBag.pSize = new List<SelectListItem>()
                     {
-                        new SelectListItem() { Value="2", Text= "2" },
-                        new SelectListItem() { Value="5", Text= "5" },
+                        
                         new SelectListItem() { Value="10", Text= "10" },
                         new SelectListItem() { Value="15", Text= "15" },
                         new SelectListItem() { Value="20", Text= "20" },
@@ -346,6 +346,29 @@ namespace HotelBooking.Controllers
 
         }
 
+
+        public ActionResult DelRoomTypeImage(int RoomTypeImageId,int RoomTypeId)
+        {
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            RoomTypeImageController _RTI = new RoomTypeImageController();
+           _RTI.DeleteRoomTypeImage(RoomTypeImageId);
+            Session["BranchId"] = branchId;
+            TempData["RoomTypeId"] = RoomTypeId;
+            return RedirectToAction("RoomTypeImage", new { @RoomTypeId = RoomTypeId });
+
+        }
+        public ActionResult inActiveRoomTypeImage(int RoomTypeImageId, int RoomTypeId, string act= "")
+        {
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            RoomTypeImageController _RTI = new RoomTypeImageController();
+            _RTI.inActiveRoomTypeImage(RoomTypeImageId,act);
+            Session["BranchId"] = branchId;
+            TempData["RoomTypeId"] = RoomTypeId;
+            return RedirectToAction("RoomTypeImage",new { @RoomTypeId= RoomTypeId });
+
+        }
         public ActionResult Floor(int FloorId = 0)
         {
 
@@ -397,8 +420,7 @@ namespace HotelBooking.Controllers
             ViewBag.pSize = new List<SelectListItem>()
                     {
 
-                        new SelectListItem() { Value="2", Text= "2" ,Selected=(2==DefaultPageSize) },
-                        new SelectListItem() { Value="5", Text= "5" ,Selected=(5==DefaultPageSize)  },
+                       
                         new SelectListItem() { Value="10", Text= "10" ,Selected=(10==DefaultPageSize) },
                         new SelectListItem() { Value="15", Text= "15" ,Selected=(15==DefaultPageSize) },
                         new SelectListItem() { Value="20", Text= "20" ,Selected=(25==DefaultPageSize) },
@@ -442,8 +464,7 @@ namespace HotelBooking.Controllers
 
             ViewBag.pSize = new List<SelectListItem>()
                     {
-                        new SelectListItem() { Value="2", Text= "2" },
-                        new SelectListItem() { Value="5", Text= "5" },
+                        
                         new SelectListItem() { Value="10", Text= "10" },
                         new SelectListItem() { Value="15", Text= "15" },
                         new SelectListItem() { Value="20", Text= "20" },
@@ -493,8 +514,7 @@ namespace HotelBooking.Controllers
 
             ViewBag.pSize = new List<SelectListItem>()
                     {
-                        new SelectListItem() { Value="2", Text= "2" },
-                        new SelectListItem() { Value="5", Text= "5" },
+                      
                         new SelectListItem() { Value="10", Text= "10" },
                         new SelectListItem() { Value="15", Text= "15" },
                         new SelectListItem() { Value="20", Text= "20" },
@@ -622,8 +642,7 @@ namespace HotelBooking.Controllers
 
             ViewBag.pSize = new List<SelectListItem>()
                     {
-                        new SelectListItem() { Value="2", Text= "2" },
-                        new SelectListItem() { Value="5", Text= "5" },
+                       
                         new SelectListItem() { Value="10", Text= "10",Selected=true },
                         new SelectListItem() { Value="15", Text= "15" },
                         new SelectListItem() { Value="20", Text= "20" },
@@ -737,7 +756,7 @@ namespace HotelBooking.Controllers
 
         public ActionResult PriceManager(int? page, int? pSize)
         {
-
+            string tempVar = TempData["ReturnValue"] as string;
             int? DefaultPageSize = 10;
             if (pSize != null)
             {
@@ -746,14 +765,17 @@ namespace HotelBooking.Controllers
             int branchId = int.Parse(Session["BranchId"].ToString());
             ViewBag.pSize = new List<SelectListItem>()
                     {
-                        new SelectListItem() { Value="2", Text= "2" },
-                        new SelectListItem() { Value="5", Text= "5" },
+                        
                         new SelectListItem() { Value="10", Text= "10" },
                         new SelectListItem() { Value="15", Text= "15" },
                         new SelectListItem() { Value="20", Text= "20" },
                      };
             int pageNumber = page ?? 1;
             ViewBag.PageSize = DefaultPageSize;
+            ViewBag.ReturnValue = tempVar;
+            TempData["ReturnValue"] = "";
+
+
             pmController _psc = new pmController();
             IEnumerable<PriceManager> pcm = _psc.GetAllPrice(branchId).Where(d => d.isDeleted == false);
             Session["BranchId"] = branchId;
@@ -846,7 +868,9 @@ namespace HotelBooking.Controllers
         {
 
             pmController pmc = new pmController();
-            bool rtnVal = pmc.AddPrice(pmEntity);
+            string rtnVal = pmc.AddPrice(pmEntity);
+           
+            TempData["ReturnValue"] = rtnVal;
             return RedirectToAction("PriceManager");
         }
         [HttpPost]
@@ -875,8 +899,7 @@ namespace HotelBooking.Controllers
             ViewBag.PageSize = DefaultPageSize;
             ViewBag.pSize = new List<SelectListItem>()
                     {
-                        new SelectListItem() { Value="2", Text= "2" },
-                        new SelectListItem() { Value="5", Text= "5" },
+                       
                         new SelectListItem() { Value="10", Text= "10" },
                         new SelectListItem() { Value="15", Text= "15" },
                         new SelectListItem() { Value="20", Text= "20" },
@@ -896,8 +919,7 @@ namespace HotelBooking.Controllers
             }
             ViewBag.pSize = new List<SelectListItem>()
                     {
-                        new SelectListItem() { Value="2", Text= "2" },
-                        new SelectListItem() { Value="5", Text= "5" },
+                        
                         new SelectListItem() { Value="10", Text= "10" },
                         new SelectListItem() { Value="15", Text= "15" },
                         new SelectListItem() { Value="20", Text= "20" },
@@ -1051,8 +1073,7 @@ namespace HotelBooking.Controllers
 
             ViewBag.pSize = new List<SelectListItem>()
                     {
-                        new SelectListItem() { Value="2", Text= "2" },
-                        new SelectListItem() { Value="5", Text= "5" },
+                       
                         new SelectListItem() { Value="10", Text= "10" },
                         new SelectListItem() { Value="15", Text= "15" },
                         new SelectListItem() { Value="20", Text= "20" },
@@ -1148,20 +1169,7 @@ namespace HotelBooking.Controllers
         public bool SaveBooking(BookingRequest bookingEntity)
         {
             BookingController _bk = new BookingController();
-            //MailMessage mail = new MailMessage();
-            //mail.To.Add("sanjay.sanyash@gmail.com");
-            //mail.From = new MailAddress("info@logicfinders.com");
-            //mail.Subject = "Testing mail";
-            //string Body = "Test Booking Mail";
-            //mail.Body = Body;
-            //mail.IsBodyHtml = true;
-            //SmtpClient smtp = new SmtpClient();
-            //smtp.Host = "smtpout.secureserver.net";
-            //smtp.Port = 465;
-            //smtp.UseDefaultCredentials = false;
-            //smtp.Credentials = new System.Net.NetworkCredential("username", "password"); // Enter seders User name and password  
-            //smtp.EnableSsl = true;
-            //smtp.Send(mail);
+            
 
             return _bk.AddBooking(bookingEntity);
         }
@@ -1258,8 +1266,7 @@ namespace HotelBooking.Controllers
                 IEnumerable<BookingPayments> _BP = _bc.GetBookingPayments(BranchId, BookingId);
                 ViewBag.pSize = new List<SelectListItem>()
                     {
-                        new SelectListItem() { Value="2", Text= "2" },
-                        new SelectListItem() { Value="5", Text= "5" },
+                        
                         new SelectListItem() { Value="10", Text= "10" },
                         new SelectListItem() { Value="15", Text= "15" },
                         new SelectListItem() { Value="20", Text= "20" },
@@ -1274,9 +1281,10 @@ namespace HotelBooking.Controllers
 
             return PartialView("_Payments", bkplist);
         }
-        public PartialViewResult _AllocateRooms(int BookingId, string RoomTypeId, int nor)
+        public PartialViewResult _AllocateRooms(int BookingId, string RoomTypeId, int nor,bool isUpGraded=false)
         {
 
+           
             int branchId = int.Parse(Session["BranchId"].ToString());
             RoomController _rc = new RoomController();
 
@@ -1288,7 +1296,26 @@ namespace HotelBooking.Controllers
             {
                 Roomitems.Add(new SelectListItem { Text = item.RoomTypeName + "-" + item.RoomNumber + "-" + item.FloorName, Value = item.RoomId.ToString() + "-" + item.floor.ToString() });
             }
-            ViewBag.RMComboModel = Roomitems;
+
+            IEnumerable<Room> _rooms = _rc.GetRooms(branchId);
+            List<SelectListItem> AllRoomitems = new List<SelectListItem>();
+            AllRoomitems.Add(new SelectListItem { Text = "Select a Room", Value = "0" });
+            foreach (Room item in _rooms)
+            {
+                AllRoomitems.Add(new SelectListItem { Text = item.RoomTypeName + "-" + item.RoomNumber + "-" + item.FloorName, Value = item.RoomId.ToString() + "-" + item.floor.ToString() });
+            }
+            if (isUpGraded)
+            {
+                ViewBag.RMComboModel = AllRoomitems;
+            }
+            else
+            {
+                ViewBag.RMComboModel = Roomitems;
+            }
+            ViewBag.isUpGraded = isUpGraded;
+
+
+
             // ViewBag.AllocatedRoomNotCheckOut=
             ViewBag.AllocatedRoomModel = rm.BookedRooms.Where(c => c.isCheckout == false).ToArray();
             int alreadyallocated = rm.BookedRooms.Count();
@@ -1408,7 +1435,7 @@ namespace HotelBooking.Controllers
             ViewBag.CurrencySymbol = CurrencySymbole;
             ViewBag.TaxPercentage = TaxPercentage;
 
-            return PartialView("_PricePerNightNew", _pr);
+            return PartialView("_PricePerNightV1", _pr);
 
         }
         public PartialViewResult _PaidServices(string RoomTypeId)
@@ -1420,7 +1447,7 @@ namespace HotelBooking.Controllers
             string CurrencySymbole = Session["BranchCurrencySymbol"].ToString();
             double TaxPercentage = double.Parse(Session["BranchTax"].ToString());
             PaidServicesController _ps = new PaidServicesController();
-            IEnumerable<PaidServices> ps = _ps.GetPaidServicesByRoomType(roomTypeId).Where(i => i.isActive == true && i.BranchId == branchId && i.isDeleted == false);
+            IEnumerable<PaidServices> ps = _ps.GetPaidServicesByRoomType(roomTypeId).Where(i => i.isActive == true && i.BranchId == branchId && i.isDeleted == false && i.IsTourItem==false);
             ViewBag.CurrencySymbol = CurrencySymbole;
             ViewBag.TaxPercentage = TaxPercentage;
 
@@ -1470,8 +1497,7 @@ namespace HotelBooking.Controllers
             ViewBag.RTComboModel = RoomTypeitems;
             ViewBag.pSize = new List<SelectListItem>()
                     {
-                        new SelectListItem() { Value="2", Text= "2" ,Selected=(2==pSize)},
-                        new SelectListItem() { Value="5", Text= "5",Selected=(5==pSize) },
+                       
                         new SelectListItem() { Value="10", Text= "10" ,Selected=(10==pSize)},
                         new SelectListItem() { Value="15", Text= "15",Selected=(15==pSize)},
                         new SelectListItem() { Value="20", Text= "20" ,Selected=(20==pSize)},
@@ -1518,8 +1544,7 @@ namespace HotelBooking.Controllers
 
             ViewBag.pSize = new List<SelectListItem>()
                     {
-                        new SelectListItem() { Value="2", Text= "2" },
-                        new SelectListItem() { Value="5", Text= "5" },
+                        
                         new SelectListItem() { Value="10", Text= "10" },
                         new SelectListItem() { Value="15", Text= "15" },
                         new SelectListItem() { Value="20", Text= "20" },
@@ -1775,8 +1800,7 @@ namespace HotelBooking.Controllers
                 ViewBag.PageSize = DefaultPageSize;
                 ViewBag.pSize = new List<SelectListItem>()
                     {
-                        new SelectListItem() { Value="2", Text= "2" },
-                        new SelectListItem() { Value="5", Text= "5" },
+                       
                         new SelectListItem() { Value="10", Text= "10" },
                         new SelectListItem() { Value="15", Text= "15" },
                         new SelectListItem() { Value="20", Text= "20" },
@@ -1810,8 +1834,7 @@ namespace HotelBooking.Controllers
                 ViewBag.PageSize = DefaultPageSize;
                 ViewBag.pSize = new List<SelectListItem>()
                     {
-                        new SelectListItem() { Value="2", Text= "2" },
-                        new SelectListItem() { Value="5", Text= "5" },
+                        
                         new SelectListItem() { Value="10", Text= "10" },
                         new SelectListItem() { Value="15", Text= "15" },
                         new SelectListItem() { Value="20", Text= "20" },
@@ -1843,8 +1866,7 @@ namespace HotelBooking.Controllers
                 ViewBag.PageSize = DefaultPageSize;
                 ViewBag.pSize = new List<SelectListItem>()
                     {
-                       new SelectListItem() { Value="2", Text= "2"},
-                        new SelectListItem() { Value="5", Text= "5"},
+                       
                         new SelectListItem() { Value="10", Text= "10" },
                         new SelectListItem() { Value="15", Text= "15"},
                         new SelectListItem() { Value="20", Text= "20" },
@@ -2086,14 +2108,6 @@ namespace HotelBooking.Controllers
                              where a.isBusinessCurrency == false
                              select a;
 
-            //List<SelectListItem> rlitems = new List<SelectListItem>();
-            ////rlitems.Add(new SelectListItem { Text = "Select Business Currency", Value = "0" });
-            //foreach (var item in bCurr)
-            //{
-
-            //    rlitems.Add(new SelectListItem { Text = item.CurrencyName, Value = item.CurrencyId.ToString()});
-            //}
-            //ViewBag.BusinessCurrency = rlitems;
             IEnumerable<CurrencyExchange> ExCurr = _curr.getExchnageRates(branchId);
             List<CurrResp> lstData = new List<CurrResp>();
 
@@ -2214,8 +2228,7 @@ namespace HotelBooking.Controllers
                 ViewBag.PageSize = DefaultPageSize;
                 ViewBag.pSize = new List<SelectListItem>()
                     {
-                       new SelectListItem() { Value="2", Text= "2"},
-                        new SelectListItem() { Value="5", Text= "5"},
+                      
                         new SelectListItem() { Value="10", Text= "10" },
                         new SelectListItem() { Value="15", Text= "15"},
                         new SelectListItem() { Value="20", Text= "20" },
@@ -2247,8 +2260,7 @@ namespace HotelBooking.Controllers
             ViewBag.PageSize = DefaultPageSize;
             ViewBag.pSize = new List<SelectListItem>()
                     {
-                       new SelectListItem() { Value="2", Text= "2"},
-                        new SelectListItem() { Value="5", Text= "5"},
+                       
                         new SelectListItem() { Value="10", Text= "10" },
                         new SelectListItem() { Value="15", Text= "15"},
                         new SelectListItem() { Value="20", Text= "20" },
@@ -2478,8 +2490,16 @@ namespace HotelBooking.Controllers
 
             //rts = _rt.GetRestaurant(branchId, RestaurantId);
             //ViewBag.NoOfTables = rts.NoOfTable;
+            TaxController _bks = new TaxController();
+            List<SelectListItem> rlitems = new List<SelectListItem>();
+            rlitems.Add(new SelectListItem { Text = "Select tax slab", Value = "0" });
+            IEnumerable<TaxMaster> trList = _bks.GetAllTax(branchId);
+            foreach (var item in trList)
+            {
+               rlitems.Add(new SelectListItem { Text = item.Description, Value = item.TaxId.ToString() });
+            }
 
-
+            ViewBag.TaxCombo = rlitems;
             ViewBag.BranchId = branchId;
 
             return View("EditRestaurantMenu", rsm);
@@ -2616,10 +2636,10 @@ namespace HotelBooking.Controllers
             foreach (var item in rsm)
             {
                 foreach(var menuHeading in item.MenuHeading) {
-
+                    
                     foreach (var menuItem in menuHeading.MenuItems)
                     {
-                        servicesList.Add((menuItem.MenuItemName + "-" + menuItem.ItemPrice+"~"+ menuItem.MenuItemId ));
+                        servicesList.Add((menuItem.MenuItemName + "-" + menuItem.ItemPrice+"-"+ menuHeading.TaxPercentage+"~" + menuItem.MenuItemId ));
 
                     }
                 }
@@ -2662,17 +2682,15 @@ namespace HotelBooking.Controllers
             IEnumerable<DashBoardData> ds = new List<DashBoardData>();
             BookingController _bk = new BookingController();
             int branchId = int.Parse(Session["BranchId"].ToString());
-            ds = _bk.CalendarData(branchId);
+            ds = _bk.CalendarDataNew(branchId,month,year);
 
             List<AvailabilityCalendar> data = new List<AvailabilityCalendar>();
             int i = 1;
             // Loop from the first day of the month until we hit the next month, moving forward a day at a time
-            for (var date = new DateTime(year, month, 1); date.Month == month; date = date.AddDays(1))
-            {
+            
                 foreach(var item in ds)
                 {
-                    if (item.AvailabilityDate == date.ToString("MM-dd-yyyy"))
-                    {
+                    
                         AvailabilityCalendar kk = new AvailabilityCalendar()
                         {
                             Sr = 1,
@@ -2687,29 +2705,12 @@ namespace HotelBooking.Controllers
                             BookedRooms = item.BookedRooms
                         };
                         data.Add(kk);
-                    }
-                    else
-                    {
-                        AvailabilityCalendar kk = new AvailabilityCalendar()
-                        {
-                            Sr = 1,
-                            Title = "Room Status",
-                            Start_Date = date.ToString("yyyy-MM-dd"),
-                            End_Date = date.ToString("yyyy-MM-dd"),
-                            Desc = "Available",
-                            backgroundColor = "#136476 !important",
-                            textColor = "#000000 !important",
-                            AvalDate = new DateTime(2024, 04, 06),
-                            AvailableRooms = item.NoOfRooms,
-                            BookedRooms = 0
-                        };
-                        data.Add(kk);
-                    }
+                    
                 }
                 
                
-                i++;
-            }
+                
+           
 
             return data.DistinctBy(b=>b.Start_Date).ToList();
         }
@@ -2727,8 +2728,7 @@ namespace HotelBooking.Controllers
             ViewBag.PageSize = DefaultPageSize;
             ViewBag.pSize = new List<SelectListItem>()
                     {
-                        new SelectListItem() { Value="2", Text= "2" },
-                        new SelectListItem() { Value="5", Text= "5" },
+                       
                         new SelectListItem() { Value="10", Text= "10" },
                         new SelectListItem() { Value="15", Text= "15" },
                         new SelectListItem() { Value="20", Text= "20" },
@@ -2820,8 +2820,7 @@ namespace HotelBooking.Controllers
             ViewBag.PageSize = DefaultPageSize;
             ViewBag.pSize = new List<SelectListItem>()
                     {
-                        new SelectListItem() { Value="2", Text= "2" },
-                        new SelectListItem() { Value="5", Text= "5" },
+                        
                         new SelectListItem() { Value="10", Text= "10" },
                         new SelectListItem() { Value="15", Text= "15" },
                         new SelectListItem() { Value="20", Text= "20" },
@@ -3123,9 +3122,8 @@ namespace HotelBooking.Controllers
 
             ViewBag.pSize = new List<SelectListItem>()
                     {
-                        new SelectListItem() { Value="2", Text= "2" },
-                        new SelectListItem() { Value="5", Text= "5" },
-                        new SelectListItem() { Value="10", Text= "10",Selected=true },
+                       
+                        new SelectListItem() { Value="10", Text= "10" },
                         new SelectListItem() { Value="15", Text= "15" },
                         new SelectListItem() { Value="20", Text= "20" },
                      };
@@ -3147,6 +3145,10 @@ namespace HotelBooking.Controllers
         }
         public ActionResult BookTour()
         {
+            //LFCommunication _lfc = new LFCommunication();
+            //_lfc.sendMessageToWhatsApp();
+            //System.Diagnostics.Process.Start("http://api.whatsapp.com/send?phone=9748235062&text=Testing_Message");
+
             int branchId = int.Parse(Session["BranchId"].ToString());
 
             BookedRoomController _rc = new BookedRoomController();
@@ -3198,7 +3200,7 @@ namespace HotelBooking.Controllers
             IEnumerable<PaidServices> rtm = _psc.GetpadServices(branchId).Where(d => d.isDeleted == false & d.IsTourItem == true);
             foreach (var item in rtm)
             {
-               servicesList.Add((item.Title + "-" + item.Price + "~" + item.PaidServiceId));
+               servicesList.Add((item.Title + "-" + item.Price + "~" + item.PaidServiceId+"-"+item.TaxPercentage));
             }
 
 
@@ -3222,9 +3224,8 @@ namespace HotelBooking.Controllers
 
             ViewBag.pSize = new List<SelectListItem>()
                     {
-                        new SelectListItem() { Value="2", Text= "2" },
-                        new SelectListItem() { Value="5", Text= "5" },
-                        new SelectListItem() { Value="10", Text= "10" ,Selected=true },
+                       
+                        new SelectListItem() { Value="10", Text= "10" },
                         new SelectListItem() { Value="15", Text= "15" },
                         new SelectListItem() { Value="20", Text= "20" },
                      };
@@ -3265,6 +3266,90 @@ namespace HotelBooking.Controllers
             return RedirectToAction("BookedTours");
 
         }
+        #region "Tax Management"
+        public ActionResult TaxManager(int TaxId=0)
+        {
+            TaxController DC = new TaxController();
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            TaxMaster tm = new TaxMaster();
+            if (TaxId > 0)
+            {
+                tm = DC.GetAllTax(branchId).Where(t => t.TaxId == TaxId).SingleOrDefault();
+            }
+            
+            tm.BranchId = branchId;
+            
+            IEnumerable<TaxableItems> _TaxableItems = DC.GeTaxableItems(branchId);
+
+            List<SelectListItem> ListTaxableItems = new List<SelectListItem>();
+            ListTaxableItems.Add(new SelectListItem { Text = "Select Item Type", Value = "0", Selected = true });
+            foreach (TaxableItems item in _TaxableItems)
+            {
+                bool slt = false;
+
+                ListTaxableItems.Add(new SelectListItem { Text = item.ItemTypeName.Trim(), Value = item.ItemTypeid.ToString(), Selected = slt });
+            }
+            ViewBag.TaxableItems = ListTaxableItems;
+            return View("AddTax",tm);
+        }
+        public ActionResult SaveTax(TaxMaster taxEntity)
+        {
+
+            TaxController DC = new TaxController();
+            bool rtnVal= DC.AddTax(taxEntity);
+            return RedirectToAction("TaxLists");
+            
+        }
+        public ActionResult TaxLists(int? page, int? pSize)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            int? DefaultPageSize = 10;
+
+            TaxController _bks = new TaxController();
+
+            if (pSize != null)
+            {
+                DefaultPageSize = pSize;
+            }
+            int pageNumber = page ?? 1;
+            IEnumerable<TaxMaster> trList = _bks.GetAllTax(branchId);
+            Session["BranchId"] = branchId;
+
+            ViewBag.pSize = new List<SelectListItem>()
+                    {
+                        
+                        new SelectListItem() { Value="10", Text= "10" },
+                        new SelectListItem() { Value="15", Text= "15" },
+                        new SelectListItem() { Value="20", Text= "20" },
+                     };
+            IPagedList<TaxMaster> tbkslist = trList.ToPagedList(pageNumber, (int)DefaultPageSize);
+            return View("TaxLists", tbkslist);
+        }
+        public ActionResult MakeTaxInActive(int taxId)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            TaxController DC = new TaxController();
+            bool rtnVal = DC.MakeTaxInActive(branchId, taxId);
+            return RedirectToAction("TaxLists");
+
+        }
+        [HttpGet]
+        public JsonResult getAllTaxes()
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            TaxController _bks = new TaxController();
+            List<String> servicesList = new List<String>();
+            IEnumerable<TaxMaster> trList = _bks.GetAllTax(branchId);
+            foreach (var item in trList)
+            {
+                servicesList.Add(item.Description + "-"  + item.TaxId);
+            }
+
+
+            return Json(servicesList.ToArray(), JsonRequestBehavior.AllowGet);
+        }
+        #endregion
 
 
     }

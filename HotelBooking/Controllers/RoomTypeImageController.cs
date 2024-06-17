@@ -63,5 +63,17 @@ namespace HotelBooking.Controllers
             }
             return rtn;
         }
+        [HttpPost]
+        [Route("api/RoomTypeImage/inActiveRoomTypeImage/{BranchId}/{roomTypeImageId}")]
+        public HttpResponseMessage inActiveRoomTypeImage(int roomTypeImageId,string act)
+        {
+            HttpResponseMessage rtn = new HttpResponseMessage(System.Net.HttpStatusCode.NotFound); ;
+            bool k = _rti.inActiveRoomTypeImage(roomTypeImageId,act);
+            if (k)
+            {
+                rtn = new HttpResponseMessage(System.Net.HttpStatusCode.OK);
+            }
+            return rtn;
+        }
     }
 }

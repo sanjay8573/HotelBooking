@@ -43,14 +43,33 @@
     var ItemDivId = 1;
     $(document).ready(function () {
         var divId = 1;
+        //#####Get Tax Dropdown######
+
+
+
+
 
         $("#btnAddHeading").click(function(e) {
             e.preventDefault();
+             var drpTaxId = 'SelTaxSlab' + divId;
+            const txUrl = '@Url.Action("getAllTaxes", "Home")';
+
 
            // $("#maingroup_1").append('<div id="' + divId +'" class="Subgroupmain"><input id="txtHeadingName" type="text"><input type="button" name="prev" id="btnAddItem" class="prev action-button" onClick="Additems(this);"  value="Add Item" runat="server"> </div>');
             var divhtml = '<div class="row" id="' + divId +'" ><div class="col-lg-9 col-md-9 col-sm-12 col-xs-12"><input type="text" id="txtRoomNumber" class="full-width" placeholder="Add Menu Heading" runat="server">';
-            divhtml += '</div><div  class="col-lg-3 col-md-3 col-sm-12 col-xs-12"><button type="button" class="allbtnin full-width" onClick="Additems(this);">Add Item</button></div> <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12"></div></div>'
+            divhtml += '</div><div  class="col-lg-3 col-md-3 col-sm-12 col-xs-12"><select name = "SelTaxSlab" id = "' + drpTaxId + '" class="full-width ddselect" ><option value="">-- Select Tax Slab --</option></select ><button type="button" class="allbtnin full-width" onClick="Additems(this);">Add Item</button></div> <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12"></div></div>'
             $("#maingroup_1").append(divhtml);
+
+             setTimeout(function () {
+                       $.getJSON(txUrl, function (data) {
+                            $.each(data, function (index, value) {
+                                var arrVal = value.split("-");
+                                // append or insert data to select element.
+                                $('#'+drpTaxId).append('<option value="' + arrVal[1] + '">' + arrVal[0] + '</option>');
+                            });
+                        });
+                },1500);
+
             divId = divId + 1;
             return false;
   });
@@ -92,7 +111,9 @@
         };
         var MenuHeading1 = [];
         $("#maingroup_1 > div").each(function (idx, el) {
-            var cuurentDiv = el.id  ;
+            var cuurentDiv = el.id;
+            var TaxDropDownId = 'SelTaxSlab' + idx;
+            var txId = $("#" + TaxDropDownId).val();
             console.log("Heading ::" + cuurentDiv);
             $("#" + cuurentDiv +" > div > input:text").each(function (idx, el) {
                 console.log("Heading " + $(el).val());
@@ -100,6 +121,7 @@
 
                 var MenuHeadings= {
                     MenuHeadingName: txtMenuHeading,
+                    TaxSlabId: Number(txId),
                     isActive:true,
                     MenuItems:[]
                 };

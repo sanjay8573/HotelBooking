@@ -6,7 +6,7 @@
     <div class="row" id="Addpaidservices" style="display: block;">
         <div class="col-sm-12">
             <div class="card widget-container">
-                <div class="heading"> <i class="fa fa-bar-chart-o"></i> Add Services </div>
+                <div class="heading"> <i class="fa fa-bar-chart-o"></i> Add Tour Services </div>
                 <div class="widget-content padded text-center">
                     <div class="row">
                         <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 table-responsive pull-left">
@@ -34,6 +34,11 @@
                                     @Html.TextBoxFor(model => model.Price, new { @class = "full-width", placeholder = "Price" })
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                    <label for="edit-mail" class="form-required">Tax Percentage</label>
+
+                                    @Html.TextBoxFor(model => model.TaxPercentage, new { @class = "full-width", placeholder = "Tax Percentage" })
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                     <label for="edit-mail" class="form-required">Status</label>
                                     <ul class="unstyled">
                                         <li>
@@ -57,9 +62,9 @@
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                     <input type="submit" name="SUBMIT" class="prev action-button" onclick="addDatatoModel();" value="Save" runat="server">
-                                 </div>
-                             }
                                 </div>
+                            }
+                        </div>
                             </div>
                 </div>
             </div>

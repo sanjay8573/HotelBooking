@@ -203,6 +203,11 @@ namespace HotelBooking.Context
             get;
             set;
         }
+        public DbSet<TaxableItems> TaxableItems
+        {
+            get;
+            set;
+        }
         public DbSet<BookingSource> BookingSource
         {
             get;

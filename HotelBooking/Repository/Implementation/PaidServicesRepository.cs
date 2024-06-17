@@ -34,6 +34,9 @@ namespace HotelBooking.Repository.Implementation
                     tmpEntity.PriceTypeId = PaidServicesEntity.PriceTypeId;
                     tmpEntity.Price = PaidServicesEntity.Price;
                     tmpEntity.Description = PaidServicesEntity.Description;
+                    tmpEntity.ShortDescription = PaidServicesEntity.ShortDescription;
+                    tmpEntity.Title= PaidServicesEntity.Title;
+                    tmpEntity.TaxPercentage = PaidServicesEntity.TaxPercentage;
                     tmpEntity.isActive = PaidServicesEntity.isActive;
                     _context.SaveChanges();
 

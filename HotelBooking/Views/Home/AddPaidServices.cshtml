@@ -6,7 +6,7 @@
     <div class="row" id="Addpaidservices" style="display: block;">
         <div class="col-sm-12">
             <div class="card widget-container">
-                <div class="heading"> <i class="fa fa-bar-chart-o"></i> Paid Services Form</div>
+                <div class="heading"> <i class="fa fa-bar-chart-o"></i>Add Paid Services</div>
                 <div class="widget-content padded text-center">
                     <div class="row">
                         <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 table-responsive pull-left">
@@ -20,25 +20,25 @@
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left p-0">
                                     @*<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-left">
-                                        <label for="edit-mail" class="form-required">Room Types</label>
-                                        <select id="RoomType" multiple="multiple" required=required name="RoomType">
-                                            @if (ViewBag.RTComboModel != null)
-                                            {
-                                                foreach (var item in ViewBag.RTComboModel)
-                                                {
-                                                    if (item.Text != null)
-                                                    {
-                                                        <option value="@item.Value" selected="@item.Selected">
-                                                            @item.Text
-                                                        </option>
+                    <label for="edit-mail" class="form-required">Room Types</label>
+                    <select id="RoomType" multiple="multiple" required=required name="RoomType">
+                        @if (ViewBag.RTComboModel != null)
+                        {
+                            foreach (var item in ViewBag.RTComboModel)
+                            {
+                                if (item.Text != null)
+                                {
+                                    <option value="@item.Value" selected="@item.Selected">
+                                        @item.Text
+                                    </option>
 
-                                                    }
-                                                }
-                                            }
-                                        </select>
-                                        @Html.HiddenFor(model => model.RoomTypeId);
+                                }
+                            }
+                        }
+                    </select>
+                    @Html.HiddenFor(model => model.RoomTypeId);
 
-                                    </div>*@
+                </div>*@
 
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
@@ -54,6 +54,11 @@
                                     <label for="edit-mail" class="form-required">Price</label>
 
                                     @Html.TextBoxFor(model => model.Price, new { @class = "full-width", placeholder = "Price" })
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                    <label for="edit-mail" class="form-required">Tax Percentage</label>
+
+                                    @Html.TextBoxFor(model => model.TaxPercentage, new { @class = "full-width", placeholder = "Tax Percentage" })
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                     <label for="edit-mail" class="form-required">Status</label>

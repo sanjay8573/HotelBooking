@@ -5,13 +5,14 @@
     var MaterId = 0;
 }
 @if (Model != null)
-{
-    var i = 1;
-    foreach (var rt in Model)
-    {
-        MaterId = rt.BillingMasterId;
-        var foodItemId = "FoodItem_" + i.ToString();
-        <div class="row" id="@foodItemId">
+            {
+                var i = 1;
+                foreach (var rt in Model)
+                {
+                    MaterId = rt.BillingMasterId;
+                    var foodItemId = "FoodItem_" + i.ToString();
+                    var totaAmtId = foodItemId + "-" + rt.Tax * 100;
+                   <div class="row" id="@foodItemId">
             <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
                 <input type="text" id="@rt.ItemId"  class="full-width height35" value="@rt.ItemName" placeholder="Choose Item" disabled runat="server">
             </div>
@@ -19,7 +20,7 @@
                 <input type="text" id="@rt.BillingDetailsId" class="full-width height35" onkeyup="myCALFunction(this)" placeholder="Quantity" value="@rt.Quantity" runat="server">
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                <input type="text" id="txtTotal" class="full-width height35" placeholder="Total" value="@rt.Amount" disabled runat="server">
+                <input type="text" id="@totaAmtId" class="full-width height35" placeholder="Total"  value="@rt.Amount" disabled runat="server">
             </div>
         </div>
         i++;

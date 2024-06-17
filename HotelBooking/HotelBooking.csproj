@@ -61,6 +61,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\itextsharp.xmlworker.5.5.10\lib\itextsharp.xmlworker.dll</HintPath>
     </Reference>
+    <Reference Include="LF_COMM">
+      <HintPath>..\LF_COMM\bin\Debug\net8.0\LF_COMM.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNetCore.Antiforgery, Version=1.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNetCore.Antiforgery.1.0.1\lib\net451\Microsoft.AspNetCore.Antiforgery.dll</HintPath>
     </Reference>
@@ -959,6 +962,9 @@
     <Content Include="Views\Home\TSR.cshtml" />
     <Content Include="Views\Home\TourSalesReport.cshtml" />
     <Content Include="Views\Home\PreviewTour.cshtml" />
+    <Content Include="Views\Home\AddTax.cshtml" />
+    <Content Include="Views\Home\TaxLists.cshtml" />
+    <Content Include="Views\Home\_PricePerNightV1.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

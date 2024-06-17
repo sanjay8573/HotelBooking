@@ -8,102 +8,140 @@
 
 <body>
 
+   
+
     <div class="row">
         <div class="col-sm-12">
             <div class="card widget-container">
-                <div class="heading"> <i class="fa fa-bar-chart-o"></i>Room Types image  <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Room Types</small> </span></div>
-
-            </div>
-        </div>
-    </div>
-    @using (Html.BeginForm("AddRoomTypeImage", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
-
-        <div class="tab-pane" id="roomtypeImages" aria-expanded="false">
-            <!--<h4 class="tabheading"><i class="fa fa-address-card" aria-hidden="true"></i> Account Details</h4>-->
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left table-responsive">
+                <div class="heading"> <i class="fa fa-bar-chart-o"></i>Room Types image <small></small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Amenities</small> </span></div>
+                <div class="widget-content padded text-center">
                     <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
-                            <div class="col-lg-4 col-md-4 col-sm-6 col-12 col-xs-12 pull-left">
-                                <label for="edit-mail" class="form-required">Image</label>
-                                <input type="file" id="RTImageData" name="RTImageData" class=" full-width">
-                                <input type="hidden" id="RoomTypeId" name="RoomTypeId" value="@ViewBag.RoomTypeId" />
+                        @using (Html.BeginForm("AddRoomTypeImage", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+
+                            <div class="tab-pane" id="roomtypeImages" aria-expanded="false">
+                                <!--<h4 class="tabheading"><i class="fa fa-address-card" aria-hidden="true"></i> Account Details</h4>-->
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left table-responsive">
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                                <table class="table table-bordered" style="width:100%">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Select Image</td><td><input type="file" id="RTImageData" name="RTImageData" class=" full-width"></td>
+                                                        <td valign="middle"><button type="submit" class="moreaddbtn form-group pull-left">Save</button>
+                                                            <input type="hidden" id="RoomTypeId" name="RoomTypeId" value="@ViewBag.RoomTypeId" />
+                                                            </td>
+                                                            </tr></tbody></table>
+                                                        
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
-                                <label for="edit-mail" class="form-required">&nbsp;</label>
-                                <button type="submit" class="moreaddbtn form-group pull-left"> Save</button>
-                                <!--<input type="button" name="AddMore" class="prev action-button" value="Add More" runat="server">-->
+                        }
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 pull-left">
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left text-left">
+                                    @using (Html.BeginForm("RoomTypeImage", "Home", FormMethod.Get, new { id = "form1" }))
+                                    {
+                                        <div id="pro_pag2">
+                                            Show @* @Html.DropDownList("PageSize", new SelectList(new Dictionary<string, int> { { "5", 5 }, { "10", 10 }, { "20", 20 } }, "Key", "Value"), new { @class = "onlyinput", id = "RTpagesize" })*@
+                                            @Html.DropDownList("pSize", (IEnumerable<SelectListItem>)ViewBag.pSize, new { @class = "onlyinput" }) Records
+                                        </div>
+                                    }
+                                </div>
+
                             </div>
+                            <table id="RoomTypeTable" class="table table-bordered" >
+                                <tr>
+                                    <th width="3%" align="center" valign="middle" bgcolor="#003556" class="clrwhit">#</th>
+                                    <th width="25%" align="left" valign="middle" bgcolor="#003556" class="clrwhit">ImageName</th>
+                                    <th width="25%" align="center" style="text-align:center!important" valign="middle" bgcolor="#003556" class="clrwhit">Image</th>
+                                    <th width="5%" align="center" valign="middle" bgcolor="#003556" class="clrwhit">Active</th>
+
+
+                                    <th width="20%" colspan="2" style="text-align:center!important" align="center" valign="middle" bgcolor="#003556" class="clrwhit">Action</th>
+
+                                </tr>
+                                @if (Model != null)
+                                {
+                                    var k = 1;
+                                    foreach (var rt in Model)
+                                    {
+                                        <tr>
+
+                                            <td align="center" valign="middle">@k</td>
+                                            <td align="left" valign="middle">@rt.ImageName</td>
+                                            @*<td>@rt.IsActive</td>*@
+                                            @{
+                                                String img6412 = Convert.ToBase64String(rt.ImageData);
+                                                String img64Url12 = string.Format("data:image/jpeg;base64,{0}", img6412); //imagetype can be e.g. gif, jpeg, png etc.
+                                            }
+                                            <td align="center" valign="middle"> <img style="width:50%;height:50%" src="@img64Url12" alt=""></td>
+
+
+                                            <td align="center" valign="middle"><input type="checkbox" asp-for="@rt.isActive" checked="@rt.isActive" /></td>
+
+                                            @{
+                                                if (rt.isActive)
+                                                {
+                                                    <td align="center" valign="middle"><a href="@Url.Action("InactiveRoomTypeImage","Home",new { @RoomTypeImageId = rt.RoomTypeImageId,@RoomTypeId = rt.RoomTypeId,@act="A" })" class="editbtn"><i class="fa fa-edit"></i> Inactive</a></td>
+
+                                                }
+                                                else
+                                                {
+                                                    <td align="center" valign="middle"><a href="@Url.Action("InactiveRoomTypeImage","Home",new { @RoomTypeImageId = rt.RoomTypeImageId,@RoomTypeId = rt.RoomTypeId,@act="A"  })" class="editbtn"><i class="fa fa-edit"></i> Active</a></td>
+
+                                                }
+
+                                            }
+                                            <td align="center" valign="middle"><a href="@Url.Action("DelRoomTypeImage","Home",new { @RoomTypeImageId = rt.RoomTypeImageId ,@RoomTypeId = rt.RoomTypeId})" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
+
+                                        </tr>
+                                        k++;
+                                    }
+                                    <tr>
+                                        <td colspan="8">
+                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                <span class="float-left restextpagin">Showing Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount </span>
+
+                                                <div class="pagination pull-right" style="display:inline-block; vertical-align:middle;">
+
+                                                    @Html.PagedListPager(Model, page => Url.Action("RoomTypeImage", new { page, pSize = ViewBag.PageSize }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    }
-    <hr />
-    <div class="row">
-        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
-
-            <div id="demo" class="carousel slide" data-ride="carousel">
-                <ul class="carousel-indicators">
-                    @if (Model != null)
-                    {
-                        int k = 0;
-
-                        foreach (var rt in Model)
-                        {
-                        if (k == 0) {<li data-target="#demo" data-slide-to="@k" class="active"></li> }
-                         else { <li data-target="#demo" data-slide-to=""></li>}
-                            
-                            
-                        }
-                    }
-
-
-
-                </ul>
-                <div class="carousel-inner" role="listbox">
-                    @{int i = 0;}
-                    @if (Model != null)
-                    {
-
-                        foreach (var rt in Model)
-                        {
-                            i++;
-                            var active = i == 1 ? "active" : "";
-                            <div class="carousel-item @active">
-
-                                @{
-                                    String img641 = Convert.ToBase64String(rt.ImageData);
-                                    String img64Url1 = string.Format("data:image/jpeg;base64,{0}", img641); //imagetype can be e.g. gif, jpeg, png etc.
-                                }
-                                <img style="width:80%;height:80%" src="@img64Url1" alt="">
-                            </div>
-                        }
-                    }
-                </div>
-                <a class="carousel-control-prev" href="#demo" data-slide="prev">
-                    <span class="carousel-control-prev-icon"></span>
-                </a>
-                <a class="carousel-control-next" href="#demo" data-slide="next">
-                    <span class="carousel-control-next-icon"></span>
-
-                </a>
-            </div>
-           
-        </div>
     </div>
+
     <script type="text/javascript">
-    $("#pSize").change(function () {
-        var form = $(event.target).parents('form');
+        $("#pSize").change(function () {
 
-        $("#form1").submit();
-    });
-    $("#pc").change(function () {
+            $("#form1").submit();
+        });
+
+    </script>
+    <script type="text/javascript">
+        $("#pSize").change(function () {
+            var form = $(event.target).parents('form');
+
+            $("#form1").submit();
+        });
+        $("#pc").change(function () {
 
 
-        $("#form1").submit();
-    });
+            $("#form1").submit();
+        });
     </script>
 </body>

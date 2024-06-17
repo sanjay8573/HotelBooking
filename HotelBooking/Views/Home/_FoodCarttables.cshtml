@@ -37,7 +37,7 @@
          $("#slectedRoom_Table").text("Dining for Table # ::"+tblId);
          $("#hdnisRoomService").val(false);
          $("#billdetails").load("/Home/_FoodCartItems?RestaurantId=" + restroId + "&tableId=" + tblId);
-         console.log("Park Item Loaded");
+         //console.log("Park Item Loaded");
          $('#btnAdd').prop('disabled', false);
        setTimeout(calculateTotal, 1000);
      

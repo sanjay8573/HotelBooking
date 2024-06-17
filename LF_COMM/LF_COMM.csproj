@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="MobileSMS\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WhatsAppAPI" Version="15.4.29" />
+  </ItemGroup>
+
+</Project>

@@ -35,13 +35,32 @@
                                 @foreach (var hItem in Model.MenuHeading)
                                 {
                                     var headingId = "headingId" + nHeading;
+                                    var SelTaxCombo = "SelTaxSlab" + nHeading;
                                     <div class="row" id="@headingId">
-                                        <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+                                        <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
                                             <input type="text" id="txtHeading" class="full-width" value="@hItem.MenuHeadingName" placeholder="Third Special Item" runat="server">
                                             <input type="hidden" id="HId" value="@hItem.MenuHeadingId" />
                                             <input type="hidden" id="MenuId" value="@hItem.RestaurantMenuId" />
                                         </div>
 
+                                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                            <select name="@SelTaxCombo" id="@SelTaxCombo" class="full-width ddselect">
+                                                @if (ViewBag.TaxCombo != null)
+                                                {
+                                                    foreach (var item in ViewBag.TaxCombo)
+                                                    {
+                                                        var selected = int.Parse(item.Value) == hItem.TaxSlabId;
+                                                        if (item.Text != null)
+                                                        {
+                                                            <option value="@item.Value" selected= "@selected" >
+                                                                @item.Text.Trim()
+                                                            </option>
+
+                                                        }
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
                                         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                             <button type="submit" class="allbtnin full-width" onClick="Additems(this);">Add Menu</button>
                                         </div>
@@ -94,11 +113,24 @@
 
         $("#btnAddHeading").click(function (e) {
             e.preventDefault();
-            var divId = $("#HeadingId").val() +1;
+            var divId = $("#HeadingId").val() + 1;
+            var drpTaxId = 'SelTaxSlab' + divId;
+            const txUrl = '@Url.Action("getAllTaxes", "Home")';
+
             console.log("Edit Menu....");
-            var divhtml = '<div class="row" id="' + divId + '" ><div class="col-lg-7 col-md-7 col-sm-12 col-xs-12"><input type="text" id="txtRoomNumber" class="full-width" placeholder="Add Menu Heading" runat="server">';
-            divhtml += '</div><div  class="col-lg-3 col-md-3 col-sm-12 col-xs-12"><button type="button" class="allbtnin full-width" onClick="Additems(this);">Add Item</button></div> <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"></div></div>'
+            var divhtml = '<div class="row" id="' + divId + '" ><div class="col-lg-5 col-md-5 col-sm-12 col-xs-12"><input type="text" id="txtRoomNumber" class="full-width" placeholder="Add Menu Heading" runat="server">';
+            divhtml += '</div><div  class="col-lg-3 col-md-3 col-sm-12 col-xs-12"><select name = "SelTaxSlab" id = "' + drpTaxId + '" class="full-width ddselect" ><option value="">-- Select Tax Slab --</option></select ></div><div  class="col-lg-3 col-md-3 col-sm-12 col-xs-12"><button type="button" class="allbtnin full-width" onClick="Additems(this);">Add Item</button></div> <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"></div></div>'
             $("#maingroup_1").append(divhtml);
+
+            setTimeout(function () {
+                $.getJSON(txUrl, function (data) {
+                    $.each(data, function (index, value) {
+                        var arrVal = value.split("-");
+                        // append or insert data to select element.
+                        $('#' + drpTaxId).append('<option value="' + arrVal[1] + '">' + arrVal[0] + '</option>');
+                    });
+                });
+            }, 1500);
             divId = divId + 1;
             $("#HeadingId").val(divId);
             return false;
@@ -138,20 +170,27 @@
             var cuurentDiv = el.id;
             var MenuHeadingId=0;
             var RestaurantMenuId;
-
+            var TaxDropDownId = 'SelTaxSlab' + idx;
+            var txId = $("#" + TaxDropDownId).val();
+            console.log("TAX DP >> " + txId);
             $("#" + cuurentDiv + " > div > input ").each(function (idx1, el2) {
                 //console.log("Item >> " + el2.id);
-                //console.log("Item >> " + idx1);
+                console.log("Item >> " + $(el2).val());
+
+
+
+
 
                 if (idx1 == 0) {
+                    console.log("Item >>1 " + $(el2).val());
                     txtMenuHeading = $(el2).val();
                 }
                 if (idx1 == 1) {
                     MenuHeadingId = $(el2).val();
-                    //console.log("Item >> " + idx1);
+                    console.log("Item >>2" + $(el2).val());
                 }
                 if (idx1 == 2) {
-                    //console.log($(el2))
+                    console.log("Item >>3 " + $(el2).val());
                     RestaurantMenuId = $(el2).val();
                     //console.log("Item >> " + idx1);
                 }
@@ -163,6 +202,7 @@
                     MenuHeadingId: Number(MenuHeadingId),
                     RestaurantMenuId: Number(RestaurantMenuId),
                     MenuHeadingName: txtMenuHeading,
+                    TaxSlabId: Number(txId),
                     isActive: true,
                     MenuItems: []
                 };
@@ -222,7 +262,7 @@
         //});
 
         console.log(RestaurantMenu);
-        $.ajax({
+               $.ajax({
     type: "POST",
     url: '@Url.Action("SaveRestaurantMenu", "Home")',
     data: { restroMenuEntity: RestaurantMenu },

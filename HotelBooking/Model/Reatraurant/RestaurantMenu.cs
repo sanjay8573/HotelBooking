@@ -37,6 +37,9 @@ namespace HotelBooking.Model.Reatraurant
         public List<RestaurantMenuItem> MenuItems { get; set; }
         public bool isActive { get; set; }
         public bool isDeleted { get; set; }
+        public int TaxSlabId { get; set; }
+        [NotMapped]
+        public double TaxPercentage { get; set; }
     }
     [Table("RestaurantMenuItem")]
     public class RestaurantMenuItem
@@ -48,5 +51,6 @@ namespace HotelBooking.Model.Reatraurant
         public double ItemPrice { get; set; }
         public bool isActive { get; set; }
         public bool isDeleted { get; set; }
+        
     }
 }

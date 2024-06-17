@@ -34,7 +34,10 @@ namespace HotelBooking.Repository.Implementation
                 if (BM != null)
                 {
                     MasterId = BM.BillingId;
-                    rtnVal = true;
+                    BM.TotalAmount = billingMasterEntity.TotalAmount;
+                    BM.TaxAmount = billingMasterEntity.TaxAmount;
+                    BM.GrantTotal = billingMasterEntity.GrantTotal;
+                     rtnVal = true;
                 }
                 else
                 {

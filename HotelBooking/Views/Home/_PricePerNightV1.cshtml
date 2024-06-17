@@ -1,11 +1,14 @@
 ﻿@model IEnumerable<HotelBooking.Model.PriceResponse>
-    @{ 
-        var idn = Model.Select(c => c.BookingCostId).First();
-        var totDiveId = "TotalCostForNights" + idn;
-        var totTaxDiveId = "TotalTaxForNights" + idn;
-        var tableId="TableId"+ idn;
-        var btnId = "btn" + idn;
-    }
+@{
+    var idn = Model.Select(c => c.BookingCostId).First();
+    var totDiveId = "TotalCostForNights" + idn;
+    var totTaxDiveId = "TotalTaxForNights" + idn;
+    var tableId = "TableId" + idn;
+    var btnId = "btn" + idn;
+    //decimal gtotalAmount = decimal.Parse("0");
+    //decimal gtotalTax = decimal.Parse("0");
+    //decimal gtotalPayable = decimal.Parse("0");
+}
 <div class="modal-dialog">
     <!-- Modal content-->
     <div class="modal-content">
@@ -14,16 +17,17 @@
                 <h4 class="tabheading text-left popuphed"><i class="fa fa-edit" aria-hidden="true"></i> View/Edit Per Day Price </h4>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered" id="@tableId">
-                        <tbody>
+                        <thead>
                             <tr class="trthbgclr text-left">
                                 <th width="33%">&nbsp;</th>
                                 <th width="33%"> Price</th>
-                                <th width="33%">Offer Price</th>
+                              
                                 <th width="33%"> Tax</th>
                                 <th width="33%">Payable Price</th>
 
                             </tr>
-
+                         </thead>
+                        <tbody>
 
                             @if (Model != null)
                             {
@@ -41,11 +45,7 @@
                                         <th width="33%">Day #@i</th>
                                         <td><label>@ViewBag.CurrencySymbol  @p.Amount</label></td>
 
-                                        <td>
-                                            @Html.TextBoxFor(m => p.Amount, new { id = txtId, placeholder = "0.00", vTag = p.Date, basePrice = p.Amount })
-
-                                            @*<input type="text" id="@txtId" class="full-width allinput" placeholder="0.00" value="@p.OfferPrice" runat="server">*@
-                                        </td>
+                                       
 
                                         <td><label>@ViewBag.CurrencySymbol  @p.TaxAmount</label></td>
                                         <td><label>@ViewBag.CurrencySymbol @AmtWithTax </label></td>
@@ -54,17 +54,31 @@
                                     i++;
                                     totalAmount = totalAmount + AmtWithTax;
                                     totalTax = totalTax + p.TaxAmount;
+                                    //gtotalAmount = gtotalAmount + p.Amount;
+                                    //gtotalTax = gtotalTax + totalTax;
+                                    //gtotalPayable = gtotalPayable + totalAmount;
                                 }
+
                                 <input type="hidden" id="@totDiveId" value="@totalAmount" />
                                 <input type="hidden" id="@totTaxDiveId" value="@totalTax" />
 
                             }
                         </tbody>
+                        @*<tfooter>
+                            <tr class="trthbgclr text-left">
+                                <th width="33%">Total</th>
+                                <th width="33%"> @gtotalAmount</th>
+
+                                <th width="33%"> @gtotalTax</th>
+                                <th width="33%">@gtotalPayable</th>
+
+                            </tr>
+                        </tfooter>*@
                     </table>
                 </div>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <button type="button" class="allbtnin full-width" onclick="updateTotalCost('@idn');" id="@btnId" >Save</button>
-                </div>
+                @*<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <button type="button" class="allbtnin full-width" onclick="updateTotalCost('@idn');" id="@btnId">Save</button>
+                </div>*@
             </div>
         </div>
         <div class="modal-footer">
@@ -77,17 +91,20 @@
     $(document).ready(function () {
         var btnid = "btnId" + '@idn';
         var perRoomCostId = "totalPerRoomCost" + '@idn';
+        var totalPerRoomTax = "totalPerRoomTax" + '@idn';
         var jsondataId ="jsonDataId"+  '@idn';
-        var TotalRoomCost = $("#" +'@totDiveId').val();
+        var TotalRoomCost = $("#" + '@totDiveId').val();
+         var TotalRoomTax = $("#" +'@totTaxDiveId').val();
         //console.log("Per Room Cost Id" + perRoomCostId + " Per Room COST " + TotalRoomCost)
         $("#" + perRoomCostId).text(TotalRoomCost);
+        $("#" + totalPerRoomTax).val(TotalRoomTax);
         $("#" + jsondataId).val('@Html.Raw(Json.Encode(Model))');
         $("#" + perRoomCostId).on('change', function () {
             //console.log("Cost Chnaged");
             //console.log("Current Cost" + amt);
-            $("#totAmt").trigger('change'); 
+            $("#totAmt").trigger('change');
         });
-         
+
 
     });
 
@@ -97,7 +114,7 @@
         var totalBasePrice = parseInt("0");
         var jsondataId = "jsonDataId" + id;
         data = $.parseJSON($("#" + jsondataId).val());
-       
+
         $('#' + tableId).find('input[type=text]').each(function () {
          //console.log($(this).attr("vTag"));
          var dd = $(this).attr("vTag");
@@ -110,16 +127,17 @@
              }
          }
             totalRoomCostonSave += parseInt(this.value);
-           
+
          //console.log(totalRoomCostonSave)
         });
-        
+
       var perRoomCostId = "totalPerRoomCost" + id;
         $("#" + perRoomCostId).text(totalRoomCostonSave.toFixed(2));
         divLoaded();
-        $("#" + perRoomCostId).trigger('change');   
+        $("#" + perRoomCostId).trigger('change');
         $("#"+jsondataId).val(JSON.stringify(data))
-       
+
     }
 
 </script>
+

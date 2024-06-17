@@ -39,7 +39,7 @@ namespace HotelBooking.Repository.Implementation
         }
         public RoomeTypeImages[] GetRoomTypeImages(int roomTypeId)
         {
-            List<ImageMaster> rtimages =_context.ImageMaster.Where(rt => rt.RefId == roomTypeId && rt.ImageTypeId == 1).ToList();
+            List<ImageMaster> rtimages =_context.ImageMaster.Where(rt => rt.RefId == roomTypeId && rt.ImageTypeId == 1 && rt.isDeleted==false).ToList();
             List<RoomeTypeImages> rtImages = new List<RoomeTypeImages>();    
             
             foreach (var image in rtimages)
@@ -110,13 +110,42 @@ namespace HotelBooking.Repository.Implementation
             bool rtnal = false;
             try
             {
-                ImageMaster t= _context.ImageMaster.Where(i=>i.RefId==imageId && i.ImageTypeId==1).FirstOrDefault();
+                ImageMaster t= _context.ImageMaster.Where(i=>i.ImageId==imageId && i.ImageTypeId==1).FirstOrDefault();
                 if (t!=null)
                 {
                     t.isDeleted = true;
                     _context.SaveChanges();
                 }
                 
+                rtnal = true;
+            }
+            catch (Exception)
+            {
+
+                rtnal = false;
+            }
+            return rtnal;
+        }
+        public bool inActiveRoomTypeImage(int imageId,string act)
+        {
+            bool rtnal = false;
+            try
+            {
+                ImageMaster t = _context.ImageMaster.Where(i => i.ImageId == imageId && i.ImageTypeId == 1).FirstOrDefault();
+                if (t != null)
+                {
+                    if(act=="A")
+                    {
+                        t.isActive = true;
+                    }
+                    else
+                    {
+                        t.isActive = false;
+                    }
+                    
+                    _context.SaveChanges();
+                }
+
                 rtnal = true;
             }
             catch (Exception)

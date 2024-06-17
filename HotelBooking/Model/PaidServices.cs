@@ -12,6 +12,7 @@ namespace HotelBooking.Model
         public int PriceTypeId { get; set; }
         public string PriceType{ get; set; }
         public decimal Price { get; set; }
+        public double TaxPercentage { get; set; }
         public string Title{ get; set; }
         public string Description { get; set; }
         public string ShortDescription { get; set; }

@@ -27,6 +27,7 @@ namespace HotelBooking.Model
         public string PrimaryRoles { get; set; }
         public string SecondryRoles { get; set; }
         public string ResponseMessage { get; set; }
-        public IEnumerable<VM_Module> Modules { get; set; } 
+        public IEnumerable<VM_Module> Modules { get; set; }
+        public IEnumerable<TaxMaster> TaxDetails { get; set; }
     }
 }
