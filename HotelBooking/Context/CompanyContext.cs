@@ -1,7 +1,9 @@
 ﻿
 using HotelBooking.Model;
 using HotelBooking.Model.Reatraurant;
+using HotelBooking.Model.Review;
 using HotelBooking.Model.Tour;
+using System;
 using System.Data.Entity;
 
 namespace HotelBooking.Context
@@ -31,6 +33,11 @@ namespace HotelBooking.Context
             set;
         }
         public DbSet<Branch> Branch
+        {
+            get;
+            set;
+        }
+        public DbSet<HotelContacts> HotelContacts
         {
             get;
             set;
@@ -214,6 +221,27 @@ namespace HotelBooking.Context
             set;
         }
         public DbSet<Tour> Tours
+        {
+            get;
+            set;
+        }
+
+        public DbSet<HotelBooking.Model.TimeZone.TimeZone> BranchTimeZone
+        {
+            get;
+            set;
+        }
+        public DbSet<ReviewMaster> ReviewMaster
+        {
+            get;
+            set;
+        }
+        public DbSet<ReviewText> ReviewText
+        {
+            get;
+            set;
+        }
+        public DbSet<ReviewImages> ReviewImages
         {
             get;
             set;

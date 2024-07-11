@@ -17,7 +17,7 @@
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Title</label>
 
-                    @Html.TextBoxFor(model => model.Title, new { @class = "full-width", placeholder = "Title" })
+                    @Html.TextBoxFor(model => model.Title, new { @class = "full-width ValidateInput", placeholder = "Title" })
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <label for="edit-mail" class="form-required">&nbsp;</label>
@@ -33,31 +33,31 @@
                     <label for="edit-mail" class="form-required">Mon</label>
 
 
-                    @Html.TextBoxFor(model => model.MON, new { @class = "full-width", placeholder = "0.00" })
+                    @Html.TextBoxFor(model => model.MON, new { @class = "full-width ValidateInput", placeholder = "0.00" })
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Tue</label>
-                    @Html.TextBoxFor(model => model.TUE, new { @class = "full-width", placeholder = "0.00" })
+                    @Html.TextBoxFor(model => model.TUE, new { @class = "full-width ValidateInput", placeholder = "0.00" })
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Wed</label>
-                    @Html.TextBoxFor(model => model.WED, new { @class = "full-width", placeholder = "0.00" })
+                    @Html.TextBoxFor(model => model.WED, new { @class = "full-width ValidateInput", placeholder = "0.00" })
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Thu</label>
-                    @Html.TextBoxFor(model => model.THUR, new { @class = "full-width", placeholder = "0.00" })
+                    @Html.TextBoxFor(model => model.THUR, new { @class = "full-width ValidateInput", placeholder = "0.00" })
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Fri</label>
-                    @Html.TextBoxFor(model => model.FRI, new { @class = "full-width", placeholder = "0.00" })
+                    @Html.TextBoxFor(model => model.FRI, new { @class = "full-width ValidateInput", placeholder = "0.00" })
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Sat</label>
-                    @Html.TextBoxFor(model => model.SAT, new { @class = "full-width", placeholder = "0.00" })
+                    @Html.TextBoxFor(model => model.SAT, new { @class = "full-width ValidateInput", placeholder = "0.00" })
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
-                    <label for="edit-mail" class="form-required">San</label>
-                    @Html.TextBoxFor(model => model.SUN, new { @class = "full-width", placeholder = "0.00" })
+                    <label for="edit-mail" class="form-required">Sun</label>
+                    @Html.TextBoxFor(model => model.SUN, new { @class = "full-width ValidateInput", placeholder = "0.00" })
                     @Html.HiddenFor(model => model.BranchId)
                 </div>
             </div>
@@ -69,25 +69,35 @@
     <script>
         
         function setRoomype() {
-            var rtnVal = true;
+            if (!validateBooking()) {
+                return false; // Prevent form submission if validation fails
+            } else {
+                var rtnVal = true;
                 var id = $("#RoomType").val();
                 const rtName = $("#RoomType option:selected").text().replace(/[\n\r]+/g, ' ').trim();
                 $("#RoomTypeId").val(id);
                 $("#RoomTypeTitle").val(rtName);
                 console.log(id + "    " + rtName);
-            if (id <= 0) { $("#RoomType").focus(); rtnVal=false; }
+                if (id <= 0) { $("#RoomType").focus(); rtnVal = false; }
                 $('input[type=text]').each(function () {
-                    
+
                     var val = $('#' + this.name).val();
                     console.log(val);
                     if (val == '') { rtnVal = false; }
-                    
-                   
-                });
 
+
+                });
                 return rtnVal;
             }
+            
+
+               
+            }
         $(document).ready(function () {
+            $("input").attr("autocomplete", "none");
+            $(".ValidateInput").on("blur", function () {
+                validateField(this);
+            });
             $("#CHK_CP").click(function () {
                 if ($("#CHK_CP").is(':checked')) {
                     var mondayValue = '';

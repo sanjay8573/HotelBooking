@@ -14,6 +14,7 @@ namespace HotelBooking.Model
            
             public byte[]  ImageData{ get; set; }
             public string CouponPeriod{ get; set; }
+            public DateTime CouponPeriodEnd { get; set; }
             public string CouponCode { get; set; }
             public string CouponType { get; set; }
             public decimal CouponValue { get; set; }

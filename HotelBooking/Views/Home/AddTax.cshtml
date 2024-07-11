@@ -6,7 +6,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="card widget-container">
-            <div class="heading"> <i class="fa fa-address-card" aria-hidden="true"></i> Configure Tax</div>
+            <div class="heading"> <i class="fa fa-inr" aria-hidden="true"></i> Configure Tax</div>
             <div class="widget-content padded text-center">
 
                 @using (Html.BeginForm("SaveTax", "Home", FormMethod.Post, new { id = "msform", enctype = "multipart/form-data" }))
@@ -16,29 +16,29 @@
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required"> Tax Slab Name</label>
-                                @Html.TextBoxFor(m => m.Name, new { @class = "full-width", placeholder = "Tax Slab Name" })
+                                @Html.TextBoxFor(m => m.Name, new { @class = "full-width ValidateInput", placeholder = "Tax Slab Name" })
 
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required">Display/Print Name</label>
 
-                                @Html.TextBoxFor(m => m.Description, new { @class = "full-width", placeholder = "Display Name" })
+                                @Html.TextBoxFor(m => m.Description, new { @class = "full-width ValidateInput", placeholder = "Display Name" })
                             </div>
                         </div>
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required">Start Range </label>
 
-                                @Html.TextBoxFor(m => m.RangeFrom, new { @class = "full-width", placeholder = "Range From" })
+                                @Html.TextBoxFor(m => m.RangeFrom, new { @class = "full-width ValidateInput", placeholder = "Range From" })
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required">End Range</label>
 
-                                @Html.TextBoxFor(m => m.RangeTo, new { @class = "full-width", placeholder = "Range To" })
+                                @Html.TextBoxFor(m => m.RangeTo, new { @class = "full-width ValidateInput", placeholder = "Range To" })
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required">Applied For</label>
-                                <select id="SelTaxableItem" class="form-required full-width" required name="SelTaxableItem">
+                                <select id="SelTaxableItem" class="form-required full-width ValidateInput" valType="DropDown" required name="SelTaxableItem">
                                     @if (ViewBag.TaxableItems != null)
                                     {
                                         foreach (var item in ViewBag.TaxableItems)
@@ -63,12 +63,12 @@
                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required">Tax Value</label>
 
-                                @Html.TextBoxFor(m => m.Value, new { @class = "full-width", placeholder = "tax value" })
+                                @Html.TextBoxFor(m => m.Value, new { @class = "full-width ValidateInput", placeholder = "tax value" })
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required">Tax Type(P/F)</label>
 
-                                @Html.TextBoxFor(m => m.TaxType, new { @class = "full-width", placeholder = "Tax Type(P/F)" })
+                                @Html.TextBoxFor(m => m.TaxType, new { @class = "full-width ValidateInput", placeholder = "Tax Type(P/F)" })
                             </div>
 
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
@@ -84,7 +84,7 @@
                         </div>
 
                     </div>
-                    <input type="submit" name="prev" id="btnAddTax" class="prev action-button" onclick="setData();" value="SAVE" runat="server">
+                    <input type="submit" name="prev" id="btnAddTax" class="prev action-button" onclick="return setData();" value="SAVE" runat="server">
                 }
 
             </div>
@@ -92,18 +92,30 @@
     </div>
 </div>
 <script>
-    function setData() {
-        $("#appliedForID").val($("#SelTaxableItem option:selected").val());
-        $("#appliedForName").val($("#SelTaxableItem option:selected").text());
-        
-        $('input[type=checkbox]').each(function () {
-
-
-            if (this.name == "CHK_ACTIVE") {
-                $('#isActive').val(this.checked);
-
-            }
+    $(document).ready(function () {
+        $("input").attr("autocomplete", "none");
+        $(".ValidateInput").on("blur", function () {
+            validateField(this);
         });
+    });
+
+    function setData() {
+        if (!validateBooking()) {
+            return false; // Prevent form submission if validation fails
+        } else {
+            $("#appliedForID").val($("#SelTaxableItem option:selected").val());
+            $("#appliedForName").val($("#SelTaxableItem option:selected").text());
+
+            $('input[type=checkbox]').each(function () {
+
+
+                if (this.name == "CHK_ACTIVE") {
+                    $('#isActive').val(this.checked);
+
+                }
+            });
+        }
+        
 
 
     }

@@ -21,7 +21,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Title</label>
 
-                    @Html.TextBoxFor(model => model.Title1, new { @class = "full-width", placeholder = "Title" })
+                    @Html.TextBoxFor(model => model.Title1, new { @class = "full-width ValidateInput", placeholder = "Title" })
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">&nbsp;</label>
@@ -38,12 +38,13 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Date Range</label>
-                    <input type="datetime-local" id="dtrStart" class="full-width" name="daytime">
-
+                   
+                    <input type="text" id="dtrStart" class="full-width allinputgo" placeholder="RangeStart" autocomplete="off">
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Date Range</label>
-                    <input type="datetime-local" id="dtrEnd" class="full-width" name="daytime">
+                  
+                    <input type="text" id="dtrEnd" class="full-width allinputgo" placeholder="RangeEnd" autocomplete="off">
 
                 </div>
                 @Html.HiddenFor(model => model.DateRangeFrom)
@@ -53,33 +54,33 @@
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Mon</label>
 
-                    @Html.TextBoxFor(model => model.MON1, new { @class = "full-width", id = "MON1", Name = "MON1" })
+                    @Html.TextBoxFor(model => model.MON1, new { @class = "full-width ValidateInput", id = "MON1", Name = "MON1" })
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Tue</label>
-                    @Html.TextBoxFor(model => model.TUE1, new { @class = "full-width", id = "TUE1", Name = "TUE1" })
+                    @Html.TextBoxFor(model => model.TUE1, new { @class = "full-width ValidateInput", id = "TUE1", Name = "TUE1" })
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Wed</label>
-                    @Html.TextBoxFor(model => model.WED1, new { @class = "full-width", id = "WED1", Name = "WED1" })
+                    @Html.TextBoxFor(model => model.WED1, new { @class = "full-width ValidateInput", id = "WED1", Name = "WED1" })
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Thu</label>
-                    @Html.TextBoxFor(model => model.THUR1, new { @class = "full-width", id = "THUR1", Name = "THUR1" })
+                    @Html.TextBoxFor(model => model.THUR1, new { @class = "full-width ValidateInput", id = "THUR1", Name = "THUR1" })
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Fri</label>
-                    @Html.TextBoxFor(model => model.FRI1, new { @class = "full-width", id = "FRI1", Name = "FRI1" })
+                    @Html.TextBoxFor(model => model.FRI1, new { @class = "full-width ValidateInput", id = "FRI1", Name = "FRI1" })
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Sat</label>
-                    @Html.TextBoxFor(model => model.SAT1, new { @class = "full-width", id = "SAT1", Name = "SAT1" })
+                    @Html.TextBoxFor(model => model.SAT1, new { @class = "full-width ValidateInput", id = "SAT1", Name = "SAT1" })
                 </div>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
-                    <label for="edit-mail" class="form-required">San</label>
-                    @Html.TextBoxFor(model => model.SUN1, new { @class = "full-width", id = "SUN1", Name = "SUN1" })
+                    <label for="edit-mail" class="form-required">Sun</label>
+                    @Html.TextBoxFor(model => model.SUN1, new { @class = "full-width ValidateInput", id = "SUN1", Name = "SUN1" })
                 </div>
             </div>
 
@@ -96,20 +97,24 @@
 
 <script>
 
-        function setData() {
+    function setData() {
+        if (!validateBooking()) {
+            return false; // Prevent form submission if validation fails
+        } else
+        {
             var rtnVal = true;
-                var id = $("#RoomType").val();
-                const rtName = $("#RoomType option:selected").text().replace(/[\n\r]+/g, ' ').trim();
-                $("#RoomTypeId1").val(id);
-                $("#RoomTypeTitle1").val(rtName);
-               
+            var id = $("#RoomType").val();
+            const rtName = $("#RoomType option:selected").text().replace(/[\n\r]+/g, ' ').trim();
+            $("#RoomTypeId1").val(id);
+            $("#RoomTypeTitle1").val(rtName);
+
             var dtStart = $("#dtrStart").val();
             var dtEnd = $("#dtrEnd").val();
-           
+
             $("#DateRangeFrom").val(dtStart.substr(0, 10));
             $("#DateRangeTo").val(dtEnd.substr(0, 10));
-           
-            if (id <= 0) { $("#RoomType").focus(); rtnVal=false; }
+
+            if (id <= 0) { $("#RoomType").focus(); rtnVal = false; }
 
             $('input[type=text]').each(function () {
                 var $item = this.name;
@@ -119,14 +124,35 @@
                     console.log(val);
                     if (val == '') { rtnVal = false; }
                 }
-                   
 
 
-                });
 
-                return rtnVal;
-            }
+            });
+
+            return rtnVal;
+        }
+   }
     $(document).ready(function () {
+        $("input").attr("autocomplete", "none");
+        $(".ValidateInput").on("blur", function () {
+            validateField(this);
+        });
+
+        $("#dtrStart").datepicker({
+            dateFormat: "dd-mm-yy",
+            duration: "fast",
+            minDate: 0,
+            disabledDates: [new Date()],
+            onSelect: function (selected) {
+                var minDate = $(this).datepicker('getDate');
+                minDate.setDate(minDate.getDate() + 1); //add one day
+                $('#dtrEnd').datepicker('option', 'minDate', minDate);
+            }
+        });
+        $("#dtrEnd").datepicker({
+            dateFormat: "dd-mm-yy"
+            , duration: "fast"
+        });
         $("#SpclpriceGrid").load("/Home/_SpecialPriceGrid");
             $("#CHK_CP1").click(function () {
                 if ($("#CHK_CP1").is(':checked')) {

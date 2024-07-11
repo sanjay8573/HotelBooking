@@ -89,8 +89,11 @@ namespace HotelBooking.Model.Reatraurant
         public int BranchId { get; set; }
         public bool isActive { get; set; }
         public bool isDeleted { get; set; }
+        public bool isMainImage { get; set; }
+        [NotMapped]
+        public string ImageToBase64String { get; set; }
 
-        
+
     }
 
 

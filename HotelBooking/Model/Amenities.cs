@@ -15,7 +15,8 @@ namespace HotelBooking.Model
         public bool IsActive { get; set; }=false;
         public bool isDeleted { get; set; } = false;
         public DateTime? DateCreated { get; set; }
-        
-       
+        public bool isHotel { get; set; } 
+
+
     }
 }

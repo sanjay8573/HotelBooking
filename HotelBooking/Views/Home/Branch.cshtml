@@ -1,155 +1,1251 @@
-﻿
+﻿@model HotelBooking.Model.EditHotel.VM_EditHotel
 @{
-    ViewBag.Title = "Branch";
+    ViewBag.Title = "Hotel Details";
 }
 
 <div class="row">
     <div class="col-sm-12">
         <div class="card widget-container">
-            <div class="heading"> <i class="fa fa-address-card" aria-hidden="true"></i> Setup Branch</div>
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Edit Hotel Details <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Checkout</small> </span></div>
             <div class="widget-content padded text-center">
-                <form id="msform" runat="server" action="ProvisionGDSInfo.html" method="get">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                <label for="edit-mail" class="form-required">Select Your Category</label>
-                                <select id="ddlEngine" class="full-width" runat="server">
-                                    <option selected="selected">Select Your Category</option>
-                                    <option>Reseller</option>
-                                    <option>Supplier</option>
-                                    <option>B2B_Site</option>
-                                    <option>B2B2C</option>
-                                    <option>Affilate</option>
-                                    <option>B2E</option>
-                                </select>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                <label for="edit-mail" class="form-required">Select Your Category</label>
-                                <ul class="unstyled centered">
-                                    <li>
-                                        <input class="styled-checkbox" id="styled-checkbox-1" type="checkbox" value="value1">
-                                        <label for="styled-checkbox-1">Reseller</label>
-                                    </li>
-                                    <li>
-                                        <input class="styled-checkbox" id="styled-checkbox-2" type="checkbox" value="value2" checked>
-                                        <label for="styled-checkbox-2">Supplier</label>
-                                    </li>
-                                    <li>
-                                        <input class="styled-checkbox" id="styled-checkbox-3" type="checkbox" value="value3">
-                                        <label for="styled-checkbox-3">B2B_Site</label>
-                                    </li>
-                                    <li>
-                                        <input class="styled-checkbox" id="styled-checkbox-4" type="checkbox" value="value4">
-                                        <label for="styled-checkbox-4">B2B2C</label>
-                                    </li>
-                                    <li>
-                                        <input class="styled-checkbox" id="styled-checkbox-5" type="checkbox" value="value5">
-                                        <label for="styled-checkbox-5">Affilate</label>
-                                    </li>
-                                    <li>
-                                        <input class="styled-checkbox" id="styled-checkbox-6" type="checkbox" value="value6">
-                                        <label for="styled-checkbox-6">B2E</label>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                <label for="edit-mail" class="form-required">First Name</label>
-                                <input type="text" id="txtUserName" class="full-width" placeholder="First Name" runat="server">
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                <label for="edit-mail" class="form-required">Last Name</label>
-                                <input type="text" id="txtUserName" class="full-width" placeholder="Last Name" runat="server">
-                            </div>
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                <label for="edit-mail" class="form-required">Company Name</label>
-                                <input type="text" id="txtUserName" class="full-width" placeholder="Company Name" runat="server">
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                <label for="edit-mail" class="form-required">Email</label>
-                                <input type="text" id="txtEmail" class="full-width" placeholder="Email" runat="server">
-                            </div>
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                <label for="edit-mail" class="form-required">Country</label>
-                                <select id="ddlEngine" class="full-width" runat="server">
-                                    <option selected="selected">Select Country</option>
-                                    <option>USA</option>
-                                    <option>India</option>
-                                    <option>Canada</option>
-                                    <option>France</option>
-                                </select>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                <label for="edit-mail" class="form-required">Phone Number</label>
-                                <div class="checkoutcontact">
-                                    <div class="checkoutcode"><span id="spnCountryCode">+ 91</span></div>
-                                    <div class="checkoutcontactin">
-                                        <input type="text" id="txtPhoneNo" class="checkoutinput full-width" placeholder="Phone Number" runat="server">
-                                    </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="tab-container bdrtab">
+                           
+                                <div class="tab-menu">
+                                    <ul>
+                                        <li><a href="#" class="tab-a active-a" data-id="GeneralInformation">General Information</a></li>
+                                        <li><a href="#" class="tab-a" data-id="HotelDetails">Hotel Details</a></li>
+                                        <li><a href="#" class="tab-a" data-id="Amenities">Amenities </a></li>
+                                        <li><a href="#" class="tab-a" data-id="WebsiteConfiguration">Website Configuration</a></li>
+                                        <li><a href="#" class="tab-a" data-id="ContactDetails">Contact Details</a></li>
+                                        <li><a href="#" class="tab-a" data-id="HotelImages">Hotel Images</a></li>
+                                    </ul>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12 pull-left">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                <label for="edit-mail" class="form-required">Address Line 1</label>
-                                <input type="text" id="txtAddressLine1" class="full-width" placeholder="Address Line 1" runat="server">
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                <label for="edit-mail" class="form-required">Address Line 2</label>
-                                <input type="text" id="txtAddressLine2" class="full-width" placeholder="Apartment, suite, unit, building, floor, etc." runat="server">
-                            </div>
-                        </div>
-                        <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12 pull-left">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                <label for="edit-mail" class="form-required">City</label>
-                                <input type="text" id="txtCity" class="full-width" placeholder="City" runat="server">
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                <label for="edit-mail" class="form-required">State / Province / Region</label>
-                                <input type="text" id="txtState" class="full-width" placeholder="State / Province / Region" runat="server">
-                            </div>
-                        </div>
-                        <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12 pull-left">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                <label for="edit-mail" class="form-required">Postal Code</label>
-                                <input type="text" id="txtPostalCode" class="full-width" placeholder="Postal Code" runat="server">
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                <label for="edit-mail" class="form-required">Website/URL</label>
-                                <input type="text" id="txtWebsite" class="full-width" placeholder="Website/URL" runat="server">
-                            </div>
-                        </div>
-                        <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12 pull-left">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                <label for="edit-mail" class="form-required">ARC/IATA</label>
-                                <input type="text" id="txtPostalCode" class="full-width" placeholder="ARC/IATA" runat="server">
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                <label for="edit-mail" class="form-required">CLIA</label>
-                                <input type="text" id="txtWebsite" class="full-width" placeholder="CLIA" runat="server">
-                            </div>
-                        </div>
-                        <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12 pull-left">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                <label for="edit-mail" class="form-required">ASTA</label>
-                                <input type="text" id="txtPostalCode" class="full-width" placeholder="ASTA" runat="server">
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                <label for="edit-mail" class="form-required">Consorita/Affiliation</label>
-                                <input type="text" id="txtWebsite" class="full-width" placeholder="Consorita/Affiliation" runat="server">
-                            </div>
+                                <!--end of tab-menu-->
+                                <div class="tab tab-active" data-id="GeneralInformation">
+                                    <div class="row">
+                                        <form id="msform" runat="server" action="" method="get" style=" margin:0px auto;">
+
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                                <div class="widget-content padded text-center">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Hotel Name</label>
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.BranchName, new { @class = "full-width GIValidateInput", placeholder = "Hotel Name" })
+
+                                                            </div>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Hotel Short Name</label>
+
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.BranchName, new { @class = "full-width GIValidateInput", placeholder = "Hotel Name" })
+                                                                @Html.HiddenFor(model => model.GeneralInformation.Id)
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Lat</label>
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.Latitude, new { @class = "full-width", placeholder = "Latitude" })
+
+                                                            </div>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Long</label>
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.Longitude, new { @class = "full-width", placeholder = "Longitude" })
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Chain Name</label>
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.ChainName, new { @class = "full-width", placeholder = "Hotel Chain Name" })
+
+                                                            </div>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Time Zone</label>
+                                                                <select name="SelTZ" id="SelTZ" class="full-width freetrial GIValidateInput" valType="DropDown">
+                                                                    @if (ViewBag.TZComboModel != null)
+                                                                    {
+                                                                        foreach (var item in ViewBag.TZComboModel)
+                                                                        {
+                                                                            if (item.Text != null)
+                                                                            {
+                                                                                <option value="@item.Value" selected="@item.Selected">
+                                                                                    @item.Text
+                                                                                </option>
+
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Build Year</label>
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.Buildyear, new { @class = "full-width", placeholder = "Year Of build" })
+
+                                                            </div>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Star Rating</label>
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.StarRating, new { @class = "full-width GIValidateInput", placeholder = "Start Ratiing" })
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Checkin Time</label>
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.CheckInTime, new { @class = "full-width GIValidateInput", placeholder = "Checkien Time" })
+
+                                                            </div>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Checkout Time</label>
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.CheckOutTime, new { @class = "full-width GIValidateInput", placeholder = "Checkout Time" })
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Nearest Airport</label>
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.NearestAirport, new { @class = "full-width", placeholder = "Nearest Airport" })
+
+                                                            </div>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Pan Card</label>
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.PanCard, new { @class = "full-width GIValidateInput", placeholder = "Pan Card Number" })
+
+                                                            </div>
+                                                        </div>
+                                                       
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Noof Floors</label>
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.NoofFloors, new { @class = "full-width GIValidateInput", placeholder = "Total available Floors" })
+
+                                                            </div>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Decimal Places </label>
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.DecimalPlaces, new { @class = "full-width", placeholder = "Decimal places" })
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Tax No.1 </label>
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.TaxNo1, new { @class = "full-width", placeholder = "Tax Number(1)" })
+
+                                                            </div>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Tax No.2</label>
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.TaxNo2, new { @class = "full-width", placeholder = "Tax Number(2)" })
+
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <div class="row">
+                                                       
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                            <button type="button" class="addbtnstore" onclick="return SaveGenInfo();">Update & Save</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    </form>
+                                            </div>
+                                </div>
+                                <!--end of tab one-->
+
+                                <div class="tab " data-id="HotelDetails">
+                                    <form id="msform" runat="server" action="" method="get" style=" margin:0px auto;">
+
+                                        <!--<h4 class="tabheading text-left" style="margin-top: 20px;"><i class="fa fa-address-card" aria-hidden="true"></i> Hotel Details </h4>-->
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left table-responsive">
+                                                <div class="widget-content padded text-center">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Long Description</label>
+                                                                
+                                                                @Html.TextAreaFor(model => model.HotelDetails.LongDescription, new { @class = "full-width HDValidateInput", placeholder = "Long Desciption of the Hotel" })
+
+                                                            </div>
+                                                            <div class="col-lg-5 col-md-5 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Short Description</label>
+                                                                @Html.TextAreaFor(model => model.HotelDetails.ShortDescription, new { @class = "full-width", placeholder = "Short Desciption of the Hotel" })
+                                                                
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Checkin Policy</label>
+                                                                @Html.TextAreaFor(model => model.HotelDetails.CheckinPolicy, new { @class = "full-width", placeholder = "Checkin Policy" })
+
+                                                                
+                                                            </div>
+                                                            <div class="col-lg-5 col-md-5 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Checkin Instruction</label>
+                                                                @Html.TextAreaFor(model => model.HotelDetails.CheckInInStructions, new { @class = "full-width", placeholder = "Check In InStructions" })
+
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Special Checkin Instruction</label>
+                                                                @Html.TextAreaFor(model => model.HotelDetails.SpecialCheckInInStructions, new { @class = "full-width", placeholder = "Special CheckIn InStructions" })
+
+                                                            </div>
+                                                            <div class="col-lg-5 col-md-5 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <ul class="unstyled">
+                                                                    <li>
+                                                                        <input class="styled-checkbox" id="CHK_ACTIVEPA" type="checkbox" checked="@Model.HotelDetails.PetsAllowed" name="CHK_ACTIVE">
+                                                                        <label for="CHK_ACTIVEPA">Pets Allowed</label>
+                                                                    </li>
+                                                                </ul>
+                                                                @Html.HiddenFor(model => model.HotelDetails.PetsAllowed)
+                                                                <ul class="unstyled">
+                                                                    <li>
+                                                                        <input class="styled-checkbox" id="CHK_ACTIVECF" type="checkbox" checked="@Model.HotelDetails.CoupleFriendly" name="CHK_ACTIVE">
+                                                                        <label for="CHK_ACTIVECF">Couple Friendly</label>
+                                                                    </li>
+                                                                </ul>
+                                                                @Html.HiddenFor(model => model.HotelDetails.CoupleFriendly)
+                                                                <ul class="unstyled">
+                                                                    <li>
+                                                                        <input class="styled-checkbox" id="CHK_ACTIVELI" type="checkbox" checked="@Model.HotelDetails.CheckinWithLocalIds" name="CHK_ACTIVE">
+                                                                        <label for="CHK_ACTIVELI">Checkin With LocalIds</label>
+                                                                    </li>
+                                                                </ul>
+                                                                @Html.HiddenFor(model => model.HotelDetails.CheckinWithLocalIds)
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                       
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                            <button type="button" class="addbtnstore" onclick="SaveHotelDetails();" >Update & Save</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </form>
+                                </div>
+                                <!--end of tab two-->
+                                <div class="tab " data-id="Amenities">
+                                    <form id="msform" runat="server" action="" method="get" style=" margin:0px auto;">
+
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-lef">
+                                                
+                                                <div class="col-lg-3 col-md-3 col-sm-6 pull-left">
+                                                    <label style="margin-top: 10px;"> Name</label>
+
+                                                    <input type="text" id="txtamiName" class="full-width AMEValidateInput" placeholder="Amenities Name" runat="server">
+                                                </div>
+                                                <div class="col-lg-3 col-md-3 col-sm-6 pull-left">
+                                                    <label style="margin-top: 10px;">Description</label>
+                                                    <input type="text" id="txtamiDesc" class="full-width AMEValidateInput" placeholder="Amenities Description" runat="server">
+                                                </div>
+                                                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-left">
+                                                    <button type="button" style="margin-top: 30px;" class="allbtnin full-width" onclick="AddAmenities();">Add</button>
+                                                </div>
+                                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">&nbsp;</div>
+                                                <table class="table table-bordered" id="tblAmenities">
+                                                    <thead>
+                                                        <tr class="trthbgclr">
+                                                            <th class="text-center">#</th>
+                                                            <th class="text-center">Name</th>
+                                                            <th class="text-center">Description</th>
+                                                            <th class="text-center"  width="15%">Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if (Model != null)
+                                                        {
+                                                            var ai = 0;
+                                                            var rid = ai + 1;
+                                                            foreach (var rt in Model.HotelAmenities)
+                                                            {
+                                                                <tr class="active" id="@rt.AmenitiesId">
+                                                                    <td>@rid</td>
+                                                                    <td align="center" valign="middle">@rt.Title</td>
+                                                                    <td align="center" valign="middle">@rt.Description</td>
+                                                                    <td align="center" valign="middle"><a href="#" class="editbtn" onClick="removeRow(this)"><i class="fa fa-trash-o"></i> Delete</a></td>
+                                                                    
+
+                                                                </tr>
+                                                                rid++;
+                                                            }
+                                                            rid--;
+                                                            <input type="hidden" id="htnTotalAmenities" value="@rid" />
+                                                        }
+
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
+                                                <button type="button" class="addbtnstore" onclick="SaveHotelAmenities();">Update &amp; Save</button>
+                                            </div>
+                                        </div>
+                                        </form>
+                                </div>
+                                <!--end of tab three-->
+
+                                <div class="tab " data-id="WebsiteConfiguration">
+                                    <form id="msform" runat="server" action="" method="get" style=" margin:0px auto;">
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left table-responsive">
+                                                <div class="widget-content padded text-center">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Website URL</label>
+                                                                @Html.TextBoxFor(model => model.WebSiteConfiguration.WebsiteURL, new { @class = "full-width", placeholder = "Website Url" })
+
+                                                            </div>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Upload WebSite Logo </label>
+                                                                <input type="file" id="WBLogoImage" name="WBLogoImage" class="full-width" onchange="readURL(this);" />
+                                                                <p id="error1" style="display:none; color:#FF0000;">
+                                                                    Invalid Image Format! Image Format Must Be JPG, JPEG, PNG or GIF.
+                                                                </p>
+                                                                <p id="error2" style="display:none; color:#FF0000;">
+                                                                    Maximum File Size Limit is 1MB.
+                                                                </p>
+
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                                            <div class="col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Current Logo</label>
+                                                                @{
+                                                                    String img6412 = Convert.ToBase64String(Model.WebSiteConfiguration.LogoImage);
+                                                                    String img64Url12 = string.Format("data:image/jpeg;base64,{0}", img6412); //imagetype can be e.g. gif, jpeg, png etc.
+                                                                }
+                                                            <img style="width:150px;height:50px" id="imgWL" src="@img64Url12" alt="WebSite Logo">
+                                                            </div>
+                                                           
+
+                                                        </div>
+
+                                                       
+                                                       
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                                                <label style="margin-top: 10px;">Website Header File</label>
+                                                                @Html.TextAreaFor(model => model.WebSiteConfiguration.WebsiteHeaderFile, new { @class = "full-width", placeholder = "Header details" })
+
+
+                                                            </div>
+                                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                                                <label style="margin-top: 10px;">Website Footer File</label>
+                                                                @Html.TextAreaFor(model => model.WebSiteConfiguration.WebsiteFooterFile, new { @class = "full-width", placeholder = "Short Desciption of the Hotel" })
+
+
+                                                            </div>
+
+                                                        </div>
+
+
+
+
+
+
+                                                    </div>
+                                                    <div class="row">
+
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                            <button type="button" class="addbtnstore" onclick="SaveWebDetails();">Update & Save</button>
+                                                        </div>
+                                                    </div>
+                                                 </div>
+                                                </div>
+                                            </div>
+
+                                    </form>
+                                </div>
+                                <!--end of tab Four-->
+
+                                <div class="tab " data-id="ContactDetails">
+                                    <form id="msform" runat="server" action="" method="get" style=" margin:0px auto;">
+
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                                <div class="widget-content padded text-center">
+                                                    <div class="row">
+                                                        
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Contact Text</label>
+                                                                <input type="text" id="txtContactText" class="full-width" placeholder="Contact Text" runat="server">
+                                                            </div>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Desc</label>
+                                                                <input type="text" id="txtContactDesc" class="full-width" placeholder="Desc" runat="server">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Contact Type</label>
+                                                                <select id="ddlCT"  class="full-width" runat="server">
+                                                                    <option selected="selected">Select Contact Type</option>
+                                                                    <option>LandLine</option>
+                                                                    <option>Mobile</option>
+                                                                    <option>Fax</option>
+                                                                    <option>Email</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <label for="edit-mail" class="form-required">Enter Contact Details</label>
+                                                                <input type="text" id="txtCD" class="full-width" placeholder="Enter Contact Details" runat="server">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                                <ul class="unstyled">
+                                                                    <li>
+                                                                        <input class="styled-checkbox" id="CHK_ACTIVEIM" type="checkbox" name="CHK_ACTIVE">
+                                                                        <label for="CHK_ACTIVEIM">Is Manager</label>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                                <button type="button" class="addbtnstore" onclick="AddContact();">ADD</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 table-responsive form-group">
+                                                            <table class="table table-bordered" id="ContactDetailsTable">
+                                                                <thead>
+                                                                    <tr style="background: #eaeeef;">
+                                                                        <td colspan="13" align="left" valign="middle"><div class="allheadingin">Hotel Contacts Details</div></td>
+                                                                    </tr>
+                                                                    <tr class="trthbgclr">
+                                                                        <th class="text-center">#</th>
+                                                                        <th class="text-center">Contact Text</th>
+                                                                        <th class="text-center">Desc</th>
+                                                                        <th class="text-center">Contact Type</th>
+                                                                        <th class="text-center">Contact Details</th>
+                                                                        <th class="text-center">isManager#</th>
+                                                                        <th class="text-center" colspan="2" width="22%">Actions</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+
+                                                                    @if (Model != null)
+                                                                    {
+                                                                        var aci = 0;
+                                                                        var crid = aci + 1;
+                                                                        foreach (var rt in Model.ContactInformation)
+                                                                        {
+                                                                            <tr class="active" id="@rt.HotelContactID">
+                                                                                <td>@crid</td>
+                                                                                <td align="center" valign="middle">@rt.ContactText</td>
+                                                                                <td align="center" valign="middle">@rt.Description</td>
+                                                                                <td align="center" valign="middle">@rt.ContactType</td>
+                                                                                <td align="center" valign="middle">@rt.ContactDetails</td>
+                                                                                <td align="center" valign="middle">@rt.isManager</td>
+                                                                                <td align="center" valign="middle"><a href="#" class="editbtn" onclick="removeContact(this);"><i class="fa fa-trash-o"></i> Delete</a></td>
+
+
+                                                                            </tr>
+                                                                            crid++;
+                                                                        }
+                                                                        crid--;
+                                                                        <input type="hidden" id="htnTotalRow" value="@crid" />
+                                                                    }
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                            <button type="button" class="addbtnstore" onclick="SaveHotelContacts();">Update & Save</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </form>
+                                </div>
+                                <!--end of tab Five-->
+
+                                <div class="tab " data-id="HotelImages">
+                                    <form id="msform" runat="server" action="" method="get" style=" margin:0px auto;">
+
+                                        <div class="row">
+                                            
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-lef">
+                                                
+                                                <div class="col-lg-2 col-md-2 col-sm-6 pull-left">
+                                                    <label style="margin-top: 10px;">Image</label>
+                                                    <input type="file" id="txtHotelImages" class="full-width HIValidateInput" placeholder="Amenities Icon" runat="server">
+                                                    <p id="error3" style="display:none; color:#FF0000;">
+                                                        Invalid Image Format! Image Format Must Be JPG, JPEG, PNG or GIF.
+                                                    </p>
+                                                    <p id="error4" style="display:none; color:#FF0000;">
+                                                        Maximum File Size Limit is 1MB.
+                                                    </p>
+
+                                                </div>
+                                                <div class="col-lg-2 col-md-2 col-sm-6 pull-left">
+                                                    <label style="margin-top: 10px;">Image Desc</label>
+                                                    <input type="text" id="txtHIDESC" class="full-width HIValidateInput" placeholder="Image Desc" runat="server">
+                                                </div>
+                                                <div class="col-lg-3 col-md-3 col-sm-2 pull-left">
+                                                    <label style="margin-top: 10px;">&nbsp;</label>
+                                                    <ul class="unstyled">
+                                                        <li>
+                                                            <input class="styled-checkbox" id="CHK_ACTIVEISMI" type="checkbox" name="CHK_ACTIVE">
+                                                            <label for="CHK_ACTIVEISMI">Is Main Image</label>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 pull-left">
+                                                    <button type="button" style="margin-top: 30px;" class="allbtnin full-width" onclick="return AddHotelImages();">Add</button>
+                                                </div>
+                                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">&nbsp;</div>
+                                                <table class="table table-bordered" id="HotelImagetable">
+                                                    <thead>
+                                                        <tr class="trthbgclr">
+                                                            <th class="text-center">#</th>
+                                                            <th class="text-center">Image</th>
+                                                            <th class="text-center">Image Desc</th>
+                                                            <th class="text-center">Is Main Image</th>
+                                                            <th class="text-center"  width="15%">Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if (Model != null)
+                                                        {
+                                                            var ahi = 0;
+                                                            var hrid = ahi + 1;
+                                                            foreach (var rt in Model.HotelImages)
+                                                            {
+                                                                <tr class="active" id="@rt.ImageId">
+                                                                    <td>@hrid</td>
+                                                                    @{
+                                                                        String img64125 = Convert.ToBase64String(rt.ImageData);
+                                                                        String img64Url125 = string.Format("data:image/jpeg;base64,{0}", img64125); //imagetype can be e.g. gif, jpeg, png etc.
+                                                                    }
+                                                                    <td align="center" valign="middle"><img style="width:50%;height:50%" src="@img64Url125" alt="HotelImage"></td>
+                                                                    <td align="center" valign="middle">@rt.ImageName</td>
+                                                                    <td align="center" valign="middle">@rt.isMainImage</td>
+
+                                                                    <td align="center" valign="middle"><a href="#" class="editbtn" onclick="removeHotelImage(this,'@rt.ImageId');"><i class="fa fa-trash-o"></i> Delete</a></td>
+
+
+                                                                </tr>
+                                                                hrid++;
+                                                            }
+                                                            hrid--;
+                                                            <input type="hidden" id="htnTotalImageRow" value="@hrid" />
+                                                        }
+                                                        
+                                                        
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
+                                                <button type="button" class="addbtnstore" onclick="SaveHotelImages();">Update &amp; Save</button>
+                                            </div>
+                                        </div>
+                                        </form>
+                                </div>
+                                <!--end of tab Five-->
+                            
                         </div>
                     </div>
-                    <input type="button" name="prev" class="prev action-button" value="SAVE" runat="server">
-                    <input type="submit" name="Process" class="next action-button" value="PROCESS" runat="server">
-                </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
+    
+<script>
+    $(document).ready(function () {
+        $("input").attr("autocomplete", "none");
+        $(".GIValidateInput").on("blur", function () {
+            validateField(this);
+        });
 
+        $(".AMEValidateInput").on("blur", function () {
+            validateField(this);
+        });
+
+        $(".HIValidateInput").on("blur", function () {
+            validateField(this);
+        });
+        $('#WBLogoImage').bind('change', function () {
+
+            var ext = $('#WBLogoImage').val().split('.').pop().toLowerCase();
+            if ($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg']) == -1) {
+                $('#error1').slideDown("slow");
+                $('#error2').slideUp("slow");
+                a = 0;
+            } else {
+                var picsize = (this.files[0].size);
+                if (picsize > 1000000) {
+                    $('#error2').slideDown("slow");
+                    a = 0;
+                } else {
+                    a = 1;
+                    $('#error2').slideUp("slow");
+                }
+                $('#error1').slideUp("slow");
+
+            }
+        });
+        $('#txtHotelImages').bind('change', function () {
+
+            var ext = $('#txtHotelImages').val().split('.').pop().toLowerCase();
+            if ($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg']) == -1) {
+                $('#error3').slideDown("slow");
+                $('#error4').slideUp("slow");
+                a = 0;
+            } else {
+                var picsize = (this.files[0].size);
+                if (picsize > 1000000) {
+                    $('#error4').slideDown("slow");
+                    a = 0;
+                } else {
+                    a = 1;
+                    $('#error4').slideUp("slow");
+                }
+                $('#error3').slideUp("slow");
+
+            }
+        });
+        $('.tab-a').click(function () {
+            $(".tab").removeClass('tab-active');
+            $(".tab[data-id='" + $(this).attr('data-id') + "']").addClass("tab-active");
+            $(".tab-a").removeClass('active-a');
+            $(this).parent().find(".tab-a").addClass('active-a');
+        });
+    });
+
+    function SaveGenInfo() {
+        if (!validateMyForm('GIValidateInput')) {
+            return false; // Prevent form submission if validation fails
+        } else {
+            const bId = $("#GeneralInformation_Id").val();
+            const bName = $("#GeneralInformation_BranchName").val();
+            const bLongitude = $("#GeneralInformation_Longitude").val();
+            const bLatitude = $("#GeneralInformation_Latitude").val();
+            const bChainName = $("#GeneralInformation_ChainName").val();
+            const bBuildyear = $("#GeneralInformation_Buildyear").val();
+            const bNearestAirport = $("#GeneralInformation_NearestAirport").val();
+            const bDecimalPlaces = $("#GeneralInformation_DecimalPlaces").val();
+            const bPanCard = $("#GeneralInformation_PanCard").val();
+            const bTaxNo1 = $("#GeneralInformation_TaxNo1").val();
+            const bTaxNo2 = $("#GeneralInformation_TaxNo2").val();
+            const bWebsiteURL = $("#GeneralInformation_WebsiteURL").val();
+            const bStarRating = $("#GeneralInformation_StarRating").val();
+            const bCheckInTime = $("#GeneralInformation_CheckInTime").val();
+            const bCheckOutTime = $("#GeneralInformation_CheckOutTime").val();
+            const bNoofFloors = $("#GeneralInformation_NoofFloors").val();
+
+            const tz = $("#SelTZ option:selected").val();
+
+
+            var ginfo = {
+                Id: bId,
+                BranchName: bName,
+                Latitude: bLatitude,
+                Longitude: bLongitude,
+                ChainName: bChainName,
+                Buildyear: bBuildyear,
+                NearestAirport: bNearestAirport,
+                DecimalPlaces: bDecimalPlaces,
+                PanCard: bPanCard,
+                TaxNo1: bTaxNo1,
+                TaxNo2: bTaxNo2,
+                WebsiteURL: bWebsiteURL,
+                StarRating: bStarRating,
+                CheckInTime: bCheckInTime,
+                CheckOutTime: bCheckOutTime,
+                NoofFloors: bNoofFloors,
+                TimeZone: tz
+            }
+            //console.log("Gen Info" + JSON.stringify(ginfo));
+            fetch('/Home/updateGenInfo', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(ginfo)
+            })
+                //.then(response => response.json())
+                .then(() => {
+                    //console.log(response.json)
+                    $.toast({
+                        heading: 'Success',
+                        text: 'Hotel Updated Successfully ',
+                        icon: 'success',
+                        loader: false,        // Change it to false to disable loader
+                        position: 'top-right',
+                        loaderBg: '#9EC600'  // To change the background
+                    });
+
+
+                })
+                .catch(error => {
+                    $.toast({
+                        autoDismiss: true,
+                        heading: 'Error',
+                        text: 'Error on Updatinging',
+                        icon: 'warning',
+                        position: 'top-right',
+                        loader: false,        // Change it to false to disable loader
+                        loaderBg: '#9EC600'  // To change the background
+                    });
+                });
+
+        }
+
+    }
+    function SaveHotelDetails() {
+        const bPetsAllowed = $("#CHK_ACTIVEPA").is(':checked');
+        const bCoupleFriendly = $("#CHK_ACTIVECF").is(':checked');
+        const bCheckinWithLocalIds = $("#CHK_ACTIVELI").is(':checked');
+        const bId = $("#GeneralInformation_Id").val();
+        const bLD = $("#HotelDetails_LongDescription").val();
+        const bSD = $("#HotelDetails_ShortDescription").val();
+        const bCP = $("#HotelDetails_CheckinPolicy").val();
+        const bCI = $("#HotelDetails_CheckInInStructions").val();
+        const bSCI = $("#HotelDetails_SpecialCheckInInStructions").val();
+
+        var hotelDetails = {
+            Id: bId,
+            LongDescription: bLD,
+            ShortDescription: bSD,
+            CheckinPolicy: bCP,
+            CheckInInStructions: bCI,
+            SpecialCheckInInStructions: bSCI,
+            PetsAllowed: bPetsAllowed,
+            CoupleFriendly: bCoupleFriendly,
+            CheckinWithLocalIds: bCheckinWithLocalIds
+
+
+        }
+        //console.log("Hotel Details" + JSON.stringify(hotelDetails));
+        fetch('/Home/updateHotelDetails', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(hotelDetails)
+        })
+            //.then(response => response.json())
+            .then(() => {
+                //console.log(response.json)
+                $.toast({
+                    heading: 'Success',
+                    text: 'Hotel Updated Successfully ',
+                    icon: 'success',
+                    loader: false,        // Change it to false to disable loader
+                    position: 'top-right',
+                    loaderBg: '#9EC600'  // To change the background
+                });
+
+
+            })
+            .catch(error => {
+                $.toast({
+                    autoDismiss: true,
+                    heading: 'Error',
+                    text: 'Error on Updating',
+                    icon: 'warning',
+                    position: 'top-right',
+                    loader: false,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                });
+            });
+    }
+    function SaveWebDetails() {
+
+        const bId = $("#GeneralInformation_Id").val();
+        const bWU = $("#WebSiteConfiguration_WebsiteURL").val();
+        const bWH = $("#WebSiteConfiguration_WebsiteHeaderFile").val();
+        const bWF = $("#WebSiteConfiguration_WebsiteFooterFile").val();
+
+
+        var webDetails = {
+            Id: bId,
+            WebsiteURL: bWU,
+            WebsiteHeaderFile: bWH,
+            WebsiteFooterFile: bWF
+        }
+        var formData = new FormData();
+
+        var file = document.getElementById("WBLogoImage").files[0];
+        //var file = $("#WBLogoImage").get(0).files;
+        //console.log("WBLogoImage" + file);
+        formData.append("httpPostedFileBase", file);
+        formData.append("WCEntity", btoa(JSON.stringify(webDetails)));
+        //console.log("WEB Details" + formData);
+
+        $.ajax({
+            type: "POST",
+             url: '@Url.Action("updateWebDetails", "Home")',
+
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                //console.log(response);
+                if (response != null) {
+                    //console.log(response);
+                    $.toast({
+                        heading: 'Success',
+                        text: 'Hotel Updated Successfully ',
+                        icon: 'success',
+                        loader: false,        // Change it to false to disable loader
+                        position: 'top-right',
+                        loaderBg: '#9EC600'  // To change the background
+                    });
+                }
+                else {
+                    alert('No Response...!');
+                }
+            },
+            error: function (error) {
+                $.toast({
+                    autoDismiss: true,
+                    heading: 'Error',
+                    text: 'Error on Updating' + error.statusText,
+                    icon: 'warning',
+                    position: 'top-right',
+                    loader: false,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                });
+            }
+        });
+
+
+    }
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#imgWL')
+                    .attr('src', e.target.result)
+                    .width(150)
+                    .height(50);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }﻿
+
+
+    function AddAmenities() {
+        if (!validateMyForm('AMEValidateInput')) {
+            return false; // Prevent form submission if validation fails
+        } else {
+            const txtName = $("#txtamiName").val();
+            const txtDesc = $("#txtamiDesc").val();
+
+            var TotalAmenities = $("#htnTotalAmenities").val();
+            //console.log(TotalAmenities);
+            var newRawNumber = Number(TotalAmenities) + 1;
+            var tblNewtr = '<tr class="active" id="0"><td> ' + newRawNumber + '</td><td align="center" valign="middle">' + txtName + '</td>';
+            tblNewtr += '<td align="center" valign="middle">' + txtDesc + '</td><td align="center" valign="middle"><a href="#" class="editbtn" onClick="removeRow(this)"><i class="fa fa-trash-o"></i> Delete</a></td>';
+
+
+            $('#tblAmenities tbody').append(tblNewtr);
+            $("#htnTotalAmenities").val(newRawNumber);
+            $("#txtamiName").val('');
+            $("#txtamiDesc").val('');
+        }
+
+    }
+    function removeRow(rr) {
+        $(rr).closest('tr').remove();
+        var TotalAmenities = $("#htnTotalAmenities").val();
+        $("#tblAmenities > tbody > tr").each(function (idx) {
+            var rNo = idx + 1;
+            $(this).find('td').eq(0).text(rNo);// + " " + $(this).find('td').eq(1).text());
+            $("#htnTotalAmenities").val(rNo);
+
+        });
+    }
+    function SaveHotelAmenities() {
+
+        if (!validateMyForm('HIValidateInput')) {
+            return false; // Prevent form submission if validation fails
+        } else {
+            var hotelAmenities = [];
+            var rc = $('#tblAmenities >tbody >tr').length;
+            console.log(rc);
+            $("#tblAmenities > tbody > tr").each(function (idx) {
+                var rNo = idx + 1;
+                var _amiId = $(this).attr("id");// + " " + $(this).find('td').eq(1).text());
+                var _amiName = $(this).find('td').eq(1).text();
+                var _amiDesc = $(this).find('td').eq(2).text();
+                var _amiObj = {
+                    BranchId: 1,
+                    AmenitiesId: _amiId,
+                    Title: _amiName,
+                    Description: _amiDesc,
+                    isHotel: 1,
+                    IsActive: 1,
+                    isDeleted: 0
+
+                }
+                hotelAmenities.push(_amiObj);
+
+
+            });
+            //console.log(hotelAmenities);
+            fetch('/Home/SaveHotelAmenities', {
+                method: 'POST',
+
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(hotelAmenities)
+            })
+                //.then(response => response.json())
+                .then(() => {
+                    //console.log(response.json)
+                    $.toast({
+                        heading: 'Success',
+                        text: ' Hotel Details updated Successfully ',
+                        icon: 'success',
+                        loader: false,        // Change it to false to disable loader
+                        position: 'top-right',
+                        loaderBg: '#9EC600'  // To change the background
+                    });
+
+
+                })
+                .catch(error => {
+                    $.toast({
+                        autoDismiss: true,
+                        heading: 'Error',
+                        text: 'Error on Updating',
+                        icon: 'warning',
+                        position: 'top-right',
+                        loader: false,        // Change it to false to disable loader
+                        loaderBg: '#9EC600'  // To change the background
+                    });
+                });
+
+        }
+
+    }
+
+    function AddContact() {
+        const txtContactText = $("#txtContactText").val();
+        const txtDesc = $("#txtContactDesc").val();
+        const txtCD = $("#txtCD").val();
+        const ddlct = $("#ddlCT option:selected").text();
+        const bisManager = $("#CHK_ACTIVEIM").is(':checked');
+        var TotalR = $("#htnTotalImageRow").val();
+
+        var newRawNumber = Number(TotalR) + 1;
+
+
+
+        var tblNewtr = '<tr class="active" id="0"><td>' + newRawNumber + '</td><td align="center" valign="middle">' + txtContactText + '</td><td align="center" valign="middle">' + txtDesc +'</td>';
+        tblNewtr += '<td align="center" valign="middle">' + ddlct + '</td><td align="center" valign="middle">' + txtCD +'</td>';
+        tblNewtr += '<td align="center" valign="middle">' + bisManager +'</td><td align="center" valign="middle"><a href="#" class="editbtn" onclick="removeContact(this);"><i class="fa fa-trash-o"></i> Delete</a></td> </tr>';
+
+
+
+        $('#ContactDetailsTable tbody').append(tblNewtr);
+
+        $("#htnTotalRow").val(newRawNumber);
+        $("#txtContactText").val('');
+        $("#txtContactDesc").val('');
+        $("#txtCD").val('');
+        $("#ddlCT").val(0);
+        $("#CHK_ACTIVEIM").prop('checked', false);
+    }
+    function removeContact(rr) {
+        $(rr).closest('tr').remove();
+        var TotalAmenities = $("#htnTotalAmenities").val();
+        $("#ContactDetailsTable > tbody > tr").each(function (idx) {
+            var rNo = idx + 1;
+            $(this).find('td').eq(0).text(rNo);// + " " + $(this).find('td').eq(1).text());
+            $("#htnTotalRow").val(rNo);
+
+        });
+    }
+
+    function SaveHotelContacts() {
+        var hotelContacts = [];
+        const bId = $("#GeneralInformation_Id").val();
+        $("#ContactDetailsTable > tbody > tr").each(function (idx) {
+            var rNo = idx + 1;
+            var _cId = $(this).attr("id");// + " " + $(this).find('td').eq(1).text());
+            var _txtContactText = $(this).find('td').eq(1).text();
+            var _txtContactDesc = $(this).find('td').eq(2).text();
+            var _txtCD = $(this).find('td').eq(4).text();
+            var _ddlCT = $(this).find('td').eq(3).text();
+            var _CHK_ACTIVEIM = $(this).find('td').eq(5).text();
+            var isMan = (_CHK_ACTIVEIM == 'true') ? 1 : 0;
+
+            var _amiObj = {
+                BranchId: bId,
+                ContactText: _txtContactText,
+                Description: _txtContactDesc,
+                ContactType: _ddlCT,
+                ContactDetails: _txtCD,
+                isManager: isMan,
+                isActive:1,
+                isDeleted: 0
+
+            }
+            hotelContacts.push(_amiObj);
+
+
+        });
+        //console.log(hotelContacts);
+        fetch('/Home/SaveHotelContacts', {
+            method: 'POST',
+
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(hotelContacts)
+        })
+            //.then(response => response.json())
+            .then(() => {
+                //console.log(response.json)
+                $.toast({
+                    heading: 'Success',
+                    text: ' Hotel Details updated Successfully ',
+                    icon: 'success',
+                    loader: false,        // Change it to false to disable loader
+                    position: 'top-right',
+                    loaderBg: '#9EC600'  // To change the background
+                });
+
+
+            })
+            .catch(error => {
+                $.toast({
+                    autoDismiss: true,
+                    heading: 'Error',
+                    text: 'Error on Updating',
+                    icon: 'warning',
+                    position: 'top-right',
+                    loader: false,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                });
+            });
+    }
+
+
+
+    ///###### Hotel Images////////######
+    function AddHotelImages() {
+        if (!validateMyForm('HIValidateInput')) {
+            return false; // Prevent form submission if validation fails
+        } else {
+            const _txtHIDESC = $("#txtHIDESC").val();
+            const bId = $("#GeneralInformation_Id").val();
+            const bisManager = $("#CHK_ACTIVEISMI").is(':checked');
+            var TotalR = $("#htnTotalImageRow").val();
+
+            var newRawNumber = Number(TotalR) + 1;
+
+
+            var file = document.getElementById("txtHotelImages").files[0];
+            //uploadFile("txtHotelImages");
+            var fileId = "httpPostedFileBase";
+            //formDataImage.append(fileId, file);
+            $("#htnTotalImageRow").val(newRawNumber);
+
+
+                var _hotelImageObj = {
+                    BranchId: bId,
+                    RefId: bId,
+                    ImageName: _txtHIDESC,
+                    isMailImage: bisManager,
+                    ImagetypeId: 0,
+                    IsActive: 1,
+                    isDeleted: 0
+
+                }
+                var formData = new FormData();
+
+
+                //var file = $("#WBLogoImage").get(0).files;
+
+                formData.append(fileId, file);
+                formData.append("HIEntity", btoa(JSON.stringify(_hotelImageObj)));
+                $.ajax({
+                            type: "POST",
+                             url: '@Url.Action("updateHotelImagesNew", "Home")',
+
+                            data: formData,
+                            dataType: 'json',
+                            contentType: false,
+                            processData: false,
+                            success: function (response) {
+                                //console.log(response);
+                                if (response != null) {
+                                    //console.log(response);
+                                    $('#HotelImagetable tbody').empty();
+                                    $.toast({
+                                        heading: 'Success',
+                                        text: 'Images Processing....Please wait... ',
+                                        icon: 'success',
+                                        loader: false,        // Change it to false to disable loader
+                                        position: 'top-right',
+                                        loaderBg: '#9EC600'  // To change the background
+                                    });
+                                    $.each(response.Images, function (i, item) {
+                                        var rNo = Number(i) + 1;
+                                        var tblNewtr = '<tr class="active" id="' + item.ImageId +'"><td>' + rNo  + '</td>';
+
+                                        var img64Ur = "data:image/jpeg;base64," + item.ImageToBase64String ;
+                                        tblNewtr += '<td align="center" valign="middle"><img style="width:50%;height:50%" src="' + img64Ur +'" alt="HotelImage"></td>';
+                                        tblNewtr += '<td align="center" valign="middle">' + item.ImageName + '</td>';
+                                        tblNewtr += '<td align="center" valign="middle">' + item.isMainImage + '</td>';
+
+                                        tblNewtr += '<td align="center" valign="middle"><a href="#" class="editbtn" onclick="removeHotelImage(this,'+item.ImageId+');"><i class="fa fa-trash-o"></i> Delete</a></td></tr>';
+
+                                        $('#HotelImagetable tbody').append(tblNewtr);
+
+                                    });
+                                    $("#txtHIDESC").val('');
+
+                                    $("#CHK_ACTIVEISMI").prop('checked', false);
+                                }
+                                else {
+                                    alert('No Response...!');
+                                }
+                            },
+                            error: function (error) {
+                                $.toast({
+                                    autoDismiss: true,
+                                    heading: 'Error',
+                                    text: 'Error on Updating' + error.statusText,
+                                    icon: 'warning',
+                                    position: 'top-right',
+                                    loader: false,        // Change it to false to disable loader
+                                    loaderBg: '#9EC600'  // To change the background
+                                });
+                            }
+                  });
+        }
+
+    }
+
+    function SaveHotelImages() {
+       $.toast({
+            heading: 'Success',
+            text: 'Hotel Updated Successfully ',
+            icon: 'success',
+            loader: false,        // Change it to false to disable loader
+            position: 'top-right',
+            loaderBg: '#9EC600'  // To change the background
+        });
+    }
+    function removeHotelImage(rr, imgId) {
+
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("RemoveHotelImage", "Home")',
+
+                        data: JSON.stringify({ ImageId: Number(imgId) }),
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (response) {
+                            //console.log(response);
+                            if (response != null) {
+                                //console.log(response);
+                                $.toast({
+                                    heading: 'Success',
+                                    text: 'Image Removed Successfully ',
+                                    icon: 'success',
+                                    loader: false,        // Change it to false to disable loader
+                                    position: 'top-right',
+                                    loaderBg: '#9EC600'  // To change the background
+                                });
+                                $(rr).closest('tr').remove();
+                                var TotalAmenities = $("#htnTotalAmenities").val();
+                                $("#HotelImagetable > tbody > tr").each(function (idx) {
+                                    var rNo = idx + 1;
+                                    $(this).find('td').eq(0).text(rNo);// + " " + $(this).find('td').eq(1).text());
+                                    $("#htnTotalImageRow").val(rNo);
+
+                                });
+                            }
+                            else {
+                                alert('No Response...!');
+                            }
+                        },
+                        error: function (error) {
+                            //console.log(JSON.stringify(error));
+                            $.toast({
+                                autoDismiss: true,
+                                heading: 'Error',
+                                text: 'Error on Removing Image' + error,
+                                icon: 'warning',
+                                position: 'top-right',
+                                loader: false,        // Change it to false to disable loader
+                                loaderBg: '#9EC600'  // To change the background
+                            });
+                        }
+              });
+
+
+    }
+    function uploadFile(fileId) {
+        var input = document.getElementById(fileId);
+        // var file = $("#objFile")[0].files[0];
+        var file = input.files[0];
+        fr = new FileReader();
+        fr.onload = receivedText;
+        //fr.readAsText(file);
+        fr.readAsDataURL(file);
+    }
+    function receivedText() {
+        var b64Data = fr.result.split(',');
+        var contentType = 'image/jpeg';
+        $("#txtImageData").val(b64Data[1]);
+        //var byteCharacters = atob(b64Data[1]);
+        //var byteNumbers = Array.prototype.map.call(byteCharacters,           charCodeFromCharacter);
+        //var uint8Data = new Uint8Array(byteNumbers);
+        //var blob = b64toBlob(b64Data[1], contentType);
+        //var blobUrl = URL.createObjectURL(blob);
+    }
+    function charCodeFromCharacter(c) {
+        return c.charCodeAt(0);
+    }
+    function b64toBlob(b64Data, contentType, sliceSize) {
+        contentType = contentType || '';
+        sliceSize = sliceSize || 1024;
+        var byteCharacters = atob(b64Data);
+        var byteArrays = [];
+
+        for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            var slice = byteCharacters.slice(offset, offset + sliceSize);
+            var byteNumbers = Array.prototype.map.call(slice, charCodeFromCharacter);
+            var byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
+        }
+
+
+    }
+</script>

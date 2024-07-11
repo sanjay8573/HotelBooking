@@ -2,37 +2,31 @@
 using HotelBooking.Controllers.BookingSourceApi;
 using HotelBooking.Controllers.ReportApi;
 using HotelBooking.Controllers.Restaurant;
+using HotelBooking.Controllers.TaxApi;
+using HotelBooking.Controllers.TourAPI;
 using HotelBooking.Desig;
+using HotelBooking.Helper;
 using HotelBooking.Model;
+using HotelBooking.Model.EditHotel;
 using HotelBooking.Model.Inventory;
 using HotelBooking.Model.Reatraurant;
 using HotelBooking.Model.Report;
-using iTextSharp.text.pdf;
+using HotelBooking.Model.Tour;
 using iTextSharp.text;
+using iTextSharp.text.pdf;
 using iTextSharp.tool.xml;
 using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
 using PagedList;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using HotelBooking.Repository.Implementation;
-using System.Runtime.ConstrainedExecution;
-using System.Net.Http.Headers;
-using System.Net.Http;
-using Microsoft.SqlServer.Server;
-using System.Web.Script.Serialization;
-using HotelBooking.Model.onlineAPI;
-using System.Data;
-using HotelBooking.Model.Tour;
-using HotelBooking.Controllers.TourAPI;
-using HotelBooking.Controllers.TaxApi;
-//using LF_COMM.WhatsApp;
-//using LF_COMM;
+
 
 
 
@@ -258,16 +252,16 @@ namespace HotelBooking.Controllers
         public ActionResult SaveAmenities(Amenities amenitiesEntity)
         {
 
-            HttpPostedFileBase postedFile = Request.Files["amenityImage"];
-            byte[] bytes;
-            using (BinaryReader br = new BinaryReader(postedFile.InputStream))
-            {
-                bytes = br.ReadBytes(postedFile.ContentLength);
-            }
+            //HttpPostedFileBase postedFile = Request.Files["amenityImage"];
+            //byte[] bytes;
+            //using (BinaryReader br = new BinaryReader(postedFile.InputStream))
+            //{
+            //    bytes = br.ReadBytes(postedFile.ContentLength);
+            //}
             AmenitiesController _am = new AmenitiesController();
             int branchId = int.Parse(Session["BranchId"].ToString());
             amenitiesEntity.BranchId = branchId;
-            amenitiesEntity.imageData = bytes;
+            //amenitiesEntity.imageData = bytes;
             bool trn = _am.AddAmenities(amenitiesEntity);
             Session["BranchId"] = branchId;
             return RedirectToAction("GetAmenities");
@@ -2071,10 +2065,175 @@ namespace HotelBooking.Controllers
 
         public ActionResult Branch()
         {
-            return View();
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            BranchController _br = new BranchController();
+
+            IEnumerable<HotelBooking.Model.TimeZone.TimeZone> tz = _br.GetTimeZone();
+           
+            VM_EditHotel editHotelData = _br.GetHotelDetailsByBranchId(branchId);
+
+            List<SelectListItem> lsttz = new List<SelectListItem>();
+            lsttz.Add(new SelectListItem { Text = "Select a  Timezone", Value = "0" });
+            int k = 1;
+            foreach (var item in tz)
+            {
+
+                lsttz.Add(new SelectListItem { Text = item.TZ_Name, Value = item.TZID.ToString(), Selected = (k==editHotelData.GeneralInformation.TimeZone) });
+                k++;
+            }
+
+
+            ViewBag.TZComboModel = lsttz;
+
+            return View(editHotelData);
+        }
+        public bool updateGenInfo(VM_GeneralInfo branchGenEntity)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            BranchController _br = new BranchController();
+            bool  rtn = _br.UpdateGenInfo(branchGenEntity);
+            return rtn;
+        }
+        public bool updateHotelDetails(VM_HotelDetails HDEntity)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            BranchController _br = new BranchController();
+            bool rtn = _br.UpdateHotelDetails(HDEntity);
+            return rtn;
+        }
+        [HttpPost]
+        public JsonResult updateWebDetails(FormCollection form, string WCEntity)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            string d = HotelBookingHelper.Base64Decode(WCEntity);
+            VM_WebConfiguration _wc = JsonConvert.DeserializeObject<VM_WebConfiguration>(d);
+            byte[] bytes;
+            if (Request.Files.Count > 0)
+            {
+                HttpPostedFileBase postedFile = Request.Files["httpPostedFileBase"];
+                
+               using (BinaryReader br = new BinaryReader(postedFile.InputStream))
+                {
+                    bytes = br.ReadBytes(postedFile.ContentLength);
+                }
+                _wc.LogoImage = bytes;
+            }
+
+
+            BranchController _br = new BranchController();
+            bool rtn = _br.UpdateWebSiteDetails(_wc);
+            return Json(new
+            {
+                Success = rtn
+            });
         }
 
+        [HttpPost]
+        public JsonResult SaveHotelAmenities(IEnumerable<VM_Amenities> AmenitiesEntity)
+        { 
+            bool rtnVal = false;
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            BranchController _br = new BranchController();
+            rtnVal = _br.UpdateHotelAmenities(AmenitiesEntity);
+            return Json(new
+            {
+                Success = rtnVal
+            }); 
+        }
+        [HttpPost]
+        public JsonResult SaveHotelContacts(IEnumerable<VM_ContactDetails> CDEntity)
+        {
+            bool rtnVal = false;
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            BranchController _br = new BranchController();
+            rtnVal = _br.UpdateHotelContacts(CDEntity);
+            return Json(new
+            {
+                Success = rtnVal
+            });
+        }
 
+        public JsonResult updateHotelImagess(FormCollection form, string HIEntity)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            string d = HotelBookingHelper.Base64Decode(HIEntity);
+            List<VM_HotelImages> _wc = JsonConvert.DeserializeObject< List<VM_HotelImages>>(d);
+            byte[] bytes;
+            if (Request.Files.Count > 0)
+            {
+                
+                for (int i = 0; i < Request.Files.Count; i++)
+                {
+                    using (BinaryReader br = new BinaryReader(Request.Files[i].InputStream))
+                    {
+                        bytes = br.ReadBytes(Request.Files[i].ContentLength);
+                    }
+                    if (bytes.Count() > 0)
+                    {
+                        _wc[i].ImageData = bytes;
+                    }
+                   
+                }
+                
+                
+            }
+
+
+            BranchController _br = new BranchController();
+            bool rtn = _br.UpdateHotelImages(_wc);
+            return Json(new
+            {
+                Success = rtn
+            });
+        }
+
+        [HttpPost]
+        public JsonResult updateHotelImagesNew(FormCollection form, string HIEntity)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            string d = HotelBookingHelper.Base64Decode(HIEntity);
+            ImageMaster _wc = JsonConvert.DeserializeObject<ImageMaster>(d);
+            byte[] bytes;
+            if (Request.Files.Count > 0)
+            {
+
+                HttpPostedFileBase postedFile = Request.Files["httpPostedFileBase"];
+
+                using (BinaryReader br = new BinaryReader(postedFile.InputStream))
+                {
+                    bytes = br.ReadBytes(postedFile.ContentLength);
+                }
+                _wc.ImageData = bytes;
+
+            }
+
+
+            BranchController _br = new BranchController();
+            
+            bool rtn = _br.UpdateHotelImagesNew(_wc);
+            IEnumerable<ImageMaster> _imgData = _br.GetHotelImages(branchId);
+            return Json(new
+            {
+                Success = rtn,
+                Images= _imgData
+            });
+        }
+
+        [HttpPost]
+        public JsonResult RemoveHotelImage(int ImageId)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            
+            BranchController _br = new BranchController();
+
+            bool rtn = _br.RemoveHotelImage(ImageId, branchId);
+           
+            return Json(new
+            {
+                Success = rtn,
+                
+            });
+        }
         public PartialViewResult _BookingInvoive(int BookingId)
         {
             int branchId = int.Parse(Session["BranchId"].ToString());
@@ -3350,6 +3509,7 @@ namespace HotelBooking.Controllers
             return Json(servicesList.ToArray(), JsonRequestBehavior.AllowGet);
         }
         #endregion
+       
 
 
     }

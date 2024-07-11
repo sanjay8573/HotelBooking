@@ -45,14 +45,7 @@ namespace HotelBooking.Controllers
                 LoginController loginController = new LoginController();
               
                 UserLoginResponse model = loginController.UserLogin(urm.UserId);
-                
-                //FormsAuthenticationTicket fut = new FormsAuthenticationTicket(2, urm.UserId.ToString(), DateTime.Now, DateTime.Now.AddMinutes(20), false, string.Empty);
-                //string encTicket = FormsAuthentication.Encrypt(fut);
-                //HttpContext.Response.Cookies.Remove(FormsAuthentication.FormsCookieName);
-
-                //HttpContext.Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, encTicket) { HttpOnly=true});
-
-                //FormsAuthentication.SetAuthCookie(model.UserId.ToString(), false);
+                              
                 HttpContext.Session["Logged_In"] = "LoggedIn";
 
                 HttpContext.Session["UserLoginResponse"] = model;

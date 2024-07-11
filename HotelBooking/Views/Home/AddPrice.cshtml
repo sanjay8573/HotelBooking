@@ -10,7 +10,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left" style="margin-top: 15px;">
                 <form id="msform">
                     <label for="edit-mail" class="form-required">Room Type</label>
-                    <select id="RoomType" class="form-required full-width" required name="RoomType">
+                    <select id="RoomType" class="form-required full-width ValidateInput" valType="DropDown" required name="RoomType">
                         @if (ViewBag.RTComboModel != null)
                         {
                             foreach (var item in ViewBag.RTComboModel)

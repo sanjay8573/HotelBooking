@@ -53,6 +53,8 @@ namespace HotelBooking.Repository.Implementation
                     loginResponse.BranchId = s.BranchId;
                     try
                     {
+                        string BranchName = string.Empty;
+                        
                         loginResponse.BranchName = (_ib.GetBranchById(s.BranchId) != null) ? _ib.GetBranchById(s.BranchId).BranchName : "";
                         //loginResponse.BranchTaxPercentage = _tax.GetTaxForBranch(s.BranchId).Value;
                         loginResponse.TaxDetails=_tax.GetAllTax(s.BranchId).Where(t=>t.isActive).ToList();

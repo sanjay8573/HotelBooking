@@ -12,5 +12,6 @@ namespace HotelBooking.Repository.Interface
         IEnumerable<ImageMaster> GetImages(int ImageType,int BranchId);
         IEnumerable<ImageMaster> GetImages(int ImageTypeId, int BranchId, int refId);
         bool SaveImages(IEnumerable<ImageMaster> images);
+        bool SaveImage(ImageMaster image);
     }
 }

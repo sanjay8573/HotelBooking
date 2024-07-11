@@ -21,7 +21,7 @@
 
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
                     <label for="edit-mail" class="form-required">Guest</label>
-                    <select name="Selguest" id="Selguest" class="full-width freetrial">
+                    <select name="Selguest" id="Selguest" class="full-width freetrial ValidateInput" valType="DropDown">
                         @if (ViewBag.GSComboModel != null)
                         {
                             foreach (var item in ViewBag.GSComboModel)
@@ -39,10 +39,10 @@
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-left" style="margin-top: 15px;">
                     <label for="edit-mail" class="form-required">Booking Type</label>
-                    <select name="categories" id="SelBtype" class="full-width freetrial">
-                        <option selected="selected" value="1">Select Booking Type</option>
-                        <option value="2">Room Booking</option>
-                        <option value="3">Hall Booking</option>
+                    <select name="SelBtype" id="SelBtype" class="full-width freetrial ValidateInput" valType="DropDown">
+                        <option selected="selected" value="0">Select Booking Type</option>
+                        <option value="1">Room Booking</option>
+                        <option value="2">Hall Booking</option>
                     </select>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
@@ -73,7 +73,7 @@
                         <label for="edit-mail" class="form-required">Adults</label>
                         <div class="number" id="nAdult">
                             <span class="minus">-</span>
-                            <input type="text" value="@Model.Adult" />
+                            <input type="text" value="@Model.Adult"  class="ValidateInput" />
                             <span class="plus">+</span>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
                         <label for="edit-mail" class="form-required">Child</label>
                         <div class="number" id="nChild">
                             <span class="minus">-</span>
-                            <input type="text" value="@Model.Child" />
+                            <input type="text" value="@Model.Child"  class="ValidateInput"/>
                             <span class="plus">+</span>
                         </div>
                     </div>
@@ -140,11 +140,11 @@
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 p-0 pull-left" style="margin-top: 15px;">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
                         <label for="edit-mail" class="form-required">Check In</label>
-                        <input type="text" id="Addbookingdatepickerinn" value="@Model.CheckIn" class="full-width allinputgo" placeholder="Check In" autocomplete="off">
+                        <input type="text" id="Addbookingdatepickerinn" value="@Model.CheckIn" class="full-width allinputgo  ValidateInput" placeholder="Check In" autocomplete="off">
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
                         <label for="edit-mail" class="form-required">Check Out</label>
-                        <input type="text" id="Addbookingdatepickerout" value="@Model.Checkout" class="full-width allinputgo" placeholder="Check Out" autocomplete="off">
+                        <input type="text" id="Addbookingdatepickerout" value="@Model.Checkout" class="full-width allinputgo ValidateInput" placeholder="Check Out" autocomplete="off">
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left" style="margin-top: 15px; background: #d4dee1; padding: 5px 0px;">
@@ -250,7 +250,7 @@
 
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-right">
                     <label for="edit-mail" class="form-required">&nbsp;</label>
-                    <input type="button" name="SUBMIT" class="prev action-button full-width mg-0" onclick="GotoNextPage()" value="Next" runat="server">
+                    <input type="button" name="SUBMIT" class="prev action-button full-width mg-0" onclick="return GotoNextPage()" value="Next" runat="server">
                 </div>
 
             </form>
@@ -535,19 +535,23 @@
 
 
                 }
-                function GotoNextPage() {
+                //function GotoNextPage() {
+                //    if (!validateBooking()) {
+                //        return false; // Prevent form submission if validation fails
+                //    } else {
+                //        var bkDetails = $("#RoomType option:selected").text() + " 1 Nights Booking from " + $("#Addbookingdatepickerinn").val() + " To " + $("#Addbookingdatepickerout").val();
+                //        var gtptal1 = $("#gTot").text();
+                //        $("#BookingFirstPage").css("display", "none");
+                //        $("#BookingNextPage").css("display", "block");
 
-                    var bkDetails = $("#RoomType option:selected").text() + " 1 Nights Booking from " + $("#Addbookingdatepickerinn").val() + " To " + $("#Addbookingdatepickerout").val();
-                    var gtptal1 = $("#gTot").text();
-                    $("#BookingFirstPage").css("display", "none");
-                    $("#BookingNextPage").css("display", "block");
-
-                    $("#bkDetail").text(bkDetails);
-                    $("#gTotal1").text(Number(gtptal1).toFixed(2));
-                    $("#BK-PayAMT").text(Number(gtptal1).toFixed(2));
+                //        $("#bkDetail").text(bkDetails);
+                //        $("#gTotal1").text(Number(gtptal1).toFixed(2));
+                //        $("#BK-PayAMT").text(Number(gtptal1).toFixed(2));
+                //    }
+                    
 
 
-                }
+                //}
                 var dataList = [];
                  function calculatePS() {
                     console.log('Calcuation for Paid services selected ');
@@ -644,25 +648,32 @@
                     });
                     $("#NumberofRoom").change(function () {
                         amt = 0;
-                        $("#totAmt").text('');
-                        $("#hdnRoomCost").val(0);
-                        $("#totAmt").trigger('change');  
-                        var RoomTypeId = "1";// $("#RoomType").val();
-                        
-                        var maxDate = $("#Addbookingdatepickerout").datepicker('getDate');
-                        var minDate = $("#Addbookingdatepickerinn").datepicker('getDate');
-                        var fdate = minDate.getDate(); //add one day
-                        var todate = maxDate.getDate();
-                        var todalNight = parseInt(todate) - parseInt(fdate);
-                        var totalRoomSelected = $('option:selected', this).val();
-                        //console.log(RoomTypeId + "  " + cin + "   " + cout);
-                        $("#PPR").html('');
-                        $("#PPR").load("/Home/_PricePerRoom?nOfr=" + totalRoomSelected + "&todalNight=" + todalNight);
-                        //$("#ppn").load("/BookingInterface/_PricePerNight?RoomTypeId=" + RoomTypeId + "&cinDate=" + cin + "&coutDate=" + cout + "&nOfr=" + totalRoomSelected);
+                        if (!validateBooking()) {
+                            return false; // Prevent form submission if validation fails
+                        } else {
+                            $("#totAmt").text('');
+                            $("#hdnRoomCost").val(0);
+                            $("#totAmt").trigger('change');
+                            var RoomTypeId = "1";// $("#RoomType").val();
 
-                        //console.log("....1");
-                        //setTimeout(divLoaded, 100);
-                        $("#paidservices").load("/Home/_PaidServices?RoomTypeId=" + RoomTypeId);
+                            var maxDate = $("#Addbookingdatepickerout").datepicker('getDate');
+                            var minDate = $("#Addbookingdatepickerinn").datepicker('getDate');
+                            var fdate = minDate.getDate(); //add one day
+                            var todate = maxDate.getDate();
+                            var todalNight = parseInt(todate) - parseInt(fdate);
+                            var totalRoomSelected = $('option:selected', this).val();
+                            //console.log(RoomTypeId + "  " + cin + "   " + cout);
+                            $("#PPR").html('');
+                            $("#PPR").load("/Home/_PricePerRoom?nOfr=" + totalRoomSelected + "&todalNight=" + todalNight);
+                            //$("#ppn").load("/BookingInterface/_PricePerNight?RoomTypeId=" + RoomTypeId + "&cinDate=" + cin + "&coutDate=" + cout + "&nOfr=" + totalRoomSelected);
+
+                            //console.log("....1");
+                            //setTimeout(divLoaded, 100);
+                            $("#paidservices").load("/Home/_PaidServices?RoomTypeId=" + RoomTypeId);
+
+                        }
+                      
+                        
 
                     });
                 });
@@ -671,7 +682,10 @@
 </script>
 <script>
     $(document).ready(function () {
-       
+        $("input").attr("autocomplete", "none");
+        $(".ValidateInput").on("blur", function () {
+            validateField(this);
+        });
                     $("#totAmt").on('change', function () {
                        
                         //console.log("calculating...taxes and Grand Total");
@@ -775,15 +789,19 @@
     }
 
     function GotoNextPage() {
+        if (!validateBooking()) {
+            return false; // Prevent form submission if validation fails
+        } else {
+            var bkDetails = $("#RoomType option:selected").text() + " " + $("#nOn").text() + " Nights Booking from " + $("#Addbookingdatepickerinn").val() + " To " + $("#Addbookingdatepickerout").val();
+            var gtptal1 = $("#gTot").text();
+            $("#BookingFirstPage").css("display", "none");
+            $("#BookingNextPage").css("display", "block");
 
-        var bkDetails = $("#RoomType option:selected").text() + " " + $("#nOn").text() +" Nights Booking from " + $("#Addbookingdatepickerinn").val() + " To " + $("#Addbookingdatepickerout").val();
-        var gtptal1 = $("#gTot").text();
-        $("#BookingFirstPage").css("display", "none");
-        $("#BookingNextPage").css("display", "block");
-
-        $("#bkDetail").text(bkDetails);
-        $("#gTotal1").text(Number(gtptal1).toFixed(2));
-        $("#BK-PayAMT").text(Number(gtptal1).toFixed(2));
+            $("#bkDetail").text(bkDetails);
+            $("#gTotal1").text(Number(gtptal1).toFixed(2));
+            $("#BK-PayAMT").text(Number(gtptal1).toFixed(2));
+        }
+        
 
 
     }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Org.BouncyCastle.Utilities;
+using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HotelBooking.Model
@@ -51,9 +53,52 @@ namespace HotelBooking.Model
         public string FireSafetyCompliant { get; set; }
         public string CheckInInStructions { get; set; }
         public string SpecialCheckInInStructions { get; set; }
+        
+        public string LongDescription { get; set; }
+        public string ShortDescription { get; set; }
+        
+        public string ChainName { get; set; }
+        public Int16 Buildyear { get; set; }
+        public Byte StarRating { get; set; }
+       
+        public string Amenities { get; set; }
+        public string NearestAirport { get; set; }
+        public string WebsiteURL { get; set; }
+        public bool PetsAllowed { get; set; }
+        
+        public string CheckinPolicy { get; set; }
+        public bool CoupleFriendly { get; set; }
+        public bool CheckinWithLocalIds { get; set; }
+        public string WebsiteHeaderFile { get; set; }
+        public string WebsiteFooterFile { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime DateModified { get; set; }
+       
+        public int NoofFloors { get; set; }
+        public byte [] LogoImage { get; set; }
+        public Byte DecimalPlaces { get; set; }
+        public string PanCard { get; set; }
+        public string TaxNo1 { get; set; }
+        public string TaxNo2 { get; set; }
+        public int TimeZone { get; set; }
+    }
 
-
-
+    [Table("HotelContacts")]
+    public class HotelContacts
+    {
+        [Key]
+        public int HotelContactID { get; set; }
+        public int HotelID { get; set; }
+        public int BranchId { get; set; }
+        public string ContactText { get; set; }
+        public string ContactType { get; set; }
+        public string Description { get; set; }
+        public string ContactDetails { get; set; }
+        public bool isManager { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime DateModified { get; set; }
+        public bool isActive { get; set; }
+        public bool isDeleted { get; set; }
 
     }
 }

@@ -1,0 +1,160 @@
+﻿@model HotelBooking.Model.OnlineReview.ReviewModel
+@{
+    Layout = null;
+    var StayDetail = Model.BookingDetails;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Review</title>
+    <script src="~/js/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="~/css/style.min.css">
+    <link rel="stylesheet" type="text/css" href="~/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="~/css/perfect-scrollbar.min.css">
+    <link rel="stylesheet" type="text/css" href="~/css/prism.min.css">
+   
+    <link rel="stylesheet" type="text/css" href="~/css/app.css">
+    <link href="~/css/Datepicker.css" rel="stylesheet" />
+    <link href="~/css/jquery.toast.css" rel="stylesheet" />
+    <link href="~/css/fullcalendar.min.css" rel="stylesheet" rel="stylesheet" />
+    <link href="~/css/fullcalendar.print.css" media='print' rel="stylesheet" />
+    <link href="~/css/qtip.css" rel="stylesheet" />
+</head>
+<body data-col="2-columns" class=" 2-columns ">
+    <div class="wrapper">
+        <div class="main-panel">
+            <div class="main-content">
+                <div class="content-wrapper">
+                    <div class="row">
+
+                        
+                        <form id="msform" runat="server" action="/online/ReviewSubmit" method="post" class="mt-4">
+                            <table class="table table-bordered" style="font-size: 12px; margin-bottom: 0px;">
+                                <tr class="trthbgclr text-left">
+                                    <td>Stay </td>
+                                    <td>@StayDetail</td>
+                                    @Html.HiddenFor(m => m.BookingDetails)
+                                    @Html.HiddenFor(m => m.BookingID)
+                                    @Html.HiddenFor(m => m.Clientid)
+                                    @Html.HiddenFor(m => m.propertyid)
+                                    @Html.HiddenFor(m => m.ReviewerName)
+                                    @Html.HiddenFor(m => m.ReviewerEmail)
+                                    @Html.HiddenFor(m => m.ReviewerPhone)
+                                </tr>
+                                <tr class="text-left">
+                                    <td>Name</td>
+                                    <td>@Model.ReviewerName</td>
+                                </tr>
+                                <tr class="text-left">
+                                    <td>Email</td>
+                                    <td>@Model.ReviewerEmail</td>
+
+                                </tr>
+                                <tr class="text-left">
+                                    <td>Phone</td>
+                                    <td>@Model.ReviewerPhone</td>
+                                </tr>
+                                <tr class="text-left">
+                                    <td>Review Heading</td>
+                                    <td>@Html.TextBoxFor(m => m.ReviewHeading, new { @class = "full-width ValidateInput", placeholder = "Review Heading" })</td>
+                                </tr>
+                                <tr class="text-left">
+                                    <td>Review Text</td>
+                                    <td>@Html.TextAreaFor(m => m.ReviewTextDetail, new { @class = "full-width", placeholder = "Review Text Detail" })</td>
+                                </tr>
+                                <tr class="text-left">
+                                    <td>Cleanness Rating</td>
+                                    <td>
+                                        @for (int i = 0; i < 5; i++)
+                                        {
+                                           
+                                                <span class="fa fa-star checked" onclick="Ratethis('@i','CleannessRating');"></span>
+                                           
+                                            }
+                                            @Html.HiddenFor(m => m.CleannessRating)
+                                    </td>
+                                </tr>
+                                <tr class="text-left">
+                                    <td>Location Rating</td>
+                                    <td>
+                                        @for (int i = 0; i < 5; i++)
+                                        {
+                                            <span class="fa fa-star" onclick="Ratethis('@i','LocationRating');"></span>
+                                        }
+                                        @Html.HiddenFor(m => m.LocationRating)
+                                    </td>
+                                </tr>
+                                <tr class="text-left">
+                                    <td>Food Rating </td>
+                                    <td>
+                                        @for (int i = 0; i < 5; i++)
+                                        {
+                                            <span class="fa fa-star" onclick="Ratethis('@i','FoodRating');"></span>
+                                        }
+                                        @Html.HiddenFor(m => m.FoodRating)
+                                    </td>
+                                </tr>
+                                <tr class="text-left">
+                                    <td>Staff Rating</td>
+                                    <td>
+                                        @for (int i = 0; i < 5; i++)
+                                        {
+                                            <span class="fa fa-star" onclick="Ratethis('@i','StaffRating');"></span>
+                                        }
+                                        @Html.HiddenFor(m => m.StaffRating)
+                                    </td>
+                                </tr>
+                                <tr class="text-left">
+                                    <td>Service Rating </td>
+                                    <td>
+                                        @for (int i = 0; i < 5; i++)
+                                        {
+                                            <span class="fa fa-star" onclick="Ratethis('@i','ServiceRating');"></span>
+                                        }
+                                        @Html.HiddenFor(m => m.ServiceRating)
+                                    </td>
+                                </tr>
+                                <tr class="text-left">
+                                    <td>Room Rating </td>
+                                    <td>
+                                        @for (int i = 0; i < 5; i++)
+                                        {
+                                            <span class="fa fa-star" onclick="Ratethis('@i','RoomRating');"></span>
+                                        }
+                                        @Html.HiddenFor(m => m.RoomRating)
+                                    </td>
+                                </tr>
+                                <tr class="text-left">
+                                    <td>Amenities Rating </td>
+                                    <td>
+                                        @for (int i = 0; i < 5; i++)
+                                        {
+                                            <span class="fa fa-star" onclick="Ratethis('@i','AmenitiesRating');"></span>
+                                        }
+                                        @Html.HiddenFor(m => m.AmenitiesRating)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"> <input type="submit" name="prev" id="btnSend" class="prev action-button"  value="Submit" runat="server"></button></td>
+                                </tr>
+                            </table>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+         </div>
+    </div>
+    <script>
+        function Ratethis(val, elt) {
+
+            $('#' + elt).val(Number(val) + 1);
+           
+        }
+    </script>                
+                    
+</body>
+</html>

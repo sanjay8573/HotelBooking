@@ -510,6 +510,8 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ModuleController.cs" />
     <Compile Include="Controllers\onlineAPI\LFApiController.cs" />
+    <Compile Include="Controllers\onlineAPI\ezyHotelController.cs" />
+    <Compile Include="Controllers\OnlineController.cs" />
     <Compile Include="Controllers\PaidServicesController.cs" />
     <Compile Include="Controllers\pmController.cs" />
     <Compile Include="Controllers\ReportApi\ReportController.cs" />
@@ -534,7 +536,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\CommonClass.cs" />
     <Compile Include="Helper\HotelBookingHelper.cs" />
+    <Compile Include="Helper\ProcessReview.cs" />
     <Compile Include="Model\AllocateRoomResponse.cs" />
     <Compile Include="Model\Amenities.cs" />
     <Compile Include="Model\AppLogs.cs" />
@@ -561,6 +565,13 @@
     <Compile Include="Model\Designation.cs" />
     <Compile Include="Model\DocType.cs" />
     <Compile Include="Model\DocumentType.cs" />
+    <Compile Include="Model\EditHotel\VM_Amenities.cs" />
+    <Compile Include="Model\EditHotel\VM_ContactDetails.cs" />
+    <Compile Include="Model\EditHotel\VM_EditHotel.cs" />
+    <Compile Include="Model\EditHotel\VM_GeneralInfo.cs" />
+    <Compile Include="Model\EditHotel\VM_HotelDetails.cs" />
+    <Compile Include="Model\EditHotel\VM_HotelImages.cs" />
+    <Compile Include="Model\EditHotel\VM_WebConfiguration.cs" />
     <Compile Include="Model\ExchangeTransaction.cs" />
     <Compile Include="Model\Floor.cs" />
     <Compile Include="Model\Guests.cs" />
@@ -572,6 +583,11 @@
     <Compile Include="Model\ModuleMaster.cs" />
     <Compile Include="Model\onlineAPI\RoomRequest.cs" />
     <Compile Include="Model\onlineAPI\RoomResponse.cs" />
+    <Compile Include="Model\OnlineReview\ReviewModel.cs" />
+    <Compile Include="Model\OnlineReview\ReviewRequest.cs" />
+    <Compile Include="Model\OnlineReview\ReviewResponse.cs" />
+    <Compile Include="Model\OnlineReview\ReviewSubmitRequest.cs" />
+    <Compile Include="Model\OnlineReview\ReviewSubmitResponse.cs" />
     <Compile Include="Model\PaidServices.cs" />
     <Compile Include="Model\PriceManager.cs" />
     <Compile Include="Model\PriceRequest.cs" />
@@ -594,6 +610,9 @@
     <Compile Include="Model\Report\VM_ItemInShort.cs" />
     <Compile Include="Model\Report\VM_SalesReport.cs" />
     <Compile Include="Model\Report\VM_StoreINOUTReport.cs" />
+    <Compile Include="Model\Review\ReviewImages.cs" />
+    <Compile Include="Model\Review\ReviewMaster.cs" />
+    <Compile Include="Model\Review\ReviewText.cs" />
     <Compile Include="Model\Rights.cs" />
     <Compile Include="Model\RoleMaster.cs" />
     <Compile Include="Model\Room.cs" />
@@ -607,6 +626,7 @@
     <Compile Include="Model\StaffTier.cs" />
     <Compile Include="Model\TaxMaster.cs" />
     <Compile Include="Model\Team.cs" />
+    <Compile Include="Model\TimeZone\TimeZone.cs" />
     <Compile Include="Model\TNC.cs" />
     <Compile Include="Model\Tour\Tour.cs" />
     <Compile Include="Model\Tour\TourBookingRequest.cs" />
@@ -646,6 +666,7 @@
     <Compile Include="Repository\Implementation\RegionalSettingsRespository.cs" />
     <Compile Include="Repository\Implementation\ReportRepository.cs" />
     <Compile Include="Repository\Implementation\RestaurantRepository.cs" />
+    <Compile Include="Repository\Implementation\ReviewRepository.cs" />
     <Compile Include="Repository\Implementation\RightsRepository.cs" />
     <Compile Include="Repository\Implementation\RoleRepository.cs" />
     <Compile Include="Repository\Implementation\RoomRepository.cs" />
@@ -686,6 +707,7 @@
     <Compile Include="Repository\Interface\IRegionalSettings.cs" />
     <Compile Include="Repository\Interface\IReport.cs" />
     <Compile Include="Repository\Interface\IRestaurant.cs" />
+    <Compile Include="Repository\Interface\IReview.cs" />
     <Compile Include="Repository\Interface\IRights.cs" />
     <Compile Include="Repository\Interface\IRoles.cs" />
     <Compile Include="Repository\Interface\IRoom.cs" />
@@ -776,6 +798,7 @@
     <Content Include="JS\chartist.min.js" />
     <Content Include="JS\customizer.js" />
     <Content Include="JS\dashboard1.js" />
+    <Content Include="JS\ehERP.js" />
     <Content Include="JS\froala_editor.pkgd.min.js" />
     <Content Include="JS\fullcalendar.min.js" />
     <Content Include="JS\jquery.toast.js" />
@@ -965,6 +988,8 @@
     <Content Include="Views\Home\AddTax.cshtml" />
     <Content Include="Views\Home\TaxLists.cshtml" />
     <Content Include="Views\Home\_PricePerNightV1.cshtml" />
+    <Content Include="Views\Online\Review.cshtml" />
+    <Content Include="Views\Online\ReviewResult.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

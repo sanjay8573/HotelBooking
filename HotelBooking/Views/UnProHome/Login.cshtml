@@ -35,7 +35,7 @@
                     @Html.PasswordFor(model => model.Password, new { @class = "required", placeholder = "Password", maxlength = "200", type = "password" })
 
                 </label>
-                <p style="margin: 15px 0px 15px 0px;float: left;width: 100%;"><a href="#" style="float: left;">Forgot Password</a> <a href="#" style="float: right;">Register</a></p>
+               
                 <input type="submit" name="btnLogin" value="Login" id="btnLogin" />
                 <span id="lblMsg" style="color:white;">@ViewBag.ErrorMessage</span>
             }
