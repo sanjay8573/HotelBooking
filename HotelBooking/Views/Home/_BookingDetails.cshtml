@@ -17,14 +17,14 @@
             decimal gtotalAmount = decimal.Parse("0");
             decimal totalAmount = decimal.Parse("0");
             decimal totalTax = decimal.Parse("0");
-            decimal calAmt =0;
+            decimal calAmt = 0;
             foreach (var p in Model)
             {
                 <tr>
                     <td>@i</td>
                     @if (@p.CostCategory == 1)
                     {
-                        <td>@p.Date</td>
+                        <td>@p.Date.ToString("dd-MMM-yyyy")</td>
                     }
                     else
                     {
@@ -60,11 +60,22 @@
                 </td>
                 <td align="right">@ViewBag.CurrencySymbol @totalTax</td>
             </tr>
+
             <tr>
                 <td colspan="2" align="right">Total : </td>
                 <td colspan="3" align="right">@ViewBag.CurrencySymbol  @gtotalAmount</td>
             </tr>
-
+            if (@ViewBag.Discount != 0)
+            {
+                <tr>
+                    <td colspan="2" align="right">Discount : </td>
+                    <td colspan="3" align="right" style="color:darkred">@ViewBag.CurrencySymbol - @ViewBag.Discount</td>
+                </tr>
+            }
+            <tr>
+                <td colspan="2" align="right">Payable Amount : </td>
+                <td colspan="3" align="right">@ViewBag.CurrencySymbol  @ViewBag.PayableAmount</td>
+            </tr>
             <input type="hidden" id="TotalCostForNights" value="@gtotalAmount" />
 
         }
@@ -101,7 +112,7 @@
                                         <td>@i</td>
                                         @if (@p.CostCategory == 1)
                                         {
-                                            <td>@p.Date</td>
+                                            <td>@p.Date.ToString("dd-MMM-yyyy")</td>
                                         }
                                         else
                                         {
@@ -130,7 +141,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
             </div>
         </div>
 

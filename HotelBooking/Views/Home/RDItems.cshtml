@@ -118,7 +118,7 @@
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
                                     <label>Avl.Qty</label>
-                                    <input type="text" id="txtAvlQty" class="full-width" placeholder="Available Quantity" runat="server">
+                                    <input type="text" id="txtAvlQty" class="full-width" disabled="disabled" placeholder="Available Quantity" runat="server">
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
                                     <label>Qty</label>
@@ -167,7 +167,7 @@
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
                                     <label>Avl.Qty</label>
-                                    <input type="text" id="txtAvlQty" class="full-width" placeholder="Available Quantity" runat="server">
+                                    <input type="text" id="txtAvlQty" class="full-width" disabled="disabled" placeholder="Available Quantity" runat="server">
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
                                     <label>Qty</label>
@@ -216,7 +216,7 @@
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
                                     <label>Avl.Qty</label>
-                                    <input type="text" id="txtAvlQty" class="full-width" placeholder="Available Quantity" runat="server">
+                                    <input type="text" id="txtAvlQty" class="full-width" disabled="disabled" placeholder="Available Quantity" runat="server">
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
                                     <label>Qty</label>
@@ -265,7 +265,7 @@
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
                                     <label>Avl.Qty</label>
-                                    <input type="text" id="txtAvlQty" class="full-width" placeholder="Available Quantity" runat="server">
+                                    <input type="text" id="txtAvlQty" class="full-width" disabled="disabled" placeholder="Available Quantity" runat="server">
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
                                     <label>Qty</label>
@@ -304,12 +304,12 @@
     function addItem() {
        
         var nRows = $("#dynDivContainer1 > div:visible").length;
-        console.log("NRows" + nRows);
+        //console.log("NRows" + nRows);
         var n = parseInt(nRows) + 1;
         if (n > 6) { return; }
-        console.log('sanjay' + n);
+        //console.log('sanjay' + n);
         var todsipalyDivId = 'item' + n;
-        console.log(todsipalyDivId);
+        //console.log(todsipalyDivId);
         $('#' + todsipalyDivId).show();
 
         $("#Itemdatepicker"+n).datepicker({
@@ -327,7 +327,7 @@
     function RemoveItem($currentItem) {
 
         var id = $($currentItem).parent().parent().attr('id');
-        console.log(id);
+        //console.log(id);
         $('#' + id).css('display', 'none');
     }
     function SaveItem() {
@@ -392,7 +392,9 @@
                 IssuedByName: txtIssueByName,
                 issuedTo: txtIssueToId,
                 issuedToName: txtIssueToName,
-                isActive:true
+                isActive: true,
+                Action: (txtInOut == "0") ? "O":"I"
+    
 
             };
             items.push(item);
@@ -414,7 +416,7 @@
                      loaderBg: '#9EC600'  // To change the background
                  });
                  setTimeout(function () {
-                    window.location.href = '@Url.Action("IssuedItems", "store")';
+                    window.location.href = '@Url.Action("IssuedItems", "home")';
                     }, 500);
                  console.log('Success');
              },

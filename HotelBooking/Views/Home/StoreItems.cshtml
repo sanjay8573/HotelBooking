@@ -38,8 +38,8 @@
                                         <th class="text-center">Total Quantity</th>
                                         <th class="text-center">Price</th>
                                         <th class="text-center">Total Amount</th>
-                                        <th class="text-center">By Alert At</th>
-                                        <th class="text-center">Action</th>
+                                        <th class="text-center">Buy Alert At</th>
+                                        @*<th class="text-center">Action</th>*@
                                     </tr>
 
                                     @if (Model != null)
@@ -54,8 +54,8 @@
                                                 <td align="center" valign="middle">@rt.Quantity</td>
                                                 <td align="center" valign="middle">@rt.Price</td>
                                                 <td align="center" valign="middle">@rt.TotalAmount</td>
-                                                <td align="center" valign="middle"> -----</td>
-                                                <td align="center" valign="middle"><a href="#" class="editbtn" data-toggle="modal" data-target="#NewStatus"><i class="fa fa-edit"></i> Edit</a></td>
+                                                <td align="center" valign="middle"> @rt.ReorderPoint</td>
+                                                @*<td align="center" valign="middle"><a href="#" class="editbtn" data-toggle="modal" data-target="#NewStatus"><i class="fa fa-edit"></i> Edit</a></td>*@
                                             </tr>
 
                                             i++;

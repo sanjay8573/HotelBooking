@@ -17,7 +17,7 @@
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Title</label>
 
-                    @Html.TextBoxFor(model => model.Title, new { @class = "full-width ValidateInput", placeholder = "Title" })
+                    @Html.TextBoxFor(model => model.Title, new { @class = "full-width ValidateInput", placeholder = "Title", maxlength = "50" })
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <label for="edit-mail" class="form-required">&nbsp;</label>
@@ -33,31 +33,31 @@
                     <label for="edit-mail" class="form-required">Mon</label>
 
 
-                    @Html.TextBoxFor(model => model.MON, new { @class = "full-width ValidateInput", placeholder = "0.00" })
+                    @Html.TextBoxFor(model => model.MON, new { @class = "full-width ValidateInput", placeholder = "0.00", maxlength = "7", ValType="NumbersOnly" })
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Tue</label>
-                    @Html.TextBoxFor(model => model.TUE, new { @class = "full-width ValidateInput", placeholder = "0.00" })
+                    @Html.TextBoxFor(model => model.TUE, new { @class = "full-width ValidateInput", placeholder = "0.00", maxlength = "7", ValType = "NumbersOnly" })
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Wed</label>
-                    @Html.TextBoxFor(model => model.WED, new { @class = "full-width ValidateInput", placeholder = "0.00" })
+                    @Html.TextBoxFor(model => model.WED, new { @class = "full-width ValidateInput", placeholder = "0.00", maxlength = "7", ValType = "NumbersOnly" })
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Thu</label>
-                    @Html.TextBoxFor(model => model.THUR, new { @class = "full-width ValidateInput", placeholder = "0.00" })
+                    @Html.TextBoxFor(model => model.THUR, new { @class = "full-width ValidateInput", placeholder = "0.00", maxlength = "7", ValType = "NumbersOnly" })
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Fri</label>
-                    @Html.TextBoxFor(model => model.FRI, new { @class = "full-width ValidateInput", placeholder = "0.00" })
+                    @Html.TextBoxFor(model => model.FRI, new { @class = "full-width ValidateInput", placeholder = "0.00", maxlength = "7", ValType = "NumbersOnly" })
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Sat</label>
-                    @Html.TextBoxFor(model => model.SAT, new { @class = "full-width ValidateInput", placeholder = "0.00" })
+                    @Html.TextBoxFor(model => model.SAT, new { @class = "full-width ValidateInput", placeholder = "0.00", maxlength = "7", ValType = "NumbersOnly" })
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Sun</label>
-                    @Html.TextBoxFor(model => model.SUN, new { @class = "full-width ValidateInput", placeholder = "0.00" })
+                    @Html.TextBoxFor(model => model.SUN, new { @class = "full-width ValidateInput", placeholder = "0.00", maxlength = "7", ValType = "NumbersOnly" })
                     @Html.HiddenFor(model => model.BranchId)
                 </div>
             </div>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -12,8 +13,9 @@ namespace HotelBooking.Helper
     {
         public static async Task<string> PostData(string jsonString1)
         {
-            //var url = ConfigurationManager.AppSettings["BaseUrl"];
-            var url = "https://localhost:44342/api/online/Review";
+            var ReviewUrl = ConfigurationManager.AppSettings["ReviewUrl"];
+            var url = ReviewUrl +"/Review";
+            
             string roomResponse = string.Empty;
             using (var httpClient = new HttpClient())
             {
@@ -35,7 +37,8 @@ namespace HotelBooking.Helper
         public static async Task<string> PostReview(string jsonString1)
         {
             //var url = ConfigurationManager.AppSettings["BaseUrl"];
-            var url = "https://localhost:44342/api/online/ReviewSubmit";
+            var ReviewUrl = ConfigurationManager.AppSettings["ReviewUrl"];
+            var url = ReviewUrl+"/ReviewSubmit";
             string roomResponse = string.Empty;
             using (var httpClient = new HttpClient())
             {

@@ -22,13 +22,13 @@ namespace HotelBooking.Model.Review
         public DateTime DateOfReply { get; set; }
         public string ReplyText { get; set; }
         public bool HasImages { get; set; }
-        public Int16 CleannessRating { get; set; }
-        public Int16 LocationRating { get; set; }
-        public Int16 FoodRating { get; set; }
-        public Int16 StaffRating { get; set; }
-        public Int16 ServiceRating { get; set; }
-        public Int16 RoomRating { get; set; }
-        public Int16 AmenitiesRating { get; set; }
+        public Byte CleannessRating { get; set; }
+        public Byte LocationRating { get; set; }
+        public Byte FoodRating { get; set; }
+        public Byte StaffRating { get; set; }
+        public Byte ServiceRating { get; set; }
+        public Byte RoomRating { get; set; }
+        public Byte AmenitiesRating { get; set; }
         public bool isActive { get; set; }
         public bool isDeleted { get; set; }
         public DateTime DateCreated { get; set; }

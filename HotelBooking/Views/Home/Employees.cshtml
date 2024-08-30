@@ -3,7 +3,23 @@
 @{
     ViewBag.Title = "Employees";
 }
+<style>
+    .searchbutton {
+        /*float: left;*/
+        width: 10%;
+        padding: 8px;
+        background: #2196F3;
+        color: white;
+        font-size: 17px;
+        border: 1px solid grey;
+        border-left: none;
+        cursor: pointer;
+    }
 
+        .searchbutton:hover {
+            background: #0b7dda;
+        }
+</style>
 <div class="row">
     <div class="col-sm-12">
         <div class="card widget-container">
@@ -29,9 +45,17 @@
                                 }
 
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
-                                Search
-                                <input type="text" id="txtUserName" class="onlyinput" placeholder="Search" runat="server">
+                            <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 pull-left">
+
+                                @using (Html.BeginForm("Employees", "Home", FormMethod.Get, new { id = "form2" }))
+                                {
+                                    <div id="pro_pag2">
+                                        Search
+                                        @Html.TextBox("txtSearchData", (String)ViewBag.txtSearchData, new { @class = "onlyinput", placeholder = "Search Employee" })
+                                        <button class="searchbutton" type="submit"><i class="fa fa-search"></i></button>
+                                    </div>
+                                }
+
                             </div>
                         </div>
                         <table class="table table-bordered">
@@ -84,5 +108,9 @@
 
         $("#form1").submit();
     });
-
+    $("#txtSearchData").keydown(function (e) {
+        if (e.keyCode == 13) {
+            $("#form2").submit();
+        }
+    });
 </script>    

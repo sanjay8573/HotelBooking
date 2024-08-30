@@ -34,9 +34,13 @@ namespace HotelBooking.Controllers
 
         [HttpPost]
         [Route("api/Booking/AddBooking/{BranchId}")]
-        public bool AddBooking(BookingRequest bookingEntity)
+        public BookingResponse AddBooking(BookingRequest bookingEntity)
         {
-            return _bk.AddBooking(bookingEntity);
+            BookingResponse _resp = new BookingResponse();
+            string rtnVal= _bk.AddBooking(bookingEntity);
+            _resp.BookingReference = rtnVal;
+            _resp.isMailSend= true;
+            return _resp;
         }
 
         [HttpPost]

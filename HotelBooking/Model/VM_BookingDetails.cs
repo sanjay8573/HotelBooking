@@ -21,8 +21,8 @@ namespace HotelBooking.Model
         public string BookingDate { get; set; }
 
 
-        public string  CheckIn { get; set; }
-        public string CheckOut { get; set; }
+        public DateTime CheckIn { get; set; }
+        public DateTime CheckOut { get; set; }
         public string Room { get; set;}
         public string RoomTypeId { get; set; }
         public int NoOfRooms { get; set; }

@@ -15,7 +15,7 @@
     <label for="isPreUpgraded"> UpGrade</label>
 </td></tr>
             </thead>
-
+        <tbody>
             @if (ViewBag.nRooms != null)
             {
                 if (ViewBag.nRooms > 0)
@@ -41,7 +41,7 @@
                         <td> Room @k</td>
 
                         <td align="center" valign="middle">
-                            <select id="@selname" required=required name="@selname" onchange="GetSelectedTextValue('@i',this);" class="full-width ddselect" runat="server">
+                            <select id="@selname" required=required name="@selname" onchange="GetSelectedTextValue('@i',this);" class="full-width ddselect ValidateInput" valType="DropDown" runat="server">
                                 
                                 @if (ViewBag.RMComboModel != null)
                                 {
@@ -64,7 +64,7 @@
                         <td align="center" valign="middle" id="@flrname"></td>
                         <td align="center" valign="middle">
 
-                            <button type="button" class="allbtnin" onclick="AllocateRoom('@i');">Allocate</button>
+                            <button type="button" class="allbtnin" onclick="return AllocateRoom('@selname');">Allocate</button>
 
                         </td>
                     </tr>
@@ -125,7 +125,10 @@
     $(document).ready(function () {
 
         var RoomSelected = [];
-
+        $("input").attr("autocomplete", "none");
+        $(".ValidateInput").on("blur", function () {
+            validateField(this);
+        });
         $("#btnAllocateRoom1234").on("click", function () {
             console.log("Allocating Rooms.....");
             const pmtType = $("#RoomType option:selected").text().replace(/[\n\r]+/g, ' ').trim();;
@@ -209,82 +212,85 @@
 
         })
     }
-    function AllocateRoom(id) {
-        console.log("Allocating Rooms.....");
-       
-        var selId = "RoomSelType" + id;
-       
-        const pmtType = $('#'+selId +" option:selected").text().replace(/[\n\r]+/g, ' ').trim();
+    function AllocateRoom(selId) {
+        const pmtType = $('#' + selId + " option:selected").text().replace(/[\n\r]+/g, ' ').trim();
         console.log(pmtType);
         const RoomId = $('#' + selId + " option:selected").val();
         var rmids = RoomId.split("-");
         var rmTxtAryy = pmtType.split("-");
-       
+
         //const rmTxtAryy1 = rmTxtAryy[0].split("~");;
         const RoomNumber = rmTxtAryy[1];
-       
-        
+
+
         const CustomerName = $("#GuestName").val().replace(/[\n\r]+/g, ' ').trim();;
-
-        const RoomTypeId = $("#RoomTypeId").val();
-        const RoomTypeName = rmTxtAryy[0].replace(/[\n\r]+/g, ' ').trim();;
-
-        const CheckIn = $("#cinDate").val();
-        const CheckOut = $("#coutDate").val();
-        const BookingId = $("#BookingId").val();
-        const BranchId = $("#BranchId").val();
-        var isUpgraded = $("#isPreUpgraded").is(":checked");
-        const BookedRoomitem = {
-            BookingId: parseInt(BookingId),
-            RoomId: parseInt(rmids[0]),
-            CustomerName: CustomerName,
-            RoomTypeId: parseInt(RoomTypeId),
-            RoomTypeName: RoomTypeName,
-            FloorId: parseInt(rmids[1]),
-            FloorName: rmTxtAryy[2],
-            CheckIn: CheckIn,
-            CheckOut: CheckOut,
-            RoomNumber: RoomNumber,
-            BranchId: parseInt(BranchId),
-            isActive: 1,
-            isPreUpgraded: isUpgraded
-        };
-
-        console.log(BookedRoomitem);
-       
-        fetch('/Home/SaveAllocatedRoom', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(BookedRoomitem)
-        })
-            .then(() => {
-
-                $.toast({
-                    heading: 'Success',
-                    text: 'Room Allocated Successfully ',
-                    icon: 'success',
-                    loader: false,        // Change it to false to disable loader
-                    position: 'top-right',
-                    loaderBg: '#9EC600'  // To change the background
-                });
-                $("#AllocateRoomLink").click();
-            })
-            .catch(error => {
-                $.toast({
-                    autoDismiss: true,
-                    heading: 'Error',
-                    text: 'Error on Allocating Room',
-                    icon: 'warning',
-                    position: 'top-right',
-                    loader: false,        // Change it to false to disable loader
-                    loaderBg: '#9EC600'  // To change the background
-                });
-            });
+        console.log("Allocating Rooms.....");
+        if (Number(RoomNumber)<=0) {
+            return false; // Prevent form submission if validation fails
+        } else {
+           
 
             
+
+            const RoomTypeId = $("#RoomTypeId").val();
+            const RoomTypeName = rmTxtAryy[0].replace(/[\n\r]+/g, ' ').trim();;
+
+            const CheckIn = $("#cinDate").val();
+            const CheckOut = $("#coutDate").val();
+            const BookingId = $("#BookingId").val();
+            const BranchId = $("#BranchId").val();
+            var isUpgraded = $("#isPreUpgraded").is(":checked");
+            const BookedRoomitem = {
+                BookingId: parseInt(BookingId),
+                RoomId: parseInt(rmids[0]),
+                CustomerName: CustomerName,
+                RoomTypeId: parseInt(RoomTypeId),
+                RoomTypeName: RoomTypeName,
+                FloorId: parseInt(rmids[1]),
+                FloorName: rmTxtAryy[2],
+                CheckIn: CheckIn,
+                CheckOut: CheckOut,
+                RoomNumber: RoomNumber,
+                BranchId: parseInt(BranchId),
+                isActive: 1,
+                isPreUpgraded: isUpgraded
+            };
+
+            console.log(BookedRoomitem);
+
+            fetch('/Home/SaveAllocatedRoom', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(BookedRoomitem)
+            })
+                .then(() => {
+
+                    $.toast({
+                        heading: 'Success',
+                        text: 'Room Allocated Successfully ',
+                        icon: 'success',
+                        loader: false,        // Change it to false to disable loader
+                        position: 'top-right',
+                        loaderBg: '#9EC600'  // To change the background
+                    });
+                    $("#AllocateRoomLink").click();
+                })
+                .catch(error => {
+                    $.toast({
+                        autoDismiss: true,
+                        heading: 'Error',
+                        text: 'Error on Allocating Room',
+                        icon: 'warning',
+                        position: 'top-right',
+                        loader: false,        // Change it to false to disable loader
+                        loaderBg: '#9EC600'  // To change the background
+                    });
+                });
+
+        }
     
     }
     function GetSelectedTextValue(idn, ddlSelect) {

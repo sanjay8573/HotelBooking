@@ -50,9 +50,10 @@
                                                     foreach (var item in ViewBag.TaxCombo)
                                                     {
                                                         var selected = int.Parse(item.Value) == hItem.TaxSlabId;
+                                                        var sel = (selected == true) ? "Selected" : "";
                                                         if (item.Text != null)
                                                         {
-                                                            <option value="@item.Value" selected= "@selected" >
+                                                            <option value="@item.Value" @sel >
                                                                 @item.Text.Trim()
                                                             </option>
 

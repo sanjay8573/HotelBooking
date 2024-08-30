@@ -8,7 +8,7 @@ namespace HotelBooking.Repository.Interface
     {
         IEnumerable<Booking> GetAllBooking(int BranchId);
         Booking GetBooking(int BookingId);
-        bool AddBooking(BookingRequest bookingEntity);
+        string AddBooking(BookingRequest bookingEntity);
         string AddOnlineBooking(BookingRequest bookingRequestEntity);
 
 

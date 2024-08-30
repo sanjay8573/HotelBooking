@@ -72,27 +72,27 @@
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                     <label>Select Service</label>
-                                    <input type="text" id="txtServiceName" class="dropbtn full-width" placeholder="Auto Fill With Paid Services" autocomplete="off" runat="server">
+                                    <input type="text" id="txtServiceName" class="dropbtn full-width ValidateInput" placeholder="Auto Fill With Paid Services" autocomplete="off" runat="server">
                                 </div>
                                 <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
                                     <label>Qty</label>
-                                    <input type="text" id="MtxtQty" class="full-width" placeholder="QTY" runat="server">
+                                    <input type="text" id="MtxtQty" class="full-width ValidateInput" valType="NumbersOnly" placeholder="QTY" runat="server" maxlength = "3">
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Price</label>
-                                    <input type="text" id="MtxtTotal" class="full-width" placeholder="Cost" runat="server">
+                                    <input type="text" id="MtxtTotal" readonly="readonly" class="full-width" placeholder="Cost" runat="server">
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>Start Date</label>
-                                    <input type="text" id="txtStartDate" class="full-width"  autocomplete="off" placeholder="Start Date" runat="server">
+                                    <input type="text" id="txtStartDate" class="full-width ValidateInput"  autocomplete="off" placeholder="Start Date" runat="server">
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>End Date</label>
-                                    <input type="text" id="txtEndDate" class="full-width" autocomplete="off" placeholder="End Date" runat="server">
+                                    <input type="text" id="txtEndDate" class="full-width ValidateInput" autocomplete="off" placeholder="End Date" runat="server">
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                                     <label>&nbsp;</label>
-                                    <button type="submit" class="addbtnstore full-width" style="padding: 14px;" onclick="addtoCart();">Add to Booking</button>
+                                    <button type="submit" class="addbtnstore full-width" style="padding: 14px;" onclick="return addtoCart();">Add to Booking</button>
                                 </div>
                             </div>
                         </div>
@@ -163,27 +163,27 @@
                                     <div class="pull-left full-width" style="border: solid 1px #C0C0C0; padding: 10px 0px; ">
                                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-left">
                                             <label>Guest Name</label>
-                                            <input type="text" id="txtGuestName" class="full-width" placeholder="Guest Name" runat="server">
+                                            <input type="text" id="txtGuestName" class="full-width ValidateInputg" placeholder="Guest Name" runat="server" , maxlength = "100">
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-left">
                                             <label>Phone No.</label>
-                                            <input type="text" id="TxtGuestPhoneNumber" class="full-width" placeholder="Phone No." runat="server">
+                                            <input type="text" id="TxtGuestPhoneNumber" class="full-width ValidateInputg" placeholder="Phone No." valType="Phone" runat="server", maxlength = "15">
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-left">
                                             <label>Email</label>
-                                            <input type="text" id="TxtGuestEmail" class="full-width" placeholder="Email" runat="server">
+                                            <input type="text" id="TxtGuestEmail" class="full-width ValidateInputg" placeholder="Email" valType="Email" runat="server" , maxlength = "100">
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-left">
                                             <label>Address</label>
-                                            <input type="text" id="TxtGuestAddress" class="full-width" placeholder="Address" runat="server">
+                                            <input type="text" id="TxtGuestAddress" class="full-width" placeholder="Address" runat="server" , maxlength = "200">
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-left">
                                             <label>City</label>
-                                            <input type="text" id="TxtGuestCity" class="full-width" placeholder="Address" runat="server">
+                                            <input type="text" id="TxtGuestCity" class="full-width ValidateInputg" placeholder="city" runat="server", maxlength = "50">
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-left">
                                             <label>PinCode</label>
-                                            <input type="text" id="TxtGuestPin" class="full-width" placeholder="Address" runat="server">
+                                            <input type="text" id="TxtGuestPin" class="full-width ValidateInputg" valType="NumbersOnly" placeholder="Pincode" runat="server" , maxlength = "10">
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-left">
                                             <label>Country</label>
@@ -195,7 +195,7 @@
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-left">
                                             <label>ID Type</label>
-                                            <select id="SelDoc" class="form-required full-width" required name="SelDoc">
+                                            <select id="SelDoc" class="form-required full-width ValidateInputg" required name="SelDoc" valType="DropDown">
                                                 @if (ViewBag.DocsComboModel != null)
                                                 {
                                                     foreach (var item in ViewBag.DocsComboModel)
@@ -215,7 +215,7 @@
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pull-left">
                                             <label>Upload ID #</label>
-                                            <input type="file" id="fileGuestId" class="full-width" placeholder="Address" runat="server">
+                                            <input type="file" id="fileGuestId" class="full-width" placeholder="ID card" runat="server">
                                         </div>
                                     </div>
                                 </div>
@@ -261,7 +261,7 @@
 
                                     </div>
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top: 20px;">
-                                        <button type="button" class="allbtnin full-width" onclick="SaveTourBooking(this);">Book Now</button>
+                                        <button type="button" class="allbtnin full-width" onclick=" return SaveTourBooking(this);">Book Now</button>
                                     </div>
                                 </div>
                             </div>
@@ -275,6 +275,14 @@
 </div>
 <script>
     $(document).ready(function () {
+        $("input").attr("autocomplete", "none");
+        $(".ValidateInput").on("blur", function () {
+            validateField(this);
+        });
+       
+        $(".ValidateInputg").on("blur", function () {
+            validateField(this);
+        });
         $('input:radio[name=PaymentMethod]').change(function () {
            
             if (this.value == 'PayNow') {
@@ -301,7 +309,7 @@
             }
         });
         $("#txtStartDate").datepicker({
-            dateFormat: "dd-mm-yy",
+            dateFormat: "mm-dd-yy",
             duration: "fast",
             minDate: 0,
             disabledDates: [new Date()],
@@ -309,16 +317,23 @@
                 var minDate = $(this).datepicker('getDate');
                 minDate.setDate(minDate.getDate() ); //add one day
                 $('#txtEndDate').datepicker('option', 'minDate', minDate);
-
+                $("#txtStartDate").removeClass("errRedBorder");
 
 
             }
         });
         $("#txtEndDate").datepicker({
-            dateFormat: "dd-mm-yy",
+            dateFormat: "mm-dd-yy",
             duration: "fast",
             minDate: 0,
             disabledDates: [new Date()],
+            onSelect: function (selected) {
+                
+                $("#txtStartDate").removeClass("errRedBorder");
+                $("#txtEndDate").removeClass("errRedBorder");
+
+
+            }
 
         });
 
@@ -469,7 +484,27 @@
         ItemTotal = $("#MtxtTotal").val();
         startDate = $("#txtStartDate").val();
         endDate = $("#txtEndDate").val();
-
+        if (itemName == "") {
+            $("#txtServiceName").addClass("errRedBorder");
+            return false;
+        }
+        if (ItemQty == "") {
+            $("#MtxtQty").addClass("errRedBorder");
+            return false;
+        }
+        if (!checkNumberOnly(ItemQty)) {
+            $("#MtxtQty").addClass("errRedBorder");
+            return false;
+        }
+        if (startDate == "") {
+            $("#txtStartDate").addClass("errRedBorder");
+            return false;
+        }
+        if (endDate == "") {
+            $("#txtEndDate").addClass("errRedBorder");
+            return false;
+        }
+        $("#SelectedServiceTable").css("border", "0px"); 
         //var itmNo = Number($("#hdnItems").val()) + 1;
         var itmNo = $("#txtServiceName").attr('ServiceId');
         var ServiceItemId = "ServiceItem_" + itmNo;
@@ -522,7 +557,24 @@
         $(rr).closest('tr').remove();
         calculateTotal();
     }
+    
     function SaveTourBooking(btn) {
+
+        var selectedServiceCount=$("#SelectedServiceTable>tbody tr").length;
+       
+        if (selectedServiceCount === 0) {
+            alert(selectedServiceCount);
+            $("#SelectedServiceTable").css("border", "2px solid red");
+            return false;
+        } else {
+            $("#SelectedServiceTable").css("border", "0px"); 
+        }
+        if (!validateMyForm("ValidateInputg")) {
+            return false; // Prevent form submission if validation fails
+        } else {
+
+            $("#SelectedServiceTable").css("border", "0px"); 
+
 
         $(btn).prop("disabled", true);
         const branchId = $("#BranchId").val();
@@ -533,12 +585,12 @@
         const GuestAddress = $("#TxtGuestAddress").val();
         const GuestCity = $("#TxtGuestCity").val();
         const GuestPin = $("#TxtGuestPin").val();
-        const GuestCountry = $("#SelectGuestCountry option:selected").val(); 
-        const GuestID = $("#hdnGuestId").val(); 
-       
-        var ArrRM = $("#SelRoomNumber option:selected").val().split("-"); 
-        const RoomNumber = $.trim($("#SelRoomNumber option:selected").text()); 
-      
+        const GuestCountry = $("#SelectGuestCountry option:selected").val();
+        const GuestID = $("#hdnGuestId").val();
+
+        var ArrRM = $("#SelRoomNumber option:selected").val().split("-");
+        const RoomNumber = $.trim($("#SelRoomNumber option:selected").text());
+
         const TotalAmount = $("#txtTotalAmount").text();
         const TotalTax = $("#txtTotalTax").text();
         const PayableAmount = $("#txtTotalAmount").text();
@@ -546,14 +598,14 @@
         const couponCode = "XXXX";
         const couponAmount = "0.00";
         const BookingId = ArrRM[1];
-      
-        
+
+
         const SelectedServices = "";
         const BookingChannel = "BO-DC";
         const BookingStatus = "HL";
         var PaymentStatus = "Pending";
-       
-        const PaymentType = $("#SelPaymentOption option:selected").val(); 
+
+        const PaymentType = $("#SelPaymentOption option:selected").val();
         const rmks = $("#txtRemarks").val();
         const paymentdate = getFormattedDate(new Date());
 
@@ -584,7 +636,7 @@
                 PaymentTypeName: PaymentType,
                 Remarks: rmks
             }
-            
+
         }
         else {
             _TourPayment = ''
@@ -644,10 +696,10 @@
             BookingCost = {
                 BookingId: parseInt(BookingId),
                 BookingCostId: parseInt(0),
-                RoomTypeId: parseInt(serviceId) ,
+                RoomTypeId: parseInt(serviceId),
                 Description: itemName,
                 Date: sDate,
-                PerNightCost: Number(itemval/qty).toFixed(2),
+                PerNightCost: Number(itemval / qty).toFixed(2),
                 OfferPrice: itemval,
                 CostCategory: 3,
                 Qty: qty,
@@ -659,19 +711,19 @@
 
         });
 
-      
-        selectedServices = selectedServices.replace(/,\s*$/, "");   
+
+        selectedServices = selectedServices.replace(/,\s*$/, "");
 
 
         TourBookingRwquest.TourDetail.SelectedServices = selectedServices;
 
-       
 
-      
+
+
         console.log(TourBookingRwquest);
         console.log(JSON.stringify(TourBookingRwquest));
         ////
-        
+
         fetch('/Home/SaveTourBooking', {
             method: 'POST',
             data: formData,
@@ -706,9 +758,9 @@
                     loaderBg: '#9EC600'  // To change the background
                 });
             });
-        
-
     }
+
+}
     function getFormattedDate(date) {
         var year = date.getFullYear();
 

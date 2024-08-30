@@ -6,7 +6,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="card widget-container">
-            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Edit Hotel Details <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Checkout</small> </span></div>
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Edit Hotel Details <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Hotel Details</small> </span></div>
             <div class="widget-content padded text-center">
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
@@ -33,32 +33,32 @@
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="edit-mail" class="form-required">Hotel Name</label>
-                                                                @Html.TextBoxFor(model => model.GeneralInformation.BranchName, new { @class = "full-width GIValidateInput", placeholder = "Hotel Name" })
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.BranchName, new { @class = "full-width GIValidateInput", placeholder = "Hotel Name",maxlength="100" })
 
                                                             </div>
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                                                <label for="edit-mail" class="form-required">Hotel Short Name</label>
+                                                                <label for="edit-mail" class="form-required">Address</label>
 
-                                                                @Html.TextBoxFor(model => model.GeneralInformation.BranchName, new { @class = "full-width GIValidateInput", placeholder = "Hotel Name" })
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.Address, new { @class = "full-width GIValidateInput", placeholder = "Hotel Address",maxlength="300" })
                                                                 @Html.HiddenFor(model => model.GeneralInformation.Id)
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="edit-mail" class="form-required">Lat</label>
-                                                                @Html.TextBoxFor(model => model.GeneralInformation.Latitude, new { @class = "full-width", placeholder = "Latitude" })
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.Latitude, new { @class = "full-width", placeholder = "Latitude", maxlength = "10" })
 
                                                             </div>
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="edit-mail" class="form-required">Long</label>
-                                                                @Html.TextBoxFor(model => model.GeneralInformation.Longitude, new { @class = "full-width", placeholder = "Longitude" })
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.Longitude, new { @class = "full-width", placeholder = "Longitude", maxlength = "10" })
 
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="edit-mail" class="form-required">Chain Name</label>
-                                                                @Html.TextBoxFor(model => model.GeneralInformation.ChainName, new { @class = "full-width", placeholder = "Hotel Chain Name" })
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.ChainName, new { @class = "full-width", placeholder = "Hotel Chain Name", maxlength = "50" })
 
                                                             </div>
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
@@ -83,36 +83,36 @@
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="edit-mail" class="form-required">Build Year</label>
-                                                                @Html.TextBoxFor(model => model.GeneralInformation.Buildyear, new { @class = "full-width", placeholder = "Year Of build" })
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.Buildyear, new { @class = "full-width", placeholder = "Year Of build", maxlength = "4" })
 
                                                             </div>
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="edit-mail" class="form-required">Star Rating</label>
-                                                                @Html.TextBoxFor(model => model.GeneralInformation.StarRating, new { @class = "full-width GIValidateInput", placeholder = "Start Ratiing" })
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.StarRating, new { @class = "full-width GIValidateInput", placeholder = "Start Ratiing", maxlength = "1" })
 
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                                                <label for="edit-mail" class="form-required">Checkin Time</label>
-                                                                @Html.TextBoxFor(model => model.GeneralInformation.CheckInTime, new { @class = "full-width GIValidateInput", placeholder = "Checkien Time" })
+                                                                <label for="edit-mail" class="form-required">Check-in Time(24 Hr Format)</label>
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.CheckInTime, new { @class = "full-width GIValidateInput", placeholder = "Checkien Time", maxlength = "5" })
 
                                                             </div>
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                                                <label for="edit-mail" class="form-required">Checkout Time</label>
-                                                                @Html.TextBoxFor(model => model.GeneralInformation.CheckOutTime, new { @class = "full-width GIValidateInput", placeholder = "Checkout Time" })
+                                                                <label for="edit-mail" class="form-required">Check-out Time(24 Hr Format)</label>
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.CheckOutTime, new { @class = "full-width GIValidateInput", placeholder = "Checkout Time", maxlength = "5" })
 
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                                                <label for="edit-mail" class="form-required">Nearest Airport</label>
-                                                                @Html.TextBoxFor(model => model.GeneralInformation.NearestAirport, new { @class = "full-width", placeholder = "Nearest Airport" })
+                                                                <label for="edit-mail" class="form-required">Nearest Airport(3 letter AITA Code)</label>
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.NearestAirport, new { @class = "full-width", placeholder = "Nearest Airport", maxlength = "3" })
 
                                                             </div>
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="edit-mail" class="form-required">Pan Card</label>
-                                                                @Html.TextBoxFor(model => model.GeneralInformation.PanCard, new { @class = "full-width GIValidateInput", placeholder = "Pan Card Number" })
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.PanCard, new { @class = "full-width GIValidateInput", placeholder = "Pan Card Number", maxlength = "12" })
 
                                                             </div>
                                                         </div>
@@ -121,12 +121,12 @@
 
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="edit-mail" class="form-required">Noof Floors</label>
-                                                                @Html.TextBoxFor(model => model.GeneralInformation.NoofFloors, new { @class = "full-width GIValidateInput", placeholder = "Total available Floors" })
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.NoofFloors, new { @class = "full-width GIValidateInput", placeholder = "Total available Floors", maxlength = "3" })
 
                                                             </div>
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="edit-mail" class="form-required">Decimal Places </label>
-                                                                @Html.TextBoxFor(model => model.GeneralInformation.DecimalPlaces, new { @class = "full-width", placeholder = "Decimal places" })
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.DecimalPlaces, new { @class = "full-width", placeholder = "Decimal places", maxlength = "1" })
 
                                                             </div>
                                                         </div>
@@ -135,12 +135,12 @@
 
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="edit-mail" class="form-required">Tax No.1 </label>
-                                                                @Html.TextBoxFor(model => model.GeneralInformation.TaxNo1, new { @class = "full-width", placeholder = "Tax Number(1)" })
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.TaxNo1, new { @class = "full-width", placeholder = "Tax Number(1)", maxlength = "15" })
 
                                                             </div>
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="edit-mail" class="form-required">Tax No.2</label>
-                                                                @Html.TextBoxFor(model => model.GeneralInformation.TaxNo2, new { @class = "full-width", placeholder = "Tax Number(2)" })
+                                                                @Html.TextBoxFor(model => model.GeneralInformation.TaxNo2, new { @class = "full-width", placeholder = "Tax Number(2)", maxlength = "15" })
 
                                                             </div>
                                                         </div>
@@ -149,7 +149,7 @@
                                                     <div class="row">
                                                        
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                            <button type="button" class="addbtnstore" onclick="return SaveGenInfo();">Update & Save</button>
+                                                            <button type="button" class="prev action-button" onclick="return SaveGenInfo();">Update & Save</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -171,12 +171,12 @@
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="edit-mail" class="form-required">Long Description</label>
                                                                 
-                                                                @Html.TextAreaFor(model => model.HotelDetails.LongDescription, new { @class = "full-width HDValidateInput", placeholder = "Long Desciption of the Hotel" })
+                                                                @Html.TextAreaFor(model => model.HotelDetails.LongDescription, new { @class = "full-width HDValidateInput", placeholder = "Long Desciption of the Hotel", maxlength = "3000" })
 
                                                             </div>
                                                             <div class="col-lg-5 col-md-5 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="edit-mail" class="form-required">Short Description</label>
-                                                                @Html.TextAreaFor(model => model.HotelDetails.ShortDescription, new { @class = "full-width", placeholder = "Short Desciption of the Hotel" })
+                                                                @Html.TextAreaFor(model => model.HotelDetails.ShortDescription, new { @class = "full-width", placeholder = "Short Desciption of the Hotel", maxlength = "3000" })
                                                                 
                                                             </div>
 
@@ -184,13 +184,13 @@
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="edit-mail" class="form-required">Checkin Policy</label>
-                                                                @Html.TextAreaFor(model => model.HotelDetails.CheckinPolicy, new { @class = "full-width", placeholder = "Checkin Policy" })
+                                                                @Html.TextAreaFor(model => model.HotelDetails.CheckinPolicy, new { @class = "full-width", placeholder = "Checkin Policy", maxlength = "3000" })
 
                                                                 
                                                             </div>
                                                             <div class="col-lg-5 col-md-5 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="edit-mail" class="form-required">Checkin Instruction</label>
-                                                                @Html.TextAreaFor(model => model.HotelDetails.CheckInInStructions, new { @class = "full-width", placeholder = "Check In InStructions" })
+                                                                @Html.TextAreaFor(model => model.HotelDetails.CheckInInStructions, new { @class = "full-width", placeholder = "Check In InStructions", maxlength = "3000" })
 
                                                             </div>
 
@@ -198,7 +198,7 @@
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="edit-mail" class="form-required">Special Checkin Instruction</label>
-                                                                @Html.TextAreaFor(model => model.HotelDetails.SpecialCheckInInStructions, new { @class = "full-width", placeholder = "Special CheckIn InStructions" })
+                                                                @Html.TextAreaFor(model => model.HotelDetails.SpecialCheckInInStructions, new { @class = "full-width", placeholder = "Special CheckIn InStructions", maxlength = "3000" })
 
                                                             </div>
                                                             <div class="col-lg-5 col-md-5 col-sm-6 col-12 col-xs-12 pull-left">
@@ -230,7 +230,7 @@
                                                     <div class="row">
                                                        
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                            <button type="button" class="addbtnstore" onclick="SaveHotelDetails();" >Update & Save</button>
+                                                            <button type="button" class="prev action-button" onclick="SaveHotelDetails();" >Update & Save</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -248,11 +248,11 @@
                                                 <div class="col-lg-3 col-md-3 col-sm-6 pull-left">
                                                     <label style="margin-top: 10px;"> Name</label>
 
-                                                    <input type="text" id="txtamiName" class="full-width AMEValidateInput" placeholder="Amenities Name" runat="server">
+                                                    <input type="text" id="txtamiName" class="full-width AMEValidateInput" placeholder="Amenities Name" runat="server"  maxlength = "50">
                                                 </div>
                                                 <div class="col-lg-3 col-md-3 col-sm-6 pull-left">
                                                     <label style="margin-top: 10px;">Description</label>
-                                                    <input type="text" id="txtamiDesc" class="full-width AMEValidateInput" placeholder="Amenities Description" runat="server">
+                                                    <input type="text" id="txtamiDesc" class="full-width AMEValidateInput" placeholder="Amenities Description" maxlength="100" runat="server">
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-left">
                                                     <button type="button" style="margin-top: 30px;" class="allbtnin full-width" onclick="AddAmenities();">Add</button>
@@ -274,10 +274,10 @@
                                                             var rid = ai + 1;
                                                             foreach (var rt in Model.HotelAmenities)
                                                             {
-                                                                <tr class="active" id="@rt.AmenitiesId">
+                                                                <tr  class="active" id="@rt.AmenitiesId">
                                                                     <td>@rid</td>
                                                                     <td align="center" valign="middle">@rt.Title</td>
-                                                                    <td align="center" valign="middle">@rt.Description</td>
+                                                                    <td style="white-space:normal !important" align="center"  valign="middle" >@rt.Description</td>
                                                                     <td align="center" valign="middle"><a href="#" class="editbtn" onClick="removeRow(this)"><i class="fa fa-trash-o"></i> Delete</a></td>
                                                                     
 
@@ -293,7 +293,7 @@
                                                 </table>
                                             </div>
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
-                                                <button type="button" class="addbtnstore" onclick="SaveHotelAmenities();">Update &amp; Save</button>
+                                                <button type="button" class="prev action-button" onclick="return SaveHotelAmenities();">Update &amp; Save</button>
                                             </div>
                                         </div>
                                         </form>
@@ -309,7 +309,7 @@
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="edit-mail" class="form-required">Website URL</label>
-                                                                @Html.TextBoxFor(model => model.WebSiteConfiguration.WebsiteURL, new { @class = "full-width", placeholder = "Website Url" })
+                                                                @Html.TextBoxFor(model => model.WebSiteConfiguration.WebsiteURL, new { @class = "full-width", placeholder = "Website Url", maxlength = "150" })
 
                                                             </div>
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
@@ -329,8 +329,14 @@
                                                             <div class="col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12 pull-left">
                                                                 <label for="edit-mail" class="form-required">Current Logo</label>
                                                                 @{
-                                                                    String img6412 = Convert.ToBase64String(Model.WebSiteConfiguration.LogoImage);
-                                                                    String img64Url12 = string.Format("data:image/jpeg;base64,{0}", img6412); //imagetype can be e.g. gif, jpeg, png etc.
+                                                                    String img6412 = string.Empty;
+                                                                    String img64Url12 = string.Empty;
+                                                                    if (Model.WebSiteConfiguration.LogoImage!=null){
+                                                                        img6412 = Convert.ToBase64String(Model.WebSiteConfiguration.LogoImage);
+                                                                        img64Url12 = string.Format("data:image/jpeg;base64,{0}", img6412);
+
+                                                                    }
+                                                                    //imagetype can be e.g. gif, jpeg, png etc.
                                                                 }
                                                             <img style="width:150px;height:50px" id="imgWL" src="@img64Url12" alt="WebSite Logo">
                                                             </div>
@@ -365,7 +371,7 @@
                                                     <div class="row">
 
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                            <button type="button" class="addbtnstore" onclick="SaveWebDetails();">Update & Save</button>
+                                                            <button type="button" class="prev action-button" onclick="SaveWebDetails();">Update & Save</button>
                                                         </div>
                                                     </div>
                                                  </div>
@@ -387,11 +393,11 @@
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="edit-mail" class="form-required">Contact Text</label>
-                                                                <input type="text" id="txtContactText" class="full-width" placeholder="Contact Text" runat="server">
+                                                                <input type="text" id="txtContactText" class="full-width" placeholder="Contact Text" maxlength = "50" runat="server">
                                                             </div>
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="edit-mail" class="form-required">Desc</label>
-                                                                <input type="text" id="txtContactDesc" class="full-width" placeholder="Desc" runat="server">
+                                                                <input type="text" id="txtContactDesc" class="full-width" placeholder="Desc" maxlength = "100" runat="server">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
@@ -407,7 +413,7 @@
                                                             </div>
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="edit-mail" class="form-required">Enter Contact Details</label>
-                                                                <input type="text" id="txtCD" class="full-width" placeholder="Enter Contact Details" runat="server">
+                                                                <input type="text" id="txtCD" class="full-width" placeholder="Enter Contact Details" maxlength = "100" runat="server">
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
@@ -420,7 +426,7 @@
                                                                 </ul>
                                                             </div>
                                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                                <button type="button" class="addbtnstore" onclick="AddContact();">ADD</button>
+                                                                <button type="button" class="prev action-button" onclick="AddContact();">ADD</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -469,7 +475,7 @@
                                                             </table>
                                                         </div>
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                            <button type="button" class="addbtnstore" onclick="SaveHotelContacts();">Update & Save</button>
+                                                            <button type="button" class="prev action-button" onclick="SaveHotelContacts();">Update & Save</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -499,13 +505,13 @@
                                                 </div>
                                                 <div class="col-lg-2 col-md-2 col-sm-6 pull-left">
                                                     <label style="margin-top: 10px;">Image Desc</label>
-                                                    <input type="text" id="txtHIDESC" class="full-width HIValidateInput" placeholder="Image Desc" runat="server">
+                                                    <input type="text" id="txtHIDESC" class="full-width HIValidateInput" placeholder="Image Desc" maxlength = "100" runat="server">
                                                 </div>
                                                 <div class="col-lg-3 col-md-3 col-sm-2 pull-left">
                                                     <label style="margin-top: 10px;">&nbsp;</label>
                                                     <ul class="unstyled">
                                                         <li>
-                                                            <input class="styled-checkbox" id="CHK_ACTIVEISMI" type="checkbox" name="CHK_ACTIVE">
+                                                            <input class="styled-checkbox" id="CHK_ACTIVEISMI" type="checkbox" name="CHK_ACTIVEISMI">
                                                             <label for="CHK_ACTIVEISMI">Is Main Image</label>
                                                         </li>
                                                     </ul>
@@ -534,8 +540,15 @@
                                                                 <tr class="active" id="@rt.ImageId">
                                                                     <td>@hrid</td>
                                                                     @{
-                                                                        String img64125 = Convert.ToBase64String(rt.ImageData);
-                                                                        String img64Url125 = string.Format("data:image/jpeg;base64,{0}", img64125); //imagetype can be e.g. gif, jpeg, png etc.
+                                                                        String img64125 = string.Empty;
+                                                                        String img64Url125 = string.Empty;
+
+                                                                        if (rt.ImageData != null)
+                                                                        {
+                                                                            img64125 = Convert.ToBase64String(rt.ImageData);
+                                                                            img64Url125 = string.Format("data:image/jpeg;base64,{0}", img64125);
+                                                                        }
+                                                                        //imagetype can be e.g. gif, jpeg, png etc.
                                                                     }
                                                                     <td align="center" valign="middle"><img style="width:50%;height:50%" src="@img64Url125" alt="HotelImage"></td>
                                                                     <td align="center" valign="middle">@rt.ImageName</td>
@@ -557,7 +570,7 @@
                                                 </table>
                                             </div>
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
-                                                <button type="button" class="addbtnstore" onclick="SaveHotelImages();">Update &amp; Save</button>
+                                                <button type="button" class="prev action-button" onclick="SaveHotelImages();">Update &amp; Save</button>
                                             </div>
                                         </div>
                                         </form>
@@ -640,6 +653,7 @@
         } else {
             const bId = $("#GeneralInformation_Id").val();
             const bName = $("#GeneralInformation_BranchName").val();
+            const bAddress = $("#GeneralInformation_Address").val(); 
             const bLongitude = $("#GeneralInformation_Longitude").val();
             const bLatitude = $("#GeneralInformation_Latitude").val();
             const bChainName = $("#GeneralInformation_ChainName").val();
@@ -661,6 +675,7 @@
             var ginfo = {
                 Id: bId,
                 BranchName: bName,
+                Address: bAddress,
                 Latitude: bLatitude,
                 Longitude: bLongitude,
                 ChainName: bChainName,
@@ -863,8 +878,8 @@
             var TotalAmenities = $("#htnTotalAmenities").val();
             //console.log(TotalAmenities);
             var newRawNumber = Number(TotalAmenities) + 1;
-            var tblNewtr = '<tr class="active" id="0"><td> ' + newRawNumber + '</td><td align="center" valign="middle">' + txtName + '</td>';
-            tblNewtr += '<td align="center" valign="middle">' + txtDesc + '</td><td align="center" valign="middle"><a href="#" class="editbtn" onClick="removeRow(this)"><i class="fa fa-trash-o"></i> Delete</a></td>';
+            var tblNewtr = '<tr   class="active" id="0"><td> ' + newRawNumber + '</td><td align="center" valign="middle">' + txtName + '</td>';
+            tblNewtr += '<td style="white-space:normal !important" align="center" valign="middle">' + txtDesc + '</td><td align="center" valign="middle"><a href="#" class="editbtn" onClick="removeRow(this)"><i class="fa fa-trash-o"></i> Delete</a></td>';
 
 
             $('#tblAmenities tbody').append(tblNewtr);
@@ -885,10 +900,8 @@
         });
     }
     function SaveHotelAmenities() {
-
-        if (!validateMyForm('HIValidateInput')) {
-            return false; // Prevent form submission if validation fails
-        } else {
+        console.log("test");
+        const bId = $("#GeneralInformation_Id").val();
             var hotelAmenities = [];
             var rc = $('#tblAmenities >tbody >tr').length;
             console.log(rc);
@@ -898,7 +911,7 @@
                 var _amiName = $(this).find('td').eq(1).text();
                 var _amiDesc = $(this).find('td').eq(2).text();
                 var _amiObj = {
-                    BranchId: 1,
+                    BranchId: Number(bId),
                     AmenitiesId: _amiId,
                     Title: _amiName,
                     Description: _amiDesc,
@@ -947,7 +960,7 @@
                     });
                 });
 
-        }
+        
 
     }
 
@@ -1088,7 +1101,7 @@
                 }
                 var formData = new FormData();
 
-
+            console.log(_hotelImageObj);
                 //var file = $("#WBLogoImage").get(0).files;
 
                 formData.append(fileId, file);

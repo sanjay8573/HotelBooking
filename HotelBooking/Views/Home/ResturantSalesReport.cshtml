@@ -1,0 +1,100 @@
+﻿@model HotelBooking.Model.Report.VM_RestaurantSalesReport
+@{
+    ViewBag.Title = "ResturantSalesReport";
+}
+
+<div class="row" id="Amenityform">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i> Restaurant Sales Report</div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                    <div class="col-lg-8 col-md-8 col-sm-1 col-xs-12 pull-right">
+                        @using (Html.BeginForm("Export", "Home", FormMethod.Post, new { id = "msform" }))
+                        {
+                            <input type="hidden" name="GridHtml" />
+                            <input type="hidden" name="ReportName" value="RestaurantSalesReport" />
+                            <input type="submit" class="prev action-button pull-right" id="btnExport" value="Export" />
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 table-responsive" id="Grid">
+
+                <table cellpadding="5" cellspacing="0" style="border: 1px solid #ccc;font-size: 9pt;">
+
+
+                    <tr>
+                        <td colspan="10">
+                            <table style="width:100%">
+                                <tr>
+                                    <td colspan="3" style="width: 120px; border: 1px solid #ccc"><b>Restaurant Sales Report</b></td>
+
+                                </tr>
+                                <tr>
+                                    <td style="width: 120px; border: 1px solid #ccc">Date</td>
+                                    <td style="width: 120px; border: 1px solid #ccc">From - @Model.RSR.fromDate</td>
+                                    <td style="width: 120px; border: 1px solid #ccc">To - @Model.RSR.toDate</td>
+                                </tr>
+                                
+
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc">#</th>
+                        <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc">Restaurant Name</th>
+                        <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc">Table Name</th>
+                        <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc">Room Number</th>
+                        <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc; text-align: center">Amount</th>
+                        <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc; text-align: center">Tax</th>
+                        <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc; text-align: center">Total Amount</th>
+                        <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc; text-align: center">Park</th>
+                        
+                        <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc; text-align: center">Billing Time</th>
+
+
+                    </tr>
+                    @if (Model != null)
+                    {
+                        var i = 1;
+                        foreach (var bk in Model.RestaurantSalesReport)
+                        {
+                            <tr>
+                                <td style="width:10px;border: 1px solid #ccc">@i</td>
+                                <td style="width:120px;border: 1px solid #ccc">@bk.RestaurantName</td>
+                                <td style="width:120px;border: 1px solid #ccc">@bk.TableName</td>
+                                <td style="width:120px;border: 1px solid #ccc"> @bk.RoomNumber</td>
+                                <td style="width:120px;border: 1px solid #ccc; text-align: center">@bk.TotalAmount</td>
+                                <td style="width: 150px; border: 1px solid #ccc; text-align: center">@bk.TaxAmount</td>
+                                <td style="width: 150px; border: 1px solid #ccc; text-align: center">@bk.GrantTotal</td>
+                                <td style="width: 120px; border: 1px solid #ccc; text-align: center">@bk.isPark</td>
+                               
+                                <td style="width: 120px; border: 1px solid #ccc; text-align: center">@bk.BillingTime.ToString("MM-dd-yyyy HH:MM")</td>
+
+
+                            </tr>
+
+                            i++;
+                        }
+
+                    }
+
+
+
+
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#btnExport").click(function () {
+            $("input[name='GridHtml']").val($("#Grid").html());
+        });
+    });
+</script>

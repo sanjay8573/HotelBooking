@@ -62,5 +62,11 @@ namespace HotelBooking.Controllers.ReportApi
         {
             return _rpt.TourSalesReport(srr);
         }
+        [Route("api/report/RestaurantSalesReport")]
+        [HttpGet]
+        public VM_RestaurantSalesReport RestaurantSalesReport(RestaurantSalesReportRequest req)
+        {
+            return _rpt.getRestaurantSalesReport(req);
+        }
     }
 }

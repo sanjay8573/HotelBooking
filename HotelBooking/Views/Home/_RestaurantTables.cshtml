@@ -10,9 +10,16 @@
         var txtId = rt.TableId.ToString() +"-"+ rt.RestaurantId.ToString();
         <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
             <label>Table @i</label>
-            <input type="text" id="@txtId" class="full-width" placeholder="Seating Par Table Capacity" value="@rt.NoOfSeat" runat="server">
+            <input type="text" id="@txtId" class="full-width ValidateInput" valType="NumbersOnly" placeholder="Seating Par Table Capacity" value="@rt.NoOfSeat" runat="server">
         </div>
         i++;
     }
 }
-
+<script>
+    $(document).ready(function () {
+        $("input").attr("autocomplete", "none");
+        $(".ValidateInput").on("blur", function () {
+            validateField(this);
+        });
+    });
+</script>

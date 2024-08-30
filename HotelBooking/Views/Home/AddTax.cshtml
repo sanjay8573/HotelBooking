@@ -16,25 +16,25 @@
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required"> Tax Slab Name</label>
-                                @Html.TextBoxFor(m => m.Name, new { @class = "full-width ValidateInput", placeholder = "Tax Slab Name" })
+                                @Html.TextBoxFor(m => m.Name, new { @class = "full-width ValidateInput", placeholder = "Tax Slab Name", maxlength = "50" })
 
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required">Display/Print Name</label>
 
-                                @Html.TextBoxFor(m => m.Description, new { @class = "full-width ValidateInput", placeholder = "Display Name" })
+                                @Html.TextBoxFor(m => m.Description, new { @class = "full-width ValidateInput", placeholder = "Display Name", maxlength = "50" })
                             </div>
                         </div>
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required">Start Range </label>
 
-                                @Html.TextBoxFor(m => m.RangeFrom, new { @class = "full-width ValidateInput", placeholder = "Range From" })
+                                @Html.TextBoxFor(m => m.RangeFrom, new { @class = "full-width ValidateInput", placeholder = "Range From", maxlength = "7", valType = "NumbersOnly" })
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required">End Range</label>
 
-                                @Html.TextBoxFor(m => m.RangeTo, new { @class = "full-width ValidateInput", placeholder = "Range To" })
+                                @Html.TextBoxFor(m => m.RangeTo, new { @class = "full-width ValidateInput", placeholder = "Range To", maxlength = "7", valType = "NumbersOnly" })
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required">Applied For</label>
@@ -63,12 +63,27 @@
                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required">Tax Value</label>
 
-                                @Html.TextBoxFor(m => m.Value, new { @class = "full-width ValidateInput", placeholder = "tax value" })
+                                @Html.TextBoxFor(m => m.Value, new { @class = "full-width ValidateInput", placeholder = "tax value", maxlength = "7", valType = "NumbersOnly" })
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required">Tax Type(P/F)</label>
 
-                                @Html.TextBoxFor(m => m.TaxType, new { @class = "full-width ValidateInput", placeholder = "Tax Type(P/F)" })
+                                <select id="SelTaxType" class="form-required full-width ValidateInput" valType="DropDown" required name="SelTaxType">
+                                    @if (ViewBag.TaxType != null)
+                                    {
+                                        foreach (var item in ViewBag.TaxType)
+                                        {
+                                            if (item.Text != null)
+                                            {
+                                                <option value="@item.Value" selected="@item.Selected">
+                                                    @item.Text
+                                                </option>
+
+                                            }
+                                        }
+                                    }
+                                </select>
+                                @Html.HiddenFor(model => model.TaxType)
                             </div>
 
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
@@ -104,8 +119,8 @@
             return false; // Prevent form submission if validation fails
         } else {
             $("#appliedForID").val($("#SelTaxableItem option:selected").val());
-            $("#appliedForName").val($("#SelTaxableItem option:selected").text());
-
+            $("#appliedForName").val($("#SelTaxableItem option:selected").text().trim());
+            $("#TaxType").val($("#SelTaxType option:selected").val());
             $('input[type=checkbox]').each(function () {
 
 
@@ -119,16 +134,7 @@
 
 
     }
-    //$(document).ready(function () {
-    //    var urlParams = new URLSearchParams(window.location.search);
-    //    console.log(urlParams.has('m')); // true
-    //    console.log(urlParams.get('m')); // "edit"
-    //    var mode = urlParams.get('m');
-    //    if (mode == "V") {
-    //        $('#msform :input').prop("disabled", true);
-
-    //    }
-    //});
+    
 
 
 

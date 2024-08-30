@@ -10,6 +10,16 @@ namespace HotelBooking.Model.OnlineReview
         public int BookingID { get; set; }
         public string BookingDetails { get; set; }
         public int propertyid { get; set; }
+        public string PropertyName { get; set; }
+        public string  PropertyAdddess { get; set; }
+        public string PropertyContactNumber { get; set; }
+        public byte[] PropertyImage { get; set; }
+        public string CheckinDate { get; set; }
+        public string CheckOutDate { get; set; }
+        public int TotalAdult { get; set; }
+        public int TotalChield { get; set; }
+        public int NoOfRooms { get; set; }
+        public string RoomTypes { get; set; }
         public string TripType { get; set; }
         public int Clientid { get; set; }
         public string ReviewerName { get; set; }
@@ -19,13 +29,14 @@ namespace HotelBooking.Model.OnlineReview
        
         public string ReviewTextDetail { get; set; }
         public DateTime DateOfReview { get; set; }
-        public Int16 CleannessRating { get; set; }
-        public Int16 LocationRating { get; set; }
-        public Int16 FoodRating { get; set; }
-        public Int16 StaffRating { get; set; }
-        public Int16 ServiceRating { get; set; }
-        public Int16 RoomRating { get; set; }
-        public Int16 AmenitiesRating { get; set; }
+        public Byte CleannessRating { get; set; }
+        public Byte LocationRating { get; set; }
+        public Byte FoodRating { get; set; }
+        public Byte StaffRating { get; set; }
+        public Byte ServiceRating { get; set; }
+        public Byte RoomRating { get; set; }
+        public Byte AmenitiesRating { get; set; }
+        public bool AlreadySubmitted { get; set; }
 
     }
     public class RequestJSON{

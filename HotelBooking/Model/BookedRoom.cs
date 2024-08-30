@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HotelBooking.Model
 {
@@ -14,8 +15,8 @@ namespace HotelBooking.Model
         public string  RoomTypeName { get; set; }
         public int FloorId { get; set; }
         public string FloorName { get; set; }
-        public string CheckIn { get; set; }
-        public string CheckOut { get; set; }
+        public DateTime CheckIn { get; set; }
+        public DateTime CheckOut { get; set; }
         public string  RoomNumber { get; set; }
         public int BranchId { get; set; }
         public bool isCheckout { get; set; }

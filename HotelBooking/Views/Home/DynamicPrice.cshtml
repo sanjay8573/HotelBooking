@@ -1,0 +1,185 @@
+﻿@model IEnumerable<HotelBooking.Model.DynamicPrice.DynamicPriceModel>
+@{
+    ViewBag.Title = "Dynamic Price";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Dynamic <small>Pricing </small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Dynamic pricing </small> </span></div>
+            <div class="widget-content padded text-center">
+                <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div id="currExDiv" class="row">
+                                
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    
+                                    <input type="hidden" id="BranchId" value="@ViewBag.BranchId" />
+                                   
+
+                                </div>
+                                
+                                @if (Model != null)
+                                {
+                                    <table id="tbl_DynamicPrice" class="table table-bordered">
+                                        <thead>
+                                            <tr><th colspan="7">Fixed Price <input id="CHK_ISFIX" type="checkbox" /></th></tr>
+                                            <tr>
+
+                                                <th>Room Type</th>
+                                                <th style="background-color:lightskyblue">Slab 1 (Rooms)</th>
+                                                <th style="background-color:lightskyblue">Threshold (PRICE)</th>
+                                                <th style="background-color:darkgoldenrod">Slab 2(Rooms)</th>
+                                                <th style="background-color: darkgoldenrod">Threshold (PRICE)</th>
+                                                <th style="background-color:darkgrey">Slab 3(Rooms)</th>
+                                                <th style="background-color:darkgrey">Threshold (PRICE)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+
+                                                <tr id="@item.RoomTypeId">
+                                                    <td>@item.RoomTypeName</td>
+                                                    <td style="background-color: lightskyblue; border-color: lightblue ">
+                                                        <input type="text" id="@item.DynamicPriceId" name="@item.DynamicPriceId" class="full-width ValidateInput" placeholder="Room" value="@item.Slab1" runat="server"  maxlength = "7" ValType = "NumbersOnly">
+                                                    </td>
+                                                    <td style="background-color: lightskyblue; border-color: lightblue ">
+                                                        <input type="text" id="@item.DynamicPriceId" name="@item.DynamicPriceId" class="full-width ValidateInput" placeholder="Currency" value="@item.Slab1_Thresold" runat="server" maxlength = "7" ValType = "NumbersOnly">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="@item.DynamicPriceId" name="@item.DynamicPriceId" class="full-width ValidateInput" placeholder="Room" value="@item.Slab2" runat="server" maxlength = "7" ValType = "NumbersOnly">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="@item.DynamicPriceId" name="@item.DynamicPriceId" class="full-width ValidateInput" placeholder="Currency" value="@item.Slab2_Thresold" runat="server" maxlength = "7" ValType = "NumbersOnly">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="@item.DynamicPriceId" name="@item.DynamicPriceId" class="full-width ValidateInput" placeholder="Rooom" value="@item.Slab3" runat="server" maxlength = "7" ValType = "NumbersOnly">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" id="@item.DynamicPriceId" name="@item.DynamicPriceId" class="full-width ValidateInput" placeholder="Currency" value="@item.Slab3_Thresold" runat="server" maxlength = "7" ValType = "NumbersOnly">
+                                                    </td>
+                                                </tr>
+
+
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+                              
+
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <button type="button" class="allbtnin full-width" onclick="return saveDynamicPrice();">Update</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("input").attr("autocomplete", "none");
+        $(".ValidateInput").on("blur", function () {
+            validateField(this);
+        });
+
+    });
+    function saveDynamicPrice() {
+        if (!validateBooking()) {
+            return false;
+
+        var _dnprice = [];
+        var _branchId = $("#BranchId").val();
+        var _isFixed = $("#CHK_ISFIX").prop('checked');
+        $("#tbl_DynamicPrice > tbody > tr").each(function () {
+            var _rmTypeName = $(this).find('td').eq(0).text();// + " " + $(this).find('td').eq(1).text());
+            var _rmTypeid = $(this).attr('id');
+            var _slab1;
+            var _slab1_Th;
+            var _slab2;
+            var _slab2_Th;
+            var _slab3;
+            var _slab3_Th;
+            $(this).find('input').each(function (idx) {
+                if (idx == 0) {
+                    _slab1 = $(this).val();
+                }
+                if (idx == 2) {
+                    _slab2 = $(this).val();
+                }
+                if (idx == 4) {
+                    _slab3 = $(this).val();
+                }
+                if (idx == 1) {
+                    _slab1_Th = $(this).val();
+                }
+                if (idx == 3) {
+                    _slab2_Th = $(this).val();
+                }
+                if (idx == 5) {
+                    _slab3_Th = $(this).val();
+                }
+
+
+            });
+            var dnp = {
+                BranchId: Number(_branchId),
+                RoomTypeId: Number(_rmTypeid) ,
+                RoomTypeName: _rmTypeName,
+                Slab1:Number(_slab1),
+                Slab1_Thresold: Number(_slab1_Th),
+                Slab2: Number(_slab2),
+                Slab2_Thresold: Number(_slab2_Th),
+                Slab3: Number(_slab3),
+                Slab3_Thresold:Number( _slab3_Th),
+                isFixed: _isFixed,
+                isActive:true
+
+            }
+            _dnprice.push(dnp);
+            
+        });
+        console.log(_dnprice);
+        fetch('/Home/SaveDynamicPrice', {
+            method: 'POST',
+           
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(_dnprice)
+        })
+            //.then(response => response.json())
+            .then(() => {
+                //console.log(response.json)
+                $.toast({
+                    heading: 'Success',
+                    text: ' Dynamic Price updated Succesfully ',
+                    icon: 'success',
+                    loader: false,        // Change it to false to disable loader
+                    position: 'top-right',
+                    loaderBg: '#9EC600'  // To change the background
+                });
+               
+
+            })
+            .catch(error => {
+                $.toast({
+                    autoDismiss: true,
+                    heading: 'Error',
+                    text: 'Error on Dynamic Price updating',
+                    icon: 'warning',
+                    position: 'top-right',
+                    loader: false,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                });
+            });
+    }
+</script>
+

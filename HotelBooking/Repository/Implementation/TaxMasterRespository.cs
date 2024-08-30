@@ -27,6 +27,10 @@ namespace HotelBooking.Repository.Implementation
                     tmpTx.isActive = taxMasterEntity.isActive;
                     tmpTx.Name = taxMasterEntity.Name;
                     tmpTx.Description= taxMasterEntity.Description;
+                    tmpTx.RangeFrom = taxMasterEntity.RangeFrom;
+                    tmpTx.RangeTo=taxMasterEntity.RangeTo;
+                    tmpTx.isActive = taxMasterEntity.isActive;
+                    
                     
                     rtnVal = true;
                 }

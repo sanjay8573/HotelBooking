@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HotelBooking.Model
@@ -11,8 +12,8 @@ namespace HotelBooking.Model
         public int SpecialPriceManageId { get; set; }
         [Column("Title")]
         public string Title1 { get; set; }
-        public string DateRangeFrom { get; set; }
-        public string DateRangeTo { get; set; }
+        public DateTime DateRangeFrom { get; set; }
+        public DateTime DateRangeTo { get; set; }
         [Column("RoomTypeId")]
         public int RoomTypeId1 { get; set; }
         [Column("RoomTypeTitle")]
@@ -33,7 +34,7 @@ namespace HotelBooking.Model
         [Column("SAT")]
         public decimal SAT1 { get; set; }
         [Column("isActive")]
-        public bool isActive1 { get; set; }
+        public bool isActive1 { get; set; } = true;
         public bool isDeleted { get; set; }
         [Column("BranchId")]
         public int BranchId1 { get; set; }

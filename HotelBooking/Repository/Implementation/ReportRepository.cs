@@ -28,12 +28,12 @@ namespace HotelBooking.Repository.Implementation
         public VM_CommissionReport getCommissionReport(CommissionReportRequest crr)
         {
             
-            string fDate = crr.fromDate.Substring(6, 4)  + "-" + crr.fromDate.Substring(3, 2) + "-" + crr.fromDate.Substring(0, 2);
-            string tDate = crr.toDate.Substring(6, 4) + "-" + crr.toDate.Substring(3, 2) + "-" + crr.toDate.Substring(0, 2);
+            //string fDate = crr.fromDate.Substring(6, 4)  + "-" + crr.fromDate.Substring(3, 2) + "-" + crr.fromDate.Substring(0, 2);
+            //string tDate = crr.toDate.Substring(6, 4) + "-" + crr.toDate.Substring(3, 2) + "-" + crr.toDate.Substring(0, 2);
 
 
             VM_CommissionReport vM_CommReport = new VM_CommissionReport();
-            string strsql = "exec sp_getCommissionReport @fromDate='" + fDate + "',@toDate='" + tDate+ "',@BookingSourceid='" + crr.BookingSourceId  + "',@BranchId=" + crr.BranchId;
+            string strsql = "exec sp_getCommissionReport @fromDate='" + crr.fromDate + "',@toDate='" + crr.toDate + "',@BookingSourceid='" + crr.BookingSourceId  + "',@BranchId=" + crr.BranchId;
             vM_CommReport.CRR = crr;
             vM_CommReport.CommissionReport = _context.Database.SqlQuery<CommissionReport>(strsql).ToList();
             return vM_CommReport;
@@ -42,10 +42,10 @@ namespace HotelBooking.Repository.Implementation
 
         public VM_CurrencyExchangeReport GetCurrencyExchangeReports(CurrencyExchangeReportRequest req)
         {
-            string fDate = req.fromDate.Substring(6, 4) + "-" + req.fromDate.Substring(3, 2) + "-" + req.fromDate.Substring(0, 2);
-            string tDate = req.toDate.Substring(6, 4) + "-" + req.toDate.Substring(3, 2) + "-" + req.toDate.Substring(0, 2);
+            //string fDate = req.fromDate.Substring(6, 4) + "-" + req.fromDate.Substring(3, 2) + "-" + req.fromDate.Substring(0, 2);
+            //string tDate = req.toDate.Substring(6, 4) + "-" + req.toDate.Substring(3, 2) + "-" + req.toDate.Substring(0, 2);
             VM_CurrencyExchangeReport vM_CurrReport = new VM_CurrencyExchangeReport();
-            string strsql = "exec sp_CurrencyExchangeReport @fromDate='" + fDate + "',@toDate='" + tDate+ "',@ExchangeCurrencyId=" + req.ExchangeCurrencyId + ",@BranchId=" + req.BranchId;
+            string strsql = "exec sp_CurrencyExchangeReport @fromDate='" + req.fromDate + "',@toDate='" + req.toDate + "',@ExchangeCurrencyId=" + req.ExchangeCurrencyId + ",@BranchId=" + req.BranchId;
             vM_CurrReport.REQ = req;
             vM_CurrReport.CurrencyExchangeReport = _context.Database.SqlQuery<ExchangeTransaction>(strsql).ToList();
             return vM_CurrReport;
@@ -53,18 +53,22 @@ namespace HotelBooking.Repository.Implementation
 
         public VM_ItemInShort getItemShortReport(ItemInShortRequest req)
         {
-            string fDate = req.fromDate.Substring(6, 4) + "-" + req.fromDate.Substring(3, 2) + "-" + req.fromDate.Substring(0, 2);
-            string tDate = req.toDate.Substring(6, 4) + "-" + req.toDate.Substring(3, 2) + "-" + req.toDate.Substring(0, 2);
+            //string fDate = req.fromDate.Substring(6, 4) + "-" + req.fromDate.Substring(3, 2) + "-" + req.fromDate.Substring(0, 2);
+            //string tDate = req.toDate.Substring(6, 4) + "-" + req.toDate.Substring(3, 2) + "-" + req.toDate.Substring(0, 2);
             VM_ItemInShort vM_ItemInShort = new VM_ItemInShort();
-            string strsql = "exec sp_StoreITEMShort @fromDate='" + fDate + "',@toDate='" + tDate + "',@BranchId=" + req.BranchId;
+            string strsql = "exec sp_StoreITEMShort @fromDate='" + req.fromDate + "',@toDate='" + req.toDate + "',@BranchId=" + req.BranchId;
             vM_ItemInShort.REQ = req;
             vM_ItemInShort.itemsInShorts = _context.Database.SqlQuery<ItemsInShort>(strsql).ToList();
             return vM_ItemInShort;
         }
 
-        public IEnumerable<RestaurantSalesReport> getRestaurantSalesReport(DateTime startDate, DateTime endDate, string restaurantName)
+        public VM_RestaurantSalesReport getRestaurantSalesReport(RestaurantSalesReportRequest req)
         {
-            throw new NotImplementedException();
+            VM_RestaurantSalesReport vM_RestroSalesReport = new VM_RestaurantSalesReport();
+            string strsql = "exec sp_RestroSales @BranchId="+req.BranchId+", @RestaurantId="+req.RestaurantId +",@StartDate='"+req.fromDate+"',@EndDate='"+req.toDate+"'";
+            vM_RestroSalesReport.RSR = req;
+            vM_RestroSalesReport.RestaurantSalesReport = _context.Database.SqlQuery<RestaurantSalesReport>(strsql).ToList();
+            return vM_RestroSalesReport;
         }
 
         public VM_SalesReport getSalesReport(SalesReportRequest srr)
@@ -80,10 +84,10 @@ namespace HotelBooking.Repository.Implementation
 
         public VM_StoreINOUTReport getStoreInoutReport(StoreINOUTReportRequest req)
         {
-            string fDate = req.fromDate.Substring(6, 4) + "-" + req.fromDate.Substring(3, 2) + "-" + req.fromDate.Substring(0, 2);
-            string tDate = req.toDate.Substring(6, 4) + "-" + req.toDate.Substring(3, 2) + "-" + req.toDate.Substring(0, 2);
+            //string fDate = req.fromDate.Substring(6, 4) + "-" + req.fromDate.Substring(3, 2) + "-" + req.fromDate.Substring(0, 2);
+            //string tDate = req.toDate.Substring(6, 4) + "-" + req.toDate.Substring(3, 2) + "-" + req.toDate.Substring(0, 2);
             VM_StoreINOUTReport vM_StoreINOUTReport = new VM_StoreINOUTReport();
-            string strsql = "exec sp_StoreINOUT @fromDate='" + fDate + "',@toDate='" + tDate + "',@action='" + req.Action + "',@BranchId=" + req.BranchId;
+            string strsql = "exec sp_StoreINOUT @fromDate='" + req.fromDate + "',@toDate='" + req.toDate + "',@action='" + req.Action + "',@BranchId=" + req.BranchId;
             vM_StoreINOUTReport.REQ = req;
             vM_StoreINOUTReport.StoreINOUTReport = _context.Database.SqlQuery<StoreINOUTReport>(strsql).ToList();
             return vM_StoreINOUTReport;
@@ -91,11 +95,11 @@ namespace HotelBooking.Repository.Implementation
 
         public VM_TourSalesReport TourSalesReport(TourSalesReportRequest req)
         {
-            string fDate = req.fromDate.Substring(6, 4) + "-" + req.fromDate.Substring(3, 2) + "-" + req.fromDate.Substring(0, 2);
-            string tDate = req.toDate.Substring(6, 4) + "-" + req.toDate.Substring(3, 2) + "-" + req.toDate.Substring(0, 2);
+            //string fDate = req.fromDate.Substring(6, 4) + "-" + req.fromDate.Substring(3, 2) + "-" + req.fromDate.Substring(0, 2);
+            //string tDate = req.toDate.Substring(6, 4) + "-" + req.toDate.Substring(3, 2) + "-" + req.toDate.Substring(0, 2);
 
             VM_TourSalesReport vM_SalesReport = new VM_TourSalesReport();
-            string strsql = "exec sp_getTourSalesReport @fromDate='" + fDate + "',@toDate='" + tDate + "',@BookingRef='" + req.bookingRef + "',@BranchId=" + req.BranchId;
+            string strsql = "exec sp_getTourSalesReport @fromDate='" + req.fromDate + "',@toDate='" + req.toDate + "',@BookingRef='" + req.bookingRef + "',@BranchId=" + req.BranchId;
             vM_SalesReport.TourSalesReportRequestData = req;
             vM_SalesReport.ToursalesReports = _context.Database.SqlQuery<TourSalesReport>(strsql).ToList();
             return vM_SalesReport;

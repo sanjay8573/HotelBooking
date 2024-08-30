@@ -1,15 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HotelBooking.Model
 {
     [Table("BookingCost")]
     public class BookingCost
     {
+        public BookingCost()
+        {
+            Date = DateTime.Now;
+        }
         public int BookingCostId { get; set; }
         public int  BookingId { get; set; }
         public int RoomTypeId { get; set; }
         public string Description { get; set; }
-        public string Date { get; set; }
+        public DateTime Date { get; set; }
         public decimal PerNightCost { get; set; }
         public decimal OfferPrice { get; set; }
         public string Tax { get; set; }

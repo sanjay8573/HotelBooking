@@ -146,19 +146,19 @@
                                     <input type="hidden" id="hdnTP" value="@ViewBag.TaxPercentage" />
                                     
                                     <div class="dropdown full-width">
-                                        <input type="text" tabindex="1" id="txtItemNameMaster" class="dropbtn full-width" placeholder="Choose Item" autocomplete="off" runat="server">
+                                        <input type="text" tabindex="1" id="txtItemNameMaster" class="dropbtn full-width ValidateInput" placeholder="Choose Item" autocomplete="off" runat="server">
                                         
                                     </div>
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 form-group">
-                                    <input type="text" tabindex="2" id="MtxtQty" class="full-width" placeholder="Quantity" runat="server">
+                                    <input type="text" tabindex="2" id="MtxtQty" class="full-width ValidateInput" valType="NumbersOnly" placeholder="Quantity" runat="server">
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 form-group">
                                     <input type="text" id="MtxtTotal" readonly="readonly" class="full-width" placeholder="Total" runat="server">
                                     <input type="hidden" id="MTaxPer" value="0" />
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 form-group">
-                                    <button type="button" tabindex="3" disabled="true" id="btnAdd" class="addbtnitem full-width" onclick="addtoCart();">Add</button>
+                                    <button type="button" tabindex="3" id="btnAdd" class="addbtnitem full-width" onclick="return addtoCart();">Add</button>
                                 </div>
                             </div>
                             <fieldset>
@@ -182,10 +182,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="margin-top: 20px;">
-                                        <button type="button" class="allbtnin full-width orangebg" onclick="SaveCart();"><i class="ft-box"></i> Park</button>
+                                        <button type="button" id="btnPark" class="allbtnin full-width orangebg" onclick="SaveCart(this);"><i class="ft-box"></i> Park</button>
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="margin-top: 20px;">
-                                        <button type="button" class="allbtnin full-width greenbg" data-toggle="modal" data-target="#AddFoodpayment" onclick="getPayment();"><i class="ft-list"></i> Closing</button>
+                                        <button type="button" id="btnClose" class="allbtnin full-width greenbg" data-toggle="modal" data-target="#AddFoodpayment" onclick="getPayment();"><i class="ft-list"></i> Closing</button>
                                     </div>
                                     @*<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="margin-top: 20px;">
                                         <button type="submit" class="allbtnin full-width"><i class="ft-book"></i> Print</button>
@@ -210,7 +210,7 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="row">
-                    <h4 class="tabheading text-left"><i class="fa fa-address-card" aria-hidden="true"></i> Add Payment </h4>
+                    <h4 style="margin-left:10px" class="tabheading text-left">@*<i class="fa fa-address-card" aria-hidden="true"></i>*@ Add Payment </h4>
                     @*<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <label for="edit-mail" class="form-required">Order Number</label>
             <input type="text" id="txtordNo" class="full-width allinput" placeholder="123456987" runat="server">
@@ -224,7 +224,7 @@
             <input type="text" id="txtPmtDate" class="full-width allinput" placeholder="2024-03-05" runat="server">
         </div>*@
 
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
                         <label for="edit-mail" class="form-required">Payment Method</label>
                         <select name="pmtType" id="pmtType" class="full-width allinput">
                             <option selected="selected" value="N">Select</option>
@@ -235,26 +235,26 @@
                             <option value="5">UPI</option>
                         </select>
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
                         <label for="edit-mail" class="form-required">Payment Details</label>
                         <input type="text" id="txtPmtRemarks" class="full-width allinput" placeholder="Remarks/Cheque detail/UPI Details" runat="server">
                     </div>
 
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
                         <label for="edit-mail" class="form-required">Payment Due</label>
                         <input type="text" id="txtAmtDue" class="full-width allinput" placeholder="-30" runat="server">
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
                         <label for="edit-mail" class="form-required">Amount Recieved</label>
                         <input type="text" id="txtAmt" class="full-width allinput" placeholder="0.00" runat="server">
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
                         <label for="edit-mail" class="form-required">Amount To Return</label>
                         <input type="text" id="txtReturnAmt" class="full-width allinput" placeholder="0.00" runat="server">
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal"  id="btnAddFoodPayemnt">Save</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <div class="offset-lg-4 offset-md-4 col-lg-4 col-md-4 col-sm-12 col-xs-12 form-group">
+                        <button type="button" style="width:45%" class="btn btn-primary" data-dismiss="modal"  id="btnAddFoodPayemnt">Save</button>
+                        <button type="button" style="width:45%" class="btn btn-danger" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -268,8 +268,12 @@
 <script>
     var MenuItemArray=[];
     $(document).ready(function () {
-
-
+        $('#btnAdd').attr('disabled', 'disabled');
+        $("#btnClose").prop("disabled", true);
+        $("input").attr("autocomplete", "none");
+        $(".ValidateInput").on("blur", function () {
+            validateField(this);
+        });
         $(document.body).append($("#AddFoodpayment").clone());
         $("#AddFoodpayment").remove();
 
@@ -387,7 +391,7 @@
             //    console.log('You pressed a "enter" key in textbox');
             //    $("#btnAdd").focus();
             //}
-          
+
             //console.log("HHHHHH" + $('#txtItemNameMaster').val());
             var ArrVal = $('#txtItemNameMaster').val();
             //console.log(ArrVal);
@@ -396,14 +400,14 @@
             var rate = ArrData[1];
             var taxRate = ArrData[2];
             var number = document.getElementById("MtxtQty").value;
-            
+
             //console.log("qty" + number);
             if (number != 0) {
                 document.getElementById("MtxtTotal").value = Number(Number(number) * Number(rate)).toFixed(2);
-                document.getElementById("MTaxPer").value = taxRate; 
+                document.getElementById("MTaxPer").value = taxRate;
             } else {
                 document.getElementById("MtxtTotal").value = 0;
-                document.getElementById("MTaxPer").value = 0;; 
+                document.getElementById("MTaxPer").value = 0;;
             }
         });
 
@@ -474,7 +478,10 @@
 
 
 
-
+    function checkNumberOnlyThis(elt) {
+        var numberPattern = /[^0-9]/g;
+        return !numberPattern.test(elt);
+    }
     function addtoCart() {
         var divId;
         var itemName;
@@ -482,10 +489,20 @@
         var ItemTotal;
         var TotalAmount;
 
-        itemName = $("#txtItemNameMaster").val();
+        itemName = $("#txtItemNameMaster").val().trim();
         ItemQty = $("#MtxtQty").val();
         ItemTotal = $("#MtxtTotal").val();
         ItemTaxRate = $("#MTaxPer").val();
+
+        if (itemName == "" ) {
+            return false;
+        }
+        if (ItemQty == "") {
+            return false;
+        }
+        if (!checkNumberOnlyThis(ItemQty)) {
+            return false;
+        }
 
         var itmNo = Number($("#hdnItems").val()) + 1;
         //var itmNo = $("#txtItemNameMaster").attr('menuitemid');
@@ -494,7 +511,7 @@
 
         var divHtml = '<div class="row" id="' + foodItemId +'"><div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">';
         divHtml += '<input type="text" id="' + itmNo +'" class="full-width height35"  disabled runat="server" value="' + itemName +'"></div>';
-        divHtml += '<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12"><input type="text" id="0" onkeyup="myCALFunction(this)" class="full-width height35" placeholder="Quantity" runat="server" value="' + ItemQty +'"> </div>';
+        divHtml += '<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12"><input type="text" id="0" onkeyup="myCALFunction(this)" class="full-width height35 ValidateInput" placeholder="Quantity" valType="NumbersOnly" runat="server" value="' + ItemQty +'"> </div>';
         divHtml += '<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"><input type="text" id="' + foodItemId+"-"+ItemTaxRate +'" class="full-width height35" placeholder="Total" disabled runat="server" value="' + ItemTotal +'"></div> </div>';
 
         $("#billdetails").append(divHtml);
@@ -527,13 +544,13 @@
 
                     console.log("Tax Amounts 11 ::" + JSON.stringify(taxData));
                     totalAmount = Number(totalAmount) + Number(itemval) + Number(taxAmount);
-                   
+
                 }
             });
         });
         console.log("Tax Amounts ::" + JSON.stringify(TaxDetails));
 
-        
+
 
         var result = [];
         TaxDetails.reduce(function (res, value) {
@@ -548,10 +565,10 @@
         var taxHtml = ' <p>Tax Details <strong class="pull-right"> </strong></p>';
         $.each(result, function () {
             console.log(this.TaxP)
-           
+
             taxHtml += '<p> &#64;' + this.TaxP + ' % <strong  class="pull-right"> ' + Number(this.TaxAmount).toFixed(2) +'</strong></p>';
             gTotalTax = Number(gTotalTax) + Number(this.TaxAmount);
-           
+
         });
         taxHtml += '<p>Total Tax  <strong id="txtTotalTaxtAmount" class="pull-right">' + Number(gTotalTax).toFixed(2) +'</strong></p>';
         $('#TaxDetailsDiv').empty();
@@ -563,7 +580,12 @@
         var gTotal = totalAmount + txtTaxAmt;
         $("#txtGTotal").text(Number(gTotal).toFixed(2))
     }
-    function SaveCart() {
+    function SaveCart(btn) {
+        if ($(btn).attr("disabled") == "disabled") {
+            e.preventDefault();
+        }
+        $(btn).attr("disabled", "disabled");
+        $(btn).append('<span class="spinner"><i class="fa fa-spinner fa-spin"></i></span>');
         var txtRestroId = $("#SelRestaurant option:selected").val();
         var txtRoom_tableId = $("#hdnRoomNumber").val();
         var tableId = $("#hdnTableId").val();
@@ -612,8 +634,8 @@
                     txtAmount = $(el1).val();
                     tp = Number(tpArr[1]).toFixed(2);
                     txtAount = Number(txtAmount) * Number(tpArr[1]) / 100;
-                   
-                    
+
+
 
                 }
             });
@@ -638,8 +660,9 @@
 ,
 
                      //data: { restroEntity: restaurant },
-
-                        success: function (recData) {
+           
+            success: function (recData) {
+                //$(btn).prop("disabled", false);
                          $.toast({
                              heading: 'Success',
                              text: 'Food Cart  Successfully ',
@@ -649,6 +672,9 @@
                              loaderBg: '#9EC600'  // To change the background
                          });
                             setTimeout(function () {
+                                $(btn).find("span").remove();
+                                $(btn).removeAttr("disabled");
+                                $("#btnClose").prop("disabled", false);
                                 if (isRoomService == "true") {
                                     showRoomsForRestaurant(txtRestroId);
 
@@ -657,7 +683,7 @@
                                 }
                             //window.location.href = '@Url.Action("FoodCart", "HOME")';
                             }, 500);
-                         console.log('Success');
+                         //console.log('Success');
                      },
                      error: function () {
                          $.toast({
@@ -792,12 +818,12 @@
     }
 
 
-    var countries = ["Roti-50~1", "Butter roti-70~2", "Naan-170~3", "Rice-150~4", "Jeera Rice-170~5", "Lemon Rice-180~6", "Dal-240~7"];
-    console.log(countries);
+    //var countries = ["Roti-50~1", "Butter roti-70~2", "Naan-170~3", "Rice-150~4", "Jeera Rice-170~5", "Lemon Rice-180~6", "Dal-240~7"];
+    //console.log(countries);
     autocomplete(document.getElementById("txtItemNameMaster"), MenuItemArray);
     /////////
     //print Food invoice//
-    function printInvoice() {
+    function printInvoice_OLD() {
         var divToPrint = document.getElementById('billdetails');
         const RestaurantName = $("#SelRestaurant option:selected").text();
         var newWin = window.open('', 'Print-Window');
@@ -837,6 +863,7 @@
 
                 if (idx == 2) {
                     itemsheaderHTML += '<td align="right" style="border-style: dashed">' + $(el1).val() + '</td>';
+                   
                     var itemval = $(el1).val();
                     totalAmount = Number(totalAmount) + Number(itemval);
                     //console.log("TTTT" + $(el1).val());
@@ -857,4 +884,86 @@
 
         newWin.document.close();
     }
+    function printInvoice() {
+    var divToPrint = document.getElementById('billdetails');
+    const RestaurantName = $("#SelRestaurant option:selected").text();
+    var newWin = window.open('', 'Print-Window');
+    var bName = '@ViewBag.BranchName';
+    var bAddress = '@ViewBag.BranchAddress';
+    var bPin = '@ViewBag.BranchPinCode';
+    var bPh1 = '@ViewBag.BranchPhone1';
+    var bPh2 = '@ViewBag.BranchPhone2' ;
+    const tp = $("#hdnTP").val();
+    newWin.document.open();
+        newWin.document.write('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">');
+        newWin.document.write('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
+        newWin.document.write('<title>Customer Receipt</title>');
+        newWin.document.write('<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bangers|Roboto">');
+        newWin.document.write('<link rel="stylesheet" type="text/css" href="/css/INVstyle.min.css">');
+        newWin.document.write('</head><body onload="window.print()"><div class="receipt">');
+        newWin.document.write('<img class="watermark" src="https://www.dropbox.com/s/mmf6y9rpibwy9tk/bronyhouse-logo-sm.svg?raw=1">');
+        //newWin.document.write('<div class="orderNo">Order# <span id="Order #">###</span>: <span id="Order Name">XXXXX</span></div>');
+        newWin.document.write('<div class="headerSubTitle">Thank you for your visit</div>'); 
+        newWin.document.write('<div class="headerTitle">' + RestaurantName + '</div>');
+        newWin.document.write('<div class="headerSubTitle">' + bAddress +'Pincode :'+ bPin + '</div>');
+        newWin.document.write('<div id="location"></div>');
+        newWin.document.write('<div id="date">Phone :' + bPh1, bPh2  +'</div>');
+        newWin.document.write('<div class="keepIt">***Keep your receipt***</div>');
+        newWin.document.write('<div class="keepItBody">This is aelectronic receipt and signature is NOT  required.</div>');
+        newWin.document.write('<hr>');
+        newWin.document.write('<div class="items">');
+
+        
+        var itemsheaderHTML = '<div class="items"><div class="item">';
+        var totalAmount = 0;
+        var totalTax = 0;
+    $("#billdetails > div").each(function (idx, el) {
+        divId = el.id;
+        var cuurenDivId = el.id
+        var slno = Number(idx) + 1;
+        itemsheaderHTML += '<div class="itemRow">';
+        itemsheaderHTML += '<div class="itemColor">' + slno +'</div>';
+        $("#" + cuurenDivId + " input:text").each(function (idx, el1) {
+
+            if (idx == 0) {
+                //itemsheaderHTML += '<td style="border-style: dashed">' + $(el1).val() + '</td>';
+                itemsheaderHTML += '<div class="itemData1">' + $(el1).val() + '</div>';
+            }
+            if (idx == 1) {
+                //itemsheaderHTML += '<td align="center" style="border-style: dashed">' + $(el1).val() + '</td>';
+                itemsheaderHTML += '<div class="itemData2">' + $(el1).val() + '</div>';
+
+            }
+
+            if (idx == 2) {
+                itemsheaderHTML += '<div class="itemData3">' + $(el1).val() + '</div>';
+                //itemsheaderHTML += '<td align="right" style="border-style: dashed">' + $(el1).val() + '</td>';
+                var itemval = $(el1).val();
+                var tpArr = el1.id.split("-");
+                txtAmount = $(el1).val();
+               
+                var txtAount = Number(txtAmount) * Number(tpArr[1]) / 100;
+                totalTax = totalTax + txtAount;
+                totalAmount = Number(totalAmount) + Number(itemval);
+                //console.log("TTTT" + $(el1).val());
+            }
+        });
+        itemsheaderHTML += '</div>';
+    });
+        itemsheaderHTML += '<div class="flex"><div class="totals">';
+        itemsheaderHTML += '<div class="section"><div class="row"><div class="col1"></div> <div class="col1">Total :</div>';
+        itemsheaderHTML += '<div class="col2"></div><div class="col3">' + Number(totalAmount).toFixed(2) +'</div>';
+        itemsheaderHTML += '</div> </div>';
+        var txtTaxAmt = totalTax;// (totalAmount * tp) / 100;
+        itemsheaderHTML += '<div class="section"><div class="row" ><div class="col1">Tax :</div><div class="col2"></div><div class="col3">' + Number(txtTaxAmt).toFixed(2)+'</div></div></div> ';
+        var gTotal = totalAmount + txtTaxAmt;
+        itemsheaderHTML += '<div class="section"><div class="row" ><div class="col1">Amount to Paid :</div><div class="col2"></div><div class="col3">' + Number(gTotal).toFixed(2) + '</div></div></div> ';
+        itemsheaderHTML += '</div></div>';
+
+        itemsheaderHTML += '<div class="footer"><div class="eta">Thank You</div><div class="printType">customer copy</div></div></div>';
+    
+        newWin.document.write(itemsheaderHTML + '</body></html>');
+
+        newWin.document.close();
+}
 </script>

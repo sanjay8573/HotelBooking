@@ -42,9 +42,10 @@
                             </div>
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                    <label>Customer Name/Room Number  </label>
-                                    <input type="text" id="txtCustomer" class="full-width" placeholder="" runat="server">
-                                    <input type="text" id="txtRoomNumber" class="full-width" placeholder="" runat="server">
+                                    <label>Customer Name  </label>
+                                    <input type="text" id="txtCustomer" class="full-width ValidateInput" placeholder="" runat="server" maxlength="100">
+                                    <label>Room Number  </label>
+                                    <input type="text" id="txtRoomNumber" class="full-width ValidateInput" placeholder="" runat="server" maxlength="5">
                                 </div>
 
                             </div>
@@ -53,7 +54,7 @@
 
                                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                     <label>Select Exchange Currency</label>
-                                    <select name="SeleExCurr" id="SeleExCurr" class="full-width freetrial">
+                                    <select name="SeleExCurr" id="SeleExCurr" class="full-width freetrial ValidateInput" valType="DropDown">
                                         @if (ViewBag.ExchangeCurrency != null)
                                         {
                                             foreach (var item in ViewBag.ExchangeCurrency)
@@ -75,21 +76,21 @@
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                     <label>Amount  </label>
-                                    <input type="text" id="txtFromValue" class="full-width" placeholder="Enter Amount to Exchange" value="1.00">
+                                    <input type="text" id="txtFromValue" class="full-width ValidateInput" placeholder="Enter Amount to Exchange" value="1.00" maxlength="5" ValType="NumbersOnly">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
 
                                     <label>@ViewBag.BusinessCurrencyCode ( @ViewBag.BusinessCurrencySymbol) </label>
-                                    <input type="text" id="txtExchangedValue" class="full-width" placeholder="" runat="server">
+                                    <input type="text" id="txtExchangedValue" readonly="readonly" class="full-width" placeholder="" runat="server">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
 
                                     <label>Remarks</label>
-                                    <textarea multiple="true" id="txtRemarks" class="full-width" placeholder="" runat="server" ></textarea>
+                                    <textarea multiple="true" id="txtRemarks" class="full-width ValidateInput" placeholder="" runat="server" maxlength="200" ></textarea>
                                 </div>
                             </div>
 
@@ -109,13 +110,17 @@
 
 <script>
     $(document).ready(function () {
+        $("input").attr("autocomplete", "none");
+        $(".ValidateInput").on("blur", function () {
+            validateField(this);
+        });
         $("#SeleExCurr").change(function () {
 
             CalculateValue()
         });
 
         $('#txtFromValue').on('keyup', function () {
-            console.log("Sanjay" + this.value);
+           
             CalculateValue();
         });
 
@@ -134,73 +139,77 @@
 
     }
     function SaveMoneyExchange() {
-        var isInternal=false;
-        $('input[type=checkbox]').each(function () {
+        var isInternal = false;
+        if (!validateBooking()) {
+            return false; // Prevent form submission if validation fails
+        } else {
+            $('input[type=checkbox]').each(function () {
 
-            if (this.name == "CHK_INTERNAL") {
-                if (this.checked) {
-                    isInternal = true;
+                if (this.name == "CHK_INTERNAL") {
+                    if (this.checked) {
+                        isInternal = true;
+                    }
                 }
+
+            });
+            var branchId = $('#BranchId').val();
+            var txtCustName = $("#txtCustomer").val();
+            var txtRoomNumber = $("#txtRoomNumber").val();
+            var exCurrName = $("#SeleExCurr option:selected").text().replace(/[\n\r]+/g, ' ').trim();;
+            var ArrVal = $("#SeleExCurr option:selected").val().split("-");
+            var ExCurrId = ArrVal[0];
+            var exCurrVal = Number(ArrVal[1]).toFixed(5);
+            var fromVal = $("#txtFromValue").val();
+            var toVal = $("#txtExchangedValue").val();
+            var remarks = $("#txtRemarks").val();
+            var exTran = {
+                CustomerName: txtCustName,
+                RoomNumber: txtRoomNumber,
+                isInternal: isInternal,
+                ExchangeCurrencyId: Number(ExCurrId),
+                ExchangeCurrencyName: exCurrName,
+                CurrentValue: Number(exCurrVal).toFixed(5),
+                fromValue: Number(fromVal).toFixed(5),
+                toValue: Number(toVal).toFixed(5),
+                Remarks: remarks,
+                BranchId: branchId,
+                isActive: true
             }
+            console.log(exTran);
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SaveExchangeTrans", "HOME")',
 
-        });
-        var branchId = $('#BranchId').val();
-        var txtCustName = $("#txtCustomer").val();
-        var txtRoomNumber = $("#txtRoomNumber").val();
-        var exCurrName = $("#SeleExCurr option:selected").text().replace(/[\n\r]+/g, ' ').trim();;
-        var ArrVal = $("#SeleExCurr option:selected").val().split("-");
-        var ExCurrId = ArrVal[0];
-        var exCurrVal = Number(ArrVal[1]).toFixed(5);
-        var fromVal = $("#txtFromValue").val();
-        var toVal = $("#txtExchangedValue").val();
-        var remarks = $("#txtRemarks").val();
-        var exTran = {
-            CustomerName: txtCustName,
-            RoomNumber: txtRoomNumber,
-            isInternal: isInternal,
-            ExchangeCurrencyId: Number(ExCurrId),
-            ExchangeCurrencyName: exCurrName,
-            CurrentValue: Number(exCurrVal).toFixed(5),
-            fromValue: Number(fromVal).toFixed(5),
-            toValue: Number(toVal).toFixed(5),
-            Remarks: remarks,
-            BranchId: branchId,
-            isActive: true
+                data: { exCurrEntity: exTran },
+
+                success: function (recData) {
+                    console.log('Success');
+                    $.toast({
+                        heading: 'Success',
+                        text: 'Transaction saved successfully!! ',
+                        icon: 'success',
+                        loader: false,        // Change it to false to disable loader
+                        position: 'top-right',
+                        loaderBg: '#9EC600'  // To change the background
+                    });
+                    setTimeout(function () {
+                        window.location.href = '@Url.Action("MoneyExchange", "HOME")';
+                    }, 500);
+
+                },
+                error: function () {
+                    console.log('A error');
+                    $.toast({
+                        heading: 'Error',
+                        text: 'Error on completing transaction  ',
+                        icon: 'Error',
+                        loader: false,        // Change it to false to disable loader
+                        position: 'top-right',
+                        loaderBg: '#9EC600'  // To change the background
+                    });
+                }
+            });
         }
-        console.log(exTran);
-         $.ajax({
-            type: "POST",
-            url: '@Url.Action("SaveExchangeTrans", "HOME")',
-
-             data: { exCurrEntity: exTran },
-
-     success: function (recData) {
-         console.log('Success');
-         $.toast({
-                    heading: 'Success',
-                    text: 'Transaction saved successfully!! ',
-                    icon: 'success',
-                    loader: false,        // Change it to false to disable loader
-                    position: 'top-right',
-                    loaderBg: '#9EC600'  // To change the background
-         });
-                setTimeout(function () {
-                   window.location.href = '@Url.Action("MoneyExchange", "HOME")';
-                   }, 500);
-
-     },
-     error: function () {
-         console.log('A error');
-         $.toast({
-             heading: 'Error',
-             text: 'Error on completing transaction  ',
-             icon: 'Error',
-             loader: false,        // Change it to false to disable loader
-             position: 'top-right',
-             loaderBg: '#9EC600'  // To change the background
-         });
-     }
- });
 
     }
 </script>

@@ -33,8 +33,8 @@
                                     <input type="text" id="txtTotalAmount"  class="full-width" placeholder="Total Amount" runat="server">
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                    <label>By Alert At</label>
-                                    <input type="text" id="txtByAlertAt" style="width:73% !important" class="full-width" placeholder="By Alert At" runat="server">
+                                    <label>Buy Alert At</label>
+                                    <input type="text" id="txtByAlertAt" style="width:73% !important" class="full-width" placeholder="Buy Alert At" runat="server">
                                     <button type="button" style="font-size:15px;width:20% !important" onclick="addItem();" class="full-width prev Addmorebtn"><i class="fa fa-plus" aria-hidden="true"></i></button>
                                 </div>
                                
@@ -61,8 +61,8 @@
                                     <input type="text" id="txtTotalAmount" class="full-width" placeholder="Total Amount" runat="server">
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                    <label>By Alert At</label>
-                                    <input type="text" id="txtByAlertAt" style="width:73% !important" class="full-width" placeholder="By Alert At" runat="server">
+                                    <label>Buy Alert At</label>
+                                    <input type="text" id="txtByAlertAt" style="width:73% !important" class="full-width" placeholder="Buy Alert At" runat="server">
                                     <button type="button" style="font-size:15px;width:20% !important" class="full-width prev removebtn" onclick="RemoveItem(this);"><i class="fa fa-minus" aria-hidden="true"></i></button>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -93,8 +93,8 @@
                                     <input type="text" id="txtTotalAmount" class="full-width" placeholder="Total Amount" runat="server">
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                    <label>By Alert At</label>
-                                    <input type="text" id="txtByAlertAt" style="width:73% !important" class="full-width" placeholder="By Alert At" runat="server">
+                                    <label>Buy Alert At</label>
+                                    <input type="text" id="txtByAlertAt" style="width:73% !important" class="full-width" placeholder="Buy Alert At" runat="server">
                                     <button type="submit" style="font-size:15px;width:20% !important" class="full-width prev removebtn" onclick="RemoveItem(this);"><i class="fa fa-minus" aria-hidden="true"></i></button>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -124,8 +124,8 @@
                                     <input type="text" id="txtTotalAmount" class="full-width" placeholder="Total Amount" runat="server">
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                    <label>By Alert At</label>
-                                    <input type="text" id="TxtByAlertAt" style="width:73% !important" class="full-width" placeholder="By Alert At" runat="server">
+                                    <label>Buy Alert At</label>
+                                    <input type="text" id="TxtByAlertAt" style="width:73% !important" class="full-width" placeholder="Buy Alert At" runat="server">
                                     <button type="submit" style="font-size:15px;width:20% !important" class="full-width prev removebtn" onclick="RemoveItem(this);"><i class="fa fa-minus" aria-hidden="true"></i></button>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -155,8 +155,8 @@
                                     <input type="text" id="txtTotalAmount" class="full-width" placeholder="Total Amount" runat="server">
                                 </div>
                                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                                    <label>By Alert At</label>
-                                    <input type="text" id="txtByAlertAt" style="width:73% !important" class="full-width" placeholder="By Alert At" runat="server">
+                                    <label>Buy Alert At</label>
+                                    <input type="text" id="txtByAlertAt" style="width:73% !important" class="full-width" placeholder="Buy Alert At" runat="server">
                                     <button type="submit" style="font-size:15px;width:20% !important" class="full-width prev removebtn" onclick="RemoveItem(this);"><i class="fa fa-minus" aria-hidden="true"></i></button>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -187,6 +187,7 @@
         var rate = 0;
         var qty = 0;
         var total;
+        var bAlert=0;
         $("#" + parentDivId + " > div > input:text").each(function (idx, el2) {
 
             if (idx == 1) {
@@ -204,6 +205,10 @@
                 total = rate * qty;
                 $(el2).val(Number(total).toFixed(2));
                 //console.log("..." + total);
+            }
+            if (idx == 4) {
+
+                bAlert = $(el2).val();
             }
         });
         

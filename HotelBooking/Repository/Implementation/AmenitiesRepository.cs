@@ -61,10 +61,10 @@ namespace HotelBooking.Repository.Implementation
                 tmpAmnt.Description = AmenitiesEntity.Description;
                 tmpAmnt.Code = AmenitiesEntity.Code;
                 tmpAmnt.IsActive = AmenitiesEntity.IsActive;
-                if (AmenitiesEntity.imageData.Length > 0)
-                {
-                    tmpAmnt.imageData = AmenitiesEntity.imageData;
-                }
+                //if (AmenitiesEntity.imageData.Length > 0)
+                //{
+                //    tmpAmnt.imageData = AmenitiesEntity.imageData;
+                //}
                 _context.SaveChanges();
                 rtnVal = tmpAmnt.AmenitiesId;
             }

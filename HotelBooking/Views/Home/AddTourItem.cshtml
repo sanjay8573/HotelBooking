@@ -16,27 +16,27 @@
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                     <label for="edit-mail" class="form-required">Title</label>
 
-                                    @Html.TextBoxFor(model => model.Title, new { @class = "full-width", placeholder = "Title" })
+                                    @Html.TextBoxFor(model => model.Title, new { @class = "full-width ValidateInput", placeholder = "Title" })
                                 </div>
 
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                     <label for="edit-mail" class="form-required">Price Type</label>
 
                                     @Html.DropDownList("PriceTypeModel")
-                                    @Html.HiddenFor(model => model.PriceTypeId);
-                                    @Html.HiddenFor(model => model.PriceType);
-                                    @Html.HiddenFor(model => model.BranchId);
-                                    @Html.HiddenFor(model => model.PaidServiceId);
+                                    @Html.HiddenFor(model => model.PriceTypeId)
+                                    @Html.HiddenFor(model => model.PriceType)
+                                    @Html.HiddenFor(model => model.BranchId)
+                                    @Html.HiddenFor(model => model.PaidServiceId)
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                     <label for="edit-mail" class="form-required">Price</label>
 
-                                    @Html.TextBoxFor(model => model.Price, new { @class = "full-width", placeholder = "Price" })
+                                    @Html.TextBoxFor(model => model.Price, new { @class = "full-width ValidateInput", placeholder = "Price", maxlength = "7", ValType = "NumbersOnly" })
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                     <label for="edit-mail" class="form-required">Tax Percentage</label>
 
-                                    @Html.TextBoxFor(model => model.TaxPercentage, new { @class = "full-width", placeholder = "Tax Percentage" })
+                                    @Html.TextBoxFor(model => model.TaxPercentage, new { @class = "full-width ValidateInput", placeholder = "Tax Percentage", maxlength = "5", ValType = "NumbersOnly" })
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                     <label for="edit-mail" class="form-required">Status</label>
@@ -53,15 +53,15 @@
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                     <label for="edit-mail" class="form-required">Discription</label>
-                                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+                                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control ValidateInput", maxlength = "100" })
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                     <label for="edit-mail" class="form-required">Short Discription</label>
-                                    @Html.TextAreaFor(model => model.ShortDescription, new { @class = "form-control" })
+                                    @Html.TextAreaFor(model => model.ShortDescription, new { @class = "form-control", maxlength = "200" })
 
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
-                                    <input type="submit" name="SUBMIT" class="prev action-button" onclick="addDatatoModel();" value="Save" runat="server">
+                                    <input type="submit" name="SUBMIT" class="prev action-button" onclick=" return addDatatoModel();" value="Save" runat="server">
                                 </div>
                             }
                         </div>
@@ -75,20 +75,31 @@
 
 
     <script>
-        function addDatatoModel() {
-            $("#PriceTypeId").val($("#PriceTypeModel").val());
-            $("#PriceType").val($("#PriceTypeModel option:selected").text());
-
-            $("#RoomTypeId").val($("#RoomType").val());
-
-            $('input[type=checkbox]').each(function () {
-
-
-                if (this.name == "CHK_ACTIVE") {
-                    $('#isActive').val(this.checked);
-
-                }
+        $(document).ready(function () {
+            $("input").attr("autocomplete", "none");
+            $(".ValidateInput").on("blur", function () {
+                validateField(this);
             });
+            
+        });
+        function addDatatoModel() {
+            if (!validateBooking()) {
+                return false; // Prevent form submission if validation fails
+            } else {
+                $("#PriceTypeId").val($("#PriceTypeModel").val());
+                $("#PriceType").val($("#PriceTypeModel option:selected").text());
+
+                $("#RoomTypeId").val($("#RoomType").val());
+
+                $('input[type=checkbox]').each(function () {
+
+
+                    if (this.name == "CHK_ACTIVE") {
+                        $('#isActive').val(this.checked);
+
+                    }
+                });
+            }
 
         }
 

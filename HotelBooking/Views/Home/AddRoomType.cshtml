@@ -31,20 +31,20 @@
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="@Model.Title" class="form-required">Title</label>
 
-                                                                @Html.TextBoxFor(m => m.Title, new { @class = "full-width ValidateInput", placeholder = "Title" })
+                                                                @Html.TextBoxFor(m => m.Title, new { @class = "full-width ValidateInput", placeholder = "Title", maxlength = "50" })
                                                                 @Html.HiddenFor(model => model.RoomTypeId)
                                                             </div>
-                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
+                                                            @*<div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="@Model.Slug" class="form-required">Slug</label>
 
                                                                 @Html.TextBoxFor(m => m.Slug, new { @class = "full-width", placeholder = "Slug" })
-                                                            </div>
+                                                            </div>*@
                                                         </div>
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="@Model.ShortCode" class="form-required">Short Code</label>
 
-                                                                @Html.TextBoxFor(m => m.ShortCode, new { @class = "full-width ValidateInput", placeholder = "Short Code" })
+                                                                @Html.TextBoxFor(m => m.ShortCode, new { @class = "full-width ValidateInput", placeholder = "Short Code", maxlength = "50" })
                                                             </div>
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="edit-mail" class="form-required">&nbsp;</label>
@@ -53,21 +53,21 @@
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left form-group">
                                                                 <label for="@Model.Description" class="form-required">Discription</label>
-                                                                @Html.TextAreaFor(m => m.Description, new { @class = "full-width", placeholder = "Description", id = "checkoutmessage" })
+                                                                @Html.TextAreaFor(m => m.Description, new { @class = "full-width", placeholder = "Description", id = "checkoutmessage" , maxlength = "1000" })
                                                                 @*<div id="checkoutmessage"></div>*@
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left form-group">
                                                                 <label for="@Model.ShortDescription" class="form-required">Short Discription</label>
-                                                                @Html.TextAreaFor(m => m.ShortDescription, new { @class = "full-width", placeholder = "Short Description", id = "ShortDescription" })
+                                                                @Html.TextAreaFor(m => m.ShortDescription, new { @class = "full-width", placeholder = "Short Description", id = "ShortDescription", maxlength = "1000" })
                                                                 @*<div id="checkoutmessage"></div>*@
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left form-group">
                                                                 <label for="@Model.LongDescription" class="form-required">Long Discription</label>
-                                                                @Html.TextAreaFor(m => m.LongDescription, new { @class = "full-width", placeholder = "Long Description", id = "LongDescription" })
+                                                                @Html.TextAreaFor(m => m.LongDescription, new { @class = "full-width", placeholder = "Long Description", id = "LongDescription", maxlength = "1000" })
                                                                 @*<div id="checkoutmessage"></div>*@
                                                             </div>
                                                         </div>
@@ -75,30 +75,28 @@
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="@Model.BaseOccupancy" class="form-required">Base Occupancy</label>
 
-                                                                @Html.TextBoxFor(m => m.BaseOccupancy, new { @class = "full-width ValidateInput", placeholder = "Base Occupancy" })
+                                                                @Html.TextBoxFor(m => m.BaseOccupancy, new { @class = "full-width ValidateInput", placeholder = "Base Occupancy", maxlength = "2", valType = "NumbersOnly" })
                                                             </div>
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="@Model.HighOccupancy  " class="form-required">Higher Occupancy</label>
 
-                                                                @Html.TextBoxFor(m => m.HighOccupancy, new { @class = "full-width ValidateInput", placeholder = "High Occupancy" })
+                                                                @Html.TextBoxFor(m => m.HighOccupancy, new { @class = "full-width ValidateInput", placeholder = "High Occupancy", maxlength = "2", valType = "NumbersOnly" })
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
-                                                            <div class="col-lg-1 col-md-1 col-sm-6 col-6 col-xs-6 pull-left">
-                                                                <label for="edit-mail" class="form-required">Extra Bed</label>
-                                                                <ul class="unstyled">
+                                                            
+                                                            <div class="col-lg-6 col-md6 col-sm-6 col-xs-12 pull-left">
+                                                                
+                                                                <ul style="margin-left:-15px" class="unstyled">
                                                                     <li>
                                                                         <input class="styled-checkbox" id="CHK_IEB" name="CHK_IEB" type="checkbox">
 
-                                                                        <label for="CHK_IEB">&nbsp;</label>
+                                                                        <label for="CHK_IEB">Extra Bed</label>
                                                                     </li>
                                                                 </ul>
                                                                 @Html.HiddenFor(model => model.IsExtraBed)
-                                                            </div>
-                                                            <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 pull-left">
-                                                                <label for="edit-mail" class="form-required">&nbsp;</label>
 
-                                                                @Html.TextBoxFor(model => model.ExtraBed, new { @class = "full-width" })
+                                                                @*@Html.TextBoxFor(model => model.ExtraBed, new { @class = "full-width",PlaceHolder="Extra Bed Price" })*@
                                                             </div>
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="edit-mail" class="form-required">Amenities</label>
@@ -122,31 +120,31 @@
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="@Model.BasePrice" class="form-required">Base Price</label>
 
-                                                                @Html.TextBoxFor(m => m.BasePrice, new { @class = "full-width ValidateInput", placeholder = "Base Price" })
+                                                                @Html.TextBoxFor(m => m.BasePrice, new { @class = "full-width ValidateInput", placeholder = "Base Price", maxlength = "5", valType = "NumbersOnly" })
                                                             </div>
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
                                                                 <label for="@Model.AdditionalPersonPrice" class="form-required">Additional Person Price</label>
 
-                                                                @Html.TextBoxFor(m => m.AdditionalPersonPrice, new { @class = "full-width ValidateInput", placeholder = "Additional Person Price" })
+                                                                @Html.TextBoxFor(m => m.AdditionalPersonPrice, new { @class = "full-width ValidateInput", placeholder = "Additional Person Price", maxlength = "7", valType = "NumbersOnly" })
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12  col-md-12 col-sm-12 col-xs-12 pull-left">
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="@Model.ExtraBedPrice" class="form-required">Extra Bed Price</label>
 
-                                                                @Html.TextBoxFor(m => m.ExtraBedPrice, new { @class = "full-width ValidateInput", placeholder = "Extra Bed Price" })
+                                                                @Html.TextBoxFor(m => m.ExtraBedPrice, new { @class = "full-width ValidateInput", placeholder = "Extra Bed Price", maxlength = "7", valType = "NumbersOnly" })
                                                             </div>
                                                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                                                 <label for="@Model.inclusion" class="form-required">Inclusion</label>
 
-                                                                @Html.TextBoxFor(m => m.inclusion, new { @class = "full-width", placeholder = "Inclusion" })
+                                                                @Html.TextBoxFor(m => m.inclusion, new { @class = "full-width", placeholder = "Inclusion", maxlength = "100" })
                                                             </div>
 
                                                         </div>
                                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left form-group">
                                                                 <label for="@Model.CancellationPolicy" class="form-required">Cancellation Policy</label>
-                                                                @Html.TextAreaFor(m => m.CancellationPolicy, new { @class = "full-width", placeholder = "Cancellation Policy", id = "CancellationPolicy" })
+                                                                @Html.TextAreaFor(m => m.CancellationPolicy, new { @class = "full-width", placeholder = "Cancellation Policy", id = "CancellationPolicy" , maxlength = "500" })
                                                                 @*<div id="checkoutmessage"></div>*@
                                                             </div>
                                                         </div>

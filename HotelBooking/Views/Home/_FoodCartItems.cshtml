@@ -17,7 +17,7 @@
                 <input type="text" id="@rt.ItemId"  class="full-width height35" value="@rt.ItemName" placeholder="Choose Item" disabled runat="server">
             </div>
             <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-                <input type="text" id="@rt.BillingDetailsId" class="full-width height35" onkeyup="myCALFunction(this)" placeholder="Quantity" value="@rt.Quantity" runat="server">
+                <input type="text" id="@rt.BillingDetailsId" class="full-width height35 ValidateInput" valType="NumbersOnly" onkeyup="myCALFunction(this)" placeholder="Quantity" value="@rt.Quantity" runat="server">
             </div>
             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                 <input type="text" id="@totaAmtId" class="full-width height35" placeholder="Total"  value="@rt.Amount" disabled runat="server">
@@ -29,6 +29,10 @@
 }
 <script>
     $(document).ready(function () {
+        $("input").attr("autocomplete", "none");
+        $(".ValidateInput").on("blur", function () {
+            validateField(this);
+        });
         $("#hdnItems").val(@totalItems);
         $("#hdnBiilingMaterId").val(@MaterId);
         

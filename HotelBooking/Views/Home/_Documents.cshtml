@@ -23,14 +23,16 @@
             {
             <form id="msform" runat="server" action="/Home/saveBookingDocuments" method="post" enctype="multipart/form-data" style=" margin:0px auto;">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left table-responsive">
-                    <table class="table table-bordered" style="width:100%">
-                        <tbody>
+                    <table class="table table-bordered" style="width:100%" id="tblPaxDoc">
+                        <thead>
                             <tr class="trthbgclr">
                                 <th class="text-center">#</th>
                                 <th class="text-center">Pax Name</th>
                                 <th class="text-center">Document Type</th>
                                 <th class="text-center">Browse a document</th>
                             </tr>
+                        </thead>
+                        <tbody>
                             @for (int i = 0; i < RequiedDoc; i++)
                             {
                                 var selname = "DocSelType" + i.ToString();
@@ -40,13 +42,13 @@
                                 <tr class="active">
                                     <th class="text-center">@k</th>
                                     <th class="text-center">
-                                        <input type="text" id="@PaxId" name="@PaxId" class="full-width" placeholder="Pax Name" runat="server">
+                                        <input type="text" id="@PaxId" name="@PaxId" class="full-width ValidateInput" placeholder="Pax Name" runat="server">
 
 
                                     </th>
 
                                     <th class="text-center">
-                                        <select id="@selname" class="form-required full-width" onchange="GetSelectedTextValue('@i',this)" required name="@selname">
+                                        <select id="@selname" class="form-required full-width ValidateInput" valType="DropDown" onchange="GetSelectedTextValue('@i',this)" required name="@selname">
                                             @if (ViewBag.DocsComboModel != null)
                                             {
                                                 foreach (var item in ViewBag.DocsComboModel)
@@ -70,21 +72,24 @@
                                 </tr>
                                 k++;
                             }
-                            <tr >
+                        </tbody>
+                        
+                        <tfoot>
+                            <tr>
                                 <th class="text-center" colspan="4">
-                                    
-                                                    <input class="styled-checkbox" type="checkbox"  name="CHK_RCR" id="CHK_RCR" />
-                                                    <label for="CHK_RCR">Vechile Registration - Required</label>
-                                            
-                                                    <input type="hidden" id="isRCRequired" name="isRCRequired" value="false" />
+
+                                    <input class="styled-checkbox" type="checkbox" name="CHK_RCR" id="CHK_RCR" />
+                                    <label for="CHK_RCR">Vechile Registration - Required</label>
+
+                                    <input type="hidden" id="isRCRequired" name="isRCRequired" value="false" />
                                 </th>
-                                
+
                             </tr>
                             <tr id="RCId" class="active">
-                               
+
                                 <th class="text-center" colspan="3">
                                     <input type="text" id="PaxIdRC" name="PaxIdRC" class="full-width" placeholder="Registration Number" runat="server">
-                                    
+
 
                                 </th>
 
@@ -93,7 +98,7 @@
                                     <input type="file" id="FileRC" name="FileRC" class=" full-width">
                                 </th>
                             </tr>
-                        </tbody>
+                        </tfoot>
                     </table>
 
                 </div>
@@ -101,7 +106,7 @@
                 <input type="hidden" id="BookingId" name="BookingId" value="@Model.BookingId" />
                 <input type="hidden" id="BookingRef1" name="BookingRef1" value="r" />
 
-                <input type="submit" name="SUBMIT" class="prev action-button" onclick="setDataonSubmit();" value="Save" runat="server">
+                <input type="submit" name="SUBMIT" class="prev action-button" onclick="return setDataonSubmit();" value="Save" runat="server">
 
             </form>
             }
@@ -127,7 +132,7 @@
                                     <td align="left" valign="middle">@bk.DocumentName</td>
                                     <td align="center" valign="middle">
                                        
-                                        <a href="#" class="editbtn"  data-toggle="modal" data-target="#@bk.DocumentId"><i class="fa fa-eye"></i> View</a>
+                                        <a href="#" class="editbtn"  data-toggle="modal" onclick="setpreview('@DocDivId');" data-target="#@bk.DocumentId"><i class="fa fa-eye"></i> View</a>
                                     </td>
                                     <td>
                                         <div id="@DocDivId">
@@ -164,6 +169,10 @@
 </div>
 <script>
     $(document).ready(function () {
+        $("input").attr("autocomplete", "none");
+        $(".ValidateInput").on("blur", function () {
+            validateField(this);
+        });
         var htmlData = $("div[id^='ViewDoc']").clone();
         //var htmlDataNew = htmlData.replace('ViewDoc', '_ViewDoc');
         //$(top.document.body).append(htmlData);
@@ -189,9 +198,34 @@
             $("#" + dtName).val(selectedText.trim());
             console.log(idn + "   " + selectedText.trim() + "  " + dtName);
         }
-        function setDataonSubmit() {
+    function setDataonSubmit() {
+        var blCheck = 0;
+        $('#tblPaxDoc >tbody> tr').each(function () {
+            var txtPaxName = '';
+            var txtEl = $(this).find('input[type="text"]');
+            var txtdata = $(txtEl).val();
+            //console.log("S..." + data1);
+            var dType = $(this).find('select.ValidateInput').val();
+            console.log("S1..." + dType);
+            var txtUpl = $(this).find('input[type="file"]').val();
+            console.log("S2..." + txtUpl);
+            if (txtdata != '') {
+                if (dType <= 0) {
+                    blCheck = 1;
+                }
+            }
+            
+        });
+        //return false;
+        if (blCheck==1) {
+            return false; // Prevent form submission if validation fails
+        } else {
             $("#BookingRef1").val($("#BookingRef").val());
         }
-    
+    }
+    function setpreview(dv) {
+        $(document.body).append($("#" + dv).clone());
+        $("#" + dv).remove();
+    } 
 </script>
 

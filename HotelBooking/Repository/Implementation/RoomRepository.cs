@@ -1,6 +1,8 @@
 ﻿using HotelBooking.Context;
 using HotelBooking.Model;
 using HotelBooking.Repository.Interface;
+using iTextSharp.tool.xml.css;
+using iTextSharp.tool.xml.html;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -80,14 +82,37 @@ namespace HotelBooking.Repository.Implementation
 
         public AllocateRoomResponse GetRoomsByRoomTypeIds(int branchId, string RoomTypeId, int BookingId)
         {
+            if(!RoomTypeId.Contains(","))
+            {
+                RoomTypeId = RoomTypeId + ",";
+            }
+            List<int> intIds = new List<int>();
+            string[] split = RoomTypeId.Split(',');
+            foreach (string item in split)
+            {
+               
+                if (!string.IsNullOrEmpty(item))
+                {
+                    string tmpVal = item.Replace("'","");
+                    int val = 0;
+                    if (int.TryParse(tmpVal, out val) == true)
+                    {
+                        intIds.Add(val);
+                    }
+
+
+                }
+                
+            }
+
             AllocateRoomResponse avl = new AllocateRoomResponse();
-            IEnumerable<BookedRoom> lstBookedRoom = _context.BookedRoom.Where(r => RoomTypeId.Contains(r.RoomTypeId.ToString()) && r.BranchId == branchId && r.BookingId== BookingId).ToArray();
+            IEnumerable<BookedRoom> lstBookedRoom = _context.BookedRoom.Where(r=>r.BranchId == branchId && intIds.Contains(r.RoomTypeId) && r.BookingId== BookingId).ToArray();
             IEnumerable<BookedRoom> lstAllocatedRoom = lstBookedRoom.Where(b => b.BookingId == BookingId).ToArray();
-            IEnumerable<Room> rms = _context.Rooms.Where(r => r.BranchId == branchId && RoomTypeId.Contains(r.RoomTypeId.ToString())).ToArray();
+            IEnumerable<Room> rms = _context.Rooms.Where(r => r.BranchId == branchId && intIds.Contains(r.RoomTypeId)).ToArray();
             IEnumerable<Room> rms1 = from r in rms
                                      where !(from bked in lstBookedRoom
                                              select bked.RoomId)
-                                             .Contains(r.RoomId)
+                                             .Equals(r.RoomId)
                                      select r;
             avl.AvailableRooms = rms1;
             avl.BookedRooms = lstAllocatedRoom;

@@ -1,39 +1,35 @@
 ﻿
 <style>
-    #overlay {
-        position: fixed;
-        /*top: 0;*/
-        z-index: 100;
-        width: 100%;
-        height: 100%;
-        display: none;
-        background: rgba(0,0,0,0.6);
-    }
 
-    .cv-spinner {
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .spinner {
-        width: 40px;
-        height: 40px;
-        border: 4px #ddd solid;
-        border-top: 4px #2e93e6 solid;
+    .divloader {
+        border: 2px solid #f3f3f3;
         border-radius: 50%;
-        animation: sp-anime 0.8s infinite linear;
+        border-top: 2px solid #3498db;
+        width: 10px;
+        height: 10px;
+        -webkit-animation: spin 2s linear infinite; /* Safari */
+        animation: spin 2s linear infinite;
     }
 
-    @@keyframes sp-anime {
+    /* Safari */
+    @@-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
         100% {
-            transform: rotate(360deg);
+            -webkit-transform: rotate(360deg);
         }
     }
 
-    .is-hide {
-        display: none;
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
     }
 </style>
 
@@ -141,8 +137,8 @@
             
         });
         amt = costing;
-        console.log("Amount :" + amt);
-        console.log("Tax :" + totalTax);
+        //console.log("Amount :" + amt);
+        //console.log("Tax :" + totalTax);
         $("#hdnRoomCost").val(amt.toFixed(2));
         $("#hdnRoomTax").val(totalTax.toFixed(2));
         
@@ -173,14 +169,14 @@
 
         var divId = "ViewEditPerDayPrice" + idn;
         var VeiwEditLink = "ViewEditPerDayPriceLink" + idn;
-        console.log(VeiwEditLink);
+        //console.log(VeiwEditLink);
         var RoomTypeId = $('#' + ddlSelect + ' option:selected').val();
         var cin = $("#Addbookingdatepickerinn").val();
         var cout = $("#Addbookingdatepickerout").val();
         //console.log(RoomTypeId + " c " + cin + " o  " + cout);
         if (RoomTypeId > 0) {
             const url = "/Home/_PricePerNight?RoomTypeId=" + RoomTypeId + "&cinDate=" + cin + "&coutDate=" + cout + "&refDiv=" + idn;
-
+            $('#' + divId).addClass("divloader");
             $.ajax({
                 type: 'GET',
                 url: url,
@@ -188,12 +184,10 @@
                     //console.log(data);
                     $('#' + divId).html(data);
                     
-                    
-                    //$("#overlay").fadeOut(300);
                 }
             }).done(function () {
                 setTimeout(function () {
-                    // $("#overlay").fadeOut(300);
+                    $('#' + divId).removeClass("divloader");
                     $('#' + VeiwEditLink).css("display","block");
                     $('#' + VeiwEditLink).show();
                     divLoaded();

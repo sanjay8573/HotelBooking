@@ -63,8 +63,8 @@ namespace HotelBooking.Controllers
                                     select tmpBooking ;
 
                 var QueryDeatils1 = from tmpBooking1 in bksListModel
-                                   orderby DateTime.Parse(tmpBooking1.CheckIn) ascending
-                                   where DateTime.Parse(tmpBooking1.CheckIn) >= dateCriteria
+                                   orderby tmpBooking1.CheckIn ascending
+                                   where tmpBooking1.CheckIn >= dateCriteria
 
                                    select tmpBooking1;
 
@@ -149,7 +149,7 @@ namespace HotelBooking.Controllers
         public bool SaveBooking(BookingRequest bookingEntity)
         {
             BookingController _bk = new BookingController();
-            return _bk.AddBooking(bookingEntity);
+            return true;// _bk.AddBooking(bookingEntity);
         }
         public enum BookingStatus
         {
@@ -367,7 +367,7 @@ namespace HotelBooking.Controllers
             return PartialView("_PricePerRoom");
 
         }
-        public PartialViewResult _PricePerNight(string RoomTypeId , string cinDate,string coutDate,string refDiv)
+        public PartialViewResult _PricePerNight(string RoomTypeId , DateTime cinDate,DateTime coutDate,string refDiv)
         {
             
             PriceRequest pr = new PriceRequest();

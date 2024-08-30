@@ -48,8 +48,8 @@
                 <div class="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7 p-0 pull-left">
                     <p class="onlnckn"><strong>Room:</strong> @Model.Room</p>
                     <p class="aerlnscnf">Booking Number: @Model.BookingRef</p>
-                    <p class="arlnsnme"><strong>Check In:</strong> @Model.CheckIn</p>
-                    <p class="arlnsnme"><strong>Check Out:</strong> @Model.CheckOut</p>
+                    <p class="arlnsnme"><strong>Check In:</strong> @Model.CheckIn.ToString("dd-MMM-yyyy")</p>
+                    <p class="arlnsnme"><strong>Check Out:</strong> @Model.CheckOut.ToString("dd-MMM-yyyy")</p>
                     <p class="flitn"><strong>Payment Status:</strong> @Model.PaymnentStatus</p>
                     <p class="fclasS"><strong>Booking Status:</strong> @Model.BookingStatus</p>
                 </div>
@@ -80,7 +80,7 @@
                                         <td>@i</td>
                                         @if (@item.CostCategory == 1)
                                         {
-                                            <td>@item.Date</td>
+                                            <td>@item.Date.ToString("dd-MMM-yyyy")</td>
                                         }
                                         else
                                         {
@@ -157,8 +157,10 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
-                <input type="button" name="SUBMIT" class="prev diffult-button pull-right" onclick="printInvoice();" value="Print" runat="server">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left form-group">
+                <form id="msform">
+                    <input type="button" name="SUBMIT" class="prev action-button" onclick="printInvoice();" value="Print" runat="server">
+                </form>
             </div>
         </div>
     </div>
@@ -224,7 +226,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
             </div>
         </div>
 

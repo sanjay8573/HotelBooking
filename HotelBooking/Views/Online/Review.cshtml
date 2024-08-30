@@ -31,11 +31,22 @@
                     <div class="row">
 
                         
-                        <form id="msform" runat="server" action="/online/ReviewSubmit" method="post" class="mt-4">
+                        <form id="msform" runat="server" action="https://backoffice.ezyhotelerp.com/online/ReviewSubmit" method="post" class="mt-4">
                             <table class="table table-bordered" style="font-size: 12px; margin-bottom: 0px;">
                                 <tr class="trthbgclr text-left">
-                                    <td>Stay </td>
-                                    <td>@StayDetail</td>
+                                    <td>@StayDetail </td>
+                                    @{
+                                        String img6412 = string.Empty;
+                                        String img64Url12 = string.Empty;
+                                        if (Model.PropertyImage!=null)
+                                        {
+                                            img6412 = Convert.ToBase64String(Model.PropertyImage);
+                                            img64Url12 = string.Format("data:image/jpeg;base64,{0}", img6412);
+                                        }
+                                        //imagetype can be e.g. gif, jpeg, png etc.
+                                    }
+                                    <td align="center" valign="middle"> <img style="width:50%;height:50%" src="@img64Url12" alt=""></td>
+
                                     @Html.HiddenFor(m => m.BookingDetails)
                                     @Html.HiddenFor(m => m.BookingID)
                                     @Html.HiddenFor(m => m.Clientid)
@@ -57,24 +68,31 @@
                                     <td>Phone</td>
                                     <td>@Model.ReviewerPhone</td>
                                 </tr>
+                                
                                 <tr class="text-left">
-                                    <td>Review Heading</td>
-                                    <td>@Html.TextBoxFor(m => m.ReviewHeading, new { @class = "full-width ValidateInput", placeholder = "Review Heading" })</td>
+                                    <td colspan="2"><b>Tell Others about your stay</b></td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        @Html.TextAreaFor(m => m.ReviewTextDetail, new { @class = "full-width", placeholder = "Review Text Detail" })
+                                    </td>
                                 </tr>
                                 <tr class="text-left">
-                                    <td>Review Text</td>
-                                    <td>@Html.TextAreaFor(m => m.ReviewTextDetail, new { @class = "full-width", placeholder = "Review Text Detail" })</td>
+                                    <td colspan="2"><b>Rate your stay</b></td>
+
                                 </tr>
                                 <tr class="text-left">
+
                                     <td>Cleanness Rating</td>
                                     <td>
                                         @for (int i = 0; i < 5; i++)
                                         {
-                                           
-                                                <span class="fa fa-star checked" onclick="Ratethis('@i','CleannessRating');"></span>
-                                           
-                                            }
-                                            @Html.HiddenFor(m => m.CleannessRating)
+
+                                            <span class="fa fa-star checked" onclick="Ratethis('@i','CleannessRating');"></span>
+
+                                        }
+                                        @Html.HiddenFor(m => m.CleannessRating)
                                     </td>
                                 </tr>
                                 <tr class="text-left">
@@ -138,7 +156,10 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2"> <input type="submit" name="prev" id="btnSend" class="prev action-button"  value="Submit" runat="server"></button></td>
+                                    @if (!Model.AlreadySubmitted)
+                                    {
+                                    <td colspan="2"> <input type="submit" name="prev" id="btnSend" class="prev action-button" value="Submit" runat="server" /></td>
+                                    }
                                 </tr>
                             </table>
                         </form>

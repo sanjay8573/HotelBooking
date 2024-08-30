@@ -584,6 +584,7 @@ pre[class*="language-"] {
     -webkit-transition: all 0.3 ease;
     transition: all 0.3 ease;
     cursor: pointer;
+    border-radius: 20px;
 }
 .addbtnstore {
     font-family: "Roboto", sans-serif;
@@ -610,8 +611,8 @@ pre[class*="language-"] {
     background: #003556;
     width: auto;
     border: 0;
-	border-radius: 5px;
-	float: right;
+    border-radius: 5px;
+    float: right;
     margin-right: 10px;
     margin-top: 0px;
     padding: 13px 13px;
@@ -620,6 +621,7 @@ pre[class*="language-"] {
     -webkit-transition: all 0.3 ease;
     transition: all 0.3 ease;
     cursor: pointer;
+    border-radius: 20px;
 }
 .addextraamountordiscountbtn {
     font-family: "Roboto", sans-serif;
@@ -668,6 +670,7 @@ pre[class*="language-"] {
     float: left;
     font-weight: 600;
     margin: 0;
+    border-radius: 20px;
 }
 
 .allinput {
@@ -901,12 +904,12 @@ pre[class*="language-"] {
 /*-----------------------------------buttons-----------------------------*/
 
 #msform .action-button {
-	width: 12%;
+	width: 15%;
 	background: #f89c20;
 	font-weight: bold;
 	color: white;
 	border: 0 none;
-	border-radius: 1px;
+	border-radius: 25px;
 	cursor: pointer;
 	padding: 10px 15px;
 	margin: 10px 5px;

@@ -21,7 +21,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Title</label>
 
-                    @Html.TextBoxFor(model => model.Title1, new { @class = "full-width ValidateInput", placeholder = "Title" })
+                    @Html.TextBoxFor(model => model.Title1, new { @class = "full-width ValidateInput", placeholder = "Title", maxlength = "50" })
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">&nbsp;</label>
@@ -39,12 +39,12 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Date Range</label>
                    
-                    <input type="text" id="dtrStart" class="full-width allinputgo" placeholder="RangeStart" autocomplete="off">
+                    <input type="text" id="dtrStart" name="dtrStart" class="full-width allinputgo" placeholder="RangeStart" autocomplete="off">
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Date Range</label>
                   
-                    <input type="text" id="dtrEnd" class="full-width allinputgo" placeholder="RangeEnd" autocomplete="off">
+                    <input type="text" id="dtrEnd" name="dtrEnd" class="full-width allinputgo" placeholder="RangeEnd" autocomplete="off">
 
                 </div>
                 @Html.HiddenFor(model => model.DateRangeFrom)
@@ -54,33 +54,33 @@
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Mon</label>
 
-                    @Html.TextBoxFor(model => model.MON1, new { @class = "full-width ValidateInput", id = "MON1", Name = "MON1" })
+                    @Html.TextBoxFor(model => model.MON1, new { @class = "full-width ValidateInput", id = "MON1", Name = "MON1", maxlength = "7", ValType = "NumbersOnly" })
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Tue</label>
-                    @Html.TextBoxFor(model => model.TUE1, new { @class = "full-width ValidateInput", id = "TUE1", Name = "TUE1" })
+                    @Html.TextBoxFor(model => model.TUE1, new { @class = "full-width ValidateInput", id = "TUE1", Name = "TUE1", maxlength = "7", ValType = "NumbersOnly" })
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Wed</label>
-                    @Html.TextBoxFor(model => model.WED1, new { @class = "full-width ValidateInput", id = "WED1", Name = "WED1" })
+                    @Html.TextBoxFor(model => model.WED1, new { @class = "full-width ValidateInput", id = "WED1", Name = "WED1", maxlength = "7", ValType = "NumbersOnly" })
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Thu</label>
-                    @Html.TextBoxFor(model => model.THUR1, new { @class = "full-width ValidateInput", id = "THUR1", Name = "THUR1" })
+                    @Html.TextBoxFor(model => model.THUR1, new { @class = "full-width ValidateInput", id = "THUR1", Name = "THUR1", maxlength = "7", ValType = "NumbersOnly" })
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Fri</label>
-                    @Html.TextBoxFor(model => model.FRI1, new { @class = "full-width ValidateInput", id = "FRI1", Name = "FRI1" })
+                    @Html.TextBoxFor(model => model.FRI1, new { @class = "full-width ValidateInput", id = "FRI1", Name = "FRI1", maxlength = "7", ValType = "NumbersOnly" })
                 </div>
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Sat</label>
-                    @Html.TextBoxFor(model => model.SAT1, new { @class = "full-width ValidateInput", id = "SAT1", Name = "SAT1" })
+                    @Html.TextBoxFor(model => model.SAT1, new { @class = "full-width ValidateInput", id = "SAT1", Name = "SAT1", maxlength = "7", ValType = "NumbersOnly" })
                 </div>
             </div>
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                 <div class="col-lg-2 col-md-2 col-sm-6 col-12 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Sun</label>
-                    @Html.TextBoxFor(model => model.SUN1, new { @class = "full-width ValidateInput", id = "SUN1", Name = "SUN1" })
+                    @Html.TextBoxFor(model => model.SUN1, new { @class = "full-width ValidateInput", id = "SUN1", Name = "SUN1", maxlength = "7", ValType = "NumbersOnly" })
                 </div>
             </div>
 
@@ -98,10 +98,7 @@
 <script>
 
     function setData() {
-        if (!validateBooking()) {
-            return false; // Prevent form submission if validation fails
-        } else
-        {
+        
             var rtnVal = true;
             var id = $("#RoomType").val();
             const rtName = $("#RoomType option:selected").text().replace(/[\n\r]+/g, ' ').trim();
@@ -111,8 +108,8 @@
             var dtStart = $("#dtrStart").val();
             var dtEnd = $("#dtrEnd").val();
 
-            $("#DateRangeFrom").val(dtStart.substr(0, 10));
-            $("#DateRangeTo").val(dtEnd.substr(0, 10));
+        $("#DateRangeFrom").val(dtStart);
+        $("#DateRangeTo").val(dtEnd);
 
             if (id <= 0) { $("#RoomType").focus(); rtnVal = false; }
 
@@ -130,16 +127,17 @@
             });
 
             return rtnVal;
-        }
+        
    }
     $(document).ready(function () {
         $("input").attr("autocomplete", "none");
         $(".ValidateInput").on("blur", function () {
             validateField(this);
         });
-
+        var id = $("#RoomType").val();
+        console.log("RoomType id" + id);
         $("#dtrStart").datepicker({
-            dateFormat: "dd-mm-yy",
+            dateFormat: "mm-dd-yy",
             duration: "fast",
             minDate: 0,
             disabledDates: [new Date()],
@@ -150,16 +148,16 @@
             }
         });
         $("#dtrEnd").datepicker({
-            dateFormat: "dd-mm-yy"
+            dateFormat: "mm-dd-yy"
             , duration: "fast"
         });
-        $("#SpclpriceGrid").load("/Home/_SpecialPriceGrid");
+        $("#SpclpriceGrid").load("/Home/_SpecialPriceGrid?RoomTypeid="+id);
             $("#CHK_CP1").click(function () {
                 if ($("#CHK_CP1").is(':checked')) {
                     var mondayValue = '';
                     $('input[type=text]').each(function () {
                         console.log(this.name);
-                        if (this.name == "MON1") {
+                        if (this.id == "MON1") {
 
                             if ($("#MON1").val() != '') {
                                 mondayValue = $("#MON1").val();
@@ -167,12 +165,14 @@
 
 
                         } else {
-                            if (this.name == "Title1") {
+                            if (this.id == "Title1" || this.id == "dtrStart" || this.id == "dtrEnd"  ) {
                                 console.log(this.name);
 
 
-                            }else
-                            $('#' + this.name).val(mondayValue);
+                            } else {
+                                $('#' + this.id).val(mondayValue);
+                            }
+                            
 
                         }
                     });
@@ -180,13 +180,17 @@
                 } else {
                     $('input[type=text]').each(function () {
 
-                        switch (this.name) {
+                        switch (this.id) {
                             case 'MON1' :
                             break;
-                            case 'Title1' :
-                                break;
+                            case 'Title1':
+                            break;
+                            case 'dtrStart':
+                            break;
+                            case 'dtrEnd':
+                            break;
                             default:
-                                $('#' + this.name).val('');
+                                $('#' + this.id).val('');
                         }
 
 

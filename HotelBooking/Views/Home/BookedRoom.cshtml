@@ -76,8 +76,8 @@
                                             <td>@i</td>
                                             <td align="center" valign="middle">@bk.CustomerName</td>
                                             <td align="center" valign="middle">@bk.RoomTypeName</td>
-                                            <td align="center" valign="middle">@bk.CheckIn</td>
-                                            <td align="center" valign="middle"> @bk.CheckOut</td>
+                                            <td align="center" valign="middle">@bk.CheckIn.ToString("dd-MMM-yyyy")</td>
+                                            <td align="center" valign="middle"> @bk.CheckOut.ToString("dd-MMM-yyyy")</td>
                                             <td align="center" valign="middle">@bk.RoomNumber</td>
                                             <td align="center" valign="middle"><a href="@Url.Action("Checkout","Home",new { @BookingId = bk.BookingId })">Check Out</a></td>
                                             

@@ -19,7 +19,7 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="row">
-                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                            @*<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                 <select id="RoomType" class="full-width ddselect" required=required name="RoomType">
                                     @if (ViewBag.RTComboModel != null)
                                     {
@@ -36,8 +36,8 @@
                                     }
                                 </select>
                                
-                            </div>
-                            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                            </div>*@
+                            @*<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                 <input type="text" id="datepicker" class="full-width allinputgo" placeholder="Check In" autocomplete="off">
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
@@ -60,7 +60,7 @@
                                     <option>Success</option>
                                     <option>Pending</option>
                                 </select>
-                            </div>
+                            </div>*@
                             @*<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <select id="" class="full-width ddselect" runat="server">
                                     <option selected="selected">--Filter By Hall Type--</option>
@@ -84,10 +84,10 @@
                                     </div>
                                 }
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
+                            @*<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
                                 Search
                                 <input type="text" id="txtUserName" class="onlyinput" placeholder="Search" runat="server">
-                            </div>
+                            </div>*@
                         </div>
                         <table class="table table-bordered">
                             <tbody>
@@ -115,8 +115,8 @@
                                             <td><a href="@Url.Action("BookingProcess","Home" ,new { BookingId=bk.BookingId,BookingRef=bk.BookingNumber})">@bk.BookingNumber</a></td>
                                             <td align="center" valign="middle">@bk.GuestName</td>
                                             <td align="center" valign="middle">@bk.RoomTypeName</td>
-                                            <td align="center" valign="middle">@bk.CheckIn</td>
-                                            <td align="center" valign="middle"> @bk.Checkout</td>
+                                            <td align="center" valign="middle">@bk.CheckIn.ToString("dd-MMM-yyyy")</td>
+                                            <td align="center" valign="middle"> @bk.Checkout.ToString("dd-MMM-yyyy")</td>
                                             <td align="center" valign="middle">@bk.BookingDate</td>
                                             <td align="center" valign="middle">@bk.PaymentStatus</td>
                                             <td align="center" valign="middle">@bk.BookingStatus</td>

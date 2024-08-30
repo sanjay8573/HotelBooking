@@ -22,7 +22,7 @@
                                 </div>
                                 <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 pull-left">
                                     <label for="edit-mail" class="form-required">Room Number</label>
-                                    @Html.TextBox("RoomNumber", null, new { @class = "full-width ValidateInput", @data_val = "true", @data_val_required = "Room Number is required" })
+                                    @Html.TextBox("RoomNumber", null, new { @class = "full-width ValidateInput", @data_val = "true", @data_val_required = "Room Number is required", maxlength = "7", ValType = "NumbersOnly" })
                                 </div>
 
                                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 pull-left">
@@ -35,11 +35,11 @@
                                 <div id="ItemDIV1" class="divclass" style="display:none" data-order="0">
                                     <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 pull-left">
                                         <label for="edit-mail" class="form-required">Room Type</label>
-                                        @Html.DropDownList("RTComboModel", null, new { @class = "full-width ValidateInput",id = "RTComboModel1" , valType = "DropDown" })
+                                        @Html.DropDownList("RTComboModel", null, new { @class = "full-width ValidateInput1",id = "RTComboModel1" , valType = "DropDown" })
                                     </div>
                                     <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 pull-left">
                                         <label for="edit-mail" class="form-required">Room Number</label>
-                                        @Html.TextBox("RoomNumber", null, new { @class = "full-width ValidateInput", id= "RoomNumber1", @data_val = "true", @data_val_required = "Room Number is required" })
+                                        @Html.TextBox("RoomNumber", null, new { @class = "full-width ValidateInput1", id= "RoomNumber1", @data_val = "true", @data_val_required = "Room Number is required", maxlength = "7", ValType = "NumbersOnly" })
                                     </div>
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 pull-left">
                                         <label for="edit-mail" class="form-required">&nbsp;</label>
@@ -49,11 +49,11 @@
                                 <div id="ItemDIV2" class="divclass" style="display:none" data-order="1">
                                     <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 pull-left">
                                         <label for="edit-mail" class="form-required">Room Type</label>
-                                        @Html.DropDownList("RTComboModel",null, new { @class = "full-width ValidateInput",id = "RTComboModel2" , valType = "DropDown" })
+                                        @Html.DropDownList("RTComboModel",null, new { @class = "full-width ValidateInput1",id = "RTComboModel2" , valType = "DropDown" })
                                     </div>
                                     <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 pull-left">
                                         <label for="edit-mail" class="form-required">Room Number</label>
-                                        @Html.TextBox("RoomNumber", null, new { @class = "full-width ValidateInput", @data_val = "true", id = "RoomNumber2", @data_val_required = "Room Number is required" })
+                                        @Html.TextBox("RoomNumber", null, new { @class = "full-width ValidateInput1", @data_val = "true", id = "RoomNumber2", @data_val_required = "Room Number is required", maxlength = "7", ValType = "NumbersOnly" })
                                     </div>
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 pull-left">
                                         <label for="edit-mail" class="form-required">&nbsp;</label>
@@ -63,11 +63,11 @@
                                 <div id="ItemDIV3" class="divclass" style="display:none" data-order="2">
                                     <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 pull-left">
                                         <label for="edit-mail" class="form-required">Room Type</label>
-                                        @Html.DropDownList("RTComboModel", null, new { @class = "full-width ValidateInput", id = "RTComboModel3", valType = "DropDown" })
+                                        @Html.DropDownList("RTComboModel", null, new { @class = "full-width ValidateInput1", id = "RTComboModel3", valType = "DropDown" })
                                     </div>
                                     <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 pull-left">
                                         <label for="edit-mail" class="form-required">Room Number</label>
-                                        @Html.TextBox("RoomNumber", null, new { @class = "full-width ValidateInput", @data_val = "true", id = "RoomNumber3", @data_val_required = "Room Number is required" })
+                                        @Html.TextBox("RoomNumber", null, new { @class = "full-width ValidateInput1", @data_val = "true", id = "RoomNumber3", @data_val_required = "Room Number is required", maxlength = "7", ValType = "NumbersOnly" })
                                     </div>
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 pull-left">
                                         <label for="edit-mail" class="form-required">&nbsp;</label>
@@ -77,11 +77,11 @@
                                 <div id="ItemDIV4" class="divclass" style="display:none" data-order="3">
                                     <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 pull-left">
                                         <label for="edit-mail" class="form-required">Room Type</label>
-                                        @Html.DropDownList("RTComboModel", null, new { @class = "full-width ValidateInput", id = "RTComboModel4", valType = "DropDown" })
+                                        @Html.DropDownList("RTComboModel", null, new { @class = "full-width ValidateInput1", id = "RTComboModel4", valType = "DropDown" })
                                     </div>
                                     <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 pull-left">
                                         <label for="edit-mail" class="form-required">Room Number</label>
-                                        @Html.TextBox("RoomNumber", null, new { @class = "full-width ValidateInput", @data_val = "true", id = "RoomNumber4", @data_val_required = "Room Number is required" })
+                                        @Html.TextBox("RoomNumber", null, new { @class = "full-width ValidateInput1", @data_val = "true", id = "RoomNumber4", @data_val_required = "Room Number is required", maxlength = "7", ValType = "NumbersOnly" })
                                     </div>
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 pull-left">
                                         <label for="edit-mail" class="form-required">&nbsp;</label>
@@ -91,11 +91,11 @@
                                 <div id="ItemDIV5" class="divclass" style="display:none" data-order="4">
                                     <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 pull-left">
                                         <label for="edit-mail" class="form-required">Room Type</label>
-                                        @Html.DropDownList("RTComboModel", null, new { @class = "full-width ValidateInput", id = "RTComboModel5", valType = "DropDown" })
+                                        @Html.DropDownList("RTComboModel", null, new { @class = "full-width ValidateInput1", id = "RTComboModel5", valType = "DropDown" })
                                     </div>
                                     <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 pull-left">
                                         <label for="edit-mail" class="form-required">Room Number</label>
-                                        @Html.TextBox("RoomNumber", null, new { @class = "full-width ValidateInput", @data_val = "true", id = "RoomNumber5", @data_val_required = "Room Number is required" })
+                                        @Html.TextBox("RoomNumber", null, new { @class = "full-width ValidateInput1", @data_val = "true", id = "RoomNumber5", @data_val_required = "Room Number is required", maxlength = "7", ValType = "NumbersOnly" })
                                     </div>
                                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 pull-left">
                                         <label for="edit-mail" class="form-required">&nbsp;</label>
@@ -177,7 +177,8 @@ var item = {
     floorName: floorName,
     RoomNumber: rmNo,
     RoomTypeId: rtId,
-    RoomTypeName: rtTypeName
+    RoomTypeName: rtTypeName,
+    isActive: true
 };
 
 RoomData.push(item);
@@ -195,7 +196,8 @@ if ($('#ItemDIV1').is(":visible")) {
         floorName: floorName,
         RoomNumber: rmNo1,
         RoomTypeId: rtId1,
-        RoomTypeName: rtTypeName1
+        RoomTypeName: rtTypeName1,
+        isActive: true
     };
     RoomData.push(item1);
 }
@@ -212,7 +214,8 @@ if ($('#ItemDIV2').is(":visible")) {
         floorName: floorName,
         RoomNumber: rmNo1,
         RoomTypeId: rtId1,
-        RoomTypeName: rtTypeName1
+        RoomTypeName: rtTypeName1,
+        isActive: true
     };
     RoomData.push(item1);
 }
@@ -229,7 +232,8 @@ if ($('#ItemDIV3').is(":visible")) {
         floorName: floorName,
         RoomNumber: rmNo1,
         RoomTypeId: rtId1,
-        RoomTypeName: rtTypeName1
+        RoomTypeName: rtTypeName1,
+        isActive: true
     };
     RoomData.push(item1);
 }
@@ -246,7 +250,8 @@ if ($('#ItemDIV4').is(":visible")) {
         floorName: floorName,
         RoomNumber: rmNo1,
         RoomTypeId: rtId1,
-        RoomTypeName: rtTypeName1
+        RoomTypeName: rtTypeName1,
+        isActive: true
     };
     RoomData.push(item1);
 }
@@ -263,7 +268,8 @@ if ($('#ItemDIV5').is(":visible")) {
         floorName: floorName,
         RoomNumber: rmNo1,
         RoomTypeId: rtId1,
-        RoomTypeName: rtTypeName1
+        RoomTypeName: rtTypeName1,
+        isActive: true
     };
     RoomData.push(item1);
 }

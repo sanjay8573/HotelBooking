@@ -16,7 +16,7 @@
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required"> Name</label>
-                                @Html.TextBoxFor(m => m.DesignationName, new { @class = "full-width ValidateInput", placeholder = "Designation" })
+                                @Html.TextBoxFor(m => m.DesignationName, new { @class = "full-width ValidateInput", placeholder = "Designation", maxlength = "50" })
 
                             </div>
 
@@ -24,7 +24,7 @@
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required"> Code</label>
-                                @Html.TextBoxFor(m => m.DesignationCode, new { @class = "full-width ValidateInput",  placeholder = "Code" })
+                                @Html.TextBoxFor(m => m.DesignationCode, new { @class = "full-width ValidateInput",  placeholder = "Code", maxlength = "7" })
 
                             </div>
 
@@ -67,7 +67,7 @@
         }
         $('input[type=checkbox]').each(function () {
             if (this.name == "CHK_ACTIVE") {
-                $('#IsActive').val(this.checked);
+                $('#isActive').val(this.checked);
 
             }
         });

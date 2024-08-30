@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using HotelBooking.Model.onlineAPI;
+using System;
 
 namespace HotelBooking.Model
 {
@@ -25,11 +26,11 @@ namespace HotelBooking.Model
         public string RoomTypeName { get; set; }
         public int Adult { get; set; }
         public int Child { get; set; }
-        public string CheckIn { get; set; }
+        public DateTime CheckIn { get; set; }
         public string ChildAge1 { get; set; }
         public string ChildAge2 { get; set; }
         public string ChildAge3 { get; set; }
-        public string Checkout { get; set; }
+        public DateTime Checkout { get; set; }
         public int NoOfRooms { get; set; }
         public int Nights { get; set; }
         public decimal TotalAmount { get; set; }
@@ -44,6 +45,7 @@ namespace HotelBooking.Model
         public string BookingChannel { get; set; }
         public List<BookingCost> AllNights { get; set; }
         public string PaidServices { get; set; }
+        public bool MailRequired { get; set; } = false;
 
     }
     public class BookingResponse

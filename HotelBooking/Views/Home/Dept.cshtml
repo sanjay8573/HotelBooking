@@ -29,10 +29,10 @@
                                 }
 
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
+                            @*<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
                                 Search
                                 <input type="text" id="txtUserName" class="onlyinput" placeholder="Search" runat="server">
-                            </div>
+                            </div>*@
                         </div>
                         <table class="table table-bordered">
                             <tbody>
@@ -52,7 +52,7 @@
                                             <td align="left" valign="middle">@stf.DepartmentName</td>
 
                                             <td align="left" valign="middle"><a href="@Url.Action("AddDept","Home",new { @DeptId = stf.Id })" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
-                                            <td align="left" valign="middle"><a href="@Url.Action("DelDept","Home",new { @EmpId = stf.Id })" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
+                                            <td align="left" valign="middle"><a href="@Url.Action("DelDept","Home",new { @DeptId = stf.Id })" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
                                         </tr>
                                         i++;
                                     }

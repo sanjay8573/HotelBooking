@@ -122,8 +122,8 @@
                                                     <div class="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7 p-0 pull-left">
                                                         <p class="onlnckn"><strong>Room:</strong> @Model.Room</p>
                                                         <p class="aerlnscnf">Booking #: @Model.BookingRef</p>
-                                                        <p class="arlnsnme"><strong>Check In:</strong> @Model.CheckIn</p>
-                                                        <p class="arlnsnme"><strong>Check Out:</strong> @Model.CheckOut</p>
+                                                        <p class="arlnsnme"><strong>Check In:</strong> @Model.CheckIn.ToString("dd-MMM-yyyy")</p>
+                                                        <p class="arlnsnme"><strong>Check Out:</strong> @Model.CheckOut.ToString("dd-MMM-yyyy")</p>
                                                         <p class="flitn"><strong>Payment Status:</strong> @Model.PaymnentStatus</p>
                                                         <p class="fclasS"><strong>Booking Status:</strong> @Model.BookingStatus</p>
                                                     </div>
@@ -248,7 +248,7 @@
             console.log("test3.......");
             const RoomTypeId = $("#RoomTypeId").val();
             console.log("Booking made for= " + RoomTypeId);
-            var url = "/Home/_AllocateRooms?BookingId=" + BookingId + "&RoomTypeId='" + RoomTypeId + "'&nor=" + nRooms +"&isUpGraded=0";
+            var url = "/Home/_AllocateRooms?BookingId=" + BookingId + "&RoomTypeId=" + RoomTypeId + "&nor=" + nRooms +"&isUpGraded=0";
             console.log("Url for alocate Room= " + url);
             $("#AllocateRoomDIV").load(url);
 

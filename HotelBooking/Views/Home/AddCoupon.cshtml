@@ -15,40 +15,41 @@
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required">Offer Title</label>
 
-                                @Html.TextBoxFor(m => m.Title, new { @class = "full-width ValidateInput", placeholder = "Title" })
+                                @Html.TextBoxFor(m => m.Title, new { @class = "full-width ValidateInput", placeholder = "Title", maxlength = "50" })
                                 @Html.HiddenFor(model => model.CouponId)
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required">Discription</label>
 
-                                @Html.TextAreaFor(m => m.Description, new { @class = "full-width", placeholder = "Description", id = "checkoutmessage" })
+                                @Html.TextAreaFor(m => m.Description, new { @class = "full-width", placeholder = "Description", id = "checkoutmessage", maxlength = "200" })
                             </div>
 
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required">Offer Strat from</label>
-
-                                @Html.TextBoxFor(m => m.CouponPeriod, new { @class = "full-width ValidateInput", placeholder = "Offer Strat from " })
+                                <input  type="text" id="CouponPeriod1" class = "full-width ValidateInput" value="@Model.CouponPeriod" placeholder = "Offer Strat from " />
+                                @Html.HiddenFor(m => m.CouponPeriod)
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required">Offer Valid till</label>
+                                <input type="text" id="CouponPeriodEnd1" class="full-width ValidateInput" value="@Model.CouponPeriodEnd.ToString("MM-dd-yyyy")" placeholder="Offer Valid till " />
+                                @Html.HiddenFor(m => m.CouponPeriodEnd)
 
-                                @Html.TextBoxFor(m => m.CouponPeriodEnd, new { @class = "full-width ValidateInput", placeholder = "Offer Valid till " })
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required">Coupon Code</label>
-                                @Html.TextBoxFor(m => m.CouponCode, new { @class = "full-width ValidateInput", placeholder = "Coupon Code " })
+                                @Html.TextBoxFor(m => m.CouponCode, new { @class = "full-width ValidateInput", placeholder = "Coupon Code ", maxlength = "10" })
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
-                                <label for="edit-mail" class="form-required">Coupon Value</label>
-                                @Html.TextBoxFor(m => m.CouponValue, new { @class = "full-width ValidateInput", placeholder = "Coupon Value " })
+                                <label for="edit-mail" class="form-required">Coupon Value(Fixed)</label>
+                                @Html.TextBoxFor(m => m.CouponValue, new { @class = "full-width ValidateInput", placeholder = "Coupon Value ", maxlength = "5", valType = "NumbersOnly" })
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
-                                <label for="edit-mail" class="form-required">Minimum Amount</label>
-                                @Html.TextBoxFor(m => m.MinimumAmount, new { @class = "full-width ValidateInput", placeholder = "Minimum Amount " })
+                                <label for="edit-mail" class="form-required">Minimum Biiling Amount</label>
+                                @Html.TextBoxFor(m => m.MinimumAmount, new { @class = "full-width ValidateInput", placeholder = "Minimum Amount ", maxlength = "5", valType = "NumbersOnly" })
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
-                                <label for="edit-mail" class="form-required">Maximum Amount</label>
-                                @Html.TextBoxFor(m => m.MaximumAmount, new { @class = "full-width ValidateInput", placeholder = "Maximum Amount " })
+                                <label for="edit-mail" class="form-required">Maximum Billing Amount</label>
+                                @Html.TextBoxFor(m => m.MaximumAmount, new { @class = "full-width ValidateInput", placeholder = "Maximum Amount ", maxlength = "5", valType = "NumbersOnly" })
                             </div>
                             <fieldset>
                                 <legend>Include Room Type:</legend>
@@ -112,11 +113,11 @@
                                 </fieldset>
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
                                     <label for="edit-mail" class="form-required">Limit Per User</label>
-                                    @Html.TextBoxFor(m => m.LimitPerUser, new { @class = "full-width", placeholder = "Limit Per User" })
+                                    @Html.TextBoxFor(m => m.LimitPerUser, new { @class = "full-width", placeholder = "Limit Per User", maxlength = "3", valType = "NumbersOnly" })
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
                                     <label for="edit-mail" class="form-required">Limit Per Coupon</label>
-                                    @Html.TextBoxFor(m => m.LimitPerCoupon, new { @class = "full-width", placeholder = "Limit Per Coupon" })
+                                    @Html.TextBoxFor(m => m.LimitPerCoupon, new { @class = "full-width", placeholder = "Limit Per Coupon", maxlength = "3", valType = "NumbersOnly" })
                                 </div>
 
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
@@ -132,10 +133,10 @@
                                 <div class="col-lg-3 col-md3-3ol-sm-6 col-xs-12 pull-left">
                                     <label for="edit-mail" class="form-required">Offer Image</label>
                                     @{
-                                        if (Model != null && Model.CouponId > 0)
-                                        {
-                                            String img64 = Model.ImageData != null && Model.ImageData.Length > 0 ? Convert.ToBase64String(Model.ImageData) : "";
-                                            String img64Url = string.Format("data:image/jpeg;base64,{0}", img64); //imagetype can be e.g. gif, jpeg, png etc.
+                                    if (Model != null && Model.CouponId > 0)
+                                    {
+                                        String img64 = Model.ImageData != null && Model.ImageData.Length > 0 ? Convert.ToBase64String(Model.ImageData) : "";
+                                        String img64Url = string.Format("data:image/jpeg;base64,{0}", img64); //imagetype can be e.g. gif, jpeg, png etc.
                                             <img style="width:50px" src="@img64Url" />
                                         }
                                         @*else
@@ -170,25 +171,35 @@
         $(".ValidateInput").on("blur", function () {
             validateField(this);
         });
+        var fDate=$("#CouponPeriod").val();
+        if (fDate != null) {
+            $("#CouponPeriod1").val(fDate);
+        }
         var PSSelected = $('#PaidServices').val().split(",");
         var RTSelected = $('#IncludedRoomType').val().split(",");
         var STFSelected = $('#IncludedTier').val().split(",");
-        $("#CouponPeriod").datepicker({
-            dateFormat: "dd-mm-yy",
+        $("#CouponPeriod1").datepicker({
+            dateFormat: "mm-dd-yy",
             duration: "fast",
             minDate: 0,
             disabledDates: [new Date()],
             onSelect: function (selected) {
                 var minDate = $(this).datepicker('getDate');
                 minDate.setDate(minDate.getDate() + 1); //add one day
-                $('#CouponPeriodEnd').datepicker('option', 'minDate', minDate);
+                $('#CouponPeriodEnd1').datepicker('option', 'minDate', minDate);
+                $("#CouponPeriod1").removeClass("errRedBorder");
+                $("#CouponPeriod").val($("#CouponPeriod1").val());
             }
         });
-        $("#CouponPeriodEnd").datepicker({
-            dateFormat: "dd-mm-yy",
+        $("#CouponPeriodEnd1").datepicker({
+            dateFormat: "mm-dd-yy",
             duration: "fast",
             minDate: 0,
-            disabledDates: [new Date()]
+            disabledDates: [new Date()],
+            onSelect: function (selected) {
+                $("#CouponPeriodEnd").val($("#CouponPeriodEnd1").val());
+                $("#CouponPeriodEnd1").removeClass("errRedBorder");
+            }
             
         });
         $('input[type=checkbox]').each(function () {
@@ -242,13 +253,20 @@
             }
         });
     });
+
+    function toDate(dateStr) {
+        var parts = dateStr.split("-")
+        return new Date(parts[2], parts[1] - 1, parts[0])
+    }
     function UdpateSelectedValues(arg) {
         if (!validateBooking()) {
             return false; // Prevent form submission if validation fails
         } else {
-            var abcRT = ""
-            var abcPS = ""
-            var abcSTF = ""
+            var abcRT = "";
+            var abcPS = "";
+            var abcSTF = "";
+            $("#CouponPeriod").val($("#CouponPeriod1").val());
+            $("#CouponPeriodEnd").val( $("#CouponPeriodEnd1").val());
             //Iterating the collection of checkboxes which checked marked
             $('input[type=checkbox]').each(function () {
                 console.log(this.name)
@@ -275,7 +293,7 @@
                 }
 
                 if (this.name == "CHK_ACTIVE") {
-                    $('#sActive').val(this.checked);
+                    $('#isActive').val(this.checked);
 
                 }
             });

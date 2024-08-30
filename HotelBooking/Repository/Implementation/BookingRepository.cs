@@ -1,5 +1,6 @@
 ﻿using HotelBooking.Context;
 using HotelBooking.Model;
+using HotelBooking.Model.DynamicPrice;
 using HotelBooking.Model.Reatraurant;
 using HotelBooking.Model.Report;
 using HotelBooking.Model.Tour;
@@ -12,6 +13,7 @@ using System.Drawing;
 using System.Linq;
 using System.Web.UI.WebControls;
 using System.Xml;
+using static iTextSharp.text.pdf.AcroFields;
 
 namespace HotelBooking.Repository.Implementation
 {
@@ -82,9 +84,10 @@ namespace HotelBooking.Repository.Implementation
             return rtnVal;
         }
 
-        public bool AddBooking(BookingRequest bookingRequestEntity)
+        public string AddBooking(BookingRequest bookingRequestEntity)
         {
             int BookingId = 0;
+            string BookingNumber = string.Empty;
             Booking bookingEntity = new Booking
             {
                 BookingId = bookingRequestEntity.BookingId,
@@ -162,12 +165,13 @@ namespace HotelBooking.Repository.Implementation
                     _context.Booking.Add(bookingEntity);
                     _context.SaveChanges();
                     BookingId = bookingEntity.BookingId;
+                    BookingNumber = bookingEntity.BookingNumber;
                     rtnVal = true;
                 }
                 catch (Exception ex)
                 {
 
-                    return false;
+                    rtnVal = false;
                 }
 
             }
@@ -181,9 +185,9 @@ namespace HotelBooking.Repository.Implementation
                
 
             }
-            
+           
 
-            return rtnVal;
+            return BookingNumber;
         }
         public string AddOnlineBooking(BookingRequest bookingRequestEntity)
         {
@@ -334,23 +338,8 @@ namespace HotelBooking.Repository.Implementation
         public IEnumerable<PriceResponse> GetPricesForNight(PriceRequest req)
         {
             List<DateTime> allDates = new List<DateTime>();
-            int yy = int.Parse(req.CheckInDate.Substring(6, 4));
-            int dd = int.Parse(req.CheckInDate.Substring(0, 2));
-            int mm = int.Parse(req.CheckInDate.Substring(3, 2));
-
-            int yy1 = int.Parse(req.CheckOutDate.Substring(6, 4));
-            int dd1 = int.Parse(req.CheckOutDate.Substring(0, 2));
-            int mm1 = int.Parse(req.CheckOutDate.Substring(3, 2));
-
-            DateTime startDate = new DateTime(yy,mm,dd);
-            DateTime endDate = new DateTime(yy1, mm1, dd1);
-
-            //Tax calcution  for  branch based on tax configured
-            //TaxMaster TM = _context.TaxMaster.Where(t => t.BranchId == req.BranchId).FirstOrDefault();
-            //IEnumerable<TaxMaster> allTax = _context.TaxMaster.Where(t => t.BranchId == req.BranchId).ToArray();
-
-            //decimal taxVal =decimal.Parse(TM.Value.ToString());
-            for (DateTime date = startDate; date < endDate; date = date.AddDays(1))
+            
+            for (DateTime date = req.CheckInDate; date < req.CheckOutDate; date = date.AddDays(1))
             {
                 allDates.Add(date.Date);
             }
@@ -360,10 +349,12 @@ namespace HotelBooking.Repository.Implementation
             foreach (DateTime t in allDates)
             {
                 decimal spclAmount = GetSpecialRate(t, PM.RoomTypeId);
+               
                 if ("MON" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
                 {
 
-                    decimal amt = (spclAmount > 0 ? spclAmount : PM.MON);                    
+                    decimal amt = (spclAmount > 0 ? spclAmount : PM.MON);
+                    amt = getDynamicPrice(t, amt, PM.RoomTypeId, req.BranchId);
                     TaxMaster _tm = getConfiguredTax("ROOMS", req.BranchId, double.Parse(amt.ToString()));
                     decimal taxVal = Decimal.Parse(_tm.Value.ToString());                   
                     string TextType = _tm.TaxType;
@@ -374,7 +365,7 @@ namespace HotelBooking.Repository.Implementation
                        
                         roomTypeId = PM.RoomTypeId,
                         Tax = taxVal,
-                        Date = t.Date.ToString("d"),
+                        Date = t.Date,
                         Day = t.DayOfWeek.ToString(),
                         TaxAmount = _TaxAmount,
                         Amount = amt,
@@ -394,6 +385,7 @@ namespace HotelBooking.Repository.Implementation
                 if ("TUE" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
                 {
                     decimal amt = (spclAmount > 0 ? spclAmount : PM.TUE);
+                    amt = getDynamicPrice(t, amt, PM.RoomTypeId, req.BranchId);
                     TaxMaster _tm = getConfiguredTax("ROOMS", req.BranchId, double.Parse(amt.ToString()));
                     decimal taxVal = Decimal.Parse(_tm.Value.ToString());
                     string TextType = _tm.TaxType;
@@ -402,7 +394,7 @@ namespace HotelBooking.Repository.Implementation
                     {
                         roomTypeId = PM.RoomTypeId,
                         Tax = taxVal,
-                        Date = t.Date.ToString("d"),
+                        Date = t.Date,
                         Day = t.DayOfWeek.ToString(),
                         TaxAmount = _TaxAmount,
                         Amount = amt,
@@ -422,6 +414,7 @@ namespace HotelBooking.Repository.Implementation
                 if ("WED" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
                 {
                     decimal amt = (spclAmount > 0 ? spclAmount : PM.WED);
+                    amt = getDynamicPrice(t, amt, PM.RoomTypeId, req.BranchId);
                     TaxMaster _tm = getConfiguredTax("ROOMS", req.BranchId, double.Parse(amt.ToString()));
                     decimal taxVal = Decimal.Parse(_tm.Value.ToString());
                     string TextType = _tm.TaxType;
@@ -430,7 +423,7 @@ namespace HotelBooking.Repository.Implementation
                     {
                         roomTypeId = PM.RoomTypeId,
                         Tax = taxVal,
-                        Date = t.Date.ToString("d"),
+                        Date = t.Date,
                         Day = t.DayOfWeek.ToString(),
                         TaxAmount = _TaxAmount,
                         Amount = amt,
@@ -450,6 +443,7 @@ namespace HotelBooking.Repository.Implementation
                 if ("THU" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
                 {
                     decimal amt = (spclAmount > 0 ? spclAmount : PM.THUR);
+                    amt = getDynamicPrice(t, amt, PM.RoomTypeId, req.BranchId);
                     TaxMaster _tm = getConfiguredTax("ROOMS", req.BranchId, double.Parse(amt.ToString()));
                     decimal taxVal = Decimal.Parse(_tm.Value.ToString());
                     string TextType = _tm.TaxType;
@@ -458,7 +452,7 @@ namespace HotelBooking.Repository.Implementation
                     {
                         roomTypeId = PM.RoomTypeId,
                         Tax = taxVal,
-                        Date = t.Date.ToString("d"),
+                        Date = t.Date,
                         Day = t.DayOfWeek.ToString(),
                         TaxAmount = _TaxAmount,
                         Amount = amt,
@@ -477,6 +471,7 @@ namespace HotelBooking.Repository.Implementation
                 if ("FRI" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
                 {
                     decimal amt = (spclAmount > 0 ? spclAmount : PM.FRI);
+                    amt = getDynamicPrice(t, amt, PM.RoomTypeId, req.BranchId);
                     TaxMaster _tm = getConfiguredTax("ROOMS", req.BranchId, double.Parse(amt.ToString()));
                     decimal taxVal = Decimal.Parse(_tm.Value.ToString());
                     string TextType = _tm.TaxType;
@@ -485,7 +480,7 @@ namespace HotelBooking.Repository.Implementation
                     {
                         roomTypeId = PM.RoomTypeId,
                         Tax = taxVal,
-                        Date = t.Date.ToString("d"),
+                        Date = t.Date,
                         Day = t.DayOfWeek.ToString(),
                         TaxAmount =_TaxAmount,
                         Amount = amt,
@@ -503,7 +498,8 @@ namespace HotelBooking.Repository.Implementation
                 }
                 if ("SAT" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
                 {
-                    decimal amt = (spclAmount > 0 ? spclAmount : PM.TUE);
+                    decimal amt = (spclAmount > 0 ? spclAmount : PM.SAT);
+                    amt = getDynamicPrice(t, amt, PM.RoomTypeId, req.BranchId);
                     TaxMaster _tm = getConfiguredTax("ROOMS", req.BranchId, double.Parse(amt.ToString()));
                     decimal taxVal = Decimal.Parse(_tm.Value.ToString());
                     string TextType = _tm.TaxType;
@@ -512,7 +508,7 @@ namespace HotelBooking.Repository.Implementation
                     {
                         roomTypeId = PM.RoomTypeId,
                         Tax = taxVal,
-                        Date = t.Date.ToString("d"),
+                        Date = t.Date,
                         Day = t.DayOfWeek.ToString(),
                         TaxAmount = _TaxAmount,
                         Amount = amt,
@@ -530,7 +526,8 @@ namespace HotelBooking.Repository.Implementation
                 }
                 if ("SUN" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
                 {
-                    decimal amt = (spclAmount > 0 ? spclAmount : PM.TUE);
+                    decimal amt = (spclAmount > 0 ? spclAmount : PM.SUN);
+                    amt = getDynamicPrice(t, amt, PM.RoomTypeId, req.BranchId);
                     TaxMaster _tm = getConfiguredTax("ROOMS", req.BranchId, double.Parse(amt.ToString()));
                     decimal taxVal = Decimal.Parse(_tm.Value.ToString());
                     string TextType = _tm.TaxType;
@@ -539,7 +536,7 @@ namespace HotelBooking.Repository.Implementation
                     {
                         roomTypeId = PM.RoomTypeId,
                         Tax = taxVal,
-                        Date = t.Date.ToString("d"),
+                        Date = t.Date,
                         Day = t.DayOfWeek.ToString(),
                         TaxAmount = _TaxAmount,
                         Amount = amt,
@@ -566,61 +563,61 @@ namespace HotelBooking.Repository.Implementation
         private decimal GetSpecialRate(DateTime rDate,int RoomTypeId)
         {
             decimal rtnVal=0;
-            SPM sPM = _context.SpecialPrice.Where(c => c.RoomTypeId1 == RoomTypeId && c.isActive1==true).SingleOrDefault<SPM>();
+            SPM sPM = _context.SpecialPrice.Where(c => c.RoomTypeId1 == RoomTypeId && c.isActive1==true && (rDate>=c.DateRangeFrom && rDate<=c.DateRangeTo)).SingleOrDefault<SPM>();
             if (sPM != null)
             {
-                int sDay = int.Parse(sPM.DateRangeFrom.Substring(8, 2));
-                int sMonth = int.Parse(sPM.DateRangeFrom.Substring(5, 2));
-                int sYear = int.Parse(sPM.DateRangeFrom.Substring(0, 4));
-                int eDay = int.Parse(sPM.DateRangeTo.Substring(8, 2));
-                int eMonth = int.Parse(sPM.DateRangeTo.Substring(5, 2));
-                int eYear = int.Parse(sPM.DateRangeTo.Substring(0, 4));
+                //int sDay = int.Parse(sPM.DateRangeFrom.Substring(8, 2));
+                //int sMonth = int.Parse(sPM.DateRangeFrom.Substring(5, 2));
+                //int sYear = int.Parse(sPM.DateRangeFrom.Substring(0, 4));
+                //int eDay = int.Parse(sPM.DateRangeTo.Substring(8, 2));
+                //int eMonth = int.Parse(sPM.DateRangeTo.Substring(5, 2));
+                //int eYear = int.Parse(sPM.DateRangeTo.Substring(0, 4));
 
-                DateTime from = new DateTime(sYear, sMonth, sDay);
-                DateTime to = new DateTime(eYear, eMonth, eDay);
+                //DateTime from = new DateTime(sYear, sMonth, sDay);
+                //DateTime to = new DateTime(eYear, eMonth, eDay);
 
-                DateTime t = new DateTime(rDate.Year, rDate.Month, rDate.Day);
-                bool isFromDateOK = from <= t && t <= to;
-                Console.WriteLine(from <= t && t <= to); // False
-                t = new DateTime(rDate.Year, rDate.Month, rDate.Day);
-                bool isToOK = from <= t && t <= to;
-                Console.WriteLine(from <= t && t <= to); // True
+                //DateTime t = new DateTime(rDate.Year, rDate.Month, rDate.Day);
+                //bool isFromDateOK = from <= t && t <= to;
+                //Console.WriteLine(from <= t && t <= to); // False
+                //t = new DateTime(rDate.Year, rDate.Month, rDate.Day);
+                //bool isToOK = from <= t && t <= to;
+                //Console.WriteLine(from <= t && t <= to); // True
 
-                if (isFromDateOK && isToOK)
-                {
-                    if ("MON" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
+                //if (isFromDateOK && isToOK)
+                //{
+                    if ("MON" == rDate.DayOfWeek.ToString().Substring(0, 3).ToUpper())
                     {
 
                         rtnVal = sPM.MON1;
 
                     }
-                    if ("TUE" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
+                    if ("TUE" == rDate.DayOfWeek.ToString().Substring(0, 3).ToUpper())
                     {
                         rtnVal = sPM.TUE1;
 
                     }
-                    if ("WED" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
+                    if ("WED" == rDate.DayOfWeek.ToString().Substring(0, 3).ToUpper())
                     {
 
                         rtnVal = sPM.WED1;
                     }
-                    if ("THU" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
+                    if ("THU" == rDate.DayOfWeek.ToString().Substring(0, 3).ToUpper())
                     {
                         rtnVal = sPM.THUR1;
                     }
-                    if ("FRI" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
+                    if ("FRI" == rDate.DayOfWeek.ToString().Substring(0, 3).ToUpper())
                     {
                         rtnVal = sPM.FRI1;
                     }
-                    if ("SAT" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
+                    if ("SAT" == rDate.DayOfWeek.ToString().Substring(0, 3).ToUpper())
                     {
                         rtnVal = sPM.SAT1;
                     }
-                    if ("SUN" == t.DayOfWeek.ToString().Substring(0, 3).ToUpper())
+                    if ("SUN" == rDate.DayOfWeek.ToString().Substring(0, 3).ToUpper())
                     {
                         rtnVal = sPM.SUN1;
                     }
-                }
+                //}
             }
             return rtnVal;
         }
@@ -801,13 +798,13 @@ namespace HotelBooking.Repository.Implementation
             Branch br = _context.Branch.Where(br1 => br1.Id == BranchId).SingleOrDefault();
             //Compaany
             Company c = _context.Company.Where(cm => cm.Id == br.CompanyId).SingleOrDefault();
-            VMB.CompanyName = c.Name;
+            VMB.CompanyName = br.BranchName;
             VMB.CompanyAddress = br.Address;
             VMB.CompanyPhone = br.Phone1;
             VMB.CompanyEmail = br.EmailID;
 
            
-            IEnumerable<BookingCost> _PR = GetAllBookingsCost(VMB.BookingId);
+            IEnumerable<BookingCost> _PR = GetAllBookingsCost(VMB.BookingId).Where(b1=>b1.CostCategory<=2);
             decimal RoomCost = _PR.Select(t => t.PerNightCost).Sum();
             VMB.BookedNiths = _PR;
             IEnumerable<BookingPayments> _BP = GetAllBookingPayments(br.Id, b.BookingId);
@@ -858,7 +855,7 @@ namespace HotelBooking.Repository.Implementation
                                         NoOfRooms= totalRooms,
                                         AvailableRooms = totalRooms- entity.Count(),
                                         BookedRooms =entity.Count(),
-                                        AvailabilityDate=entity.Key.dt
+                                        AvailabilityDate=entity.Key.dt.ToString()
                                     }
                                 ).ToList();
 
@@ -912,15 +909,15 @@ namespace HotelBooking.Repository.Implementation
             List<Booking> extBk = _context.Booking.Where(b =>b.BranchId==branchId && b.RoomTypeId.Contains(roomTypeId.ToString())).ToList();
             foreach(var item in extBk)
             {
-                int yy = int.Parse(item.CheckIn.Substring(6, 4));
-                int dd = int.Parse(item.CheckIn.Substring(0, 2));
-                int mm = int.Parse(item.CheckIn.Substring(3, 2));
-                int yy1 = int.Parse(item.Checkout.Substring(6, 4));
-                int dd1 = int.Parse(item.Checkout.Substring(0, 2));
-                int mm1 = int.Parse(item.Checkout.Substring(3, 2));
-                DateTime bkChkinDateDate = new DateTime(yy, mm, dd);
-                DateTime bkChkOutDateDate = new DateTime(yy1, mm1, dd1);
-                if(checkinDate>= bkChkinDateDate && checkinDate<= bkChkOutDateDate)
+                //int yy = int.Parse(item.CheckIn.Substring(6, 4));
+                //int dd = int.Parse(item.CheckIn.Substring(0, 2));
+                //int mm = int.Parse(item.CheckIn.Substring(3, 2));
+                //int yy1 = int.Parse(item.Checkout.Substring(6, 4));
+                //int dd1 = int.Parse(item.Checkout.Substring(0, 2));
+                //int mm1 = int.Parse(item.Checkout.Substring(3, 2));
+                //DateTime bkChkinDateDate = new DateTime(yy, mm, dd);
+                // bkChkOutDateDate = new DateTime(yy1, mm1, dd1);
+                if(checkinDate>= item.CheckIn && checkinDate<= item.Checkout)
                 {
                     rtnVal = false;
                 }
@@ -969,6 +966,49 @@ namespace HotelBooking.Repository.Implementation
            TaxMaster allTax = _context.TaxMaster.Where(t => t.BranchId == branchId && t.appliedForName.ToUpper()== AppliedFor.ToUpper() && (_amount>=t.RangeFrom && _amount<=t.RangeTo)).OrderByDescending(o=>o.Value).FirstOrDefault();
             return allTax;
         }
+        #region " Dynamic Pricing Checks"
+        private decimal getDynamicPrice(DateTime rDate,decimal baseAmount,int roomTypeId,int branchId)
+        {
+           
+             
+            IEnumerable<Booking> _bookedRoom = _context.Booking.Where(b => b.BranchId == branchId  && b.RoomTypeId.Contains(roomTypeId.ToString())).ToArray();
+            int BookedRoomCount = 0;
+            foreach (var item in _bookedRoom)
+            {
+                //int yy = int.Parse(item.CheckIn.Substring(6, 4));
+                //int dd = int.Parse(item.CheckIn.Substring(0, 2));
+                //int mm = int.Parse(item.CheckIn.Substring(3, 2));
+               //DateTime bkChkinDateDate = new DateTime(yy, mm, dd);
+                
+                if (rDate == item.CheckIn)
+                {
+                    BookedRoomCount++;
+                }
+            }
+
+            int _totalRooms = _context.Rooms.Where(r => r.RoomTypeId == roomTypeId && r.BranchId == branchId).Count();
+            int _avlRooms = _totalRooms - BookedRoomCount;
+            
+            
+            DynamicPriceModel _dnp=_context.DynamicPrice.Where(r=>r.RoomTypeId== roomTypeId).FirstOrDefault();
+            if (_dnp != null)
+            {
+                var dnpBase = (_dnp.Slab1_Thresold >= _avlRooms && _dnp.Slab2_Thresold <= _avlRooms) ? _dnp.Slab1 :
+                    (_dnp.Slab2_Thresold >= _avlRooms && _dnp.Slab3_Thresold <= _avlRooms) ? _dnp.Slab2 : (_dnp.Slab1_Thresold <= _avlRooms && _dnp.Slab2_Thresold <= _avlRooms) ? _dnp.Slab3 : 0;
+
+                if (_dnp.isFixed)
+                {
+                    baseAmount = baseAmount + dnpBase;
+                }
+                else
+                {
+                    baseAmount = baseAmount + (baseAmount * dnpBase / 100);
+                }
+
+            }
+            return baseAmount;
+        }
+        #endregion 
     }
-    
+
 }

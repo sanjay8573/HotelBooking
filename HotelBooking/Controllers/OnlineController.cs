@@ -13,23 +13,48 @@ namespace HotelBooking.Controllers
 {
     public class OnlineController : Controller
     {
-        
-        // GET: Online
-        public async Task<ActionResult> Review(string reqStr)
+
+
+        public ActionResult Review(string reqStr)
         {
-            string _str = "ew0KCSJCb29raW5nSWQiOiAxLA0KCSJCcmFuY2hJZCI6MSwNCgkiR3Vlc3RJZCI6MSwNCgkiQm9va2luZ1R5cGUiOiJSb29tT25seSINCg0KfQ";
+            string _str = reqStr;// "ew0KCSJCb29raW5nSWQiOiAxLA0KCSJCcmFuY2hJZCI6MSwNCgkiR3Vlc3RJZCI6MSwNCgkiQm9va2luZ1R5cGUiOiJSb29tT25seSINCg0KfQ";
 
 
-            ReviewModel _reviewResponse = await ProcessReview.RequestReview(_str);
-          
+            //ReviewModel _reviewResponse = await ProcessReview.RequestReview(_str);
+            ezyHotelController _onl = new ezyHotelController();
+            string padded = reqStr.PadRight(reqStr.Length + (4 - reqStr.Length % 4) % 4, '=');
+            var base64Bytes = System.Convert.FromBase64String(padded);
+
+            string reqJSONStr = System.Text.Encoding.UTF8.GetString(base64Bytes);
+            RequestJSON reqModel=JsonConvert.DeserializeObject<RequestJSON>(reqJSONStr);
+            ReviewModel _reviewResponse= _onl.ReviewRequest(reqModel);
 
             return View("Review", _reviewResponse);
         }
-        public async Task<ActionResult> ReviewSubmit(ReviewModel reviewModelEntity)
+        // GET: Online
+        //public async Task<ActionResult> Review(string reqStr)
+        //{
+        //    string _str = reqStr;// "ew0KCSJCb29raW5nSWQiOiAxLA0KCSJCcmFuY2hJZCI6MSwNCgkiR3Vlc3RJZCI6MSwNCgkiQm9va2luZ1R5cGUiOiJSb29tT25seSINCg0KfQ";
+
+
+        //    ReviewModel _reviewResponse = await ProcessReview.RequestReview(_str);
+        
+        //    return View("Review", _reviewResponse);
+        //}
+        //public async Task<ActionResult> ReviewSubmit(ReviewModel reviewModelEntity)
+        //{
+
+        //    ReviewModel _reviewResponse = await ProcessReview.SubmitReview(reviewModelEntity);
+
+        //    return View("ReviewResult");
+        //}
+        public ActionResult ReviewSubmit(ReviewModel reviewModelEntity)
         {
 
-            ReviewModel _reviewResponse = await ProcessReview.SubmitReview(reviewModelEntity);
-
+            //ReviewModel _reviewResponse = await ProcessReview.SubmitReview(reviewModelEntity);
+            ezyHotelController _onl = new ezyHotelController();
+            ReviewResponse rr=_onl.ReviewSubmit(reviewModelEntity);
+            ViewBag.RName = rr.Reviews.ReviewerName;
             return View("ReviewResult");
         }
     }

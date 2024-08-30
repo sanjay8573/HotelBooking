@@ -80,7 +80,7 @@ namespace HotelBooking.Repository.Implementation
             return roomResponse;
         }
 
-        public bool CreateBooking(BookingRequest bookingEntity)
+        public string CreateBooking(BookingRequest bookingEntity)
         {
             return _booking.AddBooking(bookingEntity);
         }
@@ -146,7 +146,7 @@ namespace HotelBooking.Repository.Implementation
             return rtnVal;
         }
 
-        private List<RoomInfo> getRooms(int branchId,string checkInDate,string checkOutDate)
+        private List<RoomInfo> getRooms(int branchId,DateTime checkInDate, DateTime checkOutDate)
         {
             List<RoomType> rt = new List<RoomType>();
             List<RoomInfo> ri = new List<RoomInfo>();
@@ -193,31 +193,22 @@ namespace HotelBooking.Repository.Implementation
            
             return ri;
         }
-        private bool isRoomTypeAvailable(int roomTypeId,int branchId,string checkInDate, string checkOutDate)
+        private bool isRoomTypeAvailable(int roomTypeId,int branchId,DateTime checkInDate, DateTime checkOutDate)
         {
             Logger lr = new Logger();
             string inputData = "RoomTypeId" + roomTypeId.ToString() + "BranchId" + branchId.ToString() + "checkInDate" + checkInDate + "checkOutDate" + checkOutDate;
             lr.Log("isRoomTypeAvailable", "inputData" + inputData, DateTime.Now);
             bool rtnVal = false;
-            int yy = int.Parse(checkInDate.Substring(6, 4));
-            int dd = int.Parse(checkInDate.Substring(0, 2));
-            int mm = int.Parse(checkInDate.Substring(3, 2));
-
-            int yy1 = int.Parse(checkOutDate.Substring(6, 4));
-            int dd1 = int.Parse(checkOutDate.Substring(0, 2));
-            int mm1 = int.Parse(checkOutDate.Substring(3, 2));
-
-            DateTime startDate = new DateTime(yy, mm, dd);
-            DateTime endDate = new DateTime(yy1, mm1, dd1);
+            
             
             //List<Booking> extBk= _booking.GetAllBooking(branchId).Where(b => b.RoomTypeId.Contains(roomTypeId.ToString()) && DateTime.Parse(b.CheckIn) >= startDate && DateTime.Parse(b.Checkout) <= endDate && b.BookingStatus != "COMPLETED" ).ToList();
             List<Booking> extBk = _booking.GetAllBooking(branchId).Where(b => b.RoomTypeId.Contains(roomTypeId.ToString()) && b.BookingStatus != "COMPLETED").ToList();
             var extBk1 = (from a in _booking.GetAllBooking(branchId).Where(b => b.RoomTypeId.Contains(roomTypeId.ToString()) && b.BookingStatus != "COMPLETED")
                           .AsEnumerable()
                          select (
-                            DateTime.ParseExact(a.CheckIn, "dd-MM-yyyy",CultureInfo.InvariantCulture),
-                            DateTime.ParseExact(a.Checkout, "dd-MM-yyyy", CultureInfo.InvariantCulture)
-                         )).Where(x => x.Item1 >= startDate && x.Item2 <= endDate); ;
+                            a.CheckIn,
+                            a.Checkout
+                         )).Where(x => x.Item1 >= checkInDate && x.Item2 <= checkOutDate); ;
                           
                                    
 
@@ -228,7 +219,7 @@ namespace HotelBooking.Repository.Implementation
             }
             return rtnVal;
         }
-        private IEnumerable<PriceResponse> getRoomPrice(int roomTypeId, int branchId, string checkInDate, string checkOutDate)
+        private IEnumerable<PriceResponse> getRoomPrice(int roomTypeId, int branchId, DateTime checkInDate, DateTime checkOutDate)
         {
             Logger lr = new Logger();
             string inputData = "RoomTypeId" + roomTypeId.ToString() + "BranchId" + branchId.ToString() + "checkInDate" + checkInDate + "checkOutDate" + checkOutDate;

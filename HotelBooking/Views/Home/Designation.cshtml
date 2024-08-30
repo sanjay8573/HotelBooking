@@ -29,10 +29,10 @@
                                 }
 
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
+                            @*<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
                                 Search
                                 <input type="text" id="txtUserName" class="onlyinput" placeholder="Search" runat="server">
-                            </div>
+                            </div>*@
                         </div>
                         <table class="table table-bordered">
                             <tbody>
@@ -52,8 +52,8 @@
                                             <td align="left" valign="middle">@stf.DesignationName</td>
                                             <td align="left" valign="middle">@stf.DesignationCode</td>
 
-                                            <td align="left" valign="middle"><a href="@Url.Action("AddDesignation","Home",new { @DesigId = stf.Id })" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
-                                            <td align="left" valign="middle"><a href="@Url.Action("DelDesignation","Home",new { @DesigId = stf.Id })" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
+                                            <td align="left" valign="middle"><a href="@Url.Action("AddDesig","Home",new { @DesigId = stf.Id })" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
+                                            <td align="left" valign="middle"><a href="@Url.Action("DelDesig","Home",new { @DesigId = stf.Id })" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
                                         </tr>
                                         i++;
                                     }

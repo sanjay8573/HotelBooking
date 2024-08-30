@@ -4,9 +4,11 @@ using HotelBooking.Repository.Implementation;
 using HotelBooking.Repository.Interface;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Web.Http;
 
 namespace HotelBooking.Controllers.onlineAPI
@@ -15,8 +17,12 @@ namespace HotelBooking.Controllers.onlineAPI
     {
         private readonly IOnline _online;
         private readonly ICoupon _coupon;
-        public LFApiController() { 
-        _online= new OnlineRepository();
+        public LFApiController() {
+            CultureInfo newCulture = (CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
+            newCulture.DateTimeFormat.ShortDatePattern = "MM-dd-yy";
+            newCulture.DateTimeFormat.DateSeparator = "-";
+            Thread.CurrentThread.CurrentCulture = newCulture;
+            _online = new OnlineRepository();
          _coupon= new CouponRepository();
         }
 

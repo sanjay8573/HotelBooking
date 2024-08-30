@@ -95,12 +95,12 @@
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                     <label for="edit-mail" class="form-required"> Name</label>
 
-                                    @Html.TextBoxFor(model => model.StaffName, new { @class = "full-width ValidateInput", placeholder = "Employee Name" })
+                                    @Html.TextBoxFor(model => model.StaffName, new { @class = "full-width ValidateInput", placeholder = "Employee Name", maxlength = "100" })
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                     <label for="edit-mail" class="form-required">Nick Name</label>
 
-                                    @Html.TextBoxFor(model => model.NickName, new { @class = "full-width", placeholder = "Nick Name" })
+                                    @Html.TextBoxFor(model => model.NickName, new { @class = "full-width", placeholder = "Nick Name", maxlength = "50" })
                                 </div>
                             </div>
 
@@ -108,23 +108,20 @@
 
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                     <label for="edit-mail" class="form-required">Phone Number</label>
-                                    <div class="checkoutcontact">
-                                        <div class="checkoutcode"><span id="spnCountryCode">+ 91</span></div>
-                                        <div class="checkoutcontactin">
+                                    
+                                       
+                                       
 
-                                            @Html.TextBoxFor(model => model.Phone1, new { @class = "full-width ValidateInput", valType="Phone", placeholder = "Phone Number" })
-                                        </div>
-                                    </div>
+                                            @Html.TextBoxFor(model => model.Phone1, new { @class = "full-width ValidateInput", valType="Phone", placeholder = "Phone Number", maxlength = "15" })
+                                       
+                                   
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
-                                    <label for="edit-mail" class="form-required">Alternative Phone Number</label>
-                                    <div class="checkoutcontact">
-                                        <div class="checkoutcode"><span id="spnCountryCode">+ 91</span></div>
-                                        <div class="checkoutcontactin">
+                                    <label for="edit-mail" class="form-required">Alternate Phone Number</label>
+                                    
 
-                                            @Html.TextBoxFor(model => model.Phone2, new { @class = "full-width ValidateInput", placeholder = "Alternate Phone Number" })
-                                        </div>
-                                    </div>
+                                            @Html.TextBoxFor(model => model.Phone2, new { @class = "full-width ValidateInput", placeholder = "Alternate Phone Number", maxlength = "15" })
+                                        
                                 </div>
                             </div>
 
@@ -132,12 +129,12 @@
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                     <label for="edit-mail" class="form-required">Email</label>
                                     
-                                    @Html.TextBoxFor(model => model.Email, new { @class = "full-width ValidateInput", valType = "Email", placeholder = "Staff Email" })
+                                    @Html.TextBoxFor(model => model.Email, new { @class = "full-width ValidateInput", valType = "Email", placeholder = "Staff Email", maxlength = "100" })
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xs-12 pull-left">
                                     <label for="edit-mail" class="form-required">Daily Booking Limit</label>
 
-                                 @Html.TextBoxFor(model => model.DailyBookingLimit, new { @class = "full-width", placeholder = "Booking Limit" })
+                                 @Html.TextBoxFor(model => model.DailyBookingLimit, new { @class = "full-width", placeholder = "Booking Limit", maxlength = "3", ValType= "NumbersOnly" })
                                 </div>
                                 @Html.HiddenFor(model => model.Id)
                                 @Html.HiddenFor(model => model.isActive)

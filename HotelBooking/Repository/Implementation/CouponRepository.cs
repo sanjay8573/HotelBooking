@@ -32,6 +32,7 @@ namespace HotelBooking.Repository.Implementation
                     tmpEntity.Title = CouponEntity.Title;
                     tmpEntity.Description = CouponEntity.Description;
                     tmpEntity.CouponPeriod = CouponEntity.CouponPeriod;
+                    tmpEntity.CouponPeriodEnd = CouponEntity.CouponPeriodEnd;
                     tmpEntity.CouponCode = CouponEntity.CouponCode;
                     tmpEntity.CouponType = CouponEntity.CouponType;
                     tmpEntity.CouponValue = CouponEntity.CouponValue;

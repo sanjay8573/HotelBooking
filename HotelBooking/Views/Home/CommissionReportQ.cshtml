@@ -18,14 +18,14 @@
 
                             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required">Booking Date From </label>
-                                <input type="text" id="txtfromDate" class="full-width allinputgo" placeholder="From Date" autocomplete="off">
+                                <input type="text" id="txtfromDate" class="full-width allinputgo ValidateInput" placeholder="From Date" autocomplete="off">
                                 @Html.HiddenFor(model => model.fromDate)
                                 @Html.HiddenFor(model => model.BranchId)
 
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required">Booking Date To </label>
-                                <input type="text" id="txtToDate" class="full-width allinputgo" placeholder="To Date" autocomplete="off">
+                                <input type="text" id="txtToDate" class="full-width allinputgo ValidateInput" placeholder="To Date" autocomplete="off">
                                 @Html.HiddenFor(model => model.toDate)
 
                             </div>
@@ -53,7 +53,7 @@
 
 
 
-                            <input type="submit" name="SUBMIT" class="prev action-button" value="Search" runat="server">
+                            <input type="submit" name="SUBMIT" class="prev action-button" onclick="return checkValues();" value="Search" runat="server">
                         </form>
                     </div>
                 </div>
@@ -64,25 +64,29 @@
 </div>
 <script>
     $(document).ready(function () {
+        $("input").attr("autocomplete", "none");
+        $(".ValidateInput").on("blur", function () {
+            validateField(this);
+        });
         $("#txtfromDate").datepicker({
-            dateFormat: "dd-mm-yy"
+            dateFormat: "mm-dd-yy"
             ,duration: "fast",
             onSelect: function (selected) {
 
                 $('#fromDate').val($('#txtfromDate').val());
-
+                $("#txtfromDate").removeClass("errRedBorder");
 
 
             }
         });
 
         $("#txtToDate").datepicker({
-            dateFormat: "dd-mm-yy"
+            dateFormat: "mm-dd-yy"
             , duration: "fast",
             onSelect: function (selected) {
 
                 $('#toDate').val($('#txtToDate').val());
-
+                $("#txtToDate").removeClass("errRedBorder");
 
 
             }
@@ -96,4 +100,11 @@
 
         });
     });
+    function checkValues() {
+        if (!validateBooking()) {
+            return false; // Prevent form submission if validation fails
+        } else {
+            return true;
+        }
+    }
 </script>

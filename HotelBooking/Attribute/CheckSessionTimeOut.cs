@@ -43,6 +43,7 @@ namespace HotelBooking.Attribute
                     HttpContext.Current.Session["BranchCurrencyCode"] = model.BranchCurrencyCode;
                     HttpContext.Current.Session["BranchCurrencySymbol"] = model.BranchCurrencySymbol;
                     HttpContext.Current.Session["BranchTax"] = model.BranchTaxPercentage;
+                    HttpContext.Current.Session["Logged_In_User"] = model.UserId;
                     //_l.Log("CheckSessionTimeOut", "Session Created from CookieUserId" + uid.ToString(), DateTime.Now);
                     //filterContext.Result = new RedirectResult("~/UnProHome/LogOff");
                     return;

@@ -1,9 +1,32 @@
 ﻿@model HotelBooking.Model.Booking
 @using HotelBooking.Model
 @{
-    ViewBag.Title = "AddBooking";
+    ViewBag.Title = "Add Booking";
 }
 
+<style>
+ 
+.divloader {
+  border: 10px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 10px solid #3498db;
+  width: 60px;
+  height: 60px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@@-webkit-keyframes spin {
+  0%{ -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
 
 
 <div class="row" id="AddBooking">
@@ -65,7 +88,7 @@
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
                     <label for="edit-mail" class="form-required">GST?</label>
-                    <input type="text" id="txtGSTNumber" class="full-width" placeholder="GST Number" runat="server">
+                    <input type="text" id="txtGSTNumber" class="full-width" placeholder="GST Number" maxlength="15" runat="server">
                 </div>
 
                 <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 p-0 pull-left" style="margin-top: 15px;">
@@ -140,11 +163,11 @@
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 p-0 pull-left" style="margin-top: 15px;">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
                         <label for="edit-mail" class="form-required">Check In</label>
-                        <input type="text" id="Addbookingdatepickerinn" value="@Model.CheckIn" class="full-width allinputgo  ValidateInput" placeholder="Check In" autocomplete="off">
+                        <input type="text" id="Addbookingdatepickerinn" value="@Model.CheckIn" class="full-width allinputgo  ValidateInput" placeholder="CheckIn Date" autocomplete="off">
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
                         <label for="edit-mail" class="form-required">Check Out</label>
-                        <input type="text" id="Addbookingdatepickerout" value="@Model.Checkout" class="full-width allinputgo ValidateInput" placeholder="Check Out" autocomplete="off">
+                        <input type="text" id="Addbookingdatepickerout" value="@Model.Checkout" class="full-width allinputgo ValidateInput" placeholder="CheckOut Date" autocomplete="off">
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left" style="margin-top: 15px; background: #d4dee1; padding: 5px 0px;">
@@ -248,9 +271,9 @@
 
                 </div>
 
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-right">
+                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-right form-group">
                     <label for="edit-mail" class="form-required">&nbsp;</label>
-                    <input type="button" name="SUBMIT" class="prev action-button full-width mg-0" onclick="return GotoNextPage()" value="Next" runat="server">
+                    <input type="button" name="SUBMIT" class="prev action-button full-width mg-0 " onclick="return GotoNextPage()" value="Next" runat="server">
                 </div>
 
             </form>
@@ -271,10 +294,11 @@
                             <td align="left" valign="middle"><strong>@ViewBag.CurrencySymbol</strong><strong id="gTotal1">0.00</strong></td>
                         </tr>
                         <tr>
-                            <td class="trthbgclr" align="left" valign="middle">Coupon</td>
+                            <td class="trthbgclr" align="left" valign="middle">Coupon &nbsp; <span id="cpAppliedMessage"></span></td>
                             <td align="left" valign="middle">
                                 <input type="text" class="pull-left" id="BK-CPNCODE"  placeholder="Coupon Code">
-                                <input type="button" name="SUBMIT" class="prev action-button pull-left" value="Apply" onclick="AppyCoupon();" runat="server" style="margin: 5px 15px;">
+                                <input type="button" name="SUBMIT" class="prev action-button pull-left" data-loading-text="<i class='icon-spinner icon-spin icon-large'></i>" value="Apply" onclick="AppyCoupon();" runat="server" style="margin: 5px 15px;">
+                                <input type="hidden" id="isCouponApplied" value=" " />
                             </td>
                         </tr>
                         <tr>
@@ -297,9 +321,12 @@
 <script>
     var amt;
     function SaveBooking(btn) {
-       
-        $(btn).prop("disabled", true);
-        console.log("SAving Booking.....");
+        if ($(btn).attr("disabled") == "disabled") {
+            e.preventDefault();
+        }
+        $(btn).attr("disabled", "disabled");
+        $(btn).append('<span class="spinner"><i class="fa fa-spinner fa-spin"></i></span>');
+        //console.log("SAving Booking.....");
         const GuestName = $("#Selguest option:selected").text().replace(/[\n\r]+/g, ' ').trim();
         const GuestID = $("#Selguest option:selected").val();
 
@@ -419,7 +446,7 @@
                     BookingCostId: parseInt(0),
                     RoomTypeId: item.roomTypeId,
                     Description: item.Description,
-                    Date: item.Date,
+                    Date: new Date(parseInt(item.Date.replace("/Date(", "").replace(")/", ""), 10)),
                     PerNightCost: item.Amount,
                     OfferPrice: item.OfferPrice,
                     CostCategory: 1,
@@ -478,7 +505,8 @@
                     })
                         //.then(response => response.json())
                         .then(() => {
-                            //console.log(response.json)
+                            $(btn).find("span").remove();
+                            $(btn).removeAttr("disabled");
                             $.toast({
                                 heading: 'Success',
                                 text: 'Booking Success ',
@@ -507,15 +535,24 @@
 
                     const couponCode = $("#BK-CPNCODE").val();
                     //const CCBaseURI = 'BookingInterface';
-
-                    $.post("/Home/ApplyCoupon", { BranchId: 3, couponCode: couponCode }, function (data) {
-                        _displayDiscount(data);
-                    });
+                    var isApplied = $("#isCouponApplied").val();
+                    if (isApplied != couponCode) {
+                        if (couponCode != '') {
+                            $.post("/Home/ApplyCoupon", { BranchId: 3, couponCode: couponCode }, function (data) {
+                                _displayDiscount(data);
+                            });
+                            $("#isCouponApplied").val(couponCode);
+                        } else {
+                            $("#cpAppliedMessage").text("Enter Valide Coupon code");
+                        }
+                    } else {
+                        $("#cpAppliedMessage").text("Coupon code already applied");
+                    }
 
 
                 }
                 function _displayDiscount(tempData) {
-                    console.log(tempData);
+                    //console.log(tempData);
                     let pamt;
                     let tmpAmt = $("#BK-PayAMT").text();
                     let DiscountAmount = tempData;
@@ -554,11 +591,11 @@
                 //}
                 var dataList = [];
                  function calculatePS() {
-                    console.log('Calcuation for Paid services selected ');
+                    //console.log('Calcuation for Paid services selected ');
                      var gTotal = $("#hdnRoomCost").val();
                      var gTotalTax = $("#hdnRoomTax").val();
-                     console.log('Current Total ' + gTotal);
-                     console.log('Current Tax ' + gTotalTax);
+                     //console.log('Current Total ' + gTotal);
+                     //console.log('Current Tax ' + gTotalTax);
                      var pdTaxes = 0;
                     $('input[type=checkbox]').each(function () {
 
@@ -570,15 +607,15 @@
                                 var txtId = this.id.replace("CHK_PS_BK", "QTY");
                                 var qty = $("#" + txtId).val();
                                
-                                console.log('CHECKED id' + this.id + "  checked Value  " + this.value + " QTY=" + Number(qty) + " TAX=" + Number(taxPercentage));
+                                //console.log('CHECKED id' + this.id + "  checked Value  " + this.value + " QTY=" + Number(qty) + " TAX=" + Number(taxPercentage));
                                 if (Number(qty) > 0) {
                                     var tmptotal = Number(qty) * Number(this.value);
                                     tmppdTaxes = Number(tmptotal * taxPercentage / 100);
-                                    console.log("Taxex for " + tmppdTaxes)
+                                    //console.log("Taxex for " + tmppdTaxes)
                                     gTotal = Number(gTotal) + Number(tmptotal) + Number(tmppdTaxes);
                                     gTotalTax = Number(gTotalTax) + Number(tmppdTaxes);
-                                    console.log('gTotal::' + gTotal);
-                                    console.log("gTaxex ::" + gTotalTax)
+                                    //console.log('gTotal::' + gTotal);
+                                    //console.log("gTaxex ::" + gTotalTax)
                                 } 
                             }
                             
@@ -594,7 +631,7 @@
     
                 $(function () {
                     var userObj;
-                    console.log("On Load ===="+userObj);
+                    //console.log("On Load ===="+userObj);
 
                     function divLoaded() {
                         $("#totAmt").text($("#TotalCostForNights").val());
@@ -612,7 +649,7 @@
 
                     };
                     $("#Addbookingdatepickerinn").datepicker({
-                        dateFormat: "dd-mm-yy",
+                        dateFormat: "mm-dd-yy",
                         duration: "fast",
                         minDate: 0,
                         disabledDates: [new Date()],
@@ -621,7 +658,7 @@
                             minDate.setDate(minDate.getDate() + 1); //add one day
                             $('#Addbookingdatepickerout').datepicker('option', 'minDate', minDate);
 
-
+                            $("#Addbookingdatepickerinn").removeClass("errRedBorder");
 
                         }
                     });
@@ -629,28 +666,29 @@
 
 
                     $("#Addbookingdatepickerout").datepicker({
-                        dateFormat: "dd-mm-yy"
+                        dateFormat: "mm-dd-yy"
                         , duration: "fast",
                         onSelect: function (selected) {
                             var maxDate = $(this).datepicker('getDate');
                             var minDate = $("#Addbookingdatepickerinn").datepicker('getDate');
                             var fdate = minDate.getDate(); //add one day
                             var todate = maxDate.getDate();
-                            var todalNight = parseInt(todate) - parseInt(fdate);
+                            var todalNight = Math.floor((maxDate.getTime() - minDate.getTime()) / 86400000);
+                          
+                            //var todalNight = parseInt(todate) - parseInt(fdate);
+
                             $('#nOn').text(todalNight);
                             amt = 0;
                             $("#totAmt").text('');
                             $("#hdnRoomCost").val(0);
                             $("#totAmt").trigger('change'); 
-
+                            $("#Addbookingdatepickerout").removeClass("errRedBorder");
 
                         }
                     });
                     $("#NumberofRoom").change(function () {
                         amt = 0;
-                        if (!validateBooking()) {
-                            return false; // Prevent form submission if validation fails
-                        } else {
+                        
                             $("#totAmt").text('');
                             $("#hdnRoomCost").val(0);
                             $("#totAmt").trigger('change');
@@ -660,18 +698,43 @@
                             var minDate = $("#Addbookingdatepickerinn").datepicker('getDate');
                             var fdate = minDate.getDate(); //add one day
                             var todate = maxDate.getDate();
-                            var todalNight = parseInt(todate) - parseInt(fdate);
+                            var todalNight = Math.floor((maxDate.getTime() - minDate.getTime()) / 86400000);
                             var totalRoomSelected = $('option:selected', this).val();
                             //console.log(RoomTypeId + "  " + cin + "   " + cout);
-                            $("#PPR").html('');
-                            $("#PPR").load("/Home/_PricePerRoom?nOfr=" + totalRoomSelected + "&todalNight=" + todalNight);
-                            //$("#ppn").load("/BookingInterface/_PricePerNight?RoomTypeId=" + RoomTypeId + "&cinDate=" + cin + "&coutDate=" + cout + "&nOfr=" + totalRoomSelected);
+                       
+                        var PPR_URL = "/Home/_PricePerRoom?nOfr=" + totalRoomSelected + "&todalNight=" + todalNight;
+                        $("#PPR").html('');
+                        $("#PPR").addClass("divloader");
+                        $.ajax({
+                            url: PPR_URL,
+                            cache: false,
+                            success: function (html) {
+                                $("#PPR").html('');
+                                $("#PPR").append(html);
+                            },
+                            complete: function () {
+                                $("#PPR").removeClass("divloader");
+                            }
+                        });
 
-                            //console.log("....1");
-                            //setTimeout(divLoaded, 100);
-                            $("#paidservices").load("/Home/_PaidServices?RoomTypeId=" + RoomTypeId);
+                        var PDS_URL = "/Home/_PaidServices?RoomTypeId=" + RoomTypeId;
+                        $("#paidservices").html('');
+                        $("#paidservices").addClass("divloader");
+                        $.ajax({
+                            url: PDS_URL,
+                            cache: false,
+                            success: function (html) {
+                                $("#paidservices").html('');
+                                $("#paidservices").append(html);
+                            },
+                            complete: function () {
+                                $("#paidservices").removeClass("divloader");
+                            }
+                        });
+                           
+                       
 
-                        }
+                       
                       
                         
 

@@ -3,7 +3,22 @@
 @{
     ViewBag.Title = "Guests";
 }
-
+<style>
+    .searchbutton {
+        /*float: left;*/
+        width: 10%;
+        padding: 8px;
+        background: #2196F3;
+        color: white;
+        font-size: 17px;
+        border: 1px solid grey;
+        border-left: none;
+        cursor: pointer;
+    }
+        .searchbutton:hover {
+            background: #0b7dda;
+        }
+</style>
 <div class="row">
     <div class="col-xl-3 col-lg-6 col-md-6 col-12">
         <div class="card gradient-blackberry">
@@ -35,36 +50,7 @@
             </div>
         </div>
     </div>
-    @*<div class="col-xl-3 col-lg-6 col-md-6 col-12">
-        <div class="card gradient-green-tea">
-            <div class="card-body">
-                <div class="card-block pt-2 ">
-                    <div class="media">
-                        <div class="media-body white text-left">
-                            <h3 class="font-large-1 mb-0">7</h3>
-                            <span>Bookings</span>
-                        </div>
-                        <div class="media-right white text-right"> <i class="fa fa-list font-large-1"></i> </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-lg-6 col-md-6 col-12">
-        <div class="card gradient-pomegranate">
-            <div class="card-body">
-                <div class="card-block pt-2 ">
-                    <div class="media">
-                        <div class="media-body white text-left">
-                            <h3 class="font-large-1 mb-0">130979.60</h3>
-                            <span>INCOME</span>
-                        </div>
-                        <div class="media-right white text-right"> <i class="fa fa-dollar font-large-1"></i> </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>*@
+    
 </div>
 <!--Statistics cards Starts-->
 <div class="row">
@@ -91,11 +77,19 @@
                                     </div>
                                 }
                             </div>
-                            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
-                                Search
-                                <input type="text" id="txtUserName" class="onlyinput" placeholder="Search" runat="server">
-                            </div>
-                        </div>
+                            <div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 pull-left">
+                                
+                                @using (Html.BeginForm("Guests", "Home", FormMethod.Get, new { id = "form2" }))
+                                {
+                                    <div id="pro_pag2">
+                                        Search
+                                        @Html.TextBox("txtSearchData", (String)ViewBag.txtSearchData, new { @class = "onlyinput", placeholder = "Search Guest" })
+                                        <button class="searchbutton" type="submit"><i class="fa fa-search"></i></button>
+                                    </div>
+                                 }
+
+                             </div>
+                         </div>
                         <table class="table table-bordered">
                             <tbody>
                                 <tr>
@@ -104,8 +98,8 @@
                                     <th width="17%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Country</a></th>
                                     <th width="23%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Email</a></th>
                                     <th width="15%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Mobile</a></th>
-                                    <th width="15%" align="center" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">VIP</a></th>
-                                    <th width="20%" align="center" valign="middle" bgcolor="#003556" colspan="4" class="clrwhit"><a href="#">Action</a></th>
+                                    
+                                    <th width="20%" align="center" valign="middle" bgcolor="#003556" colspan="5" class="clrwhit"><a href="#">Action</a></th>
 
                                 </tr>
                                 @if (Model != null)
@@ -119,8 +113,8 @@
                                             <td align="left" valign="middle">@gs.country</td>
                                             <td align="left" valign="middle">@gs.email</td>
                                             <td align="left" valign="middle">@gs.Phone</td>
-                                            <td align="left" valign="middle">@gs.isVIP</td>
-                                            <td align="left" valign="middle"><a href="@Url.Action("MakeVIP","Home",new { @GuestId = gs.GuestId })" class="housekeeping"><i class="fa fa-check"></i> Add To VIP</a></td>
+                                            <td align="left" valign="middle"><a href="@Url.Action("MyBookings","Home",new {@GuestId = gs.GuestId })" class="housekeeping"><i class="fa fa-search"></i> View Booking</a></td>
+                                            <td align="left" valign="middle"><a href="@Url.Action("AddBooking","Home",new {@bookingId=0, @GuestId = gs.GuestId })" class="housekeeping"><i class="fa fa-check"></i> Create Booking</a></td>
                                             
                                             <td align="left" valign="middle"><a href="@Url.Action("AddGuest","Home",new { @GuestId = gs.GuestId ,m="E"})" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
                                             <td align="left" valign="middle"><a href="@Url.Action("DelGuest","Home",new { @GuestId = gs.GuestId })" class="closebtn deletebtn"><i class="fa fa-trash-o"></i> Delete</a></td>
@@ -154,5 +148,9 @@
     $("#pSize").change(function () {
         $("#form1").submit();
     });
-
+    $("#txtSearchData").keydown(function (e) {
+        if (e.keyCode == 13) {
+            $("#form2").submit();
+        }
+    });
 </script>    

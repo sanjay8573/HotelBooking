@@ -1,7 +1,9 @@
 ﻿
 using HotelBooking.Model;
+using HotelBooking.Model.DynamicPrice;
 using HotelBooking.Model.Reatraurant;
 using HotelBooking.Model.Review;
+using HotelBooking.Model.SocialMedia;
 using HotelBooking.Model.Tour;
 using System;
 using System.Data.Entity;
@@ -246,6 +248,27 @@ namespace HotelBooking.Context
             get;
             set;
         }
+        public DbSet<DynamicPriceModel> DynamicPrice
+        {
+            get;
+            set;
+        }
+        public DbSet<SocialMediaMaster> SocialMediaMaster
+        {
+            get;
+            set;
+        }
+        public DbSet<SocialMediaConfiguration> SocialMediaConfiguration
+        {
+            get;
+            set;
+        }
+        public DbSet<SocialMediaBroadCast> SocialMediaBroadCast
+        {
+            get;
+            set;
+        }
+
 
 
 

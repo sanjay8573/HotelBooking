@@ -17,12 +17,12 @@
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required">Description</label>
 
-                                @Html.TextBoxFor(model => model.Description, new { @class = "full-width ValidateInput", placeholder = "Name" })
+                                @Html.TextBoxFor(model => model.Description, new { @class = "full-width ValidateInput", placeholder = "Name",maxlength="50" })
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
                                 <label for="edit-mail" class="form-required">Floor Number</label>
 
-                                @Html.TextBoxFor(model => model.FloorNumber, new { @class = "full-width ValidateInput", placeholder = "Floor Number" })
+                                @Html.TextBoxFor(model => model.FloorNumber, new { @class = "full-width ValidateInput", placeholder = "Floor Number", maxlength = "3", valType = "NumbersOnly" })
                             </div>
 
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">

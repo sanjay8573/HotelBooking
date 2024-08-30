@@ -1,0 +1,160 @@
+﻿@model IEnumerable<HotelBooking.Model.SocialMedia.VM_SocialMediaConfiguration>
+@{
+    ViewBag.Title = "Social Media Configuration";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Social Media <small>Setup </small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Social Media Setup  </small> </span></div>
+            <div class="widget-content padded text-center">
+                <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div id="currExDiv" class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-right">
+                                    @*<button type="button" class="allbtnin form-group pull-right" onclick="location.href='@Url.Action("SocialMedia","Home")'" > +ADD Social Media</button>*@
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <input type="hidden" id="BranchId" value="@ViewBag.BranchId" />
+                                </div>
+
+                                @if (Model != null)
+                                {
+                                    <table id="tblMedia" width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th width="5%">#</th>
+                                                <th width="15%">Social Media</th>
+                                                <th width="30%">User Name</th>
+                                                <th width="30%">Password</th>
+                                                <th width="10%">Active</th>
+                                            </tr>
+
+                                        </thead>
+                                        <tbody>
+
+                                            @foreach (var item in Model)
+                                            {
+
+                                            <tr>
+                                                <td width="5%"><i class="@item.SocialmediaLogo"></i></td>
+                                                <td width="15%">@item.SocialmediaName</td>
+                                                <td width="30%"><input type="text" id="txtUserName-@item.SocialmediaConfigId-@item.SocialmediaId-@item.SocialmediaName" name="@item.SocialmediauserName" class="full-width ValidateInput" placeholder="userName" value="@item.SocialmediauserName" runat="server"></td>
+                                                <td width="30%"><input type="password" id="txtPassword-@item.SocialmediaConfigId-@item.SocialmediaId-@item.SocialmediaName" name="@item.SocialmediaPassword" class="full-width ValidateInput" placeholder="password" value="@item.SocialmediauserName" runat="server"></td>
+                                                <td width="10%" align="right">
+                                                   
+                                                    <ul class="unstyled">
+                                                        <li>
+                                                            <input class="styled-checkbox" id="CHK_ACTIVE-@item.SocialmediaId" type="checkbox" checked="@item.isActive" name="CHK_ACTIVE">
+                                                            <label for="CHK_ACTIVE-@item.SocialmediaId"></label>
+                                                        </li>
+                                                    </ul>
+
+                                                </td>
+                                                <input type="hidden" id="@item.BranchId" value="@item.BranchId" />
+                                                <input type="hidden" id="@item.SocialmediaConfigId" value="@item.SocialmediaConfigId" />
+                                            </tr>
+
+
+
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+
+
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <button type="button" class="allbtnin full-width" onclick="return UpdateMedia();">Update</button>
+                                </div>
+                            </div>
+                         </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function UpdateMedia() {
+        const branchId = $("#BranchId").val();
+        var socialMediacnf = [];
+        $("#tblMedia > tbody > tr").each(function () {
+            var  UName;
+            var PName;
+            var Arr;
+           
+            $(this).find('input[type=text]').each(function (idx,el) {
+                //console.log("Position " + idx + this.value)
+                if (idx == 0) {
+                    var arrVal = this.id;
+                    Arr = arrVal.split("-");
+
+                    console.log(arrVal);
+                    UName = this.value;
+                }
+               
+            });
+            $(this).find('input[type=password]').each(function (idx, el) {
+                //console.log("Position " + idx + this.value)
+                if (idx == 0) {
+                   
+                    PName = this.value;
+                }
+            });
+
+            
+            var chkVal = $(this).find('input[type=checkbox]').is(":checked");
+            itemcng = {
+                BranchId: branchId,
+                SocialmediaConfigId: Number(Arr[1]),
+                SocialmediaId: Number(Arr[2]),
+                SocialmediaName:Arr[3],
+                SocialmediauserName: UName,
+                SocialmediaPassword: btoa(PName),
+                isActive: chkVal
+            }
+            socialMediacnf.push(itemcng);
+            
+        });
+        //console.log(socialMediacnf);
+        //console.log(btoa(JSON.stringify(socialMediacnf)));
+
+        fetch('/Home/SaveSocialMediaConfiguration', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(socialMediacnf)
+        })
+            //.then(response => response.json())
+            .then(() => {
+                //console.log(response.json)
+                $.toast({
+                    heading: 'Success',
+                    text: 'SocialMediaConfiguration Saveed Successfully ',
+                    icon: 'success',
+                    loader: false,        // Change it to false to disable loader
+                    position: 'top-right',
+                    loaderBg: '#9EC600'  // To change the background
+                });
+                //window.location.href = '/Home/SocialMediaConfiguration/';
+
+            })
+            .catch(error => {
+                $.toast({
+                    autoDismiss: true,
+                    heading: 'Error',
+                    text: 'Error on SocialMediaConfiguration',
+                    icon: 'warning',
+                    position: 'top-right',
+                    loader: false,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                });
+            });
+    }
+
+</script>
+

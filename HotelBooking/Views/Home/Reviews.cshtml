@@ -1,0 +1,93 @@
+﻿
+@using PagedList.Mvc
+@model PagedList.IPagedList<HotelBooking.Model.Review.ReviewMaster>
+@{
+    ViewBag.Title = "Reviews";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Reviews <small></small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Reviews</small> </span></div>
+            <div class="widget-content padded text-center">
+                
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 pull-left">
+                            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left text-left">
+                                @using (Html.BeginForm("Reviews", "Home", FormMethod.Get, new { id = "form1" }))
+                                {
+                                    <div id="pro_pag2">
+                                        Show 
+                                        @Html.DropDownList("pSize", (IEnumerable<SelectListItem>)ViewBag.pSize, new { @class = "onlyinput" }) Records
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                        <table id="RevirewTable" class="table table-bordered" ">
+                            <tr>
+                                <th width="3%" align="center" valign="middle" bgcolor="#003556" class="clrwhit">#</th>
+                                <th width="25%" align="left" valign="middle" bgcolor="#003556" class="clrwhit">Reviewer Name</th>
+                                <th width="5%" align="center" valign="middle" bgcolor="#003556" class="clrwhit">ReviewerEmail</th>
+                                <th width="5%" align="center" valign="middle" bgcolor="#003556" class="clrwhit">Reviewer Phone</th>
+                                <th width="5%" align="center" valign="middle" bgcolor="#003556" class="clrwhit">is Approved</th>
+
+
+                                <th width="8%" colspan="3" align="center" valign="middle" bgcolor="#003556" class="clrwhit">Action</th>
+
+                            </tr>
+                            @if (Model != null)
+                            {
+                                var i = 1;
+                                foreach (var rt in Model)
+                                {
+                                    <tr>
+
+                                        <td align="center" valign="middle">@i</td>
+                                        <td align="left" valign="middle">@rt.ReviewerName</td>
+                                        <td align="left" valign="middle">@rt.ReviewerEmail</td>
+                                        <td align="left" valign="middle">@rt.ReviewerPhone</td>
+                                       
+                                        <td align="center" valign="middle">
+                                            <input class="styled-checkbox" id="CHK_Approved @i" type="checkbox" checked="@rt.IsApproved" name="CHK_Approved @i">
+                                            <label for="CHK_Approved @i"></label>
+                                        </td>
+
+                                        <td align="center" valign="middle"><a href="@Url.Action("EditReviews","Home",new { @reviewId = rt.MasterID })" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
+                                        
+                                    </tr>
+                                    i++;
+                                }
+                                <tr>
+                                    <td colspan="8">
+                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <span class="float-left restextpagin">Showing Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount </span>
+
+                                            <div class="pagination pull-right" style="display:inline-block; vertical-align:middle;">
+
+                                                @Html.PagedListPager(Model, page => Url.Action("Reviews", new { page, pSize = ViewBag.PageSize }), PagedListRenderOptions.ClassicPlusFirstAndLast)
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+        $("#pSize").change(function () {
+
+            $("#form1").submit();
+        });
+
+</script>
+
+
+

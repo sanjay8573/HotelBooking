@@ -1,0 +1,233 @@
+﻿@model HotelBooking.Model.Review.ReviewText
+@{
+    ViewBag.Title = "Process Reviews";
+}
+
+<div class="row" id="Amenityform">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i> Process Review </div>
+
+            <div class="widget-content padded text-center">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive pull-left">
+                        <form id="msform" runat="server" action="/home/SaveAmenities" method="post" enctype="multipart/form-data" style=" margin:0px auto;">
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Review Header</label>
+
+                                @Html.TextBoxFor(model => model.ReviewHeading, new { @class = "full-width ValidateInput", placeholder = "Name", readOnly = "true" })
+                                @Html.HiddenFor(model => model.ReviewId)
+                                @Html.HiddenFor(model => model.MasterID)
+                               
+                                <input type="hidden" id="Logged_In_User" value="@ViewBag.Logged_In_User" />
+                            </div>
+
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Review Details</label>
+                                @Html.TextAreaFor(model => model.ReviewTextDetail, new { @class = "full-width ValidateInput", placeholder = "Description", rows = "2", ReadOnly="true" })
+
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-6 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">
+                                    Cleanness Rating
+                                    @for (int i = 0; i < Model.CleannessRating; i++)
+                                    {
+
+                                        <span class="fa fa-star checked"></span>
+
+                                    }
+                                </label>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">
+                                    Location Rating
+                                    @for (int i = 0; i < Model.LocationRating; i++)
+                                    {
+
+                                        <span class="fa fa-star checked"></span>
+
+                                    }
+                                </label>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">
+                                    Food Rating
+                                    @for (int i = 0; i < Model.FoodRating; i++)
+                                    {
+
+                                        <span class="fa fa-star checked"></span>
+
+                                    }
+                                </label>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">
+                                    Staff Rating
+                                    @for (int i = 0; i < Model.StaffRating; i++)
+                                    {
+
+                                        <span class="fa fa-star checked"></span>
+
+                                    }
+                                </label>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">
+                                    Service Rating
+                                    @for (int i = 0; i < Model.ServiceRating; i++)
+                                    {
+
+                                        <span class="fa fa-star checked"></span>
+
+                                    }
+                                </label>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">
+                                    Room Rating
+                                    @for (int i = 0; i < Model.RoomRating; i++)
+                                    {
+
+                                        <span class="fa fa-star checked"></span>
+
+                                    }
+                                </label>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">
+                                    Amenities Rating
+                                    @for (int i = 0; i < Model.AmenitiesRating; i++)
+                                    {
+
+                                        <span class="fa fa-star checked"></span>
+
+                                    }
+                                </label>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Reply Details</label>
+                                @Html.TextAreaFor(model => model.ReplyText, new { @class = "full-width ValidateInput", placeholder = "Description", rows = "2" })
+
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">&nbsp;</label>
+
+                                <ul class="unstyled">
+                                    <li>
+                                        <input class="styled-checkbox" id="CHK_Approved" type="checkbox" onclick="ApprovedReview(this);"  checked="@ViewBag.isApproved" name="CHK_Approved">
+                                        <label for="CHK_Approved">Approved</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <input type="button" name="SUBMIT" class="prev action-button" onclick="ReplyReview();" value="Reply" runat="server">
+                            </div>
+                            @Html.HiddenFor(model => model.MasterID)
+
+
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        if ($("#CHK_Approved").is(':checked')) {
+          
+            $('#CHK_Approved').attr('disabled', true);
+        }
+    });
+
+    function ApprovedReview() {
+        const mId = $("#MasterID").val();
+        const apprvd = $("#Logged_In_User").val();
+        var ReviewApproveRequest = {
+            MasterID: Number(mId),
+            ApprovedBy: Number(apprvd) 
+        };
+        fetch('/home/Approved', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(ReviewApproveRequest)
+        })
+            .then(() => {
+
+                $.toast({
+                    heading: 'Success',
+                    text: 'Review Approved Successfully ',
+                    icon: 'success',
+                    loader: false,        // Change it to false to disable loader
+                    position: 'top-right',
+                    loaderBg: '#9EC600'  // To change the background
+                });
+                $('#CHK_Approved').attr('disabled', true);
+            })
+            .catch(error => {
+                $.toast({
+                    autoDismiss: true,
+                    heading: 'Error',
+                    text: 'Error on Approving Review',
+                    icon: 'warning',
+                    position: 'top-right',
+                    loader: false,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                });
+            });
+
+    }
+    function ReplyReview() {
+        const _mId = $("#MasterID").val();
+        const _apprvd = $("#Logged_In_User").val();
+        const _rvwId = $("#ReviewId").val();
+        const _ReplyText = $("#ReplyText").val();
+        var ReviewReplyRequest = {
+            ReviewMasterId: Number(_mId),
+            ReviewId: Number(_rvwId),
+            repliedbyId: Number(_apprvd),
+            ReplyText: _ReplyText
+        };
+        fetch('/home/ReplyToReview', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(ReviewReplyRequest)
+        })
+            .then(() => {
+
+                $.toast({
+                    heading: 'Success',
+                    text: 'Reply Sent Successfully ',
+                    icon: 'success',
+                    loader: false,        // Change it to false to disable loader
+                    position: 'top-right',
+                    loaderBg: '#9EC600'  // To change the background
+                });
+                
+            })
+            .catch(error => {
+                $.toast({
+                    autoDismiss: true,
+                    heading: 'Error',
+                    text: 'Error Replying Review',
+                    icon: 'warning',
+                    position: 'top-right',
+                    loader: false,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                });
+            });
+
+    }
+</script>

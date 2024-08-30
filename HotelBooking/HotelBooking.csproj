@@ -502,6 +502,7 @@
     <Compile Include="Controllers\DeptController.cs" />
     <Compile Include="Controllers\DesigController.cs" />
     <Compile Include="Controllers\DocumentController.cs" />
+    <Compile Include="Controllers\DynamicPrice\DynamicPriceController.cs" />
     <Compile Include="Controllers\FloorController.cs" />
     <Compile Include="Controllers\GuestsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -516,6 +517,7 @@
     <Compile Include="Controllers\pmController.cs" />
     <Compile Include="Controllers\ReportApi\ReportController.cs" />
     <Compile Include="Controllers\Restaurant\RestaurantController.cs" />
+    <Compile Include="Controllers\Reviews\ReviewController.cs" />
     <Compile Include="Controllers\RightsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\RoomController.cs" />
@@ -523,6 +525,7 @@
     <Compile Include="Controllers\RoomTypeImageController.cs" />
     <Compile Include="Controllers\RSController.cs" />
     <Compile Include="Controllers\SetupController.cs" />
+    <Compile Include="Controllers\SocialMedia\SocialMediaController.cs" />
     <Compile Include="Controllers\SPMController.cs" />
     <Compile Include="Controllers\StaffController.cs" />
     <Compile Include="Controllers\StoreController.cs" />
@@ -565,6 +568,7 @@
     <Compile Include="Model\Designation.cs" />
     <Compile Include="Model\DocType.cs" />
     <Compile Include="Model\DocumentType.cs" />
+    <Compile Include="Model\DynamicPrice\DynamicPriceModel.cs" />
     <Compile Include="Model\EditHotel\VM_Amenities.cs" />
     <Compile Include="Model\EditHotel\VM_ContactDetails.cs" />
     <Compile Include="Model\EditHotel\VM_EditHotel.cs" />
@@ -581,6 +585,8 @@
     <Compile Include="Model\LoginRequestModel.cs" />
     <Compile Include="Model\LoginResponse.cs" />
     <Compile Include="Model\ModuleMaster.cs" />
+    <Compile Include="Model\onlineAPI\MailRequest.cs" />
+    <Compile Include="Model\onlineAPI\MailResponse.cs" />
     <Compile Include="Model\onlineAPI\RoomRequest.cs" />
     <Compile Include="Model\onlineAPI\RoomResponse.cs" />
     <Compile Include="Model\OnlineReview\ReviewModel.cs" />
@@ -602,6 +608,7 @@
     <Compile Include="Model\Report\CurrencyExchangeReport.cs" />
     <Compile Include="Model\Report\ItemsInShort.cs" />
     <Compile Include="Model\Report\RestaurantSalesReport.cs" />
+    <Compile Include="Model\Report\RestaurantSalesReportRequest.cs" />
     <Compile Include="Model\Report\SalesReport.cs" />
     <Compile Include="Model\Report\SalesReportRequest.cs" />
     <Compile Include="Model\Report\StoreINOUTReport.cs" />
@@ -610,14 +617,24 @@
     <Compile Include="Model\Report\VM_ItemInShort.cs" />
     <Compile Include="Model\Report\VM_SalesReport.cs" />
     <Compile Include="Model\Report\VM_StoreINOUTReport.cs" />
+    <Compile Include="Model\Review\ReviewApproveRequest.cs" />
     <Compile Include="Model\Review\ReviewImages.cs" />
     <Compile Include="Model\Review\ReviewMaster.cs" />
+    <Compile Include="Model\Review\ReviewReplyRequest.cs" />
     <Compile Include="Model\Review\ReviewText.cs" />
+    <Compile Include="Model\Review\SendForReview.cs" />
     <Compile Include="Model\Rights.cs" />
     <Compile Include="Model\RoleMaster.cs" />
     <Compile Include="Model\Room.cs" />
     <Compile Include="Model\RoomeTypeImages.cs" />
     <Compile Include="Model\RoomType.cs" />
+    <Compile Include="Model\SocialMedia\BroadCastRequest.cs" />
+    <Compile Include="Model\SocialMedia\BroadCastResponse.cs" />
+    <Compile Include="Model\SocialMedia\CreateBroadCastRequest.cs" />
+    <Compile Include="Model\SocialMedia\SocialMediaBroadCast.cs" />
+    <Compile Include="Model\SocialMedia\SocialMediaConfiguration.cs" />
+    <Compile Include="Model\SocialMedia\SocialMediaMaster.cs" />
+    <Compile Include="Model\SocialMedia\VM_SocialMediaConfiguration.cs" />
     <Compile Include="Model\SpecialPrice.cs" />
     <Compile Include="Model\SPM.cs" />
     <Compile Include="Model\Staff.cs" />
@@ -650,6 +667,7 @@
     <Compile Include="Repository\Implementation\DeptRepository.cs" />
     <Compile Include="Repository\Implementation\DesignationRepository.cs" />
     <Compile Include="Repository\Implementation\DocumentRepository.cs" />
+    <Compile Include="Repository\Implementation\DynamicPriceRepository.cs" />
     <Compile Include="Repository\Implementation\FloorRepository.cs" />
     <Compile Include="Repository\Implementation\GuestRepository.cs" />
     <Compile Include="Repository\Implementation\HouseKeepingRepository.cs" />
@@ -658,6 +676,7 @@
     <Compile Include="Repository\Implementation\ItemRepository.cs" />
     <Compile Include="Repository\Implementation\Logger.cs" />
     <Compile Include="Repository\Implementation\LoginRepository.cs" />
+    <Compile Include="Repository\Implementation\MailService.cs" />
     <Compile Include="Repository\Implementation\ModuleRepository.cs" />
     <Compile Include="Repository\Implementation\OnlineRepository.cs" />
     <Compile Include="Repository\Implementation\PaidServicesRepository.cs" />
@@ -672,6 +691,7 @@
     <Compile Include="Repository\Implementation\RoomRepository.cs" />
     <Compile Include="Repository\Implementation\RoomTypeImageRepository.cs" />
     <Compile Include="Repository\Implementation\RoomTypeRepository.cs" />
+    <Compile Include="Repository\Implementation\SocialMediaRespository.cs" />
     <Compile Include="Repository\Implementation\SPMRepository.cs" />
     <Compile Include="Repository\Implementation\StaffRepository.cs" />
     <Compile Include="Repository\Implementation\TaxMasterRespository.cs" />
@@ -691,6 +711,7 @@
     <Compile Include="Repository\Interface\IDashboard.cs" />
     <Compile Include="Repository\Interface\IDept.cs" />
     <Compile Include="Repository\Interface\IDesignation.cs" />
+    <Compile Include="Repository\Interface\IDynamicPrice.cs" />
     <Compile Include="Repository\Interface\IFloor.cs" />
     <Compile Include="Repository\Interface\IGuests.cs" />
     <Compile Include="Repository\Interface\IHouseKeeping.cs" />
@@ -699,6 +720,7 @@
     <Compile Include="Repository\Interface\IItemMaster.cs" />
     <Compile Include="Repository\Interface\ILogger.cs" />
     <Compile Include="Repository\Interface\ILogin.cs" />
+    <Compile Include="Repository\Interface\IMailService.cs" />
     <Compile Include="Repository\Interface\IModule.cs" />
     <Compile Include="Repository\Interface\IOnline.cs" />
     <Compile Include="Repository\Interface\IPaidServices.cs" />
@@ -713,6 +735,7 @@
     <Compile Include="Repository\Interface\IRoom.cs" />
     <Compile Include="Repository\Interface\IRoomType.cs" />
     <Compile Include="Repository\Interface\IRoomTypeImages.cs" />
+    <Compile Include="Repository\Interface\ISocialMedia.cs" />
     <Compile Include="Repository\Interface\ISPM.cs" />
     <Compile Include="Repository\Interface\IStaff.cs" />
     <Compile Include="Repository\Interface\ITaxMaster.cs" />
@@ -741,6 +764,7 @@
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\sidebar.css" />
     <Content Include="css\app.css" />
+    <Content Include="css\BookingStatus.css" />
     <Content Include="css\bootstrap-colorpicker.css" />
     <Content Include="css\calendar-monthview.css" />
     <Content Include="css\chartist.min.css" />
@@ -751,6 +775,7 @@
     <Content Include="css\froala_editor.pkgd.min.css" />
     <Content Include="css\fullcalendar.min.css" />
     <Content Include="css\fullcalendar.print.css" />
+    <Content Include="css\INVstyle.min.css" />
     <Content Include="css\jquery.toast.css" />
     <Content Include="css\login-new.css" />
     <Content Include="css\perfect-scrollbar.min.css" />
@@ -847,6 +872,8 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="SQL\DB_Create.sql" />
     <Content Include="SQL\DB_Indexes.sql" />
+    <Content Include="Templates\Email\BookingConfirmation.html" />
+    <Content Include="Templates\Email\CustomerReview.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -990,6 +1017,16 @@
     <Content Include="Views\Home\_PricePerNightV1.cshtml" />
     <Content Include="Views\Online\Review.cshtml" />
     <Content Include="Views\Online\ReviewResult.cshtml" />
+    <Content Include="Views\Home\Reviews.cshtml" />
+    <Content Include="Views\Home\EditReviews.cshtml" />
+    <Content Include="Views\Home\ApprovedReviews.cshtml" />
+    <Content Include="Views\Home\DynamicPrice.cshtml" />
+    <Content Include="Views\Home\SocialMediaConfiguration.cshtml" />
+    <Content Include="Views\Home\SocialMedia.cshtml" />
+    <Content Include="Views\Home\CustomerToReview.cshtml" />
+    <Content Include="Views\Home\MyBookings.cshtml" />
+    <Content Include="Views\Home\ResturantSalesReportQ.cshtml" />
+    <Content Include="Views\Home\ResturantSalesReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

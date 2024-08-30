@@ -18,9 +18,9 @@
                                     </tr>
 
                                     <tr class="active">
-                                        <td>BookingRef# </td>
+                                        <td style="background-color:#003556;color:#ffffff">BookingRef# </td>
                                         <td>@Model.TourDetail.BookingNumber</td>
-                                        <td>Booking Date </td>
+                                        <td style="background-color:#003556;color:#ffffff">Booking Date </td>
                                         <td>@Model.TourDetail.BookingDate</td>
 
 
@@ -29,16 +29,16 @@
                                     <tr class="active">
 
 
-                                        <td>Start Date </td>
-                                        <td>@Model.TourDetail.StartDate </td>
-                                        <td>End Date </td>
-                                        <td>@Model.TourDetail.EndDate </td>
+                                        <td style="background-color:#003556;color:#ffffff">Start Date </td>
+                                        <td>@Model.TourDetail.StartDate.ToString("MMM-dd-yyyy") </td>
+                                        <td style="background-color:#003556;color:#ffffff">End Date </td>
+                                        <td>@Model.TourDetail.EndDate.ToString("MMM-dd-yyyy") </td>
 
                                     </tr>
                                     <tr class="active">
-                                        <td>Booking Status </td>
+                                        <td style="background-color:#003556;color:#ffffff">Booking Status </td>
                                         <td>@Model.TourDetail.BookingStatus </td>
-                                        <td>Payments Status </td>
+                                        <td style="background-color:#003556;color:#ffffff">Payments Status </td>
                                         <td>@Model.TourDetail.PaymentStatus </td>
                                     </tr>
 
@@ -53,17 +53,17 @@
                                     </tr>
 
                                     <tr class="active">
-                                        <td>Name </td>
+                                        <td style="background-color:#003556;color:#ffffff">Name </td>
                                         <td>@Model.TourGuest.Name</td>
-                                        <td>Contact </td>
+                                        <td style="background-color:#003556;color:#ffffff">Contact </td>
                                         <td>@Model.TourGuest.Phone </td>
 
                                     </tr>
                                     <tr class="active">
-                                        <td>Address </td>
+                                        <td style="background-color:#003556;color:#ffffff">Address </td>
                                         <td>@Model.TourGuest.Address , @Model.TourGuest.city - @Model.TourGuest.pincode</td>
 
-                                        <td>Country</td>
+                                        <td style="background-color:#003556;color:#ffffff">Country</td>
                                         <td>@Model.TourGuest.country </td>
                                     </tr>
 
@@ -110,7 +110,7 @@
 
                                 <tr>
 
-                                    <th class="text-right" colspan="4">Total Amount</th>
+                                    <th class="text-right" colspan="4" >Total Amount</th>
                                     <th class="text-center" >@gTotal</th>
                                    
                                     <th class="text-center" >@gTax</th>
@@ -135,23 +135,23 @@
                                     else
                                     {
                                         <tr class="active">
-                                            <td>Invoice# </td>
+                                            <td style="background-color:#003556;color:#ffffff">Invoice# </td>
                                             <td>@Model.TourPayment.InvoiceNumber</td>
-                                            <td>Payment Date </td>
+                                            <td style="background-color:#003556;color:#ffffff">Payment Date </td>
                                             <td>@Model.TourPayment.PaymentDate</td>
 
                                         </tr>
                                         <tr class="active">
-                                            <td>Payment Amount </td>
+                                            <td style="background-color:#003556;color:#ffffff">Payment Amount </td>
                                             <td>@Model.TourPayment.paymentAmount </td>
-                                            <td>Payment Pending </td>
+                                            <td style="background-color:#003556;color:#ffffff"> Payment Pending </td>
                                             <td>@Model.TourPayment.paymentDue </td>
 
                                         </tr>
                                         <tr class="active">
-                                            <td>Payment Received by </td>
+                                            <td style="background-color:#003556;color:#ffffff">Payment Received by </td>
                                             <td>@Model.TourPayment.PaymentTypeName </td>
-                                            <td>Remarks</td>
+                                            <td style="background-color:#003556;color:#ffffff">Remarks</td>
                                             <td>@Model.TourPayment.Remarks </td>
                                         </tr>
 

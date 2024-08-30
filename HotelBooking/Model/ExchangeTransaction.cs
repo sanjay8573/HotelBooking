@@ -24,5 +24,6 @@ namespace HotelBooking.Model
         public int BranchId { get; set; }
         public bool isActive { get; set; }
         public bool isDeleted { get; set; }
+        public DateTime TransDate { get; set; }
     }
 }

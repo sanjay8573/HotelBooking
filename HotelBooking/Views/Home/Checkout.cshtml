@@ -3,71 +3,89 @@
     ViewBag.Title = "Checkout";
 }
 
+
+<link href="~/css/BookingStatus.css" rel="stylesheet" />
 <div class="row">
     <div class="col-sm-12">
         <div class="card widget-container">
             <div class="heading"> <i class="fa fa-bar-chart-o"></i>Checkout <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Checkout</small> </span></div>
             <div class="widget-content padded text-center">
+                @*<div class="process-wrapper">
+                    <div id="progress-bar-container">
+                        <ul>
+                            <li class="step step01 active"><div class="step-inner">Check-In</div></li>
+                            <li class="step step02"><div class="step-inner">Document received</div></li>
+                            <li class="step step03"><div class="step-inner">Room Allocated</div></li>
+                            <li class="step step04"><div class="step-inner">Payment Received</div></li>
+                            <li class="step step05"><div class="step-inner">Check-Out</div></li>
+                        </ul>
 
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
-                        @*<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-right">
-                            <input type="button" name="SUBMIT" class="addextraamountordiscountbtn  form-group" id="btnCheckout" value="Check Out" runat="server">
+                        <div id="line">
+                            <div id="line-progress"></div>
                         </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-right">
-                            <button type="button" class="addextraamountordiscountbtn  form-group" onclick="myFunction()"> +Add Extra Amount or Discount</button>
-                        </div>*@
                     </div>
-                </div>
-                <div class="row">
-
-                    <div class="col-lg-12 col-md-12 col-sm-12 table-responsive">
-                        <div class="tab-container box bdrtab">
-
-                            <div class="tab-menu">
-                                <ul>
-                                    <li><a href="#" class="tab-a active-a" id="Invoice1" data-id="Invoice">Invoice</a></li>
-                                    <li><a href="#" class="tab-a" id="Payments1" data-id="Payments">Payment</a></li>
-                                    <li><a href="#" class="tab-a" id="checkOut1" data-id="checkOut">Checkout</a></li>
-                                    
-                                </ul>
-                            </div>
-                            @*<ul class="nav nav-tabs">
-                                <li class="nav-item"><a href="#Invoice" id="Invoice1" class="nav-link active" data-toggle="tab">Invoice</a></li>
-                                <li class="nav-item"><a href="#Payments" id="Payments1" class="nav-link" data-toggle="tab">Payments</a></li>
-                                <li class="nav-item"><a href="#checkOut" id="checkOut" class="nav-link" data-toggle="tab">Check out</a></li>
-                            </ul>*@
-                            <div class="tab-content">
-                                <div class="tab tab-active" data-id="Invoice">
-                                  
-                                    <div class="row" id="BookingInvoiceDIV">
-
-                                    </div>
-                                </div>
-                                <div class="tab " data-id="Payments">
-                                    <div class="row" id="BookingPaymentCoutDIV">
-
-                                    </div>
-                                </div>
-                                <div class="tab " data-id="checkOut">
-                                    <div class="row" id="RoomCheckOutDIV">
-
-                                    </div>
-                                </div>
-                                <input type="hidden" id="BookingId" value="@Model.BookingId" />
-                                <input type="hidden" id="NoOfRooms" value="@Model.NoOfRooms" />
-                                <input type="hidden" id="BranchId" value="@ViewBag.BranchId" />
-                                <input type="hidden" id="TotalPrice" value="@Model.TotalPrice" />
-                                <input type="hidden" id="Amountpaid" value="@Model.Amountpaid" />
-                            </div>
+                 </div>*@
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                            @*<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-right">
+                        <input type="button" name="SUBMIT" class="addextraamountordiscountbtn  form-group" id="btnCheckout" value="Check Out" runat="server">
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-right">
+                        <button type="button" class="addextraamountordiscountbtn  form-group" onclick="myFunction()"> +Add Extra Amount or Discount</button>
+                    </div>*@
                         </div>
+                    </div>
+                    <div class="row">
 
+                        <div class="col-lg-12 col-md-12 col-sm-12 table-responsive">
+                            <div class="tab-container box bdrtab">
+
+                                <div class="tab-menu">
+                                    <ul>
+                                        <li><a href="#" class="tab-a active-a" id="Invoice1" data-id="Invoice">Invoice</a></li>
+                                        <li><a href="#" class="tab-a" id="Payments1" data-id="Payments">Payment</a></li>
+                                        <li><a href="#" class="tab-a" id="checkOut1" data-id="checkOut">Checkout</a></li>
+
+                                    </ul>
+                                </div>
+                                @*<ul class="nav nav-tabs">
+                            <li class="nav-item"><a href="#Invoice" id="Invoice1" class="nav-link active" data-toggle="tab">Invoice</a></li>
+                            <li class="nav-item"><a href="#Payments" id="Payments1" class="nav-link" data-toggle="tab">Payments</a></li>
+                            <li class="nav-item"><a href="#checkOut" id="checkOut" class="nav-link" data-toggle="tab">Check out</a></li>
+                        </ul>*@
+                                <div class="tab-content">
+                                    <div class="tab tab-active" data-id="Invoice">
+
+                                        <div class="row" id="BookingInvoiceDIV">
+
+                                        </div>
+                                    </div>
+                                    <div class="tab " data-id="Payments">
+                                        <div class="row" id="BookingPaymentCoutDIV">
+
+                                        </div>
+                                    </div>
+                                    <div class="tab " data-id="checkOut">
+                                        <div class="row" id="RoomCheckOutDIV">
+
+                                        </div>
+                                    </div>
+                                    <input type="hidden" id="BookingId" value="@Model.BookingId" />
+                                    <input type="hidden" id="NoOfRooms" value="@Model.NoOfRooms" />
+                                    <input type="hidden" id="BranchId" value="@ViewBag.BranchId" />
+                                    <input type="hidden" id="TotalPrice" value="@Model.TotalPrice" />
+                                    <input type="hidden" id="Amountpaid" value="@Model.Amountpaid" />
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     </div>
 </div>
+
+
 <script>
 
     $(document).ready(function () {
@@ -97,7 +115,7 @@
                 type: 'GET',
                 url: URL,
                 success: function (data) {
-                   
+
                 },
                 error: function (err) {
                     console.log('Failed to get data' + err);
@@ -118,7 +136,7 @@
             var nor = $("#NoOfRooms").val();
 
             console.log("loading checkout page details");
-            
+
             var URL = "/Home/_RoomCheckout?&BookingId=" + BookingId + "&noRooms=" + nor;
             $.ajax({
                 type: 'GET',
@@ -163,15 +181,15 @@
                     // $("#overlay").fadeOut(300);
                 }, 500);
                 console.log("Invoice Loaded");
-                
+
 
             });
         }
-        
-        
+
+
         $("#Invoice1").click();
     });
-   
+
 </script>
 
 

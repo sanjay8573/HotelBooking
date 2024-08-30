@@ -241,7 +241,8 @@ namespace HotelBooking.Repository.Implementation
                 if (br != null)
                 {
                     br.Id = entityGenInfo.Id;
-                    br.BranchName = entityGenInfo.BranchName;                  
+                    br.BranchName = entityGenInfo.BranchName;
+                    br.Address = entityGenInfo.Address;
                     br.Latitude = entityGenInfo.Latitude;
                     br.Longitude = entityGenInfo.Longitude;
                     br.ChainName = entityGenInfo.ChainName;
@@ -302,7 +303,11 @@ namespace HotelBooking.Repository.Implementation
                     br.WebsiteURL = entityWC.WebsiteURL;
                     br.WebsiteHeaderFile = entityWC.WebsiteHeaderFile;
                     br.WebsiteFooterFile = entityWC.WebsiteFooterFile;
-                    br.LogoImage= entityWC.LogoImage;
+                    if (entityWC.LogoImage != null)
+                    {
+                        br.LogoImage = entityWC.LogoImage;
+                    }
+                   
                     _context.SaveChanges();
                     rtnVal = true;
                 }

@@ -112,9 +112,9 @@
         var MenuHeading1 = [];
         $("#maingroup_1 > div").each(function (idx, el) {
             var cuurentDiv = el.id;
-            var TaxDropDownId = 'SelTaxSlab' + idx;
-            var txId = $("#" + TaxDropDownId).val();
-            console.log("Heading ::" + cuurentDiv);
+            var TaxDropDownId = 'SelTaxSlab' + cuurentDiv;
+            var txId = $("#" + TaxDropDownId +" option:selected").val();
+            console.log("Heading tax Slab ::" + txId);
             $("#" + cuurentDiv +" > div > input:text").each(function (idx, el) {
                 console.log("Heading " + $(el).val());
                 var txtMenuHeading = $(el).val();

@@ -42,7 +42,7 @@
                             <th class="text-center">Added Date</th>
                             <th class="text-center">Invoice Number</th>
                             <th class="text-center">Amount</th>
-                            <th class="text-center" colspan="3" width="22%">Actions</th>
+                            @*<th class="text-center" colspan="3" width="22%">Actions</th>*@
                         </tr>
                         @if (Model != null)
                         {
@@ -56,7 +56,7 @@
                                     <td align="center" valign="middle">@bk.InvoiceNumber</td>
                                     <td align="center" valign="middle">@bk.paymentAmount</td>
                                    
-                                    <td align="center" valign="middle"><a href="#" class="editbtn"><i class="fa fa-eye"></i> Reciept</a></td>
+                                    @*<td align="center" valign="middle"><a href="#" class="editbtn"><i class="fa fa-eye"></i> Reciept</a></td>*@
                                     
                                 </tr>
                                 i++;
@@ -90,7 +90,7 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="row">
-                    <h4 class="tabheading text-left"><i class="fa fa-address-card" aria-hidden="true"></i> Add Payment </h4>
+                    <h4 class="tabheading text-left"><i class="fa fa-dollar" aria-hidden="true"></i> Add Payment </h4>
                     @*<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <label for="edit-mail" class="form-required">Order Number</label>
                         <input type="text" id="txtordNo" class="full-width allinput" placeholder="123456987" runat="server">
@@ -99,15 +99,15 @@
                         <label for="edit-mail" class="form-required">Invoice Number</label>
                         <input type="text" id="txtInvNo" class="full-width allinput" placeholder="170" runat="server">
                     </div>*@
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
                         <label for="edit-mail" class="form-required">Added Date</label>
-                        <input type="text" id="txtPmtDate" class="full-width allinput" placeholder="2024-03-05" runat="server">
+                        <input type="text" id="txtPmtDate" class="full-width allinput ValidateInput" placeholder="2024-03-05" runat="server">
                     </div>
 
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
                         <label for="edit-mail" class="form-required">Payment Method</label>
-                        <select name="pmtType" id="pmtType" class="full-width allinput">
-                            <option selected="selected" value="N">Select</option>
+                        <select name="pmtType" id="pmtType" class="full-width allinput ValidateInput" valType="DropDown">
+                            <option selected="selected" value="0">Select</option>
                             <option value="1">Paypal</option>
                             <option value="2">Strip</option>
                             <option value="3">Cash</option>
@@ -115,22 +115,22 @@
                             <option value="5">UPI</option>
                         </select>
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
                         <label for="edit-mail" class="form-required">Payment Details</label>
                         <input type="text" id="txtPmtRemarks" class="full-width allinput" placeholder="Remarks/Cheque detail/UPI Details" runat="server">
                     </div>
 
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
                         <label for="edit-mail" class="form-required">Payment Due</label>
-                        <input type="text" id="txtAmtDue" class="full-width allinput" placeholder="0.00" runat="server">
+                        <input type="text" id="txtAmtDue" readonly="readonly" class="full-width allinput" placeholder="0.00" runat="server">
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
                         <label for="edit-mail" class="form-required">Amount</label>
-                        <input type="text" id="txtAmt" class="full-width allinput" placeholder="0.00" runat="server">
+                        <input type="text" id="txtAmt" class="full-width allinput ValidateInput" placeholder="0.00" runat="server">
                     </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="offset-lg-4 offset-md-4 col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
                         <button type="button" class="btn btn-primary" data-dismiss="modal" id="btnAddPayemnt">Save</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -143,11 +143,14 @@
 
 <script>
     $(document).ready(function () {
-       
+        
             $(document.body).append($("#Addpayment").clone());
             $("#Addpayment").remove();
-       
-        console.log("Payment loaded");
+        $("input").attr("autocomplete", "none");
+        $(".ValidateInput").on("blur", function () {
+            validateField(this);
+        });
+        //console.log("Payment loaded");
         const totPrice = $("#TotalPrice").val();
         var amtPending = Number(totPrice) - Number($("#amtPaid").text());
 
@@ -155,6 +158,9 @@
         $("#txtAmtDue").val((Number(amtPending).toFixed(2)));
 
         if (Number(amtPending) <= 0) {
+            $(this).addClass("active").prevAll().addClass("active");
+            $("#line-progress").css("width", "75%");
+           
             $("#btnCheckout").show();
         } else {
             $("#btnCheckout").hide();
@@ -163,72 +169,83 @@
             dateFormat: "dd-mm-yy",
             duration: "fast",
             minDate: 0,
-            disabledDates: [new Date()]
+            disabledDates: [new Date()],
+            onSelect: function (selected) {
+
+               
+                $("#txtPmtDate").removeClass("errRedBorder");
+
+
+            }
             
         });
 
         
 
         $("#btnAddPayemnt").on("click", function () {
-            console.log("Saving payments.....");
+
+            //console.log("Saving payments.....");
             //const txtordNo = $("#txtordNo").val();
             //const txtInvNo = $("#txtInvNo").val();
-            const pmtDate = $("#txtPmtDate").val();
-            const pmtType = $("#pmtType option:selected").text();
-            const pmtTypeCode = $("#pmtType option:selected").val();
-            const txtAmt = $("#txtAmt").val();
-            const BookingId = $("#BookingId").val();
-            const BranchId = $("#BranchId").val();
-            const pmtitem = {
-                BookingId: parseInt(BookingId),
-                PaymentDate: pmtDate,
-                //InvoiceNumber: txtInvNo,
-                paymentAmount: Number(txtAmt).toFixed(2),
-                paymentDue: Number(amtPending).toFixed(2),
-                paymentReturn: Number(Number(amtPending) - Number(txtAmt)).toFixed(2),
-                BranchId: parseInt(BranchId),
-                //OrderNumber: txtordNo,
-                PaymentType: parseInt(pmtTypeCode),
-                Table_Room_Number: Number(BookingId),
-                ServiceType: "RoomBooking",
-                PaymentFor: 1,//1 for booking payemtn and 2 for Restauranr payment
-                PaymentTypeName: pmtType
-            };
-           
-            
-            fetch('/Home/Addpayments', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(pmtitem)
-            })
-            .then(() => {
-                $("#Payments1").click(); 
-                    $.toast({
-                        heading: 'Success',
-                        text: 'Payments Success ',
-                        icon: 'success',
-                        loader: false,        // Change it to false to disable loader
-                        position: 'top-right',
-                        loaderBg: '#9EC600'  // To change the background
-                    });
-                //top.loadPaymentDiv();
+            if (!validateBooking()) {
+                return false; // Prevent form submission if validation fails
+            } else {
+                const pmtDate = $("#txtPmtDate").val();
+                const pmtType = $("#pmtType option:selected").text();
+                const pmtTypeCode = $("#pmtType option:selected").val();
+                const txtAmt = $("#txtAmt").val();
+                const BookingId = $("#BookingId").val();
+                const BranchId = $("#BranchId").val();
+                const pmtitem = {
+                    BookingId: parseInt(BookingId),
+                    PaymentDate: pmtDate,
+                    //InvoiceNumber: txtInvNo,
+                    paymentAmount: Number(txtAmt).toFixed(2),
+                    paymentDue: Number(amtPending).toFixed(2),
+                    paymentReturn: Number(Number(amtPending) - Number(txtAmt)).toFixed(2),
+                    BranchId: parseInt(BranchId),
+                    //OrderNumber: txtordNo,
+                    PaymentType: parseInt(pmtTypeCode),
+                    Table_Room_Number: Number(BookingId),
+                    ServiceType: "RoomBooking",
+                    PaymentFor: 1,//1 for booking payemtn and 2 for Restauranr payment
+                    PaymentTypeName: pmtType
+                };
+
+
+                fetch('/Home/Addpayments', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(pmtitem)
                 })
-           .catch(error => {
-                    $.toast({
-                        autoDismiss: true,
-                        heading: 'Error',
-                        text: 'Error on payment Processing',
-                        icon: 'warning',
-                        position: 'top-right',
-                        loader: false,        // Change it to false to disable loader
-                        loaderBg: '#9EC600'  // To change the background
+                    .then(() => {
+                        $("#Payments1").click();
+                        $.toast({
+                            heading: 'Success',
+                            text: 'Payments Success ',
+                            icon: 'success',
+                            loader: false,        // Change it to false to disable loader
+                            position: 'top-right',
+                            loaderBg: '#9EC600'  // To change the background
+                        });
+                        //top.loadPaymentDiv();
+                    })
+                    .catch(error => {
+                        $.toast({
+                            autoDismiss: true,
+                            heading: 'Error',
+                            text: 'Error on payment Processing',
+                            icon: 'warning',
+                            position: 'top-right',
+                            loader: false,        // Change it to false to disable loader
+                            loaderBg: '#9EC600'  // To change the background
+                        });
                     });
-                });
-               
-            
+
+            }
         });
         $("#pSize").change(function () {
              $("#form1").submit();

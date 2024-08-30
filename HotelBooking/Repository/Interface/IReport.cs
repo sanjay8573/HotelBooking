@@ -13,7 +13,8 @@ namespace HotelBooking.Repository.Interface
         VM_TourSalesReport TourSalesReport(TourSalesReportRequest srr);
         VM_CommissionReport getCommissionReport(CommissionReportRequest crr);
         VM_StoreINOUTReport getStoreInoutReport(StoreINOUTReportRequest req);
-        IEnumerable<RestaurantSalesReport> getRestaurantSalesReport(DateTime startDate, DateTime endDate,string restaurantName);
+
+        VM_RestaurantSalesReport getRestaurantSalesReport(RestaurantSalesReportRequest req);
         VM_ItemInShort getItemShortReport(ItemInShortRequest req);
         VM_CurrencyExchangeReport GetCurrencyExchangeReports(CurrencyExchangeReportRequest req);
 

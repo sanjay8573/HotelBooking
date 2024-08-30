@@ -11,7 +11,7 @@ namespace HotelBooking.Repository.Interface
     public  interface IOnline
     {
         RoomResponse getAvailableRooms(RoomRequest roomRequest);
-        bool CreateBooking(BookingRequest bookingEntity);
+        string CreateBooking(BookingRequest bookingEntity);
         string CreateOnlineBooking(BookingRequest bookingEntity);
 
 

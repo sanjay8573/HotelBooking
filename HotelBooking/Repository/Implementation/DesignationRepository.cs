@@ -68,6 +68,7 @@ namespace HotelBooking.Repository.Implementation
                 var tmpEntity=_context.Designation.Find(DesignationEntity.Id);
                 tmpEntity.DesignationName= DesignationEntity.DesignationName;
                 tmpEntity.DesignationCode= DesignationEntity.DesignationCode;
+                tmpEntity.isActive = DesignationEntity.isActive;
                 _context.SaveChanges();
                 result = tmpEntity.Id;
             }

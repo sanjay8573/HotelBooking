@@ -82,12 +82,13 @@
         //console.log("Per Room Cost Id" + perRoomCostId + " Per Room COST " + TotalRoomCost)
         $("#" + perRoomCostId).text(TotalRoomCost);
         $("#" + jsondataId).val('@Html.Raw(Json.Encode(Model))');
+    
         $("#" + perRoomCostId).on('change', function () {
             //console.log("Cost Chnaged");
             //console.log("Current Cost" + amt);
-            $("#totAmt").trigger('change'); 
+            $("#totAmt").trigger('change');
         });
-         
+
 
     });
 
@@ -97,7 +98,7 @@
         var totalBasePrice = parseInt("0");
         var jsondataId = "jsonDataId" + id;
         data = $.parseJSON($("#" + jsondataId).val());
-       
+
         $('#' + tableId).find('input[type=text]').each(function () {
          //console.log($(this).attr("vTag"));
          var dd = $(this).attr("vTag");
@@ -110,16 +111,16 @@
              }
          }
             totalRoomCostonSave += parseInt(this.value);
-           
+
          //console.log(totalRoomCostonSave)
         });
-        
+
       var perRoomCostId = "totalPerRoomCost" + id;
         $("#" + perRoomCostId).text(totalRoomCostonSave.toFixed(2));
         divLoaded();
-        $("#" + perRoomCostId).trigger('change');   
+        $("#" + perRoomCostId).trigger('change');
         $("#"+jsondataId).val(JSON.stringify(data))
-       
+
     }
 
 </script>

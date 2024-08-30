@@ -32,7 +32,7 @@
 
                                 </tr>
                                 <tr>
-                                    <td style="width: 120px; border: 1px solid #ccc">Issue Date</td>
+                                    <td style="width: 120px; border: 1px solid #ccc">Transaction Date</td>
                                     <td style="width: 120px; border: 1px solid #ccc">From - @Model.REQ.fromDate</td>
                                     <td style="width: 120px; border: 1px solid #ccc">To - @Model.REQ.toDate</td>
                                 </tr>
@@ -44,8 +44,11 @@
 
                     <tr>
                         <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc">#</th>
+                        <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc">Transaction Date</th>
+                        <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc">Customer Name</th>
                         <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc">From Curr</th>
                         <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc">From Curr Value</th>
+                        <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc">To Curr Value</th>
                         <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc">ROE</th>
                         <th style="background-color: #003556; color: #f9f5f5; border: 1px solid #ccc">Room #</th>
 
@@ -59,19 +62,22 @@
                         {
                             <tr>
                                 <td style="width:10px;border:  1px solid #ccc">@i</td>
+                                <td style="width:120px;border: 1px solid #ccc">@bk.TransDate.ToString("MM-dd-yyyy")</td>
+                                <td style="width:120px;border: 1px solid #ccc">@bk.CustomerName</td>
                                 <td style="width:120px;border: 1px solid #ccc">@bk.ExchangeCurrencyName</td>
                                 <td style="width: 120px; border: 1px solid #ccc; text-align: right">@bk.fromValue</td>
+                                <td style="width: 120px; border: 1px solid #ccc; text-align: right">@bk.toValue</td>
                                 <td style="width:120px;border: 1px solid #ccc; text-align: right">@bk.CurrentValue</td>
                                 <td style="width:120px;border: 1px solid #ccc">@bk.RoomNumber</td>
                             </tr>
                             totalFromVal = totalFromVal + bk.fromValue;
                             i++;
                         }
-                        <tr>
-                            <td colspan="2" style="width: 10px; border: 1px solid #ccc; text-align: right">Total :</td>
+                        @*<tr>
+                            <td colspan="4" style="width: 10px; border: 1px solid #ccc; text-align: right">Total :</td>
                             <td style="width: 120px; border: 1px solid #ccc; text-align: right">@totalFromVal</td>
                             
-                        </tr>
+                        </tr>*@
 
                     }
 
