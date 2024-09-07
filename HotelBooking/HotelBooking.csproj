@@ -1027,9 +1027,14 @@
     <Content Include="Views\Home\MyBookings.cshtml" />
     <Content Include="Views\Home\ResturantSalesReportQ.cshtml" />
     <Content Include="Views\Home\ResturantSalesReport.cshtml" />
+    <Content Include="Views\Home\CreateBooking - Copy.cshtml" />
+    <Content Include="Views\Home\EditBooking.cshtml" />
+    <Content Include="Views\Home\_PricePerRoomEdit.cshtml" />
+    <Content Include="Views\Home\_PricePerNightEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Model\Booking\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\bootstrap.min.js.map" />

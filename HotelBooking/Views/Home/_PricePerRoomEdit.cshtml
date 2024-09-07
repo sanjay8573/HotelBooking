@@ -39,6 +39,16 @@
 
         @if (ViewBag.NOR != null)
         {
+            
+            string rtVal = (string)ViewBag.BookingRT;
+            if (!rtVal.Contains(","))
+            {
+                rtVal = rtVal + ",";
+            }
+            var BookingRTArr = rtVal.Split(',');
+
+
+
             for (int i = 1; i <= ViewBag.NOR; i++)
             {
                 var rtselname = "RTSelType" + i.ToString();
@@ -51,29 +61,33 @@
                 var RoomType_RoomId = "RoomType_RoomId" + i.ToString();
 
 
-                <tr>
+                    <tr>
                     <td class="trthbgclr" width="15%" align="left" valign="middle">Room #@i</td>
                     <td width="25%" align="left" valign="middle">
-                        <select id="@rtselname" required=required onchange="GetPrice('@i', '@rtselname');" name="@rtselname" class="full-width freetrial ValidateInput" valType="DropDown">
-                            @if (ViewBag.RTComboModel1 != null)
-                            {
-                                foreach (var item in ViewBag.RTComboModel1)
-                                {
-                                    if (item.Text != null)
-                                    {
-                                        <option value="@item.Value" selected="@item.Selected">
-                                            @item.Text
-                                        </option>
+                    <select id="@rtselname" required=required  onchange="GetPrice('@i', '@rtselname');" name="@rtselname" class="full-width freetrial ValidateInput" valType="DropDown">
+                                 @if (ViewBag.RTComboModel1 != null)
+                                 {
+                                     string value = (string)BookingRTArr.GetValue(i-1);
+                                     foreach (var item in ViewBag.RTComboModel1)
+                                     {
 
-                                    }
-                                }
-                            }
+                                         if (item.Text != null)
+                                         {
+                                             if (item.Value == value) { item.Selected = true; }
+                                                            <option value="@item.Value" selected="@item.Selected">
+                                                                @item.Text
+                                                            </option>
+
+                                            }
+                                     }
+                                 }
                         </select>
                     </td>
                     <td width="15%" align="center" valign="middle">@ViewBag.todalNight</td>
                     <td width="15%" align="right" valign="middle" id="@totalPerRoomCostId"></td>
                     <td width="15%" align="right" valign="middle"> <select  id="@RoomType_RoomId"></select></td>
-                   
+
+
 
                     <td width="30%" align="center" valign="middle">
                         <input type="hidden" id="@totalPerRoomTaxId" />
@@ -105,6 +119,12 @@
 <script>
 
     $(document).ready(function () {
+        for (i = 1; i <= Number(@ViewBag.NOR); i++) {
+            var RTSelType = "RTSelType" + i;
+            GetPriceOnPageLoad(i, RTSelType);
+           
+          
+        }
         $("input").attr("autocomplete", "none");
         $(".ValidateInput").on("blur", function () {
             validateField(this);
@@ -210,6 +230,47 @@
 
 
     }
+    function GetPriceOnPageLoad(idn, ddlSelect) {
+        var bookingId = $("#BookingId").val();
+        var divId = "ViewEditPerDayPrice" + idn;
+        var VeiwEditLink = "ViewEditPerDayPriceLink" + idn;
+        //console.log(VeiwEditLink);
+        var RoomTypeId = $('#' + ddlSelect + ' option:selected').val();
+        var cin = $("#Addbookingdatepickerinn").val();
+        var cout = $("#Addbookingdatepickerout").val();
+        //console.log(RoomTypeId + " c " + cin + " o  " + cout);
+        if (RoomTypeId > 0) {
+            const url = "/Home/_PricePerNightEdit?RoomTypeId=" + RoomTypeId + "&cinDate=" + cin + "&coutDate=" + cout + "&refDiv=" + idn + "&bookingId=" + bookingId;
+            $('#' + divId).addClass("divloader");
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (data) {
+                    //console.log(data);
+                    $('#' + divId).html(data);
+                    GetRoomsOnLoad(idn, RoomTypeId);
+
+                }
+            }).done(function () {
+                setTimeout(function () {
+                    $('#' + divId).removeClass("divloader");
+                    $('#' + VeiwEditLink).css("display", "block");
+                    $('#' + VeiwEditLink).show();
+                    divLoaded();
+                }, 500);
+
+            });
+
+        } else {
+            var perRoomCostId = "totalPerRoomCost" + idn;
+            var currSelectedCost = $("#" + perRoomCostId).text();
+            //console.log(currSelectedCost);
+            calcuteTotalandtaxes(currSelectedCost, '-');
+            $("#" + perRoomCostId).text('');
+        }
+
+
+    }
     function GetRooms(idn, RoomTypeId) {
 
         var SelId = "RoomType_RoomId" + idn;
@@ -230,6 +291,45 @@
                                 value: item.Value,
                                 text : item.Text
                             }));
+                    });
+
+                }
+            }).done(function () {
+                //console.log("Done...............");
+
+            });
+
+        } else {
+
+        }
+
+
+    }
+    function GetRoomsOnLoad(idn, RoomTypeId) {
+
+        var SelId = "RoomType_RoomId" + idn;
+        var bookingId = $("#BookingId").val();
+        if (RoomTypeId > 0) {
+            const url = "/Home/getRoomsForRoomTypeforEdit?RoomTypeId=" + RoomTypeId + "&bookingId=" + bookingId;
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (data) {
+                    //console.log(data);
+                    //console.log("Success...............");
+                    var dropdown = $('#' + SelId);
+                    dropdown.empty();
+                    $.each(data, function (i, item) {
+                        var id = item.Value;
+                        var text = item.Text;
+                        var selected = item.Selected;
+                        dropdown.append('<option value="' + id + '" selected=' + selected +' >' + text + '</option>');
+                        //dropdown.append($('<option ' + item.selected +'>', {
+                        //    value: item.Value,
+                        //    text: item.Text
+                             
+                        //}));
                     });
 
                 }

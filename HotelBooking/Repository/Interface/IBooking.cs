@@ -19,6 +19,8 @@ namespace HotelBooking.Repository.Interface
         void DeleteNight(int bookingCostId);
         IEnumerable<BookingCost> GetAllBookingsCost(int bookingid);
         IEnumerable<PriceResponse> GetPricesForNight(PriceRequest req);
+        IEnumerable<PriceResponse> GetPricesForExistingBooking(PriceRequest req);
+        
         IEnumerable<Room> GetAllRooms(int roomTypeId);
 
         bool AddBookedRoom(BookedRoom BookedRoomEntity);
@@ -36,5 +38,6 @@ namespace HotelBooking.Repository.Interface
         IEnumerable<DashBoardData> CalendarData(int BranchId);
         IEnumerable<DashBoardData> CalendarDataNew(int BranchId,int month,int year);
         IEnumerable<Tour> GetAllTourBooking(int BranchId);
+        void UpdateBookingCost(int Bookingid, decimal Amount, decimal tax, decimal payableAmout);
     }
 }

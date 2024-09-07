@@ -61,6 +61,7 @@ namespace HotelBooking.Repository.Implementation
 
                 
                 MasterId = billingMasterEntity.BillingId;
+
                 foreach (var item in billingMasterEntity.BillingDetails) {
                     item.BillingMasterId = MasterId;
                     rtnVal = insertUpdateBillingDetails(item);

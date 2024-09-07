@@ -154,6 +154,8 @@
                             </table>
 
                             <input type="hidden" id="BranchId" value="@ViewBag.BranchId" />
+                            <input type="hidden" id="BookingId" value="@ViewBag.BookingId" />
+                           
                             <input type="hidden" id="hdnGuestId" value="0" />
                         </div>  
 
@@ -279,12 +281,28 @@
         $(".ValidateInput").on("blur", function () {
             validateField(this);
         });
-       
+
         $(".ValidateInputg").on("blur", function () {
             validateField(this);
         });
+
+        //set gyuest details when coming from booking
+        var bkId = '@ViewBag.BookingId';
+        if (bkId > 0) {
+            var guestData = '@ViewBag.GuestDetail';
+            var ArrGuest = guestData.split("|");
+            $("#hdnGuestId").val(ArrGuest[0]);
+            $("#txtGuestName").val(ArrGuest[1]);
+            $("#TxtGuestPhoneNumber").val(ArrGuest[2]);
+            $("#TxtGuestEmail").val(ArrGuest[3]);
+            $("#TxtGuestAddress").val(ArrGuest[4]);
+            $("#TxtGuestCity").val(ArrGuest[5]);
+            $("#TxtGuestPin").val(ArrGuest[6]);
+            $("#SelectGuestCountry option:selected").text(ArrGuest[7]);
+        }
+        //
         $('input:radio[name=PaymentMethod]').change(function () {
-           
+
             if (this.value == 'PayNow') {
                 $("#payNowDiv").show();
             }
@@ -328,7 +346,7 @@
             minDate: 0,
             disabledDates: [new Date()],
             onSelect: function (selected) {
-                
+
                 $("#txtStartDate").removeClass("errRedBorder");
                 $("#txtEndDate").removeClass("errRedBorder");
 
@@ -345,20 +363,20 @@
                 $("#TxtGuestAddress").val('');
                 $("#TxtGuestCity").val('');
                 $("#TxtGuestPin").val('');
-                $("#hdnGuestId").val(0); 
-                $("#SelectGuestCountry option:selected").text('Select Country');  
+                $("#hdnGuestId").val(0);
+                $("#SelectGuestCountry option:selected").text('Select Country');
             }
             else {
-                var ArrRM = this.value.split("-"); 
+                var ArrRM = this.value.split("-");
                 var ArrGuest = ArrRM[2].split("|");
-                $("#hdnGuestId").val(ArrGuest[0]); 
+                $("#hdnGuestId").val(ArrGuest[0]);
                 $("#txtGuestName").val(ArrGuest[1]);
                 $("#TxtGuestPhoneNumber").val(ArrGuest[2]);
                 $("#TxtGuestEmail").val(ArrGuest[3]);
                 $("#TxtGuestAddress").val(ArrGuest[4]);
                 $("#TxtGuestCity").val(ArrGuest[5]);
                 $("#TxtGuestPin").val(ArrGuest[6]);
-                $("#SelectGuestCountry option:selected").text(ArrGuest[7]); 
+                $("#SelectGuestCountry option:selected").text(ArrGuest[7]);
             }
         })
     });
@@ -504,14 +522,14 @@
             $("#txtEndDate").addClass("errRedBorder");
             return false;
         }
-        $("#SelectedServiceTable").css("border", "0px"); 
+        $("#SelectedServiceTable").css("border", "0px");
         //var itmNo = Number($("#hdnItems").val()) + 1;
         var itmNo = $("#txtServiceName").attr('ServiceId');
         var ServiceItemId = "ServiceItem_" + itmNo;
         var TaxPercentage = $("#txtServiceName").attr('TaxP');
         //$("#billdetails").append('<div id="' + foodItemId + '" class="Subgroupmain"><input id="txtItemName" type="text" value="' + itemName + '"> <input id="txtQty" type="text" value="' + ItemQty + '"><input id="txtTotal" type="text" value="' + ItemTotal + '"></div>');
 
-        
+
         var divHtml1 = '<tr class="active" id="' + ServiceItemId +'">';
         divHtml1 += '<td><a href="#" data-toggle="modal" data-target="#ItemNameDetails">' + itemName +'</a></td>';
         divHtml1 += '<td align="center" valign="middle">' + ItemQty + '</td>';
@@ -519,7 +537,7 @@
         divHtml1 += '<td align="center" valign="middle">' + endDate + '</td>';
         divHtml1 += '<td align="center" valign="middle">' + ItemTotal + '<input type="hidden" id="' + TaxPercentage + '" value="' + TaxPercentage +'" /></td>';
         divHtml1 += '<td align="center" valign="middle"><a href="#" class="closebtn deletebtn" onClick="removeRow(this)"><i class="fa fa-trash-o"></i></a></td>';
-       
+
         divHtml1 += '</tr>';
 
         $("#SelectedServiceTable").append(divHtml1);
@@ -535,49 +553,53 @@
     }
     function calculateTotal() {
         var totalAmount = 0;
-        
+
         var taxAmount = 0;
-        
+
 
         $("#SelectedServiceTable > tbody > tr").each(function () {
             var itemval = $(this).find('td').eq(4).text();// + " " + $(this).find('td').eq(1).text());
             var TP = $(this).find('input[type=hidden]').val();
             totalAmount = Number(totalAmount) + Number(itemval);
             taxAmount = Number(totalAmount) * Number(TP) / 100;
-            totalAmount = totalAmount + taxAmount;
-           
+            //totalAmount = totalAmount + taxAmount;
+            totalAmount = totalAmount;
+
         });
-       
+
 
         $("#txtTotalAmount").text(Number(totalAmount).toFixed(2));
         $("#txtTotalTax").text(Number(taxAmount).toFixed(2));
-        
+
     }
     function removeRow(rr) {
         $(rr).closest('tr').remove();
         calculateTotal();
     }
-    
+
     function SaveTourBooking(btn) {
 
         var selectedServiceCount=$("#SelectedServiceTable>tbody tr").length;
-       
+
         if (selectedServiceCount === 0) {
             alert(selectedServiceCount);
             $("#SelectedServiceTable").css("border", "2px solid red");
             return false;
         } else {
-            $("#SelectedServiceTable").css("border", "0px"); 
+            $("#SelectedServiceTable").css("border", "0px");
         }
         if (!validateMyForm("ValidateInputg")) {
             return false; // Prevent form submission if validation fails
         } else {
 
-            $("#SelectedServiceTable").css("border", "0px"); 
+            $("#SelectedServiceTable").css("border", "0px");
 
 
         $(btn).prop("disabled", true);
-        const branchId = $("#BranchId").val();
+            const branchId = $("#BranchId").val();
+            const hdnBookingId = $("#BookingId").val();
+            var BookingId = 0;
+
         console.log("SAving Booking.....");
         const GuestName = $("#txtGuestName").val();
         const GuestPhone = $("#TxtGuestPhoneNumber").val();
@@ -596,8 +618,13 @@
         const PayableAmount = $("#txtTotalAmount").text();
         const discount = "0.00";
         const couponCode = "XXXX";
-        const couponAmount = "0.00";
-        const BookingId = ArrRM[1];
+            const couponAmount = "0.00";
+            if (hdnBookingId > 0) {
+                BookingId = hdnBookingId;
+            } else {
+                BookingId = ArrRM[1];
+            }
+
 
 
         const SelectedServices = "";
@@ -692,7 +719,7 @@
             var tp = $(this).find('input[type=hidden]').val();
             var itemval = $(this).find('td').eq(4).text();// + " " + $(this).find('td').eq(1).text());
             var TaxAmount = Number(itemval) * Number(tp) / 100;
-            itemval = Number(itemval) + Number(TaxAmount);
+            itemval = Number(itemval) ;
             BookingCost = {
                 BookingId: parseInt(BookingId),
                 BookingCostId: parseInt(0),
@@ -744,7 +771,12 @@
                     position: 'top-right',
                     loaderBg: '#9EC600'  // To change the background
                 });
-                window.location.href = '/Home/BookedTours/';
+                var bkId = '@ViewBag.BookingId';
+                if (bkId > 0) {
+                    window.location.href = '/Home/Bookings/';
+                } else {
+                    window.location.href = '/Home/BookedTours/';
+                }
 
             })
             .catch(error => {

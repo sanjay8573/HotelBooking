@@ -46,6 +46,10 @@ namespace HotelBooking.Model
         public List<BookingCost> AllNights { get; set; }
         public string PaidServices { get; set; }
         public bool MailRequired { get; set; } = false;
+       
+        public List<BookedRoom> AllocatedRooom { get; set; }
+       
+        public BookingPayments BookingPayment { get; set; }
 
     }
     public class BookingResponse

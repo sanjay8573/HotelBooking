@@ -47,5 +47,7 @@ namespace HotelBooking.Model
         public String  BookingDateTime { get; set; }
         [NotMapped]
         public List<BookingCost> AllNights { get; set; }
+        
+
     }
 }

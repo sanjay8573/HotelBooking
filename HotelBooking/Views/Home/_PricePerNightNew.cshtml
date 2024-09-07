@@ -44,7 +44,7 @@
                                         <td>
                                             @Html.TextBoxFor(m => p.Amount, new { id = txtId, placeholder = "0.00", vTag = p.Date, basePrice = p.Amount })
 
-                                            @*<input type="text" id="@txtId" class="full-width allinput" placeholder="0.00" value="@p.OfferPrice" runat="server">*@
+                                            <input type="text" id="@txtId" class="full-width allinput" placeholder="0.00" value="@p.OfferPrice" runat="server">
                                         </td>
 
                                         <td><label>@ViewBag.CurrencySymbol  @p.TaxAmount</label></td>

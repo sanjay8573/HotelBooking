@@ -31,13 +31,14 @@
                         <td>@p.Description</td>
                     }
 
-                    @if (@p.CostCategory == 1)
+                    @if (@p.CostCategory == 3)
                     {
-                        calAmt = @p.OfferPrice;
+                        calAmt = @p.OfferPrice * @p.Qty;
                     }
                     else
                     {
-                        calAmt = @p.OfferPrice * @p.Qty;
+                        calAmt = @p.OfferPrice;
+
                     }
 
                     <td align="right">@ViewBag.CurrencySymbol @calAmt </td>

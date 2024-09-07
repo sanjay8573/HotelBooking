@@ -120,7 +120,26 @@
                                                 <!--right column-->
                                                 <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 acddiv" style="padding: 10px 0px;">
                                                     <div class="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7 p-0 pull-left">
-                                                        <p class="onlnckn"><strong>Room:</strong> @Model.Room</p>
+                                                        <p class="onlnckn">
+                                                            <strong>Room(s):</strong>
+                                                            @{
+                                                                var rtN = @Model.Room.Split(',');
+                                                            }
+                                                            <ul>
+                                                                @if (rtN.Length > 1)
+                                                                {
+                                                                    for (int k = 0; k < rtN.Length; k++)
+                                                                    {
+                                                                        <li> @rtN[k]</li>
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    <li>@Model.Room</li>
+                                                                }
+                                                            </ul>
+
+                                                        </p>
                                                         <p class="aerlnscnf">Booking #: @Model.BookingRef</p>
                                                         <p class="arlnsnme"><strong>Check In:</strong> @Model.CheckIn.ToString("dd-MMM-yyyy")</p>
                                                         <p class="arlnsnme"><strong>Check Out:</strong> @Model.CheckOut.ToString("dd-MMM-yyyy")</p>
@@ -176,6 +195,7 @@
                 <input type="hidden" id="BookingRef" value="@ViewBag.BookingRef" />
                 <input type="hidden" id="BranchId" value="@ViewBag.BranchId" />
                 <input type="hidden" id="TotalPrice" value="@Model.TotalPrice" />
+                <input type="hidden" id="TotalPayable" value="@Model.TotalPrice" />
                 <input type="hidden" id="Amountpaid" value="@Model.Amountpaid" />
                 <input type="hidden" id="AmountPending" value="@Model.AmountPending" />
                 <input type="hidden" id="RoomTypeId" value="@Model.RoomTypeId" />

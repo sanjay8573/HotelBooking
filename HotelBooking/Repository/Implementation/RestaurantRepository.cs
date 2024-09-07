@@ -359,7 +359,18 @@ namespace HotelBooking.Repository.Implementation
             {
 
                 BillingMaster BM = _context.BillingMaster.Where(b => b.RestaurantId == restaurantId && b.Tableid == tableId).SingleOrDefault();
-                BM.isPark = false;
+                if (BM != null) {
+                    if(BM.TableNo_RoomNumber>0)
+                    {
+                        var bk = _context.BookedRoom.Where(b => b.RoomNumber == BM.TableNo_RoomNumber.ToString() && b.isCheckout == false).FirstOrDefault();
+                        if (bk != null)
+                        {
+                            new BookingRepository().UpdateBookingCost(bk.BookingId, decimal.Parse(BM.TotalAmount.ToString()), decimal.Parse(BM.TaxAmount.ToString()),decimal.Parse(BM.GrantTotal.ToString()));
+                        }
+                    }
+                    BM.isPark = false;
+                }
+              
                 RestaurantTables restaurantTables = _context.RestaurantTables.Where(b => b.RestaurantId == restaurantId && b.TableId == tableId).SingleOrDefault();
                 restaurantTables.isOccupied = false;
                 _context.SaveChanges();

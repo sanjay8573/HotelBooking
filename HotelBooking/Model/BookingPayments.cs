@@ -27,6 +27,7 @@ namespace HotelBooking.Model
         public int Table_Room_Number { get; set; }
         public string ServiceType { get; set; }
         public string PaymentTypeName { get; set; }
+        public int PBookingId { get; set; }
         public string Remarks { get; set; }
         [NotMapped]
         public Decimal Amountpaid { get; set; }

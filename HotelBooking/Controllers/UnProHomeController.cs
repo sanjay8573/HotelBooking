@@ -3,6 +3,7 @@ using System;
 using System.Web;
 using System.Web.Mvc;
 using System.Runtime;
+using System.Linq;
 
 namespace HotelBooking.Controllers
 {
@@ -47,7 +48,6 @@ namespace HotelBooking.Controllers
                 UserLoginResponse model = loginController.UserLogin(urm.UserId);
                               
                 HttpContext.Session["Logged_In"] = "LoggedIn";
-
                 HttpContext.Session["UserLoginResponse"] = model;
                 HttpContext.Session["CompanyId"] = model.CompanyId;
                 HttpContext.Session["BranchId"] = model.BranchId;

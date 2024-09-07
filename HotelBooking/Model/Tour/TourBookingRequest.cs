@@ -9,6 +9,7 @@ namespace HotelBooking.Model.Tour
     public class TourBookingRequest
     {
         public  object imageFile { get; set; }
+        
         public Tour TourDetail { get; set; }
         public Guests TourGuest { get; set; }
         public List<BookingCost> TourDetails { get; set; }

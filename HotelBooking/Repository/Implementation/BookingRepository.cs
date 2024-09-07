@@ -45,6 +45,7 @@ namespace HotelBooking.Repository.Implementation
                     tmpEntity.Date = bookingCostEntity.Date;
                     tmpEntity.CostCategory= bookingCostEntity.CostCategory;
                     tmpEntity.PerNightCost = bookingCostEntity.PerNightCost;
+                    tmpEntity.OfferPrice = bookingCostEntity.OfferPrice;
                     tmpEntity.Tax = bookingCostEntity.Tax;
                     tmpEntity.TaxAmount = bookingCostEntity.TaxAmount;
                     
@@ -84,16 +85,59 @@ namespace HotelBooking.Repository.Implementation
             return rtnVal;
         }
 
+        private int getGuestId(string strMailid,string strName,string strContactNumber,int branchId)
+        {
+            int rtnVal = 0;
+            Guests _guest= _context.Guests.Where(g=>g.email==strMailid && g.BranchId== branchId).FirstOrDefault();
+            if (_guest != null)
+            {
+                _guest.Name = strName;
+                _guest.Phone = strContactNumber;
+                rtnVal = _guest.GuestId;
+            }
+            else
+            {
+                Guests _nGuest = new Guests();
+                _nGuest.email = strMailid;
+                _nGuest.Name = strName;
+                _nGuest.Phone = strContactNumber;
+                _nGuest.BranchId = branchId;
+                _nGuest.isActive = true;
+                _context.Guests.Add(_nGuest);
+                rtnVal = _nGuest.GuestId;
+
+            }
+
+
+            return rtnVal;
+        }
         public string AddBooking(BookingRequest bookingRequestEntity)
         {
             int BookingId = 0;
             string BookingNumber = string.Empty;
+            //check for Guest existing with email address
+            //if found update the contact number and get the Guest id
+            // if not insert and get the Guest
+            string PaymentStatus = "Pending";
+            if (bookingRequestEntity.BookingPayment != null)
+            {
+                if (bookingRequestEntity.PayableAmount == bookingRequestEntity.BookingPayment.paymentAmount)
+                {
+                    PaymentStatus = "Completed";
+                }
+                else
+                {
+                    PaymentStatus = "Partial Payment";
+                }
+            }
+            
+
             Booking bookingEntity = new Booking
             {
                 BookingId = bookingRequestEntity.BookingId,
                 BookingDate = DateTime.Now,
                 BookingNumber = bookingRequestEntity.BookingNumber,
-                GuestId = bookingRequestEntity.GuestId,
+                GuestId = getGuestId(bookingRequestEntity.GuestEmail, bookingRequestEntity.GuestName, bookingRequestEntity.GuestContactNumber, bookingRequestEntity.BranchId),
                 GuestName = bookingRequestEntity.GuestName,
                 BookingTypeId = bookingRequestEntity.BookingTypeId,
                 BookingTypeName = bookingRequestEntity.BookingTypeName,
@@ -108,7 +152,7 @@ namespace HotelBooking.Repository.Implementation
                 Checkout = bookingRequestEntity.Checkout,
                 NoOfRooms = bookingRequestEntity.NoOfRooms,
                 Nights = bookingRequestEntity.Nights,
-                TotalAmount = bookingRequestEntity.TotalAmount,
+                TotalAmount = bookingRequestEntity.TotalAmount- bookingRequestEntity.TotalTax,
                 TotalTax = bookingRequestEntity.TotalTax,
                 PayableAmount = bookingRequestEntity.PayableAmount,
                 BookingSourceId = bookingRequestEntity.BookingSourceId,
@@ -118,7 +162,7 @@ namespace HotelBooking.Repository.Implementation
                 PaidServices = bookingRequestEntity.PaidServices,
                 BookingStatus = "HN",
                 BookingChannel = "BO-DC",
-                PaymentStatus="Pending",
+                PaymentStatus = PaymentStatus,
                 BranchId = bookingRequestEntity.BranchId
             };
             bool rtnVal = false;
@@ -149,8 +193,8 @@ namespace HotelBooking.Repository.Implementation
                     tmpEntity.CouponCode = bookingRequestEntity.CouponCode;
                     tmpEntity.CouponAmount = bookingRequestEntity.CouponAmount;
                     tmpEntity.PaidServices = bookingRequestEntity.PaidServices;
-                    tmpEntity.BookingStatus = "New";
-                    tmpEntity.PaymentStatus = "Pending";
+                    //tmpEntity.BookingStatus = "New";
+                    tmpEntity.PaymentStatus = PaymentStatus;
                     _context.SaveChanges();
                     BookingId = tmpEntity.BookingId;
 
@@ -176,16 +220,38 @@ namespace HotelBooking.Repository.Implementation
 
             }
             bool rtnBKC;
-            List<BookingCost> allBookingCost = new List<BookingCost>(); 
+           //Booking Cost
             foreach (BookingCost bc in bookingRequestEntity.AllNights)
             {
                 bc.BookingId = BookingId;
-                
+                bc.PBookingId = BookingId;
+
                 rtnBKC = AddAdditionalNight(bc);
                
 
             }
-           
+            //Allocating Rooms
+            bool rtnBKedRoom;
+            if (bookingRequestEntity.AllocatedRooom != null)
+            {
+                foreach (BookedRoom bk in bookingRequestEntity.AllocatedRooom)
+                {
+                    bk.BookingId = BookingId;
+                    rtnBKedRoom = AddBookedRoom(bk);
+
+                }
+            }
+            //Booking Payments
+            bool rtnPmt;
+            if (bookingRequestEntity.BookingPayment!=null)
+
+            {
+                bookingRequestEntity.BookingPayment.BookingId= BookingId;
+                bookingRequestEntity.BookingPayment.isActive = true;
+                rtnPmt =AddBookingPayment(bookingRequestEntity.BookingPayment);
+
+            }
+
 
             return BookingNumber;
         }
@@ -333,7 +399,7 @@ namespace HotelBooking.Repository.Implementation
         }
 
         public IEnumerable<BookingCost> GetAllBookingsCost(int bookingid) {
-            return _context.BookingCost.Where(b => b.BookingId == bookingid).ToArray();
+            return _context.BookingCost.Where(b => b.PBookingId == bookingid).ToArray();
         }
         public IEnumerable<PriceResponse> GetPricesForNight(PriceRequest req)
         {
@@ -559,6 +625,50 @@ namespace HotelBooking.Repository.Implementation
 
             return ListpResp;
         }
+        public IEnumerable<PriceResponse> GetPricesForExistingBooking(PriceRequest req)
+        {
+            
+            List<PriceResponse> ListpResp = new List<PriceResponse>();
+            //PriceManager PM = _context.PriceManager.Where(c => c.RoomTypeId == req.roomTypeId).FirstOrDefault<PriceManager>();
+            IEnumerable<BookingCost>  bkCost=_context.BookingCost.Where(b => b.BookingId == req.BookingId && b.RoomTypeId==req.roomTypeId).ToArray();
+            foreach (BookingCost t in bkCost)
+            {
+                
+
+                
+                    PriceResponse p = new PriceResponse
+                    {
+
+
+                        roomTypeId = t.RoomTypeId,
+                        Tax =decimal.Parse(t.Tax),
+                        Date = t.Date,
+                        Day = t.Date.ToString(),
+                        TaxAmount = t.TaxAmount,
+                        Amount = t.PerNightCost,
+                        OfferPrice = t.OfferPrice,
+                        BookingCostId = req.nOfRoom,
+                        CostId = 0,
+                        Description = t.Description,
+                        isAvailable = true
+                    };
+                    if (!isRoomTypeAvailable(t.RoomTypeId, req.BranchId, t.Date))
+                    {
+                        p.isAvailable = false;
+                    }
+                    ListpResp.Add(p);
+
+               
+                
+                  
+                }
+
+
+
+            
+
+            return ListpResp;
+        }
 
         private decimal GetSpecialRate(DateTime rDate,int RoomTypeId)
         {
@@ -692,7 +802,7 @@ namespace HotelBooking.Repository.Implementation
 
        IEnumerable<BookingCost> IBooking.GetAllBookingsCost(int bookingid)
         {
-            return _context.BookingCost.Where(c => c.BookingId == bookingid).ToArray();
+            return _context.BookingCost.Where(c => c.PBookingId == bookingid).ToArray();
         }
 
         public bool AddBookingPayment(BookingPayments bkpEntity)
@@ -711,7 +821,11 @@ namespace HotelBooking.Repository.Implementation
             bkpEntity.InvoiceNumber = rtnInvStr;//generateInvoiceNumber(bkpEntity.BranchId);
             bkpEntity.OrderNumber = rtnOrdStr;//generateOrderNumber(bkpEntity.BranchId);
             bkpEntity.PaymentDate = DateTime.Now;
-            _context.BookingPayments.Add(bkpEntity);
+            if(bkpEntity.PaymentTypeName.ToUpper()!="ROOM")
+            {
+                _context.BookingPayments.Add(bkpEntity);
+            }
+            
             if (bkpEntity.PaymentFor == 2)
             {
                 if (bkpEntity.paymentDue <= bkpEntity.paymentAmount)
@@ -725,11 +839,37 @@ namespace HotelBooking.Repository.Implementation
                         rt.isOccupied = false;
                     }
                     if (bkpEntity.ServiceType == "RoomService")
-                    { 
-                        BillingMaster BM1 = _context.BillingMaster.Where(b => b.RestaurantId == bkpEntity.BookingId && b.TableNo_RoomNumber == bkpEntity.Table_Room_Number && b.isPark==true).SingleOrDefault();
-                        BM1.isPark = false;
-                        RestaurantRoomService rrs = _context.RestaurantRoomService.Where(b=>b.RoomNumber== bkpEntity.Table_Room_Number.ToString() && b.RestaurantId==bkpEntity.BookingId).SingleOrDefault();
+                    {
+                        RestaurantRoomService rrs = _context.RestaurantRoomService.Where(b => b.RoomNumber == bkpEntity.Table_Room_Number.ToString() && b.RestaurantId == bkpEntity.BookingId).SingleOrDefault();
                         rrs.isOrdered = false;
+                        BillingMaster BM1 = _context.BillingMaster.Where(b => b.RestaurantId == bkpEntity.BookingId && b.TableNo_RoomNumber == bkpEntity.Table_Room_Number && b.isPark==true).SingleOrDefault();
+                        if (BM1.TableNo_RoomNumber > 0)
+                        {
+                            
+                            var bk = _context.BookedRoom.Where(b => b.RoomNumber == BM1.TableNo_RoomNumber.ToString() && b.isCheckout == false).FirstOrDefault();
+                            if (bk != null)
+                            {
+                                BookingCost tmpEntity = new BookingCost();
+                                tmpEntity.BookingId = BM1.BillingId;
+                                tmpEntity.RoomTypeId = BM1.TableNo_RoomNumber;
+                                tmpEntity.Date = BM1.ClosingTime;
+                                tmpEntity.CostCategory = 4;
+                                tmpEntity.Description = "Dining - "+ BM1.ClosingTime.ToString();
+                                tmpEntity.PerNightCost = decimal.Parse(BM1.TotalAmount.ToString());;
+                                tmpEntity.OfferPrice = decimal.Parse(BM1.TotalAmount.ToString());
+                                tmpEntity.Tax = BM1.Tax.ToString();
+                                tmpEntity.TaxAmount = decimal.Parse(BM1.TaxAmount.ToString());
+                                tmpEntity.PBookingId = bk.BookingId;
+                                _context.BookingCost.Add(tmpEntity);
+
+
+                                bkpEntity.BookingId = bk.BookingId;
+                                new BookingRepository().UpdateBookingCost(bk.BookingId, decimal.Parse(BM1.TotalAmount.ToString()), decimal.Parse(BM1.TaxAmount.ToString()), decimal.Parse(BM1.GrantTotal.ToString()));
+                            }
+                        }
+
+                        BM1.isPark = false;
+                        
                     }
 
                 }
@@ -804,13 +944,13 @@ namespace HotelBooking.Repository.Implementation
             VMB.CompanyEmail = br.EmailID;
 
            
-            IEnumerable<BookingCost> _PR = GetAllBookingsCost(VMB.BookingId).Where(b1=>b1.CostCategory<=2);
+            IEnumerable<BookingCost> _PR = GetAllBookingsCost(VMB.BookingId);
             decimal RoomCost = _PR.Select(t => t.PerNightCost).Sum();
             VMB.BookedNiths = _PR;
             IEnumerable<BookingPayments> _BP = GetAllBookingPayments(br.Id, b.BookingId);
 
             decimal PaidAmount = _BP.Select(t => t.paymentAmount).Sum();
-            VMB.TotalPrice = b.TotalAmount;
+            VMB.TotalPrice = b.PayableAmount;
             VMB.Amountpaid = PaidAmount;
             VMB.AmountPending = (b.TotalAmount - PaidAmount);
 
@@ -1009,6 +1149,20 @@ namespace HotelBooking.Repository.Implementation
             return baseAmount;
         }
         #endregion 
+
+        public void UpdateBookingCost(int Bookingid,decimal Amount,decimal tax,decimal payableAmout)
+        {
+            Booking tmpbk = _context.Booking.Find(Bookingid);
+            decimal payableAMT = payableAmout + tax;
+            if (tmpbk != null)
+            {
+                tmpbk.TotalAmount += Amount;
+
+                tmpbk.TotalTax += tax;
+                tmpbk.PayableAmount += payableAMT;
+                _context.SaveChanges();
+            }
+        }
     }
 
 }

@@ -27,8 +27,9 @@ namespace HotelBooking.Repository.Implementation
             int gstId = 0;
             if (request.TourDetail.BookingId > 0)
             {
-               
-                gstId=_context.Booking.Where(b=>b.BookingId== request.TourDetail.BookingId && b.BranchId==request.TourDetail.BranchId).Select(s=>s.GuestId).FirstOrDefault();
+
+                var bk = _context.Booking.Where(b => b.BookingId == request.TourDetail.BookingId && b.BranchId == request.TourDetail.BranchId).FirstOrDefault();
+                gstId=bk.GuestId;
             }
 
             int TourBookingId = 0;
@@ -58,9 +59,16 @@ namespace HotelBooking.Repository.Implementation
             };
             try
             {
+                
+
                 _tour.BookingNumber = new BookingRepository().gererateBookingNumber();
                 _context.Tours.Add(_tour);
                 _context.SaveChanges();
+                if (_tour.BookingId > 0)
+                {
+                    new BookingRepository().UpdateBookingCost(_tour.BookingId,decimal.Parse(_tour.TotalAmount.ToString()), decimal.Parse(_tour.TotalTax.ToString()), decimal.Parse(_tour.TotalAmount.ToString()));
+                }
+                
                 TourBookingId = _tour.TourBookingId;
                 BookingNumber = _tour.BookingNumber;
                 tourBookingResponse.Error = new Model.onlineAPI.Error { Code = "0000", Description = "No Error || Tour Inserted" };
@@ -81,7 +89,7 @@ namespace HotelBooking.Repository.Implementation
             foreach (BookingCost bc in request.TourDetails)
             {
                 bc.BookingId = TourBookingId;
-
+                bc.PBookingId = request.TourDetail.BookingId;
                bool rtnBKC = new BookingRepository().AddAdditionalNight(bc);
 
 

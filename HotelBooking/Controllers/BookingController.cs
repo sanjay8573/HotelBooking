@@ -49,6 +49,12 @@ namespace HotelBooking.Controllers
         {
             return _bk.GetPricesForNight(PREntity);
         }
+        [HttpPost]
+        [Route("api/Booking/GetPricesForExistingBooking/{BranchId}")]
+        public IEnumerable<PriceResponse> GetPricesForExistingBooking(PriceRequest PREntity)
+        {
+            return _bk.GetPricesForExistingBooking(PREntity);
+        }
 
         [HttpGet]
         [Route("api/Booking/GetBooking/{bookingId}")]

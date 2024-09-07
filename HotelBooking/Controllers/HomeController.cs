@@ -1191,6 +1191,33 @@ namespace HotelBooking.Controllers
             //return View(bk);
 
         }
+        public ActionResult EditBooking(int BookingId = 0)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            string CurrencySymbole = Session["BranchCurrencySymbol"].ToString();
+            double TaxPercentage = double.Parse(Session["BranchTax"].ToString());
+
+            BookingController _bc = new BookingController();
+            VM_BookingDetails VMB = _bc.GetBookingDetails(branchId, BookingId);
+            VMB.BranchId = branchId;
+            ViewBag.CurrencySymbol = CurrencySymbole;
+            ViewBag.TaxPercentage = TaxPercentage;
+
+            List<SelectListItem> RoomSelection = new List<SelectListItem>();
+            RoomSelection.Add(new SelectListItem { Text = "Select", Value = "0" });
+           for (int sr=1;sr<13; sr++)
+            {
+                bool sel = false;
+                if(sr==VMB.NoOfRooms)
+                {
+                    sel = true;
+                }
+                RoomSelection.Add(new SelectListItem { Text = sr.ToString(), Value = sr.ToString(),Selected=sel  });
+            }
+            ViewBag.NoOfRooms = RoomSelection;
+
+            return View("EditBooking",VMB);
+        }
         public bool SaveBooking(BookingRequest bookingEntity)
         {
             BookingController _bk = new BookingController();
@@ -1292,13 +1319,13 @@ namespace HotelBooking.Controllers
             string CurrencySymbole = Session["BranchCurrencySymbol"].ToString();
             double TaxPercentage = double.Parse(Session["BranchTax"].ToString());
             BookingController _bc = new BookingController();
-            IEnumerable<BookingCost> _pr = _bc.GetBookingsCost(BookingId).Where(a=>a.CostCategory<=2);
-            decimal bk_DIC = _bc.GetBooking(BookingId).CouponAmount;
-            decimal bk_payableAmount = _bc.GetBooking(BookingId).PayableAmount;
+            IEnumerable<BookingCost> _pr = _bc.GetBookingsCost(BookingId);
+            var bkDt = _bc.GetBooking(BookingId);
+            
             Session["BranchId"] = branchId;
             ViewBag.CurrencySymbol = CurrencySymbole;
-            ViewBag.Discount = bk_DIC;
-            ViewBag.PayableAmount = bk_payableAmount;
+            ViewBag.Discount = bkDt.CouponAmount;
+            ViewBag.PayableAmount = bkDt.PayableAmount;
             ViewBag.TaxPercentage = TaxPercentage;
             return PartialView("_BookingDetails", _pr);
 
@@ -1473,6 +1500,39 @@ namespace HotelBooking.Controllers
             return PartialView("_PricePerRoom");
 
         }
+        public PartialViewResult _PricePerRoomEdit(int nOfr, int todalNight,int bookingId)
+        {
+
+
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+
+            if (bookingId > 0)
+            {
+                BookingController _bk = new BookingController();
+                string BookingRT =_bk.GetBooking(bookingId).RoomTypeId;
+                ViewBag.BookingRT = BookingRT;
+            }
+            RoomTypeController RTC = new RoomTypeController();
+            IEnumerable<RoomType> rtm = new List<RoomType>();
+
+            rtm = RTC.GetRoomTypes(branchId).Where(d => d.isDeleted == false && d.isActive == true); ;
+            List<SelectListItem> RoomTypeitems = new List<SelectListItem>();
+            RoomTypeitems.Add(new SelectListItem { Text = "Select a Room Type", Value = "0" });
+            foreach (RoomType item in rtm)
+            {
+                bool slt = false;
+                
+                RoomTypeitems.Add(new SelectListItem { Text = item.Title.Trim(), Value = item.RoomTypeId.ToString(), Selected = slt });
+            }
+            ViewBag.RTComboModel1 = RoomTypeitems;
+
+            ViewBag.NOR = nOfr;
+            ViewBag.todalNight = todalNight;
+
+            return PartialView("_PricePerRoomEdit");
+
+        }
         public PartialViewResult _PricePerNight(string RoomTypeId, DateTime cinDate, DateTime coutDate, string refDiv)
         {
             int branchId = int.Parse(Session["BranchId"].ToString());
@@ -1491,8 +1551,75 @@ namespace HotelBooking.Controllers
             ViewBag.CurrencySymbol = CurrencySymbole;
             ViewBag.TaxPercentage = TaxPercentage;
 
+            
             return PartialView("_PricePerNightV1", _pr);
 
+        }
+        public PartialViewResult _PricePerNightEdit(string RoomTypeId, DateTime cinDate, DateTime coutDate, string refDiv,int bookingId)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            string CurrencySymbole = Session["BranchCurrencySymbol"].ToString();
+            double TaxPercentage = double.Parse(Session["BranchTax"].ToString());
+            PriceRequest pr = new PriceRequest();
+            pr.BookingId = bookingId;
+            pr.CheckInDate = cinDate;
+            pr.CheckOutDate = coutDate;
+            pr.roomTypeId = int.Parse(RoomTypeId);
+            pr.BranchId = branchId;
+            pr.nOfRoom = int.Parse(refDiv);
+
+
+            BookingController _bc = new BookingController();
+            IEnumerable<PriceResponse> _pr = _bc.GetPricesForExistingBooking(pr);
+            ViewBag.CurrencySymbol = CurrencySymbole;
+            ViewBag.TaxPercentage = TaxPercentage;
+
+
+            return PartialView("_PricePerNightEdit", _pr);
+
+        }
+        public JsonResult getRoomsForRoomType(int RoomTypeId)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            RoomController _rc = new RoomController();
+
+
+            var rm = _rc.GetRoomsByRoomTypeId(branchId, RoomTypeId);
+            List<SelectListItem> Roomitems = new List<SelectListItem>();
+            Roomitems.Add(new SelectListItem { Text = "Select a Room", Value = "0" });
+            foreach (Room item in rm)
+            {
+                Roomitems.Add(new SelectListItem { Text = item.RoomTypeName + "-" + item.RoomNumber + "-" + item.FloorName, Value = item.RoomId.ToString() + "-" + item.floor.ToString() });
+            }
+            return Json(Roomitems, JsonRequestBehavior.AllowGet);
+        }
+        
+        public JsonResult getRoomsForRoomTypeforEdit(int RoomTypeId,int bookingId)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            RoomController _rc = new RoomController();
+            BookedRoomController _br = new BookedRoomController();
+
+            IEnumerable<BookedRoom> SelectedRoonList=_br.GetAllBookedRoomByBookingId(branchId, bookingId).Where(b=>b.RoomTypeId==RoomTypeId).ToArray();
+           
+            var rm = _rc.GetRoomsByRoomTypeId(branchId, RoomTypeId);
+            List<SelectListItem> Roomitems = new List<SelectListItem>();
+            Roomitems.Add(new SelectListItem { Text = "Select a Room", Value = "0" });
+            foreach (Room item in rm)
+            {
+               
+              
+                Roomitems.Add(new SelectListItem { Text = item.RoomTypeName + "-" + item.RoomNumber + "-" + item.FloorName, Value = item.RoomId.ToString() + "-" + item.floor.ToString() , Selected = false });
+               
+            }
+            if (SelectedRoonList != null)
+            {
+                foreach (BookedRoom item1 in SelectedRoonList)
+                {
+                    Roomitems.Add(new SelectListItem { Text = item1.RoomTypeName + "-" + item1.RoomNumber + "-" + item1.FloorName, Value = item1.RoomId.ToString() + "-" + item1.FloorId.ToString(), Selected = true });
+                }
+            }
+            return Json(Roomitems, JsonRequestBehavior.AllowGet);
         }
         public PartialViewResult _PaidServices(string RoomTypeId)
         {
@@ -3427,7 +3554,7 @@ namespace HotelBooking.Controllers
             return RedirectToAction("GetTourItems");
 
         }
-        public ActionResult BookTour()
+        public ActionResult BookTour(int BookingId=0 )
         {
             //LFCommunication _lfc = new LFCommunication();
             //_lfc.sendMessageToWhatsApp();
@@ -3448,6 +3575,15 @@ namespace HotelBooking.Controllers
                 Roomitems.Add(new SelectListItem { Text =  item.RoomNumber , Value = item.RoomId.ToString() +"-"+item.BookingId.ToString()+"-"+ strGuest });
             }
             ViewBag.RMComboModel = Roomitems;
+            if (BookingId > 0)
+            {
+                
+                Guests tmpGuest = _gst.GetExistingGuest(branchId, BookingId);
+                string strGuest = tmpGuest.GuestId + "|" + tmpGuest.Name + "|" + tmpGuest.Phone + "|" + tmpGuest.email + "|" + tmpGuest.Address + "|" + tmpGuest.city + "|" + tmpGuest.pincode + "|" + tmpGuest.country;
+                ViewBag.BookingId = BookingId;
+                ViewBag.GuestDetail = strGuest;
+
+            }
             ViewBag.BranchId = branchId;
             Session["BranchId"] = branchId;
 

@@ -101,7 +101,7 @@
                     </div>*@
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
                         <label for="edit-mail" class="form-required">Added Date</label>
-                        <input type="text" id="txtPmtDate" class="full-width allinput ValidateInput" placeholder="2024-03-05" runat="server">
+                        <input type="text" id="txtPmtDate" class="full-width allinput ValidateInput" placeholder="select  payment date" autocomplete="off" runat="server">
                     </div>
 
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
@@ -146,7 +146,7 @@
         
             $(document.body).append($("#Addpayment").clone());
             $("#Addpayment").remove();
-        $("input").attr("autocomplete", "none");
+        $("input").attr("autocomplete", "off");
         $(".ValidateInput").on("blur", function () {
             validateField(this);
         });

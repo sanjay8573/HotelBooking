@@ -46,8 +46,27 @@
             <!--right column-->
             <div class="col-12 col-sm-4 col-md-4 col-lg-4 col-xl-4 acddiv" style="padding: 10px 0px;">
                 <div class="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7 p-0 pull-left">
-                    <p class="onlnckn"><strong>Room:</strong> @Model.Room</p>
-                    <p class="aerlnscnf">Booking Number: @Model.BookingRef</p>
+                    <p class="onlnckn">
+                        <strong>Room(s):</strong>
+                        @{
+                            var rtN = @Model.Room.Split(',');
+                        }
+                        <ul>
+                            @if (rtN.Length > 1)
+                            {
+                                for (int k = 0; k < rtN.Length; k++)
+                                {
+                                    <li> @rtN[k]</li>
+                                }
+                            }
+                            else
+                            {
+                                <li>@Model.Room</li>
+                            }
+                        </ul>
+
+                    </p>
+                    <p class="aerlnscnf">Booking #: @Model.BookingRef</p>
                     <p class="arlnsnme"><strong>Check In:</strong> @Model.CheckIn.ToString("dd-MMM-yyyy")</p>
                     <p class="arlnsnme"><strong>Check Out:</strong> @Model.CheckOut.ToString("dd-MMM-yyyy")</p>
                     <p class="flitn"><strong>Payment Status:</strong> @Model.PaymnentStatus</p>
@@ -108,7 +127,7 @@
                         <tr style="background: #eaeeef;">
                             <td colspan="13" align="left" valign="middle"><div class="allheadingin">Taxes</div></td>
                         </tr>
-                        <tr>
+                        @*<tr>
                             <td align="left">1</td>
                             <td align="left">
                                 Tax 
@@ -116,10 +135,10 @@
                             </td>
                             <td align="left">@ViewBag.TaxPercentage%</td>
                             <td align="left">@ViewBag.CurrencySymbol @totalTax</td>
-                        </tr>
+                        </tr>*@
                         <tr>
-                            <td align="left" colspan="3"><strong>Total Tax</strong></td>
-                            <td align="left"><strong>@totalTax</strong></td>
+                            <td align="left" colspan="3"><strong>Total Tax ( <a href="#" id="taxBreakup" data-toggle="modal" data-target="#INVTXBRK">Break-up</a> ) </strong></td>
+                            <td align="left"><strong>@ViewBag.CurrencySymbol @totalTax</strong></td>
                         </tr>
                     </tbody>
                 </table>

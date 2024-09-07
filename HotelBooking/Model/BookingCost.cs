@@ -6,10 +6,7 @@ namespace HotelBooking.Model
     [Table("BookingCost")]
     public class BookingCost
     {
-        public BookingCost()
-        {
-            Date = DateTime.Now;
-        }
+        
         public int BookingCostId { get; set; }
         public int  BookingId { get; set; }
         public int RoomTypeId { get; set; }
@@ -21,5 +18,6 @@ namespace HotelBooking.Model
         public decimal TaxAmount { get; set; }
         public int CostCategory { get; set; }// 1. RoomType Cost/2. PaidService cost etc.
         public int Qty { get; set; }
+        public int PBookingId { get; set; }
     }
 }

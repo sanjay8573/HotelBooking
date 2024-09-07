@@ -96,30 +96,54 @@
                                 </tr>
                                 <tr class="trthbgclr">
                                     <th class="text-center">#</th>
+                                    <th class="text-center">Modify</th>
                                     <th class="text-center">Booking Number</th>
                                     <th class="text-center">Customer Name</th>
                                     <th class="text-center">Room/Hall</th>
                                     <th class="text-center">Check in</th>
                                     <th class="text-center">Check out</th>
                                     <th class="text-center">Booking Date</th>
-                                    <th class="text-center">Payment Status</th>
-                                    <th class="text-center">Booking Status</th>
+                                    @*<th class="text-center">Payment Status</th>
+                                    <th class="text-center">Booking Status</th>*@
+                                    <th class="text-center">Tour</th>
+                                    <th class="text-center">SPA</th>
                                 </tr>
                                 @if (Model != null)
                                 {
                                     var i = 1;
                                     foreach (var bk in Model)
                                     {
+                                        var rtN = @bk.RoomTypeName.Split(',');
                                         <tr class="active">
                                             <td>@i</td>
+                                            <td align="left" valign="middle"><a href="@Url.Action("EditBooking","Home",new {  BookingId=bk.BookingId })" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
                                             <td><a href="@Url.Action("BookingProcess","Home" ,new { BookingId=bk.BookingId,BookingRef=bk.BookingNumber})">@bk.BookingNumber</a></td>
                                             <td align="center" valign="middle">@bk.GuestName</td>
-                                            <td align="center" valign="middle">@bk.RoomTypeName</td>
+                                            <td align="center" valign="middle">
+
+                                                <ul>
+                                                    @if (rtN.Length > 1)
+                                                    {
+                                                        for (int k = 0; k < rtN.Length; k++)
+                                                        {
+                                                            <li> @rtN[k]</li>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <li> @bk.RoomTypeName</li>
+                                                    }
+                                                </ul>
+
+
+                                            </td>
                                             <td align="center" valign="middle">@bk.CheckIn.ToString("dd-MMM-yyyy")</td>
                                             <td align="center" valign="middle"> @bk.Checkout.ToString("dd-MMM-yyyy")</td>
                                             <td align="center" valign="middle">@bk.BookingDate</td>
-                                            <td align="center" valign="middle">@bk.PaymentStatus</td>
-                                            <td align="center" valign="middle">@bk.BookingStatus</td>
+                                            @*<td align="center" valign="middle">@bk.PaymentStatus</td>
+        <td align="center" valign="middle">@bk.BookingStatus</td>*@
+                                            <td align="center" valign="middle"><a href="@Url.Action("BookTour","Home",new { @BookingId = bk.BookingId })">Add Tour</a></td>
+                                            <td align="center" valign="middle"><a href="@Url.Action("Checkout","Home",new { @BookingId = bk.BookingId })">Check-out</a></td>
                                         </tr>
                                         i++;
                                     }

@@ -17,6 +17,7 @@ namespace HotelBooking.Model
         }
 
         public int BookingId { get; set; }
+        public int BranchId { get; set; }
         public string BookingRef { get; set; }
         public string BookingDate { get; set; }
 
@@ -33,6 +34,7 @@ namespace HotelBooking.Model
         public string  Nights { get; set; }
         public int GuestId { get; set; }
         public string GuestName { get; set; }
+        
         public string CompanyName { get; set;}
         public string CompanyAddress { get; set;}
         public string CompanyCity { get; set; }
