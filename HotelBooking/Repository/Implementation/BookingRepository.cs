@@ -255,6 +255,134 @@ namespace HotelBooking.Repository.Implementation
 
             return BookingNumber;
         }
+        public string EditBooking(BookingRequest bookingRequestEntity)
+        {
+            int BookingId = 0;
+            string BookingNumber = string.Empty;
+            //check for Guest existing with email address
+            //if found update the contact number and get the Guest id
+            // if not insert and get the Guest
+            string PaymentStatus = "Pending";
+            if (bookingRequestEntity.BookingPayment != null)
+            {
+                if (bookingRequestEntity.PayableAmount == bookingRequestEntity.BookingPayment.paymentAmount)
+                {
+                    PaymentStatus = "Completed";
+                }
+                else
+                {
+                    PaymentStatus = "Partial Payment";
+                }
+            }
+
+
+            Booking bookingEntity = new Booking
+            {
+                BookingId = bookingRequestEntity.BookingId,
+                BookingDate = DateTime.Now,
+                BookingNumber = bookingRequestEntity.BookingNumber,
+                GuestId = getGuestId(bookingRequestEntity.GuestEmail, bookingRequestEntity.GuestName, bookingRequestEntity.GuestContactNumber, bookingRequestEntity.BranchId),
+                GuestName = bookingRequestEntity.GuestName,
+                BookingTypeId = bookingRequestEntity.BookingTypeId,
+                BookingTypeName = bookingRequestEntity.BookingTypeName,
+                RoomTypeId = bookingRequestEntity.RoomTypeId,
+                RoomTypeName = bookingRequestEntity.RoomTypeName,
+                Adult = bookingRequestEntity.Adult,
+                Child = bookingRequestEntity.Child,
+                ChildAge1 = bookingRequestEntity.ChildAge1,
+                ChildAge2 = bookingRequestEntity.ChildAge2,
+                ChildAge3 = bookingRequestEntity.ChildAge3,
+                CheckIn = bookingRequestEntity.CheckIn,
+                Checkout = bookingRequestEntity.Checkout,
+                NoOfRooms = bookingRequestEntity.NoOfRooms,
+                Nights = bookingRequestEntity.Nights,
+                TotalAmount = bookingRequestEntity.TotalAmount - bookingRequestEntity.TotalTax,
+                TotalTax = bookingRequestEntity.TotalTax,
+                PayableAmount = bookingRequestEntity.PayableAmount,
+                BookingSourceId = bookingRequestEntity.BookingSourceId,
+                CommissionPaid = bookingRequestEntity.CommissionPaid,
+                CouponCode = bookingRequestEntity.CouponCode,
+                CouponAmount = bookingRequestEntity.CouponAmount,
+                PaidServices = bookingRequestEntity.PaidServices,
+                BookingStatus = "HN",
+                BookingChannel = "BO-DC",
+                PaymentStatus = PaymentStatus,
+                BranchId = bookingRequestEntity.BranchId
+            };
+            bool rtnVal = false;
+            if (bookingEntity.BookingId > 0)
+            {
+                var tmpEntity = _context.Booking.Find(bookingEntity.BookingId);
+                if (tmpEntity != null)
+                {
+                   
+                    tmpEntity.BookingTypeName = bookingEntity.BookingTypeName;
+                    tmpEntity.RoomTypeId = bookingEntity.RoomTypeId;
+                    tmpEntity.GuestId = bookingEntity.GuestId;
+                    tmpEntity.GuestName = bookingEntity.GuestName;
+                    tmpEntity.BookingTypeId = bookingEntity.BookingTypeId;
+                    tmpEntity.BookingTypeName = bookingEntity.BookingTypeName;
+                    tmpEntity.Child = bookingEntity.Child;
+                    tmpEntity.ChildAge1 = bookingEntity.ChildAge1;
+                    tmpEntity.ChildAge2 = bookingEntity.ChildAge2;
+                    tmpEntity.ChildAge3 = bookingEntity.ChildAge3;
+                    tmpEntity.Adult = bookingEntity.Adult;
+                    tmpEntity.CheckIn = bookingEntity.CheckIn;
+                    tmpEntity.Checkout = bookingEntity.Checkout;
+                    tmpEntity.NoOfRooms = bookingEntity.NoOfRooms;
+                    tmpEntity.Nights = bookingEntity.Nights;
+                    tmpEntity.TotalAmount = bookingEntity.TotalAmount;
+                    tmpEntity.TotalTax = bookingEntity.TotalTax;
+                    tmpEntity.PayableAmount = bookingRequestEntity.PayableAmount;
+                    tmpEntity.CouponCode = bookingRequestEntity.CouponCode;
+                    tmpEntity.CouponAmount = bookingRequestEntity.CouponAmount;
+                    tmpEntity.PaidServices = bookingRequestEntity.PaidServices;
+                    //tmpEntity.BookingStatus = "New";
+                    tmpEntity.PaymentStatus = PaymentStatus;
+                    _context.SaveChanges();
+                    BookingId = tmpEntity.BookingId;
+                    BookingNumber = bookingEntity.BookingNumber;
+
+                }
+
+            }
+            
+            bool rtnBKC;
+            //Booking Cost
+            foreach (BookingCost bc in bookingRequestEntity.AllNights)
+            {
+                bc.BookingId = BookingId;
+                bc.PBookingId = BookingId;
+
+                rtnBKC = AddAdditionalNight(bc);
+
+
+            }
+            //Allocating Rooms
+            bool rtnBKedRoom;
+            if (bookingRequestEntity.AllocatedRooom != null)
+            {
+                foreach (BookedRoom bk in bookingRequestEntity.AllocatedRooom)
+                {
+                    bk.BookingId = BookingId;
+                    rtnBKedRoom = AddBookedRoom(bk);
+
+                }
+            }
+            //Booking Payments
+            bool rtnPmt;
+            if (bookingRequestEntity.BookingPayment != null)
+
+            {
+                bookingRequestEntity.BookingPayment.BookingId = BookingId;
+                bookingRequestEntity.BookingPayment.isActive = true;
+                rtnPmt = AddBookingPayment(bookingRequestEntity.BookingPayment);
+
+            }
+
+
+            return BookingNumber;
+        }
         public string AddOnlineBooking(BookingRequest bookingRequestEntity)
         {
             int BookingId = 0;
@@ -647,10 +775,11 @@ namespace HotelBooking.Repository.Implementation
                         TaxAmount = t.TaxAmount,
                         Amount = t.PerNightCost,
                         OfferPrice = t.OfferPrice,
-                        BookingCostId = req.nOfRoom,
-                        CostId = 0,
+                        BookingCostId = t.BookingCostId,
+                        CostId = req.nOfRoom,
                         Description = t.Description,
                         isAvailable = true
+                        
                     };
                     if (!isRoomTypeAvailable(t.RoomTypeId, req.BranchId, t.Date))
                     {
@@ -923,6 +1052,11 @@ namespace HotelBooking.Repository.Implementation
             VMB.Nights = b.Nights.ToString();
             VMB.Room = b.RoomTypeName;
             VMB.RoomTypeId = b.RoomTypeId;
+            VMB.BookingTypeid = b.BookingTypeId;
+            VMB.BookingTypeName = b.BookingTypeName;
+            VMB.MealPlan = b.MealPlan;
+
+
             Guests gst=_context.Guests.Where(g=>g.GuestId== b.GuestId).SingleOrDefault();
             VMB.GuestId = gst.GuestId;
             VMB.GuestName = gst.Name;
@@ -948,11 +1082,11 @@ namespace HotelBooking.Repository.Implementation
             decimal RoomCost = _PR.Select(t => t.PerNightCost).Sum();
             VMB.BookedNiths = _PR;
             IEnumerable<BookingPayments> _BP = GetAllBookingPayments(br.Id, b.BookingId);
-
+            VMB.BookingPayments = _BP;
             decimal PaidAmount = _BP.Select(t => t.paymentAmount).Sum();
             VMB.TotalPrice = b.PayableAmount;
             VMB.Amountpaid = PaidAmount;
-            VMB.AmountPending = (b.TotalAmount - PaidAmount);
+            VMB.AmountPending = ((b.TotalAmount+b.TotalTax) - PaidAmount);
 
 
             return VMB;

@@ -29,6 +29,9 @@ namespace HotelBooking.Repository.Implementation
                     tmpTx.Description= taxMasterEntity.Description;
                     tmpTx.RangeFrom = taxMasterEntity.RangeFrom;
                     tmpTx.RangeTo=taxMasterEntity.RangeTo;
+                    tmpTx.Value = taxMasterEntity.Value;
+                    tmpTx.appliedForID = taxMasterEntity.appliedForID;
+                    tmpTx.TaxType = taxMasterEntity.TaxType;
                     tmpTx.isActive = taxMasterEntity.isActive;
                     
                     

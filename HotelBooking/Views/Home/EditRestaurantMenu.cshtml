@@ -147,7 +147,7 @@
         var pDiv = $(myDiv).parent().parent().children().last();
         var HeadingId = $('input:hidden[id^="HId"]').last().val();
         var chkId = "CHK" + ItemDivId;
-        var childDivHtml = '<div class="row" id="' + itemDiv + '"><div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">';
+        var childDivHtml = '<div class="row" id="' +  itemDiv + '"><div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">';
         childDivHtml += '<input type="text" id="ItemName" class="full-width" placeholder="Item Name" runat="server"></div>';
         childDivHtml += '<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12"><input type="text" id="Price" class="full-width" placeholder="Price" runat="server"></div> <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12 activecb"><input class="styled-checkbox" id="' + chkId + '" type="checkbox" name="CHK_ISACTIVE" checked="false"><label for="' + chkId + '">&nbsp;</label> ';
         childDivHtml += '<input type="hidden" id="HeadingId" value="' + HeadingId +'" /> <input type="hidden" id="MenuItemId" value="0" /></div ></div > ';
@@ -172,7 +172,7 @@
             var MenuHeadingId=0;
             var RestaurantMenuId;
             var TaxDropDownId = 'SelTaxSlab' + idx;
-            var txId = $("#" + TaxDropDownId).val();
+            var txId = $("#" + TaxDropDownId + " option:selected").val();
             console.log("TAX DP >> " + txId);
             $("#" + cuurentDiv + " > div > input ").each(function (idx1, el2) {
                 //console.log("Item >> " + el2.id);

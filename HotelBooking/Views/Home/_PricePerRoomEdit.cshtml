@@ -39,12 +39,20 @@
 
         @if (ViewBag.NOR != null)
         {
-            
+
             string rtVal = (string)ViewBag.BookingRT;
-            if (!rtVal.Contains(","))
+            int ENOR = 0;
+            int NOR = 0;
+            if (ViewBag.ENOR is int)
             {
-                rtVal = rtVal + ",";
+                ENOR = ViewBag.ENOR;
             }
+            if (ViewBag.NOR is int)
+            {
+                NOR = ViewBag.NOR;
+            }
+           
+
             var BookingRTArr = rtVal.Split(',');
 
 
@@ -64,23 +72,38 @@
                     <tr>
                     <td class="trthbgclr" width="15%" align="left" valign="middle">Room #@i</td>
                     <td width="25%" align="left" valign="middle">
-                    <select id="@rtselname" required=required  onchange="GetPrice('@i', '@rtselname');" name="@rtselname" class="full-width freetrial ValidateInput" valType="DropDown">
-                                 @if (ViewBag.RTComboModel1 != null)
-                                 {
-                                     string value = (string)BookingRTArr.GetValue(i-1);
-                                     foreach (var item in ViewBag.RTComboModel1)
-                                     {
+                        <select id="@rtselname" required=required onchange="GetPrice('@i', '@rtselname');" name="@rtselname" class="full-width freetrial ValidateInput" valType="DropDown">
+                            @if (ViewBag.RTComboModel1 != null)
+                            {
 
-                                         if (item.Text != null)
-                                         {
-                                             if (item.Value == value) { item.Selected = true; }
-                                                            <option value="@item.Value" selected="@item.Selected">
-                                                                @item.Text
-                                                            </option>
+                                string value = "";
+                                if (i <= BookingRTArr.Length)
+                                {
+                                    value = (string)BookingRTArr.GetValue(i - 1);
+                                }
 
-                                            }
-                                     }
-                                 }
+
+                                foreach (var item in ViewBag.RTComboModel1)
+                                {
+
+                                    if (item.Text != null)
+                                    {
+                                        if (item.Value == value && ENOR <= NOR)
+                                        { item.Selected = true; }
+                                        else { item.Selected = false; }
+                                        <option value="@item.Value" selected="@item.Selected">
+                                            @item.Text
+                                        </option>
+
+
+                                    }
+                                }
+                                if (i <= BookingRTArr.Length)
+                                {
+                                    <option value="1111111">Cancel Room</option>
+                                    <option value="999999">No Show</option>
+                                }
+                            }
                         </select>
                     </td>
                     <td width="15%" align="center" valign="middle">@ViewBag.todalNight</td>
@@ -324,7 +347,13 @@
                         var id = item.Value;
                         var text = item.Text;
                         var selected = item.Selected;
-                        dropdown.append('<option value="' + id + '" selected=' + selected +' >' + text + '</option>');
+                        if (selected == true) {
+                            dropdown.append('<option value="' + id + '" selected=' + selected + ' >' + text + '</option>');
+
+                        } else {
+                            dropdown.append('<option value="' + id +  '" >' + text + '</option>');
+
+                        }
                         //dropdown.append($('<option ' + item.selected +'>', {
                         //    value: item.Value,
                         //    text: item.Text

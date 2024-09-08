@@ -65,10 +65,10 @@
     <div class="col-sm-12">
         <div class="card widget-container">
             <div class="heading"> <i class="fa fa-bar-chart-o"></i>Food <small>Cart  </small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Food Cart </small> </span></div>
-            <div class="widget-content padded text-center">
+            <div class="widget-content padded text-center foodcart">
                 <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
                     <div class="row">
-                        <div class="col-lg-5 col-md-5 col-sm-12">
+                        <div class="col-lg-4 col-md-4 col-sm-12">
                             <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <input type="hidden" id="hdnBranchId" value="@ViewBag.BranchId" />
@@ -114,7 +114,7 @@
                               <button type="submit" class="allbtnin full-width">Update</button>
                             </div>-->
                         </div>
-                        <div class="col-lg-7 col-md-7 col-sm-12" style="border-left:solid 1px #CCC;">
+                        <div class="col-lg-8 col-md-8 col-sm-12 foodrightspace" style="border-left:solid 1px #CCC;">
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                     <label id="slectedRoom_Table">Order For : </label>
@@ -122,21 +122,21 @@
                                 
                             </div>
                             <div class="row">
-                                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                                <div class="col-lg-5 col-md-4 col-sm-12 col-xs-12 foodrightspacer">
                                     <label>Choose Item</label>
                                 </div>
-                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12 foodrightspace">
                                     <label>Quantity</label>
                                 </div>
-                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 foodrightspace">
                                     <label>Total</label>
                                 </div>
-                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 foodrightspace">
                                     <label>&nbsp;</label>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 form-group">
+                                <div class="col-lg-5 col-md-4 col-sm-12 col-xs-12 foodrightspacer form-group">
                                     <input type="hidden" id="hdnItems" value="0" />
                                     <input type="hidden" id="hdnTableId" value="0" />
                                     <input type="hidden" id="hdnRoomId" value="0" />
@@ -150,14 +150,14 @@
                                         
                                     </div>
                                 </div>
-                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 form-group">
+                                <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12 foodrightspace form-group">
                                     <input type="text" tabindex="2" id="MtxtQty" class="full-width ValidateInput" valType="NumbersOnly" placeholder="Quantity" runat="server">
                                 </div>
-                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 form-group">
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 foodrightspace form-group">
                                     <input type="text" id="MtxtTotal" readonly="readonly" class="full-width" placeholder="Total" runat="server">
                                     <input type="hidden" id="MTaxPer" value="0" />
                                 </div>
-                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 form-group">
+                                <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12 foodrightspace form-group">
                                     <button type="button" tabindex="3" id="btnAdd" class="addbtnitem full-width" onclick="return addtoCart();">Add</button>
                                 </div>
                             </div>
@@ -233,7 +233,6 @@
                             <option value="3">Cash</option>
 
                             <option value="5">UPI</option>
-                            <option value="6">Room</option>
                         </select>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 form-group">
@@ -597,7 +596,7 @@
         var tp = 0;
         var BillingMaster = {
             BillingId: BiilingMaterId,
-            RestaurantId: Number(txtRestroId),
+            RestaurantId: txtRestroId,
             TableNo_RoomNumber: txtRoom_tableId,
             TotalAmount: Number(tAmount).toFixed(2),
             Tax: Number(tp).toFixed(),

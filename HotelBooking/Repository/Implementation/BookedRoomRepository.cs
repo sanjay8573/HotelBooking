@@ -26,7 +26,22 @@ namespace HotelBooking.Repository.Implementation
             bool rtnVal = false;
             try
             {
-                _context.BookedRoom.Add(BookedRoomEntity);
+                BookedRoom bkedRoom = _context.BookedRoom.Find(BookedRoomEntity.BookedRoomId);
+                if (bkedRoom != null) {
+                    bkedRoom.CheckIn = BookedRoomEntity.CheckIn;
+                    bkedRoom.CheckOut = BookedRoomEntity.CheckOut;
+                    bkedRoom.FloorId= BookedRoomEntity.FloorId;
+                    bkedRoom.FloorName = BookedRoomEntity.FloorName;
+                    bkedRoom.RoomNumber = BookedRoomEntity.RoomNumber;
+                    bkedRoom.RoomTypeId = BookedRoomEntity.RoomTypeId;
+                    bkedRoom.RoomTypeName  = BookedRoomEntity.RoomTypeName;
+
+                }
+                else
+                {
+                    _context.BookedRoom.Add(BookedRoomEntity);
+                }
+               
                 _context.SaveChanges();
                 rtnVal = true;
             }

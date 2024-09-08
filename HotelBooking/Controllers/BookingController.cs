@@ -42,6 +42,16 @@ namespace HotelBooking.Controllers
             _resp.isMailSend= true;
             return _resp;
         }
+        [HttpPost]
+        [Route("api/Booking/EditAddBooking/{BranchId}")]
+        public BookingResponse EditAddBooking(BookingRequest bookingEntity)
+        {
+            BookingResponse _resp = new BookingResponse();
+            string rtnVal = _bk.EditBooking(bookingEntity);
+            _resp.BookingReference = rtnVal;
+            //_resp.isMailSend = true;
+            return _resp;
+        }
 
         [HttpPost]
         [Route("api/Booking/GetPricesForNight/{BranchId}")]

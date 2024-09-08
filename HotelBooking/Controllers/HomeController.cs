@@ -1252,6 +1252,16 @@ namespace HotelBooking.Controllers
             }
             return true;
         }
+        
+        public bool EditSaveBooking(BookingRequest bookingEntity)
+        {
+            BookingController _bk = new BookingController();
+
+            string MailRequired = WebConfigurationManager.AppSettings["MailRequired"].ToString();
+            BookingResponse bkResp = _bk.EditAddBooking(bookingEntity);
+            
+            return true;
+        }
         public enum BookingStatus
         {
             Select = 0,
@@ -1506,28 +1516,46 @@ namespace HotelBooking.Controllers
 
 
             int branchId = int.Parse(Session["BranchId"].ToString());
-
+            string BookingRT = string.Empty;
+            int exitingNOR = 0;
             if (bookingId > 0)
             {
                 BookingController _bk = new BookingController();
-                string BookingRT =_bk.GetBooking(bookingId).RoomTypeId;
+                Booking _existingBooking = _bk.GetBooking(bookingId);
+                 BookingRT = _existingBooking.RoomTypeId;
+                exitingNOR = _existingBooking.NoOfRooms;
+                if (!BookingRT.Contains(","))
+                {
+                    BookingRT = BookingRT + ",";
+                }
                 ViewBag.BookingRT = BookingRT;
             }
+            string [] BookingRTArr = BookingRT.Split(',');
             RoomTypeController RTC = new RoomTypeController();
             IEnumerable<RoomType> rtm = new List<RoomType>();
 
             rtm = RTC.GetRoomTypes(branchId).Where(d => d.isDeleted == false && d.isActive == true); ;
             List<SelectListItem> RoomTypeitems = new List<SelectListItem>();
             RoomTypeitems.Add(new SelectListItem { Text = "Select a Room Type", Value = "0" });
+           
             foreach (RoomType item in rtm)
             {
                 bool slt = false;
+              
                 
+                
+
                 RoomTypeitems.Add(new SelectListItem { Text = item.Title.Trim(), Value = item.RoomTypeId.ToString(), Selected = slt });
+               
             }
+            //RoomTypeitems.Add(new SelectListItem { Text = "Cancel Room", Value = "111111111", Selected = false });
+            //RoomTypeitems.Add(new SelectListItem { Text = "No Show", Value = "9999999999", Selected = false });
+
             ViewBag.RTComboModel1 = RoomTypeitems;
 
             ViewBag.NOR = nOfr;
+            ViewBag.ENOR = exitingNOR;
+            
             ViewBag.todalNight = todalNight;
 
             return PartialView("_PricePerRoomEdit");
@@ -1560,22 +1588,54 @@ namespace HotelBooking.Controllers
             int branchId = int.Parse(Session["BranchId"].ToString());
             string CurrencySymbole = Session["BranchCurrencySymbol"].ToString();
             double TaxPercentage = double.Parse(Session["BranchTax"].ToString());
+            ViewBag.CurrencySymbol = CurrencySymbole;
+            ViewBag.TaxPercentage = TaxPercentage;
             PriceRequest pr = new PriceRequest();
+            BookingController _bc = new BookingController();
             pr.BookingId = bookingId;
             pr.CheckInDate = cinDate;
             pr.CheckOutDate = coutDate;
             pr.roomTypeId = int.Parse(RoomTypeId);
             pr.BranchId = branchId;
             pr.nOfRoom = int.Parse(refDiv);
+            
 
-
-            BookingController _bc = new BookingController();
+           
             IEnumerable<PriceResponse> _pr = _bc.GetPricesForExistingBooking(pr);
-            ViewBag.CurrencySymbol = CurrencySymbole;
-            ViewBag.TaxPercentage = TaxPercentage;
+
+            //Get existing No of Rooms
+            //if request < or >  existing No of Rooms then
+            // get New costing and fill the existing cost if match with new 
+            int existinNOR = _bc.GetBooking(bookingId).NoOfRooms;
+            if(pr.nOfRoom!= existinNOR)
+            {
+                pr.BookingId = 0;
+                IEnumerable<PriceResponse> _prNew = _bc.GetPricesForNight(pr);
+                foreach(PriceResponse p in _prNew)
+                {
+                    foreach (PriceResponse eXp in _pr)
+                    {
+                        if(p.roomTypeId==eXp.roomTypeId)
+                        {
+                            p.Amount = eXp.Amount;
+                            p.OfferPrice = eXp.OfferPrice;
+                            p.Tax = eXp.Tax;
+                            p.TaxAmount = eXp.TaxAmount;
+                        }
+                    }
+                }
+                return PartialView("_PricePerNightEdit", _prNew);
+            }
+            else
+            {
+                return PartialView("_PricePerNightEdit", _pr);
+            }
+            
+            ///
+            
 
 
-            return PartialView("_PricePerNightEdit", _pr);
+           
 
         }
         public JsonResult getRoomsForRoomType(int RoomTypeId)
@@ -1609,14 +1669,14 @@ namespace HotelBooking.Controllers
             {
                
               
-                Roomitems.Add(new SelectListItem { Text = item.RoomTypeName + "-" + item.RoomNumber + "-" + item.FloorName, Value = item.RoomId.ToString() + "-" + item.floor.ToString() , Selected = false });
+                Roomitems.Add(new SelectListItem { Text = item.RoomTypeName + "-" + item.RoomNumber + "-" + item.FloorName, Value = item.RoomId.ToString() + "-" + item.floor.ToString()+"-0"  , Selected = false });
                
             }
-            if (SelectedRoonList != null)
+            if (SelectedRoonList != null && SelectedRoonList.Count()>0)
             {
                 foreach (BookedRoom item1 in SelectedRoonList)
                 {
-                    Roomitems.Add(new SelectListItem { Text = item1.RoomTypeName + "-" + item1.RoomNumber + "-" + item1.FloorName, Value = item1.RoomId.ToString() + "-" + item1.FloorId.ToString(), Selected = true });
+                    Roomitems.Add(new SelectListItem { Text = item1.RoomTypeName + "-" + item1.RoomNumber + "-" + item1.FloorName, Value = item1.RoomId.ToString() + "-" + item1.FloorId.ToString()+"-"+item1.BookedRoomId.ToString(), Selected = true });
                 }
             }
             return Json(Roomitems, JsonRequestBehavior.AllowGet);
@@ -2857,7 +2917,7 @@ namespace HotelBooking.Controllers
         {
             int branchId = int.Parse(Session["BranchId"].ToString());
            
-            if (RestaurantId >0)
+            if (RestaurantId>0)
             {
                 ViewBag.RestaurantId= RestaurantId;
             }
@@ -3577,10 +3637,12 @@ namespace HotelBooking.Controllers
             ViewBag.RMComboModel = Roomitems;
             if (BookingId > 0)
             {
-                
+                BookingController _bkc= new BookingController();    
                 Guests tmpGuest = _gst.GetExistingGuest(branchId, BookingId);
+                string BookingRef = _bkc.GetBookingDetails(branchId, BookingId).BookingRef;
                 string strGuest = tmpGuest.GuestId + "|" + tmpGuest.Name + "|" + tmpGuest.Phone + "|" + tmpGuest.email + "|" + tmpGuest.Address + "|" + tmpGuest.city + "|" + tmpGuest.pincode + "|" + tmpGuest.country;
                 ViewBag.BookingId = BookingId;
+                ViewBag.BookingRef = BookingRef;
                 ViewBag.GuestDetail = strGuest;
 
             }

@@ -19,6 +19,8 @@ namespace HotelBooking.Model
         
         public int BookingTypeId {get;set;}
         public string BookingTypeName {get;set;}
+       
+        public string MealPlan { get; set; }
         public string RoomTypeId {get;set;}
         public string RoomTypeName {get;set;}
         public int  Adult { get;set;}

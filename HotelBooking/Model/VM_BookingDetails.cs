@@ -20,6 +20,9 @@ namespace HotelBooking.Model
         public int BranchId { get; set; }
         public string BookingRef { get; set; }
         public string BookingDate { get; set; }
+        public int BookingTypeid { get; set; }
+        public string BookingTypeName { get; set; }
+        public string MealPlan { get; set; }
 
 
         public DateTime CheckIn { get; set; }

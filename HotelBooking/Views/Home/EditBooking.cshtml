@@ -52,21 +52,21 @@
                     </tbody>
                 </table>
 
-                
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
+
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
                     <label for="edit-mail" class="form-required">Guest Name</label>
                     <input type="text" id="txtGuestName" class="full-width" placeholder="Guest Name " value="@Model.GuestName" maxlength="100" runat="server">
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
                     <label for="edit-mail" class="form-required">Guest Email</label>
                     <input type="text" id="txtGuestEmail" class="full-width" placeholder="Guest Email" value="@Model.Guestemail" maxlength="150" runat="server">
                 </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
                     <label for="edit-mail" class="form-required">Guest Phone</label>
                     <input type="text" id="txtGuestPhone" class="full-width" placeholder="Guest Phone Number" value="@Model.GuestPhone" maxlength="15" runat="server">
                 </div>
 
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-left" style="margin-top: 15px;">
+                <div class="col-lg-4 col-md-3 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
                     <label for="edit-mail" class="form-required">Booking Type</label>
                     <select name="SelBtype" id="SelBtype" class="full-width freetrial ValidateInput" valType="DropDown">
                         <option selected="selected" value="0">Select Booking Type</option>
@@ -74,14 +74,23 @@
                         <option value="2">Hall Booking</option>
                     </select>
                 </div>
-                
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
+
+                <div class="col-lg-4 col-md-3 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
                     <label for="edit-mail" class="form-required">GST?</label>
                     <input type="text" id="txtGSTNumber" class="full-width" placeholder="GST Number" maxlength="15" runat="server">
                 </div>
-
-                <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 p-0 pull-left" style="margin-top: 15px;">
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 p-0 pull-left" style="margin-top: 15px;">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                        <label for="edit-mail" class="form-required">Check In</label>
+                        <input type="text" id="Addbookingdatepickerinn" value="@Model.CheckIn.ToString("MM-dd-yy")" class="full-width allinputgo  ValidateInput" placeholder="CheckIn Date" autocomplete="off">
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                        <label for="edit-mail" class="form-required">Check Out</label>
+                        <input type="text" id="Addbookingdatepickerout" value="@Model.CheckOut.ToString("MM-dd-yy")" class="full-width allinputgo ValidateInput" placeholder="CheckOut Date" autocomplete="off">
+                    </div>
+                </div>
+                <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 p-0 pull-left" style="margin-top: 15px;">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">
                         <label for="edit-mail" class="form-required">Adults</label>
                         <div class="number" id="nAdult">
                             <span class="minus">-</span>
@@ -89,7 +98,7 @@
                             <span class="plus">+</span>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">
                         <label for="edit-mail" class="form-required">Child</label>
                         <div class="number" id="nChild">
                             <span class="minus">-</span>
@@ -97,7 +106,7 @@
                             <span class="plus">+</span>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left" style="display:none" id="chdAge1">
+                    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-left" style="display:none" id="chdAge1">
                         <label for="edit-mail" class="form-required">Child 1 Age?</label>
                         <select name="Child1Age" id="Child1Age" class="full-width freetrial">
                             <option selected="selected" value="1">1 Year</option>
@@ -149,21 +158,22 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 p-0 pull-left" style="margin-top: 15px;">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
-                        <label for="edit-mail" class="form-required">Check In</label>
-                        <input type="text" id="Addbookingdatepickerinn" value="@Model.CheckIn.ToString("MM-dd-yy")" class="full-width allinputgo  ValidateInput" placeholder="CheckIn Date" autocomplete="off">
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
-                        <label for="edit-mail" class="form-required">Check Out</label>
-                        <input type="text" id="Addbookingdatepickerout" value="@Model.CheckOut.ToString("MM-dd-yy")" class="full-width allinputgo ValidateInput" placeholder="CheckOut Date" autocomplete="off">
-                    </div>
-                </div>
+
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left" style="margin-top: 15px; background: #d4dee1; padding: 5px 0px;">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
                         <label style="padding: 20px 0px; font-size: 14px; color: #003556;" id="SelSummary"><strong id="nOfA">@Model.Audlts</strong> Adults / <strong id="nOfC">@Model.Child</strong> Child For <strong id="nOn">@Model.Nights</strong> Days</label>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">
+                        <label class="form-required">Meal Plan</label>
+                        <select name="SelectMeal" id="SelectMeal" class="full-width freetrial">
+                            <option selected="selected" value="XXX">Select Meal Plan</option>
+                            <option value="MAP">MAP</option>
+                            <option value="AP">AP </option>
+                            <option value="RO">RO</option>
+                            <option value="BB">BB </option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">
                         <label for="edit-mail" class="form-required">Number of Room</label>
                         <select name="NumberofRoom" id="NumberofRoom" class="full-width freetrial">
                             @if (ViewBag.NoOfRooms != null)
@@ -180,7 +190,7 @@
                                 }
                             }
                         </select>
-                       
+
                         @Html.HiddenFor(model => model.BookingId)
                         @Html.HiddenFor(model => model.BookingRef)
                         @Html.HiddenFor(model => model.BranchId)
@@ -192,10 +202,10 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left" style="margin-top: 15px;">
 
                     @*<div id="overlay">
-                            <div class="cv-spinner">
-                                <span class="spinner"></span>
-                            </div>
-                        </div>*@
+                <div class="cv-spinner">
+                    <span class="spinner"></span>
+                </div>
+            </div>*@
                     <table class="table table-bordered">
                         <tr>
                             <td class="trthbgclr" align="left" width="15%" valign="middle">&nbsp;</td>
@@ -219,7 +229,7 @@
                                 <div id="PPR"></div>
                             </td>
                         </tr>
-                       
+
                         <tr>
                             <td class="trthbgclr" align="left" valign="middle">Amount </td>
                             <td align="right" valign="middle">
@@ -240,9 +250,9 @@
                                             <td align="right" width="30%"><strong>@ViewBag.CurrencySymbol</strong><strong id="taxVal">0.00</strong> @*<a href="#" data-toggle="modal" data-target="#AmountBreakup" class="pull-right">Amount/Breakup</a>*@</td>
                                         </tr>
                                         @*<tr>
-                                                <td align="left" colspan="3"><strong>Total Tax</strong></td>
-                                                <td align="left"><strong>@ViewBag.CurrencySymbol</strong><strong id="taxTotal"> 0.00</strong></td>
-                                            </tr>*@
+                                    <td align="left" colspan="3"><strong>Total Tax</strong></td>
+                                    <td align="left"><strong>@ViewBag.CurrencySymbol</strong><strong id="taxTotal"> 0.00</strong></td>
+                                </tr>*@
                                     </tbody>
                                 </table>
                             </td>
@@ -250,6 +260,10 @@
                         <tr>
                             <td class="trthbgclr" align="left" valign="middle">Total Amount</td>
                             <td align="right" valign="middle"><strong>@ViewBag.CurrencySymbol</strong><strong id="gTot">0.00</strong></td>
+                        </tr>
+                        <tr>
+                            <td >Total Amount Received : @ViewBag.CurrencySymbol<strong id="AmtReceivedId">@Model.Amountpaid</strong></td>
+                            <td >Pending Amount : @ViewBag.CurrencySymbol<strong id="AmtPendingId">@Model.AmountPending</strong></td>
                         </tr>
                         <tr>
                             <td colspan="4">
@@ -331,7 +345,7 @@
                     </tbody>
                 </table>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
-                    <input type="button" name="SUBMIT" class="prev action-button pull-right" onclick="SaveBooking(this);" value="Book" runat="server">
+                    <input type="button" name="SUBMIT" class="prev action-button pull-right" onclick="return SaveBooking(this);" value="Book" runat="server">
                 </div>
             </form>
         </div>
@@ -356,6 +370,7 @@
         const NumberOfRoom = $("#NumberofRoom option:selected").val();
         const CouponAmount = $("#BK-DISC").text();
         const BookingId = $("#BookingId").val();
+       
         const branchId = $("#BranchId").val();
         const BookingNumber = $("#BookingNumber").val();
         var roomTypeIds = "";
@@ -436,19 +451,21 @@
             var RoomDropDown = "RoomType_RoomId" + i;
             roomTypeId = $("#" + nid + " option:selected").val();
             roomTypeName =  $("#" + nid + " option:selected").text().replace(/[\n\r]+/g, ' ').trim();
-            //allocated Rooms
+            console.log(i);
             const selectedRoom = $('#' + RoomDropDown + " option:selected").text().replace(/[\n\r]+/g, ' ').trim();
             var rmTxtAryy = selectedRoom.split("-");
             const RoomNumber = rmTxtAryy[1];
             const RoomId = $('#' + RoomDropDown + " option:selected").val();
             var rmids = RoomId.split("-");
+            var BookedRoomId = rmids[2];
             const CheckIn = CIN;
             const CheckOut = COUT;
-            const BookingId = 0;
+           
             const BranchId = parseInt(branchId);
             var isUpgraded = false;
-            if (RoomId > 0) {
+            if (rmids[0] > 0) {
                 const BookedRoomitem = {
+                    BookedRoomId: BookedRoomId,
                     BookingId: parseInt(BookingId),
                     RoomId: parseInt(rmids[0]),
                     CustomerName: GuestName,
@@ -473,17 +490,13 @@
             console.log(objData);
 
             objData.forEach(item => {
-                var dt = new Date(parseInt(item.Date.replace("/Date(", "").replace(")/", ""), 10))
-                var year = dt.getFullYear();
-                var month = ("0" + (dt.getMonth() + 1)).slice(-2); // Adding leading zero
-                var day = ("0" + dt.getDate()).slice(-2); // Adding leading zero
-                var ItemshortDate = month + "-" + day + "-" + year;
+               
                 BookingCost = {
                     BookingId: parseInt(BookingId),
-                    BookingCostId: parseInt(0),
+                    BookingCostId: parseInt(item.BookingCostId),
                     RoomTypeId: item.roomTypeId,
                     Description: item.Description,
-                    Date: ItemshortDate,
+                    Date: item.Date,
                     PerNightCost: item.Amount,
                     OfferPrice: item.OfferPrice,
                     CostCategory: 1,
@@ -529,10 +542,11 @@
         }
         console.log(Bookingitem);
         //return false;
-        console.log(JSON.stringify(Bookingitem));
+       
+        //console.log(JSON.stringify(Bookingitem));
 
 
-                    fetch('/Home/SaveBooking', {
+                    fetch('/Home/EditSaveBooking', {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
@@ -768,8 +782,9 @@
     $(document).ready(function () {
         $('#NumberofRoom').trigger('change');
         var nor = $("#NumberofRoom").val();
-        
-        
+
+        $('#SelBtype').val('@Model.BookingTypeid');
+        $('#SelectMeal').val('@Model.MealPlan');
 
         $("input").attr("autocomplete", "none");
         $(".ValidateInput").on("blur", function () {
