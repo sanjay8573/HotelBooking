@@ -48,7 +48,8 @@ namespace HotelBooking.Repository.Implementation
                     tmpEntity.OfferPrice = bookingCostEntity.OfferPrice;
                     tmpEntity.Tax = bookingCostEntity.Tax;
                     tmpEntity.TaxAmount = bookingCostEntity.TaxAmount;
-                    
+                    tmpEntity.Description = bookingCostEntity.Description;
+                    tmpEntity.RoomStatus = bookingCostEntity.RoomStatus;
 
                     _context.SaveChanges();
 
@@ -97,17 +98,18 @@ namespace HotelBooking.Repository.Implementation
             }
             else
             {
-                Guests _nGuest = new Guests();
-                _nGuest.email = strMailid;
-                _nGuest.Name = strName;
-                _nGuest.Phone = strContactNumber;
-                _nGuest.BranchId = branchId;
-                _nGuest.isActive = true;
-                _context.Guests.Add(_nGuest);
-                rtnVal = _nGuest.GuestId;
+                _guest = new Guests();
+                _guest.email = strMailid;
+                _guest.Name = strName;
+                _guest.Phone = strContactNumber;
+                _guest.BranchId = branchId;
+                _guest.isActive = true;
+                _context.Guests.Add(_guest);
+                
 
             }
-
+            _context.SaveChanges();
+            rtnVal = _guest.GuestId;
 
             return rtnVal;
         }
@@ -322,6 +324,10 @@ namespace HotelBooking.Repository.Implementation
                     tmpEntity.GuestName = bookingEntity.GuestName;
                     tmpEntity.BookingTypeId = bookingEntity.BookingTypeId;
                     tmpEntity.BookingTypeName = bookingEntity.BookingTypeName;
+
+                    tmpEntity.RoomTypeId = bookingEntity.RoomTypeId;
+                    tmpEntity.RoomTypeName = bookingEntity.RoomTypeName;
+
                     tmpEntity.Child = bookingEntity.Child;
                     tmpEntity.ChildAge1 = bookingEntity.ChildAge1;
                     tmpEntity.ChildAge2 = bookingEntity.ChildAge2;

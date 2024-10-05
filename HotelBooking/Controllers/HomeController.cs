@@ -12,6 +12,7 @@ using HotelBooking.Controllers.TourAPI;
 using HotelBooking.Desig;
 using HotelBooking.Helper;
 using HotelBooking.Model;
+using HotelBooking.Model.VMBooking;
 using HotelBooking.Model.DynamicPrice;
 using HotelBooking.Model.EditHotel;
 using HotelBooking.Model.Inventory;
@@ -1077,7 +1078,7 @@ namespace HotelBooking.Controllers
 
             int pageNumber = page ?? 1;
             ViewBag.PageSize = DefaultPageSize;
-            var dateCriteria = DateTime.Now.Date.AddDays(-7);// last 7 days booking
+            var dateCriteria = DateTime.Now.Date.AddDays(-15);// last 7 days booking
 
 
             bksListModel = _bks.GetBookings(branchId);//.Where(d => d.isDeleted == false);
@@ -1507,7 +1508,7 @@ namespace HotelBooking.Controllers
             ViewBag.NOR = nOfr;
             ViewBag.todalNight = todalNight;
 
-            return PartialView("_PricePerRoom");
+            return PartialView("_PricePerRoomV2");
 
         }
         public PartialViewResult _PricePerRoomEdit(int nOfr, int todalNight,int bookingId)
@@ -1558,7 +1559,29 @@ namespace HotelBooking.Controllers
             
             ViewBag.todalNight = todalNight;
 
-            return PartialView("_PricePerRoomEdit");
+            return PartialView("_PricePerRoomEditV2");
+
+        }
+        public PartialViewResult _PricePerRoomEditV2(int nOfr, int todalNight, int bookingId)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            string BookingRT = string.Empty;
+            int exitingNOR = 0;
+           
+                //Get Existing Room Typoe along with Room Number detaisl
+                //
+                BookedRoomController _brC = new BookedRoomController();
+                IEnumerable<BookedRoom> existingRooms = _brC.GetAllBookedRoomByBookingId(branchId, bookingId);
+
+             VM_PricePerRoom _vER = new VM_PricePerRoom();
+
+            _vER.EsitingRooms = existingRooms;
+            _vER.NOR = nOfr;
+            _vER.ENOR = existingRooms.Count();
+            _vER.todalNight = todalNight;
+            ViewBag.ENOR= existingRooms.Count();
+
+            return PartialView("_PricePerRoomEditV2",_vER);
 
         }
         public PartialViewResult _PricePerNight(string RoomTypeId, DateTime cinDate, DateTime coutDate, string refDiv)
@@ -1578,9 +1601,32 @@ namespace HotelBooking.Controllers
             IEnumerable<PriceResponse> _pr = _bc.GetPricesForNight(pr);
             ViewBag.CurrencySymbol = CurrencySymbole;
             ViewBag.TaxPercentage = TaxPercentage;
+            ViewBag.BranchId = branchId;
 
-            
+
             return PartialView("_PricePerNightV1", _pr);
+
+        }
+        public PartialViewResult _PricePerNightV2(string RoomTypeId, DateTime cinDate, DateTime coutDate, string refDiv)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            string CurrencySymbole = Session["BranchCurrencySymbol"].ToString();
+            double TaxPercentage = double.Parse(Session["BranchTax"].ToString());
+            PriceRequest pr = new PriceRequest();
+            pr.CheckInDate = cinDate;
+            pr.CheckOutDate = coutDate;
+            pr.roomTypeId = int.Parse(RoomTypeId);
+            pr.BranchId = branchId;
+            pr.nOfRoom = int.Parse(refDiv);
+
+
+            BookingController _bc = new BookingController();
+            IEnumerable<PriceResponse> _pr = _bc.GetPricesForNight(pr);
+            ViewBag.CurrencySymbol = CurrencySymbole;
+            ViewBag.TaxPercentage = TaxPercentage;
+
+
+            return PartialView("_PricePerNightV2", _pr);
 
         }
         public PartialViewResult _PricePerNightEdit(string RoomTypeId, DateTime cinDate, DateTime coutDate, string refDiv,int bookingId)
@@ -1637,6 +1683,34 @@ namespace HotelBooking.Controllers
 
            
 
+        }
+        public PartialViewResult _PricePerNightEditV2(string RoomTypeId, DateTime cinDate, DateTime coutDate, string refDiv, int bookingId)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            string CurrencySymbole = Session["BranchCurrencySymbol"].ToString();
+            double TaxPercentage = double.Parse(Session["BranchTax"].ToString());
+            ViewBag.CurrencySymbol = CurrencySymbole;
+            ViewBag.TaxPercentage = TaxPercentage;
+            PriceRequest pr = new PriceRequest();
+            BookingController _bc = new BookingController();
+            pr.BookingId = bookingId;
+            pr.CheckInDate = cinDate;
+            pr.CheckOutDate = coutDate;
+            pr.roomTypeId = int.Parse(RoomTypeId);
+            pr.BranchId = branchId;
+            pr.nOfRoom = int.Parse(refDiv);
+
+            ViewBag.divId = refDiv;
+
+            IEnumerable<PriceResponse> _pr = _bc.GetPricesForExistingBooking(pr);
+            ViewBag.TotalNight = _pr.Count();
+            //Get existing No of Rooms
+            //if request < or >  existing No of Rooms then
+            // get New costing and fill the existing cost if match with new 
+            int existinNOR = _bc.GetBooking(bookingId).NoOfRooms;
+            
+                return PartialView("_PricePerNightEditV2", _pr);
+          
         }
         public JsonResult getRoomsForRoomType(int RoomTypeId)
         {
@@ -3090,6 +3164,55 @@ namespace HotelBooking.Controllers
             }
 
             
+            return Json(servicesList.ToArray(), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult AutoCompleteServiceProvidersForRoomType(int BranchId)
+        {
+
+
+
+            List<string> servicesList = new List<string>();
+            RoomController _rmCtrl = new RoomController();
+            IEnumerable<Room> rms = _rmCtrl.GetRooms(BranchId);
+            RoomTypeController _rt = new RoomTypeController();
+            IEnumerable<RoomType> _rtKist = _rt.GetRoomTypes(BranchId);
+            foreach (var item in rms)
+            {
+
+
+                foreach (var rtItem in _rtKist)
+                {
+                    if (item.RoomTypeId == rtItem.RoomTypeId)
+                    {
+                        servicesList.Add((rtItem.Title + "-" + item.RoomNumber+"-"+rtItem.RoomTypeId+"-"+item.floor+"-"+item.FloorName+"-"+item.RoomId));
+
+                    }
+                }
+
+            }
+
+
+            return Json(servicesList.ToArray(), JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult TaxProviders(int BranchId)
+        {
+
+
+
+            List<string> servicesList = new List<string>();
+            TaxController _tm = new TaxController();
+            IEnumerable<TaxMaster> tx = _tm.GetAllTax(BranchId).Where(t => t.BranchId == BranchId ).OrderByDescending(o => o.Value);
+            foreach (var item in tx)
+            {
+              
+                        servicesList.Add(item.RangeFrom + "-" + item.RangeTo + "-" + item.TaxType+ "-" + item.Value);
+            }
+
+
             return Json(servicesList.ToArray(), JsonRequestBehavior.AllowGet);
         }
         [HttpGet]

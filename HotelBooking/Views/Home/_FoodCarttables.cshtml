@@ -5,11 +5,12 @@
         var i = 1;
         foreach (var rt in Model)
         {
+            var tblName = "Table" + i;
             var bgcolor = rt.isOccupied ? "class=red" : "class=green";
-            <li id="@rt.TableId" onclick="LoadParkedItems('@rt.RestaurantId','@rt.TableId');">
+            <li id="@rt.TableId" onclick="LoadParkedItems('@rt.RestaurantId','@rt.TableId','@tblName');">
                 <a @bgcolor href="#">
-                    <p>@rt.TableId</p>
-                    <p>Table @i</p>
+                   
+                    <p>@tblName</p>
                     <p>Seat @rt.NoOfSeat</p>
                 </a>
             </li>
@@ -32,9 +33,9 @@
     $(document).ready(function () {
         
     });
-     function LoadParkedItems(restroId, tblId) {
+     function LoadParkedItems(restroId, tblId,tblName) {
          $("#hdnTableId").val(tblId);
-         $("#slectedRoom_Table").text("Dining for Table # ::"+tblId);
+         $("#slectedRoom_Table").text("Dining for Table # ::" + tblName);
          $("#hdnisRoomService").val(false);
          $("#billdetails").load("/Home/_FoodCartItems?RestaurantId=" + restroId + "&tableId=" + tblId);
          //console.log("Park Item Loaded");

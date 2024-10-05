@@ -14,6 +14,7 @@
         height: 60px;
         -webkit-animation: spin 2s linear infinite; /* Safari */
         animation: spin 2s linear infinite;
+        margin: 20px auto;
     }
 
     /* Safari */
@@ -72,20 +73,20 @@
             </select>
 
         </div>*@
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" >
                     <label for="edit-mail" class="form-required">Guest Name</label>
                     <input type="text" id="txtGuestName" class="full-width" placeholder="Guest Name " maxlength="100" runat="server">
                 </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" >
                     <label for="edit-mail" class="form-required">Guest Email</label>
                     <input type="text" id="txtGuestEmail" class="full-width" placeholder="Guest Email" maxlength="150" runat="server">
                 </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" >
                     <label for="edit-mail" class="form-required">Guest Phone</label>
                     <input type="text" id="txtGuestPhone" class="full-width" placeholder="Guest Phone Number" maxlength="15" runat="server">
                 </div>
 
-                <div class="col-lg-4 col-md-3 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
+                <div class="col-lg-4 col-md-3 col-sm-6 col-xs-12 pull-left" >
                     <label for="edit-mail" class="form-required">Booking Type</label>
                     <select name="SelBtype" id="SelBtype" class="full-width freetrial ValidateInput" valType="DropDown">
                         <option selected="selected" value="0">Select Booking Type</option>
@@ -111,12 +112,12 @@
                 }
             </select>
         </div>*@
-                <div class="col-lg-4 col-md-3 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
+                <div class="col-lg-4 col-md-3 col-sm-6 col-xs-12 pull-left" >
                     <label for="edit-mail" class="form-required">GST?</label>
                     <input type="text" id="txtGSTNumber" class="full-width" placeholder="GST Number" maxlength="15" runat="server">
                 </div>
 
-                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 p-0 pull-left" style="margin-top: 15px;">
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 p-0 pull-left" >
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
                         <label for="edit-mail" class="form-required">Check In</label>
                         <input type="text" id="Addbookingdatepickerinn" value="" class="full-width allinputgo  ValidateInput" placeholder="CheckIn Date" autocomplete="off">
@@ -127,7 +128,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 p-0 pull-left" style="margin-top: 15px;">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 pull-left" >
                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">
                         <label for="edit-mail" class="form-required">Adults</label>
                         <div class="number" id="nAdult">
@@ -244,25 +245,17 @@
                 </div>
             </div>*@
                     <table class="table table-bordered">
-                        <tr>
-                            <td class="trthbgclr" align="left" width="15%" valign="middle">&nbsp;</td>
-                            <td>
-                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                    <tbody>
-                                        <tr>
-                                            <th width="30%">Room Type</th>
-                                            <th width="20%">Day</th>
-                                            <th width="20%">Price</th>
-                                            <th width="30%">&nbsp;</th>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                            </td>
+                        <tr class="trthbgclr">
+                            <th width="10%">Room #</th>
+                           <th width="30%">Room Type</th>
+                            <th width="12%">Day</th>
+                            <th width="16%">Price</th>
+                            <th width="16%">Offer price</th>
+                             <th width="16%">Action</th>
 
                         </tr>
                         <tr>
-                            <td colspan="5" align="left" style="padding:0 0 0 0" valign="middle">
+                            <td colspan="6" align="left" style="padding:0px !important" valign="middle">
                                 <div id="PPR"></div>
                             </td>
                         </tr>
@@ -274,14 +267,14 @@
                 </tr>*@
                         <tr>
                             <td class="trthbgclr" align="left" valign="middle">Amount </td>
-                            <td align="right" valign="middle">
+                            <td align="right" colspan="5" valign="middle">
                                 <input type="hidden" id="hdnRoomCost" />
                                 <strong>@ViewBag.CurrencySymbol</strong><strong id="totAmt">0.00</strong>
                             </td>
                         </tr>
                         <tr>
                             <td class="trthbgclr" align="left" valign="middle">Taxes</td>
-                            <td align="left" valign="middle">
+                            <td align="left" colspan="5" valign="middle">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tbody>
                                         <tr>
@@ -301,10 +294,10 @@
                         </tr>
                         <tr>
                             <td class="trthbgclr" align="left" valign="middle">Total Amount</td>
-                            <td align="right" valign="middle"><strong>@ViewBag.CurrencySymbol</strong><strong id="gTot">0.00</strong></td>
+                            <td align="right" colspan="5" valign="middle"><strong>@ViewBag.CurrencySymbol</strong><strong id="gTot">0.00</strong></td>
                         </tr>
                         <tr>
-                            <td colspan="4">
+                            <td colspan="6">
                                 <div id="PaymentDiv">
                                     <div class="row">
                                         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 form-group">
@@ -416,8 +409,8 @@
         const roomCostData = [];
         for (i = 1; i <= Number(NumberOfRoom); i++) {
             var nid = "RTSelType" + i;
-            roomTypeIds = roomTypeIds + $("#" + nid + " option:selected").val() + ',';
-            roomTypeNames = roomTypeNames + $("#" + nid + " option:selected").text().replace(/[\n\r]+/g, ' ').trim() + ',';
+            roomTypeIds = roomTypeIds + $("#" + nid).attr("roomtypeid") + ',';
+            roomTypeNames = roomTypeNames + $("#" + nid).val() + ',';
         }
 
 
@@ -485,29 +478,32 @@
         ////
         for (i = 1; i <= Number(NumberOfRoom); i++) {
             var nid = "RTSelType" + i;
-            var RoomDropDown = "RoomType_RoomId" + i;
-            roomTypeId = $("#" + nid + " option:selected").val();
-            roomTypeName = $("#" + nid + " option:selected").text().replace(/[\n\r]+/g, ' ').trim();
+
+            var nid = "RTSelType" + i;
+            var roomTypeId =  $("#" + nid).attr("roomtypeid") ;
+            var roomTypeName =$("#" + nid).val() ;
+
+            var RoomId = $("#" + nid).attr("RoomId");
+            var RoomNumber = $("#" + nid).attr("RoomNumber");
+            var FloorId = $("#" + nid).attr("FloorId");
+            var FloorName = $("#" + nid).attr("FloorName").trim();
             //allocated Rooms
-            const selectedRoom = $('#' + RoomDropDown + " option:selected").text().replace(/[\n\r]+/g, ' ').trim();
-            var rmTxtAryy = selectedRoom.split("-");
-            const RoomNumber = rmTxtAryy[1];
-            const RoomId = $('#' + RoomDropDown + " option:selected").val();
-            var rmids = RoomId.split("-");
+           
+           
             const CheckIn = CIN;
             const CheckOut = COUT;
             const BookingId = 0;
             const BranchId = parseInt(branchId);
             var isUpgraded = false;
-            if (rmids[0] > 0) {
+            if (Number(RoomId) > 0) {
                 const BookedRoomitem = {
                     BookingId: parseInt(BookingId),
-                    RoomId: parseInt(rmids[0]),
+                    RoomId: parseInt(RoomId),
                     CustomerName: GuestName,
                     RoomTypeId: parseInt(roomTypeId),
                     RoomTypeName: roomTypeName,
-                    FloorId: parseInt(rmids[1]),
-                    FloorName: rmTxtAryy[2],
+                    FloorId: parseInt(FloorId),
+                    FloorName: FloorName,
                     CheckIn: CheckIn,
                     CheckOut: CheckOut,
                     RoomNumber: RoomNumber,
@@ -522,7 +518,7 @@
             var obj = $("#" + jId).val();
 
             var objData = JSON.parse(obj);
-            console.log(objData);
+            //console.log(objData);
 
             objData.forEach(item => {
                 var dt = new Date(parseInt(item.Date.replace("/Date(", "").replace(")/", ""), 10))
@@ -535,7 +531,7 @@
                     BookingCostId: parseInt(0),
                     RoomTypeId: item.roomTypeId,
                     Description: item.Description,
-                    Date: ItemshortDate,
+                    Date: item.Date,
                     PerNightCost: item.Amount,
                     OfferPrice: item.OfferPrice,
                     CostCategory: 1,
@@ -580,7 +576,7 @@
             Bookingitem.BookingPayment = bookingpayment;
         }
         console.log(Bookingitem);
-        //return false;
+       //return false;
         console.log(JSON.stringify(Bookingitem));
 
 
@@ -711,8 +707,9 @@
         function divLoaded() {
             $("#totAmt").text($("#TotalCostForNights").val());
             var tottalAmount = $("#totAmt").text();
-            var taxpercentage = $("#txPct").text();
-            var totaltax = ((Number(tottalAmount) * Number(taxpercentage)) / 100).toFixed(2);
+            var taxpercentage = $("#hdnTP").text();
+            //var totaltax = ((Number(tottalAmount) * Number(taxpercentage)) / 100).toFixed(2);
+            var totaltax = $("#totalPerRoomTax").val()
             $("#taxVal").text(totaltax);
             $("#taxTotal").text(totaltax);
             //console.log(taxpercentage + "  " + totaltax);

@@ -93,7 +93,7 @@
                                     nHeading++;
                                 }
 
-                                <input type="hidden" id="HeadingId" value="@nHeading" />
+                                <input type="hidden" id="hdnHeadingId" value="@nHeading" />
                                 <input type="hidden" id="ItemId" value="@nItem" />
                             </div>
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0">
@@ -114,12 +114,13 @@
 
         $("#btnAddHeading").click(function (e) {
             e.preventDefault();
-            var divId = $("#HeadingId").val() + 1;
+            var divId = $("#hdnHeadingId").val();
+            var TxTdivId = "headingId" + divId;
             var drpTaxId = 'SelTaxSlab' + divId;
             const txUrl = '@Url.Action("getAllTaxes", "Home")';
 
             console.log("Edit Menu....");
-            var divhtml = '<div class="row" id="' + divId + '" ><div class="col-lg-5 col-md-5 col-sm-12 col-xs-12"><input type="text" id="txtRoomNumber" class="full-width" placeholder="Add Menu Heading" runat="server">';
+            var divhtml = '<div class="row" id="' + TxTdivId + '" ><div class="col-lg-5 col-md-5 col-sm-12 col-xs-12"><input type="text" id="txtHeading" class="full-width" placeholder="Add Menu Heading" runat="server">';
             divhtml += '</div><div  class="col-lg-3 col-md-3 col-sm-12 col-xs-12"><select name = "SelTaxSlab" id = "' + drpTaxId + '" class="full-width ddselect" ><option value="">-- Select Tax Slab --</option></select ></div><div  class="col-lg-3 col-md-3 col-sm-12 col-xs-12"><button type="button" class="allbtnin full-width" onClick="Additems(this);">Add Item</button></div> <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"></div></div>'
             $("#maingroup_1").append(divhtml);
 
@@ -140,7 +141,7 @@
     });
     function Additems(myDiv) {
 
-        var ItemDivId = $("#ItemId").val() + 1;
+        var ItemDivId = $("#ItemId").val();
         var itemDiv = 'ItemDivId' + ItemDivId;
         var txtItemNameId = 'txtItemName' + ItemDivId
         var txtItemNPriceId = 'txtItemPrice' + ItemDivId

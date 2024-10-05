@@ -39,18 +39,13 @@
 </style>
 
 
-<div class="row" id="AddBooking">
+<div class="row" id="EditBooking">
     <div class="col-sm-12">
         <div class="card widget-container" id="BookingFirstPage">
             <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
 
-                <table class="table table-bordered">
-                    <tbody>
-                        <tr>
-                            <td width="22%" align="left" colspan="2" valign="middle" style="font-size: 17px; font-weight: 600; color: #003556;">Make Reservation</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <h3 style=" font-size: 18px; font-weight: 600; color: #003556; text-align: left; padding: 15px 0px 0px 15px;">Make Reservation</h3>
+
 
 
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left" style="margin-top: 15px;">
@@ -83,13 +78,15 @@
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
                         <label for="edit-mail" class="form-required">Check In</label>
                         <input type="text" id="Addbookingdatepickerinn" value="@Model.CheckIn.ToString("MM-dd-yy")" class="full-width allinputgo  ValidateInput" placeholder="CheckIn Date" autocomplete="off">
+                        <input type="hidden" id="extCIN" value="@Model.CheckIn" />
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
                         <label for="edit-mail" class="form-required">Check Out</label>
-                        <input type="text" id="Addbookingdatepickerout" value="@Model.CheckOut.ToString("MM-dd-yy")" class="full-width allinputgo ValidateInput" placeholder="CheckOut Date" autocomplete="off">
+                        <input type="text" id="Addbookingdatepickerout" readonly="readonly" value="@Model.CheckOut.ToString("MM-dd-yy")" class="full-width allinputgo ValidateInput" placeholder="CheckOut Date" autocomplete="off">
+                        <input type="hidden" id="extCOUT" value="@Model.CheckOut" />
                     </div>
                 </div>
-                <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12 p-0 pull-left" style="margin-top: 15px;">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 p-0 pull-left">
                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">
                         <label for="edit-mail" class="form-required">Adults</label>
                         <div class="number" id="nAdult">
@@ -175,7 +172,7 @@
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 pull-left">
                         <label for="edit-mail" class="form-required">Number of Room</label>
-                        <select name="NumberofRoom" id="NumberofRoom" class="full-width freetrial">
+                        <select name="NumberofRoom" id="NumberofRoom" onclick="return false;" class="full-width freetrial">
                             @if (ViewBag.NoOfRooms != null)
                             {
                                 foreach (var item in ViewBag.NoOfRooms)
@@ -207,39 +204,31 @@
                 </div>
             </div>*@
                     <table class="table table-bordered">
-                        <tr>
-                            <td class="trthbgclr" align="left" width="15%" valign="middle">&nbsp;</td>
-                            <td>
-                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                    <tbody>
-                                        <tr>
-                                            <th width="30%">Room Type</th>
-                                            <th width="20%">Day</th>
-                                            <th width="20%">Price</th>
-                                            <th width="30%">&nbsp;</th>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                            </td>
+                        <tr class="trthbgclr">
+                            <th width="10%">Room #</th>
+                            <th width="30%">Room Type</th>
+                            <th width="12%">Day</th>
+                            <th width="16%">Price</th>
+                            <th width="16%">Offer price</th>
+                            <th width="16%" colspan="2">Action</th>
 
                         </tr>
                         <tr>
-                            <td colspan="5" align="left" style="padding:0 0 0 0" valign="middle">
+                            <td colspan="6" align="left" style="padding:0px !important" valign="middle">
                                 <div id="PPR"></div>
                             </td>
                         </tr>
 
                         <tr>
                             <td class="trthbgclr" align="left" valign="middle">Amount </td>
-                            <td align="right" valign="middle">
+                            <td align="right" colspan="5" valign="middle">
                                 <input type="hidden" id="hdnRoomCost" />
                                 <strong>@ViewBag.CurrencySymbol</strong><strong id="totAmt">0.00</strong>
                             </td>
                         </tr>
                         <tr>
                             <td class="trthbgclr" align="left" valign="middle">Taxes</td>
-                            <td align="left" valign="middle">
+                            <td align="left" colspan="5" valign="middle">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tbody>
                                         <tr>
@@ -250,20 +239,20 @@
                                             <td align="right" width="30%"><strong>@ViewBag.CurrencySymbol</strong><strong id="taxVal">0.00</strong> @*<a href="#" data-toggle="modal" data-target="#AmountBreakup" class="pull-right">Amount/Breakup</a>*@</td>
                                         </tr>
                                         @*<tr>
-                                    <td align="left" colspan="3"><strong>Total Tax</strong></td>
-                                    <td align="left"><strong>@ViewBag.CurrencySymbol</strong><strong id="taxTotal"> 0.00</strong></td>
-                                </tr>*@
+                            <td align="left" colspan="3"><strong>Total Tax</strong></td>
+                            <td align="left"><strong>@ViewBag.CurrencySymbol</strong><strong id="taxTotal"> 0.00</strong></td>
+                        </tr>*@
                                     </tbody>
                                 </table>
                             </td>
                         </tr>
                         <tr>
                             <td class="trthbgclr" align="left" valign="middle">Total Amount</td>
-                            <td align="right" valign="middle"><strong>@ViewBag.CurrencySymbol</strong><strong id="gTot">0.00</strong></td>
+                            <td align="right" colspan="5"   valign="middle"><strong>@ViewBag.CurrencySymbol</strong><strong id="gTot">0.00</strong></td>
                         </tr>
                         <tr>
-                            <td >Total Amount Received : @ViewBag.CurrencySymbol<strong id="AmtReceivedId">@Model.Amountpaid</strong></td>
-                            <td >Pending Amount : @ViewBag.CurrencySymbol<strong id="AmtPendingId">@Model.AmountPending</strong></td>
+                            <td>Total Amount Received : @ViewBag.CurrencySymbol<strong id="AmtReceivedId">@Model.Amountpaid</strong></td>
+                            <td>Pending Amount : @ViewBag.CurrencySymbol<strong id="AmtPendingId">@Model.AmountPending</strong></td>
                         </tr>
                         <tr>
                             <td colspan="4">
@@ -306,7 +295,7 @@
 
                 <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-right form-group">
                     <label for="edit-mail" class="form-required">&nbsp;</label>
-                    <input type="button" name="SUBMIT" class="prev action-button full-width mg-0 " onclick="SaveBooking(this);" value="Book" runat="server">
+                    <input type="button" name="SUBMIT" class="prev action-button full-width mg-0 " onclick="SaveBooking(this);" value="Update" runat="server">
                 </div>
 
             </form>
@@ -370,7 +359,7 @@
         const NumberOfRoom = $("#NumberofRoom option:selected").val();
         const CouponAmount = $("#BK-DISC").text();
         const BookingId = $("#BookingId").val();
-       
+
         const branchId = $("#BranchId").val();
         const BookingNumber = $("#BookingNumber").val();
         var roomTypeIds = "";
@@ -379,8 +368,8 @@
         const roomCostData = [];
         for (i = 1; i <= Number(NumberOfRoom); i++) {
             var nid = "RTSelType" + i;
-            roomTypeIds = roomTypeIds + $("#" + nid + " option:selected").val() + ',';
-            roomTypeNames = roomTypeNames + $("#" + nid + " option:selected").text().replace(/[\n\r]+/g, ' ').trim() + ',';
+            roomTypeIds = roomTypeIds + $("#" + nid).attr("roomTypeId") + ",";
+            roomTypeNames = roomTypeNames + $("#" + nid ).val().trim() + ',';
         }
 
 
@@ -389,7 +378,8 @@
                     const CHDage3 = $("#Child3Age option:selected").val();
                     const Adults = $("#nOfA").text();
                     const KID = $("#nOfC").text();
-
+                    const extCIN = $("#extCIN").val();
+                    const extCOUT = $("#extCOUT").val();
                     const CIN = $("#Addbookingdatepickerinn").val();
                     const COUT = $("#Addbookingdatepickerout").val()
                     const NIGHTS = $("#nOn").text();
@@ -406,8 +396,20 @@
                     const tpp =parseFloat(tp/100);
                     const psSelected = [];
                     var selectedPS='';
+        var cind1 = new Date(extCIN);
+        var cind2 = new Date(CIN);
+        var cOutd1 = new Date(extCOUT);
+        var cOut2 = new Date(COUT);
+        console.log("Sanjay...extCIN :: " + cind1 + "EXT COUT :: " + cOutd1);
+        console.log("Sanjay...CIN :: " + cind2 + "EXT COUT :: " + cOut2);
 
-
+        if(cind2.getTime() > cind1.getTime()) {
+            //console.log( "Selectted Date is later than Existing Date");
+        } else if (cind2.getTime() < cind1.getTime()) {
+            console.log("Selectted Date is Eairlier  than Existing Date");
+        }else {
+            console.log("Both dates are the same");
+        }
 
                     const Bookingitem = {
 
@@ -448,37 +450,43 @@
         ////
         for (i = 1; i <= Number(NumberOfRoom); i++) {
             var nid = "RTSelType" + i;
-            var RoomDropDown = "RoomType_RoomId" + i;
-            roomTypeId = $("#" + nid + " option:selected").val();
-            roomTypeName =  $("#" + nid + " option:selected").text().replace(/[\n\r]+/g, ' ').trim();
-            console.log(i);
-            const selectedRoom = $('#' + RoomDropDown + " option:selected").text().replace(/[\n\r]+/g, ' ').trim();
-            var rmTxtAryy = selectedRoom.split("-");
-            const RoomNumber = rmTxtAryy[1];
-            const RoomId = $('#' + RoomDropDown + " option:selected").val();
-            var rmids = RoomId.split("-");
-            var BookedRoomId = rmids[2];
+
+            roomTypeId = $("#" + nid).attr("roomtypeid");
+            roomTypeName =  $("#" + nid ).val();
+
+
+            const RoomNumber = $("#" + nid).attr("roomnumber");
+            const RoomId = $("#" + nid).attr("roomid");
+            const FloorId = $("#" + nid).attr("floorid");
+            const FloorName = $("#" + nid).attr("floorname");
+
+            var BookedRoomId = $("#" + nid).attr("bookedroomid");
             const CheckIn = CIN;
             const CheckOut = COUT;
-           
+
             const BranchId = parseInt(branchId);
             var isUpgraded = false;
-            if (rmids[0] > 0) {
+            var isCheckOut = false;
+            if (roomTypeName.indexOf("Cancelled") !== -1) {
+                isCheckOut = true;
+            }
+            if (Number(RoomId) > 0) {
                 const BookedRoomitem = {
                     BookedRoomId: BookedRoomId,
                     BookingId: parseInt(BookingId),
-                    RoomId: parseInt(rmids[0]),
+                    RoomId: parseInt(RoomId),
                     CustomerName: GuestName,
                     RoomTypeId: parseInt(roomTypeId),
                     RoomTypeName: roomTypeName,
-                    FloorId: parseInt(rmids[1]),
-                    FloorName: rmTxtAryy[2],
+                    FloorId: parseInt(FloorId),
+                    FloorName: FloorName,
                     CheckIn: CheckIn,
                     CheckOut: CheckOut,
                     RoomNumber: RoomNumber,
                     BranchId: parseInt(BranchId),
                     isActive: 1,
-                    isPreUpgraded: isUpgraded
+                    isPreUpgraded: isUpgraded,
+                    isCheckOut: isCheckOut
                 };
                 Bookingitem.AllocatedRooom.push(BookedRoomitem);
             }
@@ -487,10 +495,15 @@
             var obj = $("#" + jId).val();
 
             var objData = JSON.parse(obj);
-            console.log(objData);
+            //console.log(objData);
+           
 
             objData.forEach(item => {
-               
+                if (item.Description.indexOf("Cancelled") !== -1) {
+                    RoomStatus = "Cancelled";
+                }else{
+                    RoomStatus = ' ';
+                }
                 BookingCost = {
                     BookingId: parseInt(BookingId),
                     BookingCostId: parseInt(item.BookingCostId),
@@ -502,7 +515,8 @@
                     CostCategory: 1,
                     Qty: 0,
                     Tax: item.Tax,
-                    TaxAmount: item.TaxAmount
+                    TaxAmount: item.TaxAmount,
+                    RoomStatus: RoomStatus
                 }
                 Bookingitem.AllNights.push(BookingCost);
 
@@ -542,7 +556,7 @@
         }
         console.log(Bookingitem);
         //return false;
-       
+
         //console.log(JSON.stringify(Bookingitem));
 
 
@@ -669,7 +683,8 @@
                 $(function () {
                     var userObj;
                     //console.log("On Load ===="+userObj);
-                    
+                    const extCIN = $("#extCIN").val();
+                    var cind1 = new Date(extCIN);
                     function divLoaded() {
                         $("#totAmt").text($("#TotalCostForNights").val());
                         var tottalAmount = $("#totAmt").text();
@@ -691,12 +706,21 @@
                     $("#Addbookingdatepickerinn").datepicker({
                         dateFormat: "mm-dd-yy",
                         duration: "fast",
-                        minDate: 0,
-                        disabledDates: [new Date()],
+                        minDate: new Date(cind1),
+                       
                         onSelect: function (selected) {
                             var minDate = $(this).datepicker('getDate');
-                            minDate.setDate(minDate.getDate() + 1); //add one day
-                            $('#Addbookingdatepickerout').datepicker('option', 'minDate', minDate);
+                           
+                            var todalNight = '@Model.Nights';
+                            minDate.setDate(minDate.getDate() + parseInt(todalNight));
+                           
+                            var dd = minDate.getDate();
+                            var mm = minDate.getMonth() + 1;
+                            var y = minDate.getFullYear();
+                            var someFormattedDate = mm + '-' + dd + '-' + y;
+                            $('#Addbookingdatepickerout').val(someFormattedDate);
+
+                            //$('#Addbookingdatepickerout').datepicker('option', 'minDate', minDate);
 
                             $("#Addbookingdatepickerinn").removeClass("errRedBorder");
 
@@ -705,7 +729,7 @@
 
 
 
-                    $("#Addbookingdatepickerout").datepicker({
+                    $("#AddbookingdatepickeroutNOTUSED").datepicker({
                         dateFormat: "mm-dd-yy"
                         , duration: "fast",
                         onSelect: function (selected) {
@@ -717,18 +741,23 @@
 
                             //var todalNight = parseInt(todate) - parseInt(fdate);
 
-                            $('#nOn').text(todalNight);
+                            //$('#nOn').text(todalNight);
                             amt = 0;
-                            $("#totAmt").text('');
-                            $("#hdnRoomCost").val(0);
-                            $("#totAmt").trigger('change');
+                            //$("#totAmt").text('');
+                            //$("#hdnRoomCost").val(0);
+                            //$("#totAmt").trigger('change');
                             $("#Addbookingdatepickerout").removeClass("errRedBorder");
 
                         }
                     });
                     $("#NumberofRoom").change(function () {
                         amt = 0;
-
+                        var nr = $("#NoOfRooms").val();
+                        var _nr = $(this).val();
+                        
+                        if (nr != _nr) {
+                            return false;
+                        }
                             $("#totAmt").text('');
                             $("#hdnRoomCost").val(0);
                             $("#totAmt").trigger('change');
@@ -739,21 +768,22 @@
                             var fdate = new Date(minDate).getDate(); //add one day
                             var todate = new Date(maxDate).getDate();
                         var diff = new Date(Date.parse(maxDate) - Date.parse(minDate));
-                        console.log(fdate + "   " + todate);
+                        //console.log(fdate + "   " + todate);
                         // get days
                         var todalNight = diff/1000/60/60/24;
-                        console.log(todalNight);
+                        //console.log(todalNight);
                             //var todalNight = Math.floor((maxDate.getTime() - minDate.getTime()) / 86400000);
                             var totalRoomSelected = $('option:selected', this).val();
-                             console.log(bookingId + "   " + totalRoomSelected + " " + todalNight);
+                             //console.log(bookingId + "   " + totalRoomSelected + " " + todalNight);
 
-                        var PPR_URL = "/Home/_PricePerRoomEdit?nOfr=" + totalRoomSelected + "&todalNight=" + todalNight + "&bookingId=" + bookingId;
+                        var PPR_URL = "/Home/_PricePerRoomEditV2?nOfr=" + totalRoomSelected + "&todalNight=" + todalNight + "&bookingId=" + bookingId;
                         $("#PPR").html('');
                         $("#PPR").addClass("divloader");
                         $.ajax({
                             url: PPR_URL,
                             cache: false,
                             success: function (html) {
+                                //console.log(html);
                                 $("#PPR").html('');
                                 $("#PPR").append(html);
                             },
@@ -762,7 +792,7 @@
                             }
                         });
 
-                        
+
 
 
 

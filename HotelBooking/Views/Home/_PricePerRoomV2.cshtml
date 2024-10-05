@@ -1,0 +1,455 @@
+﻿<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font: 16px Arial;
+    }
+
+    .autocomplete {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+    }
+    .autocomplete input {
+       margin-bottom:0px !important;
+    }
+    input {
+        border: 1px solid transparent;
+        background-color: #f1f1f1;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+        input[type=text] {
+            background-color: #f1f1f1;
+            /*width: 100%;*/
+        }
+
+        input[type=submit] {
+            background-color: DodgerBlue;
+            color: #fff;
+            cursor: pointer;
+        }
+
+    .autocomplete-items {
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        top: 100%;
+        left: 0;
+        right: 0;
+    }
+
+        .autocomplete-items div {
+            padding: 10px;
+            cursor: pointer;
+            background-color: #fff;
+            border-bottom: 1px solid #d4d4d4;
+        }
+
+            .autocomplete-items div:hover {
+                background-color: #e9e9e9;
+            }
+
+    .autocomplete-active {
+        background-color: #136c80 !important;
+        color: #ffffff;
+        cursor: pointer;
+    }
+
+    ul.list-group {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        ul.list-group li {
+            border: 1px solid #ddd;
+            margin-top: -1px; /* Prevent double borders */
+            background-color: #f6f6f6;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        ul.list-group .badge {
+            background-color: red;
+            color: #fff;
+            font-weight: bold;
+            border-radius: 50%;
+            padding: 5px 10px;
+            text-align: center;
+            margin-left: 5px;
+            margin-top:5px;
+            float:right;
+
+        }
+
+        ul.list-group li:hover {
+            background-color: #136c80 !important;
+            color: #ffffff;
+            cursor:pointer;
+        }
+    
+</style>
+<style>
+
+    .divloader {
+        border: 2px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 2px solid #3498db;
+        width: 10px;
+        height: 10px;
+        -webkit-animation: spin 2s linear infinite; /* Safari */
+        animation: spin 2s linear infinite;
+    }
+
+    /* Safari */
+    @@-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<table width="100%" border="0" id="tblCosting" cellspacing="0" cellpadding="0">
+    <tbody>
+
+
+        @if (ViewBag.NOR != null)
+        {
+            for (int i = 1; i <= ViewBag.NOR; i++)
+            {
+                var rtselname = "RTSelType" + i.ToString();
+                var divref = "#ViewEditPerDayPrice" + i.ToString();
+                var VEPPL = "ViewEditPerDayPriceLink" + i.ToString();
+                var jsonDataId = "jsonDataId" + i.ToString();
+
+                var totalPerRoomCostId = "totalPerRoomCost" + i.ToString();
+                var totalPerRoomOfferPriceId = "totalPerRoomOfferPriceId" + i.ToString();
+                var totalPerRoomTaxId = "totalPerRoomTax" + i.ToString();
+                var RoomType_RoomId = "RoomType_RoomId" + i.ToString();
+
+
+                <tr>
+                    <td class="trthbgclr" width="10%" align="left" valign="middle">Room #@i</td>
+                    <td width="30%" align="left" valign="middle">
+                        
+                        <div class="autocomplete">
+                        <input type="text" tabindex="1" idn="@i" id="@rtselname" class="dropbtn full-width ValidateInput" placeholder="Choose Rooms" autocomplete="off" runat="server">
+                        </div>
+                    </td>
+                    <td width="12%" align="center" valign="middle">@ViewBag.todalNight</td>
+                    <td width="16%" align="right" valign="middle" id="@totalPerRoomCostId"></td>
+                    <td width="16%" align="right"  tabindex="2" valign="middle"> <input type="text"  id="@totalPerRoomOfferPriceId" onkeyup="ChangeCost('@totalPerRoomCostId',this,'@i','@ViewBag.NOR');" class="dropbtn full-width ValidateInput" value="0.00" /> </td>
+                   
+
+                    <td width="16%" align="center" valign="middle">
+                        <input type="hidden"  id="@totalPerRoomTaxId" />
+                        <a href="#" id="@VEPPL" data-toggle="modal" style="display:none" data-target="@divref">View Per Day Price</a>
+                        @Html.HiddenFor(m => jsonDataId, new { @id = jsonDataId })
+                    </td>
+                </tr>
+
+
+
+            }
+        }
+    </tbody>
+</table>
+
+
+
+
+
+@if (ViewBag.NOR != null)
+{
+    for (int i = 1; i <= ViewBag.NOR; i++)
+    {
+        var divName = "ViewEditPerDayPrice" + i;
+        <div class="modal fade" id="@divName" role="dialog"><h2></h2></div>
+    }
+}
+
+<script>
+    var RoomsTypes = [];
+    
+    $(document).ready(function () {
+        
+        $("input").attr("autocomplete", "none");
+        $(".ValidateInput").on("blur", function () {
+            validateField(this);
+        });
+        amt = Number($("#totAmt").text());
+        document.querySelectorAll("div[id^='ViewEditPerDayPrice']").forEach(function (d) {
+            $(document.body).append($("#" + d.id).clone());
+            $("#" + d.id).remove();
+        });
+        getRoomTypeWithRoomNumber();//fillRoomTypes/room data on load
+        //autocomplete(document.getElementById("txtRoomSelect"), RoomsTypes);
+        for (i = 1; i <= '@ViewBag.NOR'; i++)
+        {
+            var rtselname = "RTSelType" + i;
+            var txtId = document.getElementById(rtselname);
+            autocomplete(txtId, RoomsTypes);
+         }
+        
+        function getRoomTypeWithRoomNumber() {
+
+                    $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("AutoCompleteServiceProvidersForRoomType", "Home")',
+
+                        data: { BranchId: 1 },
+
+                        success: function (recData) {
+                            
+                            for (var i in recData) {
+                                RoomsTypes.push(recData[i]);
+                            }
+                           
+                         },
+                         error: function () {
+
+                             console.log('A error');
+                         }
+                });
+        console.log("Room Types Loaded");
+        }
+   
+        function autocomplete(inp, arr) {
+            
+            var currentFocus;
+            inp.addEventListener("input", function (e) {
+                var a, b, i, val = this.value;
+                closeAllLists();
+                if (!val) { return false; }
+                currentFocus = -1;
+                a = document.createElement("DIV");
+                a.setAttribute("id", this.id + "autocomplete-list");
+                a.setAttribute("class", "autocomplete-items");
+                this.parentNode.appendChild(a);
+                //console.log("Items ::" + MenuItemArray);
+                b = document.createElement("ul");
+                b.setAttribute("class", "list-group");
+                for (i = 0; i < arr.length; i++) {
+                    
+                    if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                        var tmpArr = arr[i].split("-");
+                       
+                        b.innerHTML += "<li><strong>" + tmpArr[0].substr(0, val.length) + "</strong><input type='hidden' id='" + tmpArr[2] + "' value='" + tmpArr[0] + "' />" + tmpArr[0].substr(val.length) + "<span class='badge' title='Room Number'>" + tmpArr[1] +"</span></li>";
+
+                        b.addEventListener("click", function (e) {
+                            inp.value = this.getElementsByTagName("input")[0].value;
+                            inp.setAttribute("RoomTypeId", this.getElementsByTagName("input")[0].id);
+
+                            inp.setAttribute("RoomNumber", tmpArr[1]);
+                            inp.setAttribute("FloorId", tmpArr[3]);
+                            inp.setAttribute("FloorName", tmpArr[4]);
+                            inp.setAttribute("RoomId", tmpArr[5]);
+                            //GetPrice($(this).attr("idn"), this.getElementsByTagName("input")[0].id);
+                            closeAllLists();
+                        });
+                        
+                    }
+                }
+                a.appendChild(b);
+            });
+
+            inp.addEventListener("keydown", function (e) {
+                var x = document.getElementById(this.id + "autocomplete-list");
+                if (x) x = x.getElementsByTagName("li");
+                if (e.keyCode == 40) {
+                    currentFocus++;
+                    addActive(x);
+                } else if (e.keyCode == 38) {
+                    currentFocus--;
+                    addActive(x);
+                } else if (e.keyCode == 13) {
+                    e.preventDefault();
+                    if (currentFocus > -1) {
+                        if (x) x[currentFocus].click();
+                    }
+                    
+                    GetPrice($(this).attr("idn"), $(this).attr("roomtypeid"));
+                }
+            });
+            
+            function addActive(x) {
+                if (!x) return false;
+                removeActive(x);
+                if (currentFocus >= x.length) currentFocus = 0;
+                if (currentFocus < 0) currentFocus = (x.length - 1);
+                x[currentFocus].classList.add("autocomplete-active");
+            }
+            function removeActive(x) {
+                for (var i = 0; i < x.length; i++) {
+                    x[i].classList.remove("autocomplete-active");
+                }
+            }
+            function closeAllLists(elmnt) {
+                var x = document.getElementsByClassName("autocomplete-items");
+                for (var i = 0; i < x.length; i++) {
+                    if (elmnt != x[i] && elmnt != inp) {
+                        x[i].parentNode.removeChild(x[i]);
+                    }
+                }
+            }
+            document.addEventListener("click", function (e) {
+                closeAllLists(e.target);
+            });
+        }
+
+        
+    });
+    function divLoaded() {
+        //
+        var costing = Number(0);
+        var totalTax = Number(0);
+        $('#tblCosting').find("tr").each(function (idx,el) {
+            var currentRow = $(this);
+
+            var currentRow = $(this);
+            var hiddenField = $(this).find("input[type='hidden']").val();
+            console.log("Tax Val: " + hiddenField)
+            //if not empty push to array
+            if (hiddenField != 'undefined' && hiddenField != null) {
+                totalTax = totalTax + Number(hiddenField);
+            }
+
+
+            var col3 = currentRow.find("td:eq(3)").text();
+            if (col3 != '') {
+                //console.log("Value" + col3);
+                costing = costing+Number(col3);
+                //console.log("Costing"+costing);
+            }
+
+
+
+        });
+        amt = costing;// + totalTax;
+        //console.log("Amount :" + amt);
+        //console.log("Tax :" + totalTax);
+        $("#hdnRoomCost").val(amt.toFixed(2));
+        $("#hdnRoomTax").val(totalTax.toFixed(2));
+        //var totalAmount = amt + totalTax;
+        $("#totAmt").text(amt.toFixed(2));
+        $("#taxVal").text(totalTax.toFixed(2));
+        $("#totAmt").trigger('change');
+        calculatePS();
+        //
+
+        //var TCFNID = "TotalCostForNights" + idn;
+        //var currentCost = $("#" + TCFNID).val()
+        //calcuteTotalandtaxes(currentCost, '+')
+
+    };
+    function calcuteTotalandtaxes(cc, opt) {
+        if (opt == '+') {
+            amt = Number(amt) + Number(cc);
+        }
+        else {
+            amt = Number(amt) - Number(cc);
+        }
+        //console.log("Amount :" + amt);
+        $("#hdnRoomCost").val(amt.toFixed(2));
+        $("#totAmt").text(amt.toFixed(2));
+        $("#totAmt").trigger('change');
+    }
+    function GetPrice(idn, RoomTypeId) {
+
+        var divId = "ViewEditPerDayPrice" + idn;
+        var VeiwEditLink = "ViewEditPerDayPriceLink" + idn;
+        //console.log(VeiwEditLink);
+        //var RoomTypeId = $('#' + ddlSelect + ' option:selected').val();
+        var cin = $("#Addbookingdatepickerinn").val();
+        var cout = $("#Addbookingdatepickerout").val();
+        //console.log(RoomTypeId + " c " + cin + " o  " + cout);
+        if (RoomTypeId > 0) {
+            const url = "/Home/_PricePerNightV2?RoomTypeId=" + RoomTypeId + "&cinDate=" + cin + "&coutDate=" + cout + "&refDiv=" + idn;
+            $('#' + divId).addClass("divloader");
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (data) {
+                    //console.log(data);
+                    $('#' + divId).html(data);
+                    //GetRooms(idn, RoomTypeId);
+
+                }
+            }).done(function () {
+                setTimeout(function () {
+                    $('#' + divId).removeClass("divloader");
+                    $('#' + VeiwEditLink).css("display","block");
+                    $('#' + VeiwEditLink).show();
+                    divLoaded();
+                }, 500);
+
+            });
+
+        } else {
+            var perRoomCostId = "totalPerRoomCost" + idn;
+            var currSelectedCost = $("#" + perRoomCostId).text();
+            //console.log(currSelectedCost);
+            calcuteTotalandtaxes(currSelectedCost, '-');
+            $("#" + perRoomCostId).text('');
+        }
+
+
+    }
+    function GetRooms(idn, RoomTypeId) {
+
+        var SelId = "RoomType_RoomId" + idn;
+
+        if (RoomTypeId > 0) {
+            const url = "/Home/getRoomsForRoomType?RoomTypeId=" + RoomTypeId ;
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function (data) {
+                    //console.log(data);
+                    //console.log("Success...............");
+                    var dropdown = $('#' + SelId);
+                    dropdown.empty();
+                            $.each(data, function (i, item) {
+                                dropdown.append($('<option>', {
+                                value: item.Value,
+                                text : item.Text
+                            }));
+                    });
+
+                }
+            }).done(function () {
+                //console.log("Done...............");
+
+            });
+
+        } else {
+
+        }
+
+
+    }
+
+    
+</script>
+

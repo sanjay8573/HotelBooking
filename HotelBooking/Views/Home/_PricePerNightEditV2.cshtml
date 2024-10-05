@@ -1,0 +1,268 @@
+﻿ @model IEnumerable<HotelBooking.Model.PriceResponse>
+@{
+    //var idn = Model.Select(c => c.CostId).First();
+    var idn = ViewBag.divId;
+    var totDiveId = "TotalCostForNights" + idn;
+    var totOfferPriceId = "TotalOfferCostForNights" + idn;
+    var totTaxDiveId = "TotalTaxForNights" + idn;
+    var tableId = "TableId" + idn;
+    var btnId = "btn" + idn;
+    decimal gtotalAmount = decimal.Parse("0");
+    decimal gtotalTax = decimal.Parse("0");
+    decimal gtotalPayable = decimal.Parse("0");
+}
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-body">
+            <div class="row">
+                <h4 class="tabheading text-left popuphed"><i class="fa fa-edit" aria-hidden="true"></i> View/Edit Per Day Price </h4>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table table-bordered" id="@tableId">
+                        <thead>
+                            <tr class="trthbgclr text-left">
+                                <th width="33%">&nbsp;</th>
+                                <th width="33%"> Price</th>
+                                <th width="33%">Offer Price</th>
+                                <th width="33%"> Tax</th>
+                                <th width="33%">Payable Price</th>
+
+                            </tr>
+                         </thead>
+                        <tbody>
+
+                            @if (Model != null)
+                            {
+                                var i = 1;
+                                decimal totalAmount = decimal.Parse("0");
+                                decimal totalTax = decimal.Parse("0");
+
+                                foreach (HotelBooking.Model.PriceResponse p in Model)
+                                //for(var k = 0; k < Model.Count(); i++)
+                                {
+                                    decimal op = p.OfferPrice + p.TaxAmount;
+                                    var txtId = "txtDay" + i.ToString() + "" + tableId.ToString();
+                                    var TaxAmountId = "TaxAmountId" + i.ToString() + "" + tableId.ToString();
+                                    var AmtWithTaxId = "AmtWithTaxId" + i.ToString() + "" + tableId.ToString();
+                                    decimal AmtWithTax = p.OfferPrice + p.TaxAmount;
+                                    <tr>
+                                        <th width="33%">Day #@i</th>
+                                        <td><label>@ViewBag.CurrencySymbol  @p.Amount</label></td>
+                                        <td>
+                                            <input type="text" id="@txtId" vTag="@p.Date.ToString("MM-dd-yyyy")" taxVal="@p.Tax" class="full-width allinput" placeholder="0.00" onkeyup="calculateOfferPrice(this.value,@p.Tax,@TaxAmountId,@AmtWithTaxId);" value="@p.OfferPrice" runat="server">
+                                        </td>
+
+
+
+                                        <td><label>@ViewBag.CurrencySymbol <span id="@TaxAmountId">@p.TaxAmount</span> </label></td>
+                                        <td><label>@ViewBag.CurrencySymbol <span id="@AmtWithTaxId">@AmtWithTax</span>  </label></td>
+                                    </tr>
+
+                                    i++;
+                                    totalAmount = totalAmount + AmtWithTax;
+                                    totalTax = totalTax + p.TaxAmount;
+                                    
+                                    gtotalAmount = gtotalAmount + p.Amount;
+                                    gtotalTax = gtotalTax + totalTax;
+                                    gtotalPayable = gtotalPayable + AmtWithTax;
+                                }
+
+                                <input type="hidden" id="@totDiveId" value="@totalAmount" />
+                                <input type="hidden" id="@totOfferPriceId" value="@gtotalPayable" />
+                                <input type="hidden" id="@totTaxDiveId" value="@totalTax" />
+
+                            }
+                        </tbody>
+                        @*<tfooter>
+                            <tr class="trthbgclr text-left">
+                                <th width="33%">Total</th>
+                                <th width="33%"> @gtotalAmount</th>
+
+                                <th width="33%"> @gtotalTax</th>
+                                <th width="33%">@gtotalPayable</th>
+
+                            </tr>
+                        </tfooter>*@
+                    </table>
+                </div>
+                @*<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <button type="button" class="allbtnin full-width" onclick="updateTotalCost('@idn');" id="@btnId">Save</button>
+                </div>*@
+            </div>
+        </div>
+        <div class="modal-footer">
+           
+            <button type="button" class="allbtnin full-width" onclick="updateTotalCost('@idn');" id="@btnId">Save</button>
+      
+            <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    var TaxSlabs = [];
+    function calculateOfferPrice(amt, tx, TaxVal, TxWithAmount) {
+        //console.log(TxWithAmount);
+        var TaxAmt = amt * tx / 100;
+        var AmountWithTax = Number(amt) + Number(TaxAmt);
+        $('#' + TaxVal.id).text(TaxAmt.toFixed(2));
+        $('#' + TxWithAmount.id).text(Number(AmountWithTax).toFixed(2));
+
+    }
+    $(document).ready(function () {
+        var nor='@idn';
+        var btnid = "btnId" + '@idn';
+        var BranchId = '@ViewBag.BranchId';
+        
+        var perRoomCostId = "totalPerRoomCost" +'@idn';
+        var totalPerRoomTax = "totalPerRoomTax" + '@idn';
+        var jsondataId ="jsonDataId"+  '@idn';
+        var TotalRoomCost = $("#" + '@totDiveId').val();
+        var totalPerRoomOfferPriceId= "totalPerRoomOfferPriceId"+ '@idn';
+        
+      
+        var TotalRoomTax = $("#" + '@totTaxDiveId').val();
+        $("#" + perRoomCostId).text(TotalRoomCost);
+        $("#" + totalPerRoomTax).val(TotalRoomTax);
+        $("#" + totalPerRoomOfferPriceId).val(TotalRoomCost);
+        var data = $.parseJSON('@Html.Raw(Json.Encode(Model))');
+        console.log(data);
+            for (let object of data) {
+                //console.log(object.Date);
+                var dt = new Date(parseInt(object.Date.replace("/Date(", "").replace(")/", ""), 10))
+                var year = dt.getFullYear();
+                var month = ("0" + (dt.getMonth() + 1)).slice(-2); // Adding leading zero
+                var day = ("0" + dt.getDate()).slice(-2); // Adding leading zero
+                var ItemshortDate = month + "-" + day + "-" + year;
+
+                    object.Date = ItemshortDate;
+
+
+            }
+            $("#" + jsondataId).val(JSON.stringify(data));
+
+        console.log("Onload after change Json"+data);
+
+
+        $("#" + perRoomCostId).on('change', function () {
+
+            $("#totAmt").trigger('change');
+        });
+
+        LoadTaxSlabRate(BranchId);
+    });
+
+    function ChangeCost(tCostId, ofP,n,nor) {
+    //$('#' + tCostId).text($(ofP).val());
+        var opVal = $(ofP).val();
+    var totalNight = '@ViewBag.TotalNight';
+    var perDayCost = opVal / Number(totalNight);
+    var tableId = "TableId" + n;
+    var BranchId = '@ViewBag.BranchId';
+    var currentTax = 0;
+    //console.log(opVal);
+    $.each(TaxSlabs, function (index, value) {
+        var ArrVal = value.split("-");
+        if (Number(perDayCost) >= Number(ArrVal[0]) && Number(perDayCost) <= Number(ArrVal[1])) {
+            currentTax = Number(ArrVal[3]);
+       }
+
+   });
+
+        console.log("NOR " + nor +"totalNight :: " + totalNight+"perDayCost :: " + perDayCost + "currentTax ::" + currentTax);
+    for (k = 1; k <=nor; k++) {
+        var txtId = "txtDay" + k + "" + tableId;
+       
+        $('#' + txtId).val(perDayCost);
+        $('#' + txtId).attr("value", perDayCost);
+        $('#' + txtId).attr("taxVal", currentTax);
+        var TaxAmountId = "TaxAmountId" + k + "" + tableId;
+        var AmtWithTaxId = "AmtWithTaxId" + k + "" + tableId;
+
+        $('#' + txtId).keyup();
+    }
+
+
+    updateTotalCost(n);
+    ///Get the tax percentage from tax master based on amount entered for this Hotel
+
+}
+
+    function updateTotalCost(id) {
+        var tableId ="TableId"+id;
+        var totalRoomCostonSave = parseInt("0");
+        var totalRoomTaxCostonSave = parseInt("0");
+        var totalBasePrice = parseInt("0");
+        var jsondataId = "jsonDataId" + id;
+        data = $.parseJSON($("#" + jsondataId).val());
+        console.log("sanjay==" + JSON.stringify(data));
+        $('#' + tableId).find('input[type=text]').each(function () {
+         //console.log($(this).attr("vTag"));
+            var dd = $(this).attr("vTag");
+            var TaxP = $(this).attr("taxval");
+            var TaxAmt = this.value * TaxP / 100;
+            var vv = Number(this.value);
+            var canRTName;
+            var attrRtName = $(this).attr("rtname");
+            if (typeof attrRtName !== 'undefined' && attrRtName !== false) {
+                canRTName = $(this).attr("rtname");
+            } 
+            console.log("Sanjay " + vv + "Tax value " + TaxAmt)
+            for (let object of data) {
+                if (object.Date == dd) {
+                    object.OfferPrice = vv.toFixed(2);
+                    object.Tax = Number(TaxP).toFixed(2);
+                    object.TaxAmount = TaxAmt.toFixed(2);
+
+
+                   // object.Date = ItemshortDate;
+                    if (canRTName != "") {
+                        object.Description = canRTName;
+                    }
+
+
+               }
+            }
+            console.log(data);
+            var tmpTotal = Number(vv) + Number(TaxAmt);
+            totalRoomCostonSave += Number(tmpTotal);
+            totalRoomTaxCostonSave += TaxAmt;
+
+         //console.log(totalRoomCostonSave)
+        });
+
+        var perRoomCostId = "totalPerRoomCost" + id;
+        var totalPerRoomTaxId = "totalPerRoomTax" + id;
+        $("#" + perRoomCostId).text(totalRoomCostonSave.toFixed(2));
+        $("#" + totalPerRoomTaxId).val(totalRoomTaxCostonSave.toFixed(2));
+        divLoaded();
+        $("#" + perRoomCostId).trigger('change');
+        console.log("=======");
+        //console.log(data);
+        $("#"+jsondataId).val(JSON.stringify(data))
+
+    }
+    function LoadTaxSlabRate(brnachId) {
+
+        $.ajax({
+        type: "GET",
+        url: '@Url.Action("TaxProviders", "Home")',
+
+            data: { BranchId: 1 },
+
+            success: function (recData) {
+                for (var i in recData) {
+                    TaxSlabs.push(recData[i]);
+                }
+
+
+             },
+             error: function () {
+
+                 console.log('A error');
+             }
+    });
+        console.log("Room Types Loaded");
+}
+</script>
+

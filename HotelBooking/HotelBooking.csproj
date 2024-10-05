@@ -555,6 +555,7 @@
     <Compile Include="Model\BookingPayments.cs" />
     <Compile Include="Model\BookingRequest.cs" />
     <Compile Include="Model\BookingSource.cs" />
+    <Compile Include="Model\Booking\VM_PricePerRoom.cs" />
     <Compile Include="Model\Branch.cs" />
     <Compile Include="Model\CheckOutRequest.cs" />
     <Compile Include="Model\CheckOutResponse.cs" />
@@ -1031,10 +1032,13 @@
     <Content Include="Views\Home\EditBooking.cshtml" />
     <Content Include="Views\Home\_PricePerRoomEdit.cshtml" />
     <Content Include="Views\Home\_PricePerNightEdit.cshtml" />
+    <Content Include="Views\Home\_PricePerRoomV2.cshtml" />
+    <Content Include="Views\Home\_PricePerNightV2.cshtml" />
+    <Content Include="Views\Home\_PricePerRoomEditV2.cshtml" />
+    <Content Include="Views\Home\_PricePerNightEditV2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Model\Booking\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\bootstrap.min.js.map" />

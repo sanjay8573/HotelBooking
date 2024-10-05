@@ -35,6 +35,7 @@ namespace HotelBooking.Repository.Implementation
                     bkedRoom.RoomNumber = BookedRoomEntity.RoomNumber;
                     bkedRoom.RoomTypeId = BookedRoomEntity.RoomTypeId;
                     bkedRoom.RoomTypeName  = BookedRoomEntity.RoomTypeName;
+                    bkedRoom.isCheckout = BookedRoomEntity.isCheckout;
 
                 }
                 else

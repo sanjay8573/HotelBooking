@@ -19,5 +19,6 @@ namespace HotelBooking.Model
         public int CostCategory { get; set; }// 1. RoomType Cost/2. PaidService cost etc.
         public int Qty { get; set; }
         public int PBookingId { get; set; }
+        public string RoomStatus { get; set; }
     }
 }
