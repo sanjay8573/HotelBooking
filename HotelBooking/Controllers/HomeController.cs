@@ -44,6 +44,10 @@ using System.Web.Mvc;
 using System.Web.Security;
 using System.Web.UI;
 using static iTextSharp.text.pdf.AcroFields;
+using iTextSharp.text.pdf.qrcode;
+using System.Web.Script.Serialization;
+using HotelBooking.Model.Hall;
+using HotelBooking.Controllers.Hall;
 
 #endregion
 
@@ -3141,12 +3145,170 @@ namespace HotelBooking.Controllers
             return rtnVal;
         }
 
+        public ActionResult GetAllOrdersToPrintBill(int? page, int? pSize, int RestaurantId = 0)
+        {
+           int? DefaultPageSize = 10;
+            if (pSize != null)
+            {
+                DefaultPageSize = pSize;
+            }
+
+            int pageNumber = page ?? 1;
+            ViewBag.PageSize = DefaultPageSize;
+            ViewBag.pSize = new List<SelectListItem>()
+                    {
+                       
+                        new SelectListItem() { Value = "10", Text = "10" },
+                        new SelectListItem() { Value = "15", Text = "15"},
+                        new SelectListItem() { Value = "20", Text = "20" },
+                     };
+
+                int branchId = int.Parse(Session["BranchId"].ToString());
+                RestaurantController _rt = new RestaurantController();
+                IEnumerable<RestaurantModel> entrans = _rt.GetRestaurants(branchId);
+            List<SelectListItem> rlitems = new List<SelectListItem>();
+            rlitems.Add(new SelectListItem { Text = "Select a Restaurant", Value = "0" });
+            foreach (var item in entrans)
+            {
+               
+                rlitems.Add(new SelectListItem { Text = item.Name, Value = item.RestaurantId.ToString(),Selected= (RestaurantId == item.RestaurantId) });
+            }
+            IEnumerable<BillingMaster> lstBills = _rt.GetCompletedorders(RestaurantId);
+            ViewBag.RestroCmoboModel = rlitems;
+            return View("printBill", lstBills.ToPagedList(pageNumber, (int)DefaultPageSize)); 
+        }
+        public ActionResult PrintBillPrint( int OrderId = 0)
+        {
+            
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            RestaurantController _rt = new RestaurantController();
+            BillingMaster BM = _rt.GetdOrder(OrderId);
+            
+            return View("PrintBillView", BM);
+        }
+        public ActionResult RestaurantBuffetMenu()
+        {
+
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            RestaurantController _rc = new RestaurantController();
+            IEnumerable<VM_MenuHeadings> lstmenuheadings = _rc.GetMenuHeadings(branchId);
+            List<SelectListItem> rlitems = new List<SelectListItem>();
+            rlitems.Add(new SelectListItem { Text = "Select a Menu Heading", Value = "0" });
+            foreach (var item in lstmenuheadings)
+            {
+
+                rlitems.Add(new SelectListItem { Text = item.MenuHeadingName, Value = item.MenuHeadingId.ToString() });
+            }
+            ViewBag.MenuHeading = rlitems;
+            ViewBag.BranchId = branchId;
+            TaxController _tc = new TaxController();
+            IEnumerable<TaxMaster> txl = _tc.GetAllTax(branchId);
+            List<SelectListItem> txLst = new List<SelectListItem>();
+            txLst.Add(new SelectListItem { Text = "Select a Tax slab", Value = "0" });
+            foreach (var item in txl)
+            {
+
+                txLst.Add(new SelectListItem { Text = item.Description, Value = item.Value.ToString() });
+            }
+            ViewBag.AvlTax = txLst;
+            return View("RestaurantBfMenu");
+        }
+
+
+        public bool SaveBuffetMenu(BuffetMenuMaster BuffetMenuMEntity)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            RestaurantController _rt = new RestaurantController();
+            bool rtnVal = _rt.SaveBuffetMenu(BuffetMenuMEntity);
+            return rtnVal;
+        }
+        public ActionResult BuffetMenuList(int? page, int? pSize)
+        {
+            int? DefaultPageSize = 10;
+            if (pSize != null)
+            {
+                DefaultPageSize = pSize;
+            }
+
+            int pageNumber = page ?? 1;
+            ViewBag.PageSize = DefaultPageSize;
+            ViewBag.pSize = new List<SelectListItem>()
+                    {
+
+                        new SelectListItem() { Value = "10", Text = "10" },
+                        new SelectListItem() { Value = "15", Text = "15"},
+                        new SelectListItem() { Value = "20", Text = "20" },
+                     };
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            RestaurantController _rt = new RestaurantController();
+            IEnumerable<restaurantBuffetMenu> entrans = _rt.GetBuffetmenus(branchId);
+
+            return View("BuffetMenuList", entrans.ToPagedList(pageNumber, (int)DefaultPageSize));
+        }
+        public ActionResult EditBuffetMenu(int RestaurantMenuId)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            RestaurantController _rc = new RestaurantController();
+            BuffetMenuMaster BMM = new BuffetMenuMaster();
+            restaurantBuffetMenu bfmentity = _rc.GetBuffetMenu(RestaurantMenuId);
+            BMM.BuffetMenu= bfmentity;
+            BMM.BuffetMenuDetails = _rc.GetBuffetMenuDetails(BMM.BuffetMenu.RestaurantMenuId).ToList();
+            JavaScriptSerializer js = new JavaScriptSerializer();
+            string jsonString =js.Serialize(BMM.BuffetMenuDetails);
+            ViewBag.BuffetMenuDetails = jsonString;
+            IEnumerable<VM_MenuHeadings> lstmenuheadings = _rc.GetMenuHeadings(branchId);
+            List<SelectListItem> rlitems = new List<SelectListItem>();
+            rlitems.Add(new SelectListItem { Text = "Select a Menu Heading", Value = "0" });
+            foreach (var item in lstmenuheadings)
+            {
+
+                rlitems.Add(new SelectListItem { Text = item.MenuHeadingName, Value = item.MenuHeadingId.ToString() });
+            }
+            ViewBag.MenuHeading = rlitems;
+            ViewBag.BranchId = branchId;
+            TaxController _tc = new TaxController();
+            IEnumerable<TaxMaster> txl = _tc.GetAllTax(branchId);
+            List<SelectListItem> txLst = new List<SelectListItem>();
+            txLst.Add(new SelectListItem { Text = "Select a Tax slab", Value = "0" });
+            foreach (var item in txl)
+            {
+
+                txLst.Add(new SelectListItem { Text = item.Description, Value = item.Value.ToString() });
+            }
+            ViewBag.AvlTax = txLst;
+          
+          
+
+            return View("EditBuffetMenu", BMM);
+        }
+
+        [HttpGet]
+        public JsonResult GetMenuItems(int menuHeadingId)
+        {
+            List<VM_MenuHeadings> servicesList = new List<VM_MenuHeadings>();
+            RestaurantController _rt = new RestaurantController();
+            IEnumerable<RestaurantMenuItem> rsm = _rt.GetRestaurantMenuItems(menuHeadingId);
+            foreach (var item in rsm)
+            {
+                VM_MenuHeadings s = new VM_MenuHeadings
+                {
+                    MenuHeadingId=item.MenuHeadingId,
+                    MenuItemId=item.MenuItemId,
+                    MenuItemName=item.MenuItemName
+                };
+               servicesList.Add(s);
+
+            }
+
+
+            return Json(servicesList.ToArray(), JsonRequestBehavior.AllowGet);
+        }
         [HttpGet]
         public JsonResult AutoCompleteServiceProviders(int RestaurantId)
         {
-           
-           
-
             List<string> servicesList = new List<string>();
             RestaurantController _rt = new RestaurantController();
             IEnumerable<RestaurantMenu> rsm = _rt.GetRestaurantMenus(RestaurantId);
@@ -4267,6 +4429,219 @@ namespace HotelBooking.Controllers
             bool rtnVal = _cntrl.UpdateSocialMediaConfiguration(lstData);
             return RedirectToAction("SocialMediaConfiguration");
 
+        }
+        #endregion
+        #region "---------- Manage Hall------------------"
+        public ActionResult Hall()
+        {
+
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            FloorController _fc = new FloorController();
+            IEnumerable<Floor> floorLst = _fc.GetFloors(branchId);
+
+            List<SelectListItem> rlitems = new List<SelectListItem>();
+            rlitems.Add(new SelectListItem { Text = "Select a floor", Value = "0" });
+            foreach (var item in floorLst)
+            {
+
+                rlitems.Add(new SelectListItem { Text = item.Description.Trim(), Value = item.FloorId.ToString() });
+            }
+            ViewBag.Floors = rlitems;
+            ViewBag.BranchId = branchId;
+            
+            return View("AddHall");
+        }
+        public bool SaveHall(HALL_PARTY_MASTER hallMEntity)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            HallController _rt = new HallController();
+            bool rtnVal = _rt.SaveHall(hallMEntity);
+            return rtnVal;
+        }
+
+        public ActionResult HallList(int? page, int? pSize)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            int? DefaultPageSize = 10;
+
+            HallController _rt = new HallController();
+
+            if (pSize != null)
+            {
+                DefaultPageSize = pSize;
+            }
+            int pageNumber = page ?? 1;
+            IEnumerable<HALL_PARTY_MASTER> hlList = _rt.GetAllHall(branchId);
+            Session["BranchId"] = branchId;
+            ViewBag.BranchId = branchId;
+
+            ViewBag.pSize = new List<SelectListItem>()
+                    {
+
+                        new SelectListItem() { Value="10", Text= "10" },
+                        new SelectListItem() { Value="15", Text= "15" },
+                        new SelectListItem() { Value="20", Text= "20" },
+                     };
+            IPagedList<HALL_PARTY_MASTER> tbkslist = hlList.ToPagedList(pageNumber, (int)DefaultPageSize);
+            return View("HallList", tbkslist);
+        }
+        public ActionResult EditHall(int HallId)
+        {
+
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            HallController _hc = new HallController();
+            HALL_PARTY_MASTER hl = _hc.GetHall(HallId);
+            FloorController _fc = new FloorController();
+            IEnumerable<Floor> floorLst = _fc.GetFloors(branchId);
+
+            List<SelectListItem> rlitems = new List<SelectListItem>();
+            rlitems.Add(new SelectListItem { Text = "Select a floor", Value = "0" });
+            foreach (var item in floorLst)
+            {
+                
+                rlitems.Add(new SelectListItem { Text = item.Description.Trim(), Value = item.FloorId.ToString(),Selected=(item.FloorId==hl.FloorId)});
+            }
+            ViewBag.Floors = rlitems;
+            ViewBag.BranchId = branchId;
+
+           
+
+            return View("EditHall", hl);
+        }
+        public ActionResult HallBooking()
+        {
+
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            RestaurantController _rc = new RestaurantController();
+            IEnumerable<restaurantBuffetMenu> bmLst = _rc.GetBuffetmenus(branchId);
+
+            List<SelectListItem> bmlitems = new List<SelectListItem>();
+            bmlitems.Add(new SelectListItem { Text = "Select a Menu", Value = "0" });
+            foreach (var item in bmLst)
+            {
+
+                bmlitems.Add(new SelectListItem { Text = item.RestaurantMenuName.Trim()+"( "+item.TotalCost +" )", Value = item.RestaurantMenuId.ToString() });
+            }
+            ViewBag.BuffetMenus = bmlitems;
+
+            HallController _hc = new HallController();
+            IEnumerable<HALL_PARTY_MASTER> hlLst = _hc.GetAllHall(branchId);
+            List<SelectListItem>hllitems = new List<SelectListItem>();
+            hllitems.Add(new SelectListItem { Text = "Select a Party Hall", Value = "0" });
+            foreach (var item in hlLst)
+            {
+
+                hllitems.Add(new SelectListItem { Text = item.HallName.Trim() , Value = item.HALLID.ToString() });
+            }
+            ViewBag.PartyHall = hllitems;
+            IEnumerable<Hall_Party_Time_Slot> hlSlotLst = _hc.GetHallTimings(branchId);
+            List<SelectListItem> hlslotlitems = new List<SelectListItem>();
+            hlslotlitems.Add(new SelectListItem { Text = "Select Slot for Party", Value = "0" });
+            foreach (var item in hlSlotLst)
+            {
+
+                hlslotlitems.Add(new SelectListItem { Text = item.SlotName.Trim(), Value = item.SlotId.ToString() });
+            }
+            ViewBag.Slots = hlslotlitems;
+            ViewBag.BranchId = branchId;
+
+
+
+            return View("HallBooking");
+        }
+        [HttpPost]
+        public JsonResult getBuffetMenu(int buffetMenuId)
+        {
+
+            RestaurantController _rc = new RestaurantController();
+            BuffetMenuMaster BMM = new BuffetMenuMaster();
+            restaurantBuffetMenu bfmentity = _rc.GetBuffetMenu(buffetMenuId);
+            BMM.BuffetMenu = bfmentity;
+            BMM.BuffetMenuDetails = _rc.GetBuffetMenuDetails(BMM.BuffetMenu.RestaurantMenuId).ToList();
+            return Json(BMM.BuffetMenuDetails, JsonRequestBehavior.AllowGet);
+        }
+
+        public bool SaveHallBooking(HallBooking HallBookingEntity)
+        {
+
+            HallController _cntrl = new HallController();
+           return _cntrl.SaveHallBooking(HallBookingEntity);
+           
+
+        }
+        public ActionResult HallBookings(int? page, int? pSize)
+        {
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            int? DefaultPageSize = 10;
+
+            HallController _hc = new HallController();
+
+            if (pSize != null)
+            {
+                DefaultPageSize = pSize;
+            }
+            int pageNumber = page ?? 1;
+            IEnumerable<HallBooking> trList = _hc.GetHallBookings(branchId);
+            Session["BranchId"] = branchId;
+            ViewBag.BranchId = branchId;
+
+            ViewBag.pSize = new List<SelectListItem>()
+                    {
+
+                        new SelectListItem() { Value="10", Text= "10" },
+                        new SelectListItem() { Value="15", Text= "15" },
+                        new SelectListItem() { Value="20", Text= "20" },
+                     };
+            IPagedList<HallBooking> tbkslist = trList.ToPagedList(pageNumber, (int)DefaultPageSize);
+            return View("HallBookings", tbkslist);
+        }
+        public ActionResult EditHallBooking(int HallBookingId)
+        {
+
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            RestaurantController _rc = new RestaurantController();
+            IEnumerable<restaurantBuffetMenu> bmLst = _rc.GetBuffetmenus(branchId);
+
+            List<SelectListItem> bmlitems = new List<SelectListItem>();
+            bmlitems.Add(new SelectListItem { Text = "Select a Menu", Value = "0" });
+            foreach (var item in bmLst)
+            {
+
+                bmlitems.Add(new SelectListItem { Text = item.RestaurantMenuName.Trim() + "( " + item.TotalCost + " )", Value = item.RestaurantMenuId.ToString() });
+            }
+            ViewBag.BuffetMenus = bmlitems;
+
+            HallController _hc = new HallController();
+
+            HallBooking hlb=_hc.GetHallBookings(branchId).Where(b=>b.HallBookingId== HallBookingId).SingleOrDefault();
+            IEnumerable<HALL_PARTY_MASTER> hlLst = _hc.GetAllHall(branchId);
+            List<SelectListItem> hllitems = new List<SelectListItem>();
+            hllitems.Add(new SelectListItem { Text = "Select a Party Hall", Value = "0" });
+            foreach (var item in hlLst)
+            {
+
+                hllitems.Add(new SelectListItem { Text = item.HallName.Trim(), Value = item.HALLID.ToString() });
+            }
+            ViewBag.PartyHall = hllitems;
+            IEnumerable<Hall_Party_Time_Slot> hlSlotLst = _hc.GetHallTimings(branchId);
+            List<SelectListItem> hlslotlitems = new List<SelectListItem>();
+            hlslotlitems.Add(new SelectListItem { Text = "Select Slot for Party", Value = "0" });
+            foreach (var item in hlSlotLst)
+            {
+
+                hlslotlitems.Add(new SelectListItem { Text = item.SlotName.Trim(), Value = item.SlotId.ToString() });
+            }
+            ViewBag.Slots = hlslotlitems;
+            ViewBag.BranchId = branchId;
+            //var bm = JsonConvert.DeserializeObject<BuffetMenuDetails>(hlb.HallBookingDetails);
+
+           // ViewBag.SeletedMenu = bm;
+
+            return View("EditHallBooking", hlb);
         }
         #endregion
     }

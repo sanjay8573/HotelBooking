@@ -21,6 +21,13 @@ namespace HotelBooking.Model.Reatraurant
         public List<RestaurantMenuHeading> MenuHeading { get; set; }
         public bool isActive { get; set; }
         public bool isDeleted { get; set; }
+        public double PPCost { get; set; }
+        public bool isTaxInclusive { get; set; }
+        public double Tax { get; set; }
+        public double TaxAmount { get; set; }
+        public double TotalCost { get; set; }
+
+        public string MenuType { get; set; }
     }
     [Table("RestaurantMenuHeading")]
     public class RestaurantMenuHeading
@@ -53,4 +60,6 @@ namespace HotelBooking.Model.Reatraurant
         public bool isDeleted { get; set; }
         
     }
+
+    
 }

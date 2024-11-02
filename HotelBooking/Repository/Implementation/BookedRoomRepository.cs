@@ -1,5 +1,6 @@
 ﻿using HotelBooking.Context;
 using HotelBooking.Model;
+using HotelBooking.Model.HouseKeeping;
 using HotelBooking.Repository.Interface;
 using System;
 using System.Collections.Generic;
@@ -58,7 +59,25 @@ namespace HotelBooking.Repository.Implementation
         {
            return _context.BookedRoom.Where(b=>b.BranchId == BranchId && b.isCheckout==false).ToArray();
         }
+        public IEnumerable<VM_UnCleanedRoom> GetAllUnCleanedRoom(int BranchId)
+        {
+            var bked= _context.BookedRoom.Where(b => b.BranchId == BranchId && b.isCheckout == false ).ToArray();
 
+            var rtn=(from a in bked select new VM_UnCleanedRoom()
+            {
+                BookingId = a.BookingId,
+                FloorId= a.FloorId,
+                FloorName= a.FloorName,
+                RoomId= a.RoomId,
+                RoomNumber= a.RoomNumber,
+                BranchId= a.BranchId,
+                IsCleaned=true,
+                RoomTypeId= a.RoomTypeId,
+                RoomTypeName= a.RoomTypeName
+
+            }).ToArray<VM_UnCleanedRoom>();
+            return rtn;
+        }
         public IEnumerable<BookedRoom> GetAllBookedRoomByBookingId(int BranchId,int BookingId)
         {
             return _context.BookedRoom.Where(b => b.BranchId == BranchId && b.BookingId== BookingId).ToArray();

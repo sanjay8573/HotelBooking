@@ -16,7 +16,11 @@ namespace HotelBooking.Repository.Implementation
         {
             _context = cmp;
         }
-        public bool addHouseKeeping(HouseKeeping houseKeepingEntity)
+        public HouseKeepingRepository()
+        {
+            _context = new CompanyContext();
+        }
+        public bool addHouseKeeping(HouseKeepingData houseKeepingEntity)
         {
             bool rtnVal = false;
             if (houseKeepingEntity.HouseKeepingId > 0)
@@ -27,7 +31,7 @@ namespace HotelBooking.Repository.Implementation
             {
                 try
                 {
-                    _context.HouseKeeping.Add(houseKeepingEntity);
+                    _context.TBLHouseKeeping.Add(houseKeepingEntity);
                     _context.SaveChanges();
                     rtnVal = true;
                 }
@@ -43,13 +47,13 @@ namespace HotelBooking.Repository.Implementation
             return rtnVal;
         }
 
-        public bool UpdateAmenities(HouseKeeping houseKeepingEntity)
+        public bool UpdateAmenities(HouseKeepingData houseKeepingEntity)
         {
             bool rtnVal = false;
 
             try
             {
-                var tmpHK = _context.HouseKeeping.Find(houseKeepingEntity.HouseKeepingId);
+                var tmpHK = _context.TBLHouseKeeping.Find(houseKeepingEntity.HouseKeepingId);
 
                 if (tmpHK != null)
                 {
@@ -74,10 +78,10 @@ namespace HotelBooking.Repository.Implementation
             bool rtnVal=false;
             try
             {
-                HouseKeeping houseKeeping = _context.HouseKeeping.Find(houseKeepingid);
+                HouseKeepingData houseKeeping = _context.TBLHouseKeeping.Find(houseKeepingid);
                 if (houseKeeping != null)
                 {
-                    _context.HouseKeeping.Remove(houseKeeping);
+                    _context.TBLHouseKeeping.Remove(houseKeeping);
                     _context.SaveChanges();
                     rtnVal = true;
 
@@ -95,9 +99,9 @@ namespace HotelBooking.Repository.Implementation
 
 ;        }
 
-        public IEnumerable<HouseKeeping> GetAll(int BramchId, int roomId)
+        public IEnumerable<HouseKeepingData> GetAll(int BramchId, int roomId)
         {
-            return _context.HouseKeeping.Where(h => h.BramchId == BramchId && h.RoomId == roomId).ToArray();
+            return _context.TBLHouseKeeping.Where(h => h.BramchId == BramchId && h.RoomId == roomId).ToArray();
         }
     }
 }

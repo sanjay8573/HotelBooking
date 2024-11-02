@@ -8,7 +8,8 @@ using System.Web;
 
 namespace HotelBooking.Model
 {
-    [Table("HousKeeping")]
+    [Serializable]
+    [Table("HouseKeeping")]
     public class HouseKeepingData
     {
         [Key]
@@ -25,6 +26,7 @@ namespace HotelBooking.Model
         public string AssignedToName { get; set; }
         public string status { get; set; }
         public int BramchId { get; set; }
+        public DateTime CleanedDate { get; set; }
 
 
 

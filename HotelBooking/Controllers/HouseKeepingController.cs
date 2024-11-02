@@ -24,14 +24,14 @@ namespace HotelBooking.Controllers
 
         [Route("api/HouseKeeping/GetAll/{BranchId}/{roomId}")]
         [HttpGet]
-        public IEnumerable<HouseKeeping> GetAll(int BranchId,int roomId)
+        public IEnumerable<HouseKeepingData> GetAll(int BranchId,int roomId)
         {
             return _HK.GetAll(BranchId, roomId);
         }
 
         [Route("api/HouseKeeping/AddHouseKeeping/{BranchId}")]
         [HttpPost]
-        public bool AddHouseKeeping(HouseKeeping HouseKeepingEntity)
+        public bool AddHouseKeeping(HouseKeepingData HouseKeepingEntity)
         {
             return _HK.addHouseKeeping(HouseKeepingEntity);
         }

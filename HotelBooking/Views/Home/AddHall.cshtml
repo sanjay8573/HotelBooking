@@ -1,0 +1,140 @@
+﻿@{
+    ViewBag.Title = "Add Hall";
+}<div class="row" id="Amenityform">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i> Add Hall </div>
+
+            <div class="widget-content padded text-center">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive pull-left">
+                        <form id="msform" runat="server" action="/home/SaveHall" method="post" enctype="multipart/form-data" style=" margin:0px auto;">
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Hall Name</label>
+                                <input type="text" id="txtHallName" class="full-width" placeholder="Hall Name" runat="server">
+
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Hall Short Name</label>
+                                <input type="text" id="txtHallShortName" class="full-width" placeholder="Hall Short Name" runat="server">
+
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">Hall Capacity</label>
+                                <input type="text" id="txtHallCapacity" class="full-width" placeholder="Hall Capacity" runat="server">
+
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+
+                                <label>Select Floor</label>
+                                <select name="SelFloor" id="SelFloor" class="full-width ddselect">
+                                    @if (ViewBag.Floors != null)
+                                    {
+                                        foreach (var item in ViewBag.Floors)
+                                        {
+                                            if (item.Text != null)
+                                            {
+                                                <option value="@item.Value" selected="@item.Selected">
+                                                    @item.Text.Trim()
+                                                </option>
+
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-left">
+                                <label for="edit-mail" class="form-required">&nbsp;</label>
+
+                                <ul class="unstyled">
+                                    <li>
+                                        <input class="styled-checkbox" id="CHK_ACTIVE" type="checkbox" name="CHK_ACTIVE">
+                                        <label for="CHK_ACTIVE">Active</label>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                                <input type="button" name="SUBMIT" class="prev action-button" onclick="saveHall();" value="Save" runat="server">
+                            </div>
+                            
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+ <script>
+    $(document).ready(function () {
+
+
+    });
+
+    function saveHall() {
+        const BranchId = '@ViewBag.BranchId';
+        const HName = $("#txtHallName").val();
+        const HSName = $("#txtHallShortName").val();
+        const cp = $("#txtHallCapacity").val();        
+        const fId = $("#SelFloor option:selected").val();
+        const fNmae = $("#SelFloor option:selected").text().replace(/[\n\r]+/g, ' ').trim();
+        const chk = $('#CHK_ACTIVE').is(':checked');
+
+  
+
+             Hall = {
+                
+                 HallName: HName,
+                 HallShortName: HSName,
+                 FloorId: fId,
+                 FloorName: fNmae,
+                 Capasity: cp,                 
+                 isActive: chk,
+                 BranchId: Number(BranchId)
+
+             };
+
+        
+        console.log(Hall);
+
+    fetch('/Home/SaveHall', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(Hall)
+    })
+        //.then(response => response.json())
+        .then(() => {
+            $(btn).find("span").remove();
+            $(btn).removeAttr("disabled");
+            $.toast({
+                heading: 'Success',
+                text: 'Hall addition Success ',
+                icon: 'success',
+                loader: false,        // Change it to false to disable loader
+                position: 'top-right',
+                loaderBg: '#9EC600'  // To change the background
+            });
+            window.location.href = '/Home/HallList/';
+
+        })
+        .catch(error => {
+            $.toast({
+                autoDismiss: true,
+                heading: 'Error',
+                text: 'Error on Hall addition',
+                icon: 'warning',
+                position: 'top-right',
+                loader: false,        // Change it to false to disable loader
+                loaderBg: '#9EC600'  // To change the background
+            });
+        });
+
+}
+ </script>

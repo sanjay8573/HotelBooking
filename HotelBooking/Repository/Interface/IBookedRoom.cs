@@ -1,4 +1,5 @@
 ﻿using HotelBooking.Model;
+using HotelBooking.Model.HouseKeeping;
 using System.Collections.Generic;
 
 namespace HotelBooking.Repository.Interface
@@ -9,6 +10,7 @@ namespace HotelBooking.Repository.Interface
         IEnumerable<BookedRoom> GetAllBookedRoomByBookingId(int BranchId, int BookingId);
         bool AddBookedRoom(BookedRoom BookedRoomEntity);
         bool CheckOutRoom(CheckOutRequest coReq);
+        IEnumerable<VM_UnCleanedRoom> GetAllUnCleanedRoom(int BranchId);
 
     }
 }

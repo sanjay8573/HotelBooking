@@ -1,0 +1,162 @@
+﻿
+@{
+    ViewBag.Title = "PartyMenu";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Hall/Party Booking  <small>Menu </small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Hall Booking Menu</small> </span></div>
+            <div class="widget-content padded text-center">
+                <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <label>Per Plate Cost</label>
+                                    <input type="text" id="txtRoomNumber" class="full-width" placeholder="Per Plate Cost" runat="server">
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <label>Item Heading</label>
+                                    <select id="ddlEngine" class="full-width ddselect" runat="server">
+                                        <option selected="selected">Select Item Heading</option>
+                                        <option>Menu Headline</option>
+                                        <option>Main Menu</option>
+                                        <option>On Change Display Item</option>
+                                    </select>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-6 col-12 col-xs-12 pull-left">
+                                    <label for="edit-mail" class="form-required">Items</label>
+                                    <ul class="unstyled">
+                                        <li>
+                                            <input class="styled-checkbox" id="styled-checkbox-2" type="checkbox" value="value2" checked="">
+                                            <label for="styled-checkbox-2">Item 1</label>
+                                        </li>
+                                        <li>
+                                            <input class="styled-checkbox" id="styled-checkbox-2" type="checkbox" value="value2" checked="">
+                                            <label for="styled-checkbox-2">Item 2</label>
+                                        </li>
+                                        <li>
+                                            <input class="styled-checkbox" id="styled-checkbox-2" type="checkbox" value="value2" checked="">
+                                            <label for="styled-checkbox-2">Item 3</label>
+                                        </li>
+                                        <li>
+                                            <input class="styled-checkbox" id="styled-checkbox-2" type="checkbox" value="value2" checked="">
+                                            <label for="styled-checkbox-2">Item 4</label>
+                                        </li>
+                                        <li>
+                                            <input class="styled-checkbox" id="styled-checkbox-2" type="checkbox" value="value2" checked="">
+                                            <label for="styled-checkbox-2">Item 5</label>
+                                        </li>
+                                        <li>
+                                            <input class="styled-checkbox" id="styled-checkbox-2" type="checkbox" value="value2" checked="">
+                                            <label for="styled-checkbox-2">Item 6</label>
+                                        </li>
+                                        <li>
+                                            <input class="styled-checkbox" id="styled-checkbox-2" type="checkbox" value="value2" checked="">
+                                            <label for="styled-checkbox-2">Item 7</label>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <label>Choose Any</label>
+                                    <select id="ddlEngine" class="full-width ddselect" runat="server">
+                                        <option selected="selected">Select Item</option>
+                                        <option>Item 1</option>
+                                        <option>Item 2</option>
+                                        <option>Item 3</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <label>&nbsp;</label>
+                                    <button type="submit" class="allbtnin full-width">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th width="20%" align="left" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Breakfast</a></th>
+                    <td align="left" valign="middle">Item 1</td>
+                    <td align="left" valign="middle">Item 2</td>
+                    <td align="left" valign="middle">Item 3</td>
+                    <td align="left" valign="middle">Item 4</td>
+                    <td align="left" valign="middle">Item 5</td>
+                    <td align="left" valign="middle">Item 6</td>
+                    <td align="left" valign="middle">Item 7</td>
+                    <td align="left" valign="middle" class="text-right"><a href="#" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
+                </tr>
+                <tr>
+                    <th width="20%" align="left" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Main course</a></th>
+                    <td align="left" valign="middle">Item 1</td>
+                    <td align="left" valign="middle">Item 2</td>
+                    <td align="left" valign="middle">Item 3</td>
+                    <td align="left" valign="middle">Item 4</td>
+                    <td align="left" valign="middle">Item 5</td>
+                    <td align="left" valign="middle">Item 6</td>
+                    <td align="left" valign="middle">Item 7</td>
+                    <td align="left" valign="middle" class="text-right"><a href="#" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
+                </tr>
+                <tr>
+                    <th width="20%" align="left" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Lunch</a></th>
+                    <td align="left" valign="middle">Item 1</td>
+                    <td align="left" valign="middle">Item 2</td>
+                    <td align="left" valign="middle">Item 3</td>
+                    <td align="left" valign="middle">Item 4</td>
+                    <td align="left" valign="middle">Item 5</td>
+                    <td align="left" valign="middle">Item 6</td>
+                    <td align="left" valign="middle">Item 7</td>
+                    <td align="left" valign="middle" class="text-right"><a href="#" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
+                </tr>
+                <tr>
+                    <th width="20%" align="left" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Dinner</a></th>
+                    <td align="left" valign="middle">Item 1</td>
+                    <td align="left" valign="middle">Item 2</td>
+                    <td align="left" valign="middle">Item 3</td>
+                    <td align="left" valign="middle">Item 4</td>
+                    <td align="left" valign="middle">Item 5</td>
+                    <td align="left" valign="middle">Item 6</td>
+                    <td align="left" valign="middle">Item 7</td>
+                    <td align="left" valign="middle" class="text-right"><a href="#" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
+                </tr>
+                <tr>
+                    <th width="20%" align="left" valign="middle" bgcolor="#003556" class="clrwhit"><a href="#">Dessert</a></th>
+                    <td align="left" valign="middle">Item 1</td>
+                    <td align="left" valign="middle">Item 2</td>
+                    <td align="left" valign="middle">Item 3</td>
+                    <td align="left" valign="middle">Item 4</td>
+                    <td align="left" valign="middle">Item 5</td>
+                    <td align="left" valign="middle">Item 6</td>
+                    <td align="left" valign="middle">Item 7</td>
+                    <td align="left" valign="middle" class="text-right"><a href="#" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>
+                </tr>
+                <tr>
+                    <td colspan="9">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <span class="float-left restextpagin">Showing 1 to 4 of 4 entries</span>
+                            <select name="paginatonselect" id="" class="paginatonselect pull-right">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                            <div class="pagination pull-right"> <a href="#">«</a> <a href="#">1</a> <a href="#" class="active">2</a> <a href="#">3</a> <a href="#">»</a> </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+     

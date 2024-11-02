@@ -99,5 +99,57 @@ namespace HotelBooking.Controllers.Restaurant
         {
             return _REST.ReleaseTable(restaurantId, tableId);
         }
+        [Route("api/restaurant/GetCompletedorders/{RestaurantId}")]
+        [HttpGet]
+        public IEnumerable<BillingMaster> GetCompletedorders(int restaurantId)
+        {
+            return _REST.getCompletedOrders(restaurantId);
+        }
+
+        [Route("api/restaurant/GetdOrder/{OrderId}")]
+        [HttpGet]
+        public BillingMaster GetdOrder(int OrderId)
+        {
+            return _REST.GetdOrder(OrderId);
+        }
+
+        [Route("api/restaurant/GetMenuHeadings/{BranchId}")]
+        [HttpGet]
+        public IEnumerable<VM_MenuHeadings> GetMenuHeadings(int BranchId)
+        {
+            return _REST.GetMenuHeadings(BranchId);
+        }
+
+        [Route("api/restaurant/GetRestaurantMenuItems/{menuHeadingid}")]
+        [HttpGet]
+        public IEnumerable<RestaurantMenuItem> GetRestaurantMenuItems(int menuHeadingid)
+        {
+            return _REST.GetRestaurantMenuItems(menuHeadingid);
+        }
+        [Route("api/restaurant/SaveBuffetMenu")]
+        [HttpPost]
+        public bool SaveBuffetMenu(BuffetMenuMaster BuffetMenuMEntity)
+        {
+            return _REST.SaveBuffetMenu(BuffetMenuMEntity);
+        }
+        [Route("api/restaurant/GetBuffetmenus/{BranchId}")]
+        [HttpGet]
+        public IEnumerable<restaurantBuffetMenu> GetBuffetmenus(int BranchId)
+        {
+            return _REST.GetAllBuffetMenu(BranchId);
+        }
+
+        [Route("api/restaurant/GetBuffetMenu/{RestaurantMenuId}")]
+        [HttpGet]
+        public restaurantBuffetMenu GetBuffetMenu(int RestaurantMenuId)
+        {
+            return _REST.GetBuffetMenu(RestaurantMenuId);
+        }
+        [Route("api/restaurant/GetBuffetMenuDetails/{BuffetMenuId}")]
+        [HttpGet]
+        public IEnumerable<BuffetMenuDetails>  GetBuffetMenuDetails(int BuffetMenuId)
+        {
+            return _REST.GetBuffetMenuDetaiks(BuffetMenuId);
+        }
     }
 }

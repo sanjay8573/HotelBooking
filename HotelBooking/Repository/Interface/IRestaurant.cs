@@ -24,5 +24,13 @@ namespace HotelBooking.Repository.Interface
         IEnumerable<BillingDetails> getParkItems(int RetaurantId, int tableid, bool isRMS = false);
         bool ReleaseTable(int restaurantId, int tableId);
         IEnumerable<RestaurantRoomService> GetAllRestaurantRoomServices(int RestaurantId, int branchId);
+        IEnumerable<BillingMaster> getCompletedOrders(int RetaurantId);
+        BillingMaster GetdOrder(int OrderId);
+        IEnumerable<VM_MenuHeadings> GetMenuHeadings(int BranchId);
+        IEnumerable<RestaurantMenuItem> GetRestaurantMenuItems(int menuHeadingid);
+        bool SaveBuffetMenu(BuffetMenuMaster BuffetMenuMEntity);
+        IEnumerable<restaurantBuffetMenu> GetAllBuffetMenu(int BranchId);
+        restaurantBuffetMenu GetBuffetMenu(int RestaurantMenuId);
+        IEnumerable<BuffetMenuDetails> GetBuffetMenuDetaiks(int buffeyMenuId);
     }
 }

@@ -1,0 +1,426 @@
+﻿
+@{
+    ViewBag.Title = "Buffet Menu";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card widget-container">
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Hall Booking  <small>Menu </small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Hall Booking Menu</small> </span></div>
+            <div class="widget-content padded text-center">
+                <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <label>Menu Name</label>
+                                    <input type="text" id="txtMenuName" class="full-width" placeholder="Menu Name" runat="server">
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <label>Per Plate Cost</label>
+                                    <input type="text" id="txtppCost" class="full-width" placeholder="Per Plate Cost" runat="server">
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <label>&nbsp;</label>
+                                    <input class="styled-checkbox" id="txIncl" type="checkbox" /><label for="txIncl">Tax Included</label>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+
+                                    <label>Select Tax</label>
+                                    <select name="SelTax" id="SelTax" class="full-width ddselect">
+                                        @if (ViewBag.AvlTax != null)
+                                        {
+                                            foreach (var item in ViewBag.AvlTax)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text.Trim()
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <label>Item Category</label>
+                                    <select id="SeletedCategory" class="full-width ddselect" runat="server">
+                                        <option value="0" selected="selected">Choose </option>
+                                        <option value="1">Starter</option>
+                                        <option value="2">Main Course</option>
+                                        <option value="3">Bavaerage</option>
+                                        <option value="4">Alchohol</option>
+
+                                    </select>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <label>Item Heading</label>
+                                    <select name="SelMenuHeading" id="SelMenuHeading" class="full-width ddselect">
+                                        @if (ViewBag.MenuHeading != null)
+                                        {
+                                            foreach (var item in ViewBag.MenuHeading)
+                                            {
+                                                if (item.Text != null)
+                                                {
+                                                    <option value="@item.Value" selected="@item.Selected">
+                                                        @item.Text.Trim()
+                                                    </option>
+
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-12 col-xs-12 pull-left">
+                                    <label for="edit-mail" class="form-required">Items</label>
+                                    <ul class="unstyled" id="ItemArray">
+                                    </ul>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <label>Choose Any</label>
+                                    <select id="SeletedOpton" class="full-width ddselect" runat="server">
+                                        <option selected="selected">Choose Any</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                        <option>6</option>
+                                        <option>7</option>
+                                        <option>8</option>
+                                        <option>9</option>
+                                        <option>10</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <label>&nbsp;</label>
+                                    <input type="hidden" id="hdnMode" value="Add" />
+                                    <button type="button" id="btnAddItems" class="allbtnin full-width">Add Items</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
+        <table class="table table-bordered" id="tblBFM">
+            <thead>
+                <tr>
+                    <th bgcolor = "#003556" class="clrwhit">Category</th>
+                    <th bgcolor = "#003556" class="clrwhit">Items</th>
+                    <th bgcolor = "#003556" class="clrwhit">Action</th>
+                </tr>
+                
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <label>&nbsp;</label>
+    <button type="button" id="btnSavetems" onclick="saveBuffetMenu();" class="allbtnin full-width">Save Menu</button>
+</div>
+<script>
+    var BuffetMenuDetailsgl = [];
+    var GLBuffetMenuDetails = [];
+    var ItemArr;
+    var bfGMenu = {
+        BuffetMenu: '',
+        BuffetMenuDetails: []
+    }
+    $(document).ready(function () {
+        $("#SelMenuHeading").change(function () {
+            var selectedValue = $(this).val();
+            //alert("Menu Heading Selected");
+            getMenuItems(selectedValue);
+        });
+        $("#btnAddItems").click(function () {
+            addSelectedItems();
+        });
+
+    });
+    function getMenuItems(hdId) {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetMenuItems", "Home")',
+
+            data: { MenuHeadingId: hdId },
+
+            success: function (recData) {
+                $("#ItemArray").empty();
+                recData.forEach(function (item) {
+                   
+                    var idx = isExits(Number(item.MenuItemId));
+                    console.log(idx);
+                    var chk = '';
+                    if (idx !== -1) { chk = "checked"; }
+                    var dt = '<li><input class="styled-checkbox" hId="' + item.MenuHeadingId + '" id="' + item.MenuItemId + '" type="checkbox" value="value2" ' + chk +'><label for="' + item.MenuItemId +'">' + item.MenuItemName +'</label></li>';
+
+                    $("#ItemArray").append(dt);
+                });
+
+             },
+             error: function () {
+
+                 console.log('A error');
+             }
+        });
+
+    }
+    function loadItems(data) {
+
+    }
+    function addSelectedItems() {
+        const RestId = '@ViewBag.RestaurantId';
+        const BFMenuName = $("#txtMenuName").val();
+        const PPCost = $("#txtppCost").val();
+        const hdId = $("#SelMenuHeading option:selected").val();
+        const opt = $("#SeletedOpton option:selected").val();
+        const catId = $("#SeletedCategory option:selected").val();
+        const cat = $("#SeletedCategory option:selected").text();
+        BuffetMenu1 = {
+            RestaurantId: Number(RestId),
+            RestaurantMenuName: BFMenuName,
+            MenuType: "BM",
+            PPCost: Number(PPCost).toFixed(2),
+            isActive: true
+
+        };
+
+        var bfMenu = {
+            BuffetMenu: BuffetMenu1,
+            BuffetMenuDetails:[]
+        }
+
+        //var trItems = ' <tr><th width = "20%" align = "left" valign = "middle" bgcolor = "#003556" class="clrwhit" > <a href="#">' + cat + ' - Any (' + opt +')' +'</a></th>';
+        var SeletectItems = "";
+        var items = {
+            BuffetMenuCategory: cat,
+            CategoryId: catId,
+            MenuOption: opt,
+            ItemDetails:[]
+
+        }
+
+        $("#ItemArray li").each(function (index, item) {
+            if ($(this).find("input[type=checkbox]").prop("checked")) {
+                var $this = $(this).find("input[type=checkbox]");
+                 console.log($(this).text() + " " + $this.attr('id') + " "  + $this.attr('hid'));
+                var item = {
+                    ItemId: $this.attr("id"),
+                    ItemName: $(this).text(),
+                    HeadingId: $this.attr("hid")
+                };
+                items.ItemDetails.push(item);
+            } else {
+                console.log("Check box is not Checked");
+            }
+        });
+
+
+
+
+
+        if (GLBuffetMenuDetails.length > 0) {
+            
+            var item = GLBuffetMenuDetails.find(x => x.CategoryId == catId);
+            if (item) {
+                var mode = $("#hdnMode").val();
+                if (mode == "EDIT") {
+                    GLBuffetMenuDetails = $.grep(GLBuffetMenuDetails, function (n) {
+                        return n != item;
+                    });
+                    GLBuffetMenuDetails.push(items);
+                }
+
+            } else {
+                GLBuffetMenuDetails.push(items);
+            }
+
+        } else {
+
+            GLBuffetMenuDetails.push(items);
+        }
+        bfGMenu = bfMenu;
+        var trItems = "";
+        let compare = (a, b) => {
+            if (a.CategoryId < b.CategoryId) {
+                return -1;
+            }
+            if (a.CategoryId > b.CategoryId) {
+                return 1;
+            }
+            return 0;
+        };
+        GLBuffetMenuDetails.sort(compare);
+        console.log(GLBuffetMenuDetails);
+        GLBuffetMenuDetails.forEach((itm, itmIndex) => {
+
+            trItems += ' <tr><th width = "20%" align = "left" id="' + itm.CategoryId + '" opt="' + itm.MenuOption +'" valign = "middle" bgcolor = "#003556" class="clrwhit" > <a href="#">' + itm.BuffetMenuCategory + ' - Any (' + itm.MenuOption + ')' + '</a></th>';
+            trItems += '<td><ul>';
+            var itemIds="'";
+            var headingIds;
+            itm.ItemDetails.forEach((itm1, itmIndex) => {
+                itemIds = itemIds + itm1.ItemId + "-";
+                headingIds = itm1.HeadingId ;
+                
+                trItems += '<li align="left" id="' + itm1.ItemId + '" hId="' + itm1.HeadingId+'" valign="middle">' + itm1.ItemName + '</li>';
+
+            });
+            itemIds =  itemIds + "'"
+            trItems += '</ul></td>';
+            trItems += '<td align="left" id="XXX" valign="middle" class="text-right"><a href="#" onclick="EditCategory(' + itm.MenuOption +',' + itm.CategoryId + ',' + headingIds + ',' + itemIds +');" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>';
+            trItems += '</tr>';
+        });
+        $("#tblBFM tbody").empty();
+        $("#tblBFM tbody").append(trItems);
+    }
+    function saveBuffetMenu() {
+                const BranchId = '@ViewBag.BranchId';
+                const BFMenuName = $("#txtMenuName").val();
+                const PPCost = $("#txtppCost").val();
+                const hdId = $("#SelMenuHeading option:selected").val();
+                const opt = $("#SeletedOpton option:selected").val();
+        const cat = $("#txtItemCat").val();
+        var isTxInc=false;
+        var tax=0;
+        var txAmt=0;
+        var totalCost=0;
+        if ($('#txIncl').is(':checked')) {
+            isTxInc = true;
+            tax = $("#SelTax option:selected").val();
+            txAmt = Number(PPCost) * tax / 100;
+            totalCost = PPCost + txAmt;
+        } else {
+            txAmt = 0;
+            totalCost = PPCost ;
+        }
+
+                 BuffetMenu1 = {
+                     RestaurantId: 0,
+                     RestaurantMenuName: BFMenuName,
+                     MenuType: "BM",
+                     PPCost: Number(PPCost).toFixed(2),
+                     isTaxInclusive: isTxInc,
+                     Tax: Number(tax).toFixed(2),
+                     TaxAmount: Number(txAmt).toFixed(2),
+                     TotalCost: Number(totalCost).toFixed(2),
+                     isActive: true,
+                     BranchId: Number(BranchId)
+
+                 };
+
+             var bfMenu = {
+                 BuffetMenu: BuffetMenu1,
+                 BuffetMenuDetails:[]
+             }
+        var BuffetMenuDetails;
+        $("#tblBFM tbody> tr").each(function (idx) {
+            var items = {
+                BuffetMenuCategory: 0,
+                CategoryId: 0,
+                MenuOption: '',
+                ItemDetails: []
+            };
+            $(this).find('th').each(function (index) {
+                if (index == 0) {
+                    items.BuffetMenuCategory = $(this).text();
+                    items.CategoryId = $(this).attr("id");
+                    items.MenuOption = $(this).attr("opt");
+                }
+            });  
+            var Itms = [];
+            $(this).find('td').each(function (index) {
+                var $this = $(this);
+                var id = $this.attr("id");
+                if (id != 'XXX') {
+                    $(this).find('ul > li').each(function (index) {
+                       
+                            var $this = $(this);
+                                var Itms1 = {
+                                    ItemId: $this.attr("id"),
+                                    ItemName: $(this).text(),
+                                    HeadingId: $this.attr("hid")
+                                }
+                                items.ItemDetails.push(Itms1);
+
+                         
+                    });
+                }
+               
+                
+            });  
+            //items.ItemDetails.push(Itms);
+            bfMenu.BuffetMenuDetails.push(items);
+        });
+
+        console.log(bfMenu);
+        
+        fetch('/Home/SaveBuffetMenu', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(bfMenu)
+        })
+            //.then(response => response.json())
+            .then(() => {
+                $(btn).find("span").remove();
+                $(btn).removeAttr("disabled");
+                $.toast({
+                    heading: 'Success',
+                    text: 'Booking Success ',
+                    icon: 'success',
+                    loader: false,        // Change it to false to disable loader
+                    position: 'top-right',
+                    loaderBg: '#9EC600'  // To change the background
+                });
+                window.location.href = '/Home/BuffetMenuList/';
+
+            })
+            .catch(error => {
+                $.toast({
+                    autoDismiss: true,
+                    heading: 'Error',
+                    text: 'Error on Boooking',
+                    icon: 'warning',
+                    position: 'top-right',
+                    loader: false,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                });
+                window.location.href = '/Home/BuffetMenuList/';
+            });
+        
+    }
+    function EditCategory(optId,cId, hIds, itmIds) {
+        
+        $("#SelMenuHeading").val(hIds);
+        $("#SelMenuHeading").trigger("change");
+        $("#hdnMode").val("EDIT");
+        $("#SeletedCategory").val(cId);
+        $("#SeletedOpton").val(cId);
+        ItemArr = $.map(itmIds.split("-"), function (value) {
+            return parseInt(value);
+            // or return +value; which handles float values as well
+        }).filter(function (item) {
+            return !isNaN(item);
+        });
+
+        
+    }
+    function isExits(id) {
+        
+        var idx = $.inArray(id, ItemArr);
+        return idx;
+    }
+</script>

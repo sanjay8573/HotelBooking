@@ -505,8 +505,9 @@
     <Compile Include="Controllers\DynamicPrice\DynamicPriceController.cs" />
     <Compile Include="Controllers\FloorController.cs" />
     <Compile Include="Controllers\GuestsController.cs" />
+    <Compile Include="Controllers\Hall\HallController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\HouseKeepingController.cs" />
+    <Compile Include="Controllers\HouseKeeping\HouseKeepingController.cs" />
     <Compile Include="Controllers\HRController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ModuleController.cs" />
@@ -580,7 +581,11 @@
     <Compile Include="Model\ExchangeTransaction.cs" />
     <Compile Include="Model\Floor.cs" />
     <Compile Include="Model\Guests.cs" />
+    <Compile Include="Model\Hall\HallBooking.cs" />
+    <Compile Include="Model\Hall\HALL_PARTY_MASTER.cs" />
+    <Compile Include="Model\Hall\Hall_Party_Time_Slot.cs" />
     <Compile Include="Model\HouseKeeping.cs" />
+    <Compile Include="Model\HouseKeeping\VM_UnCleanedRoom.cs" />
     <Compile Include="Model\Inventory\IssueRegister.cs" />
     <Compile Include="Model\Inventory\ItemMaster.cs" />
     <Compile Include="Model\LoginRequestModel.cs" />
@@ -600,8 +605,10 @@
     <Compile Include="Model\PriceRequest.cs" />
     <Compile Include="Model\PriceType.cs" />
     <Compile Include="Model\Reatraurant\BillingMaster.cs" />
+    <Compile Include="Model\Reatraurant\BuffetMenu.cs" />
     <Compile Include="Model\Reatraurant\Restaurant.cs" />
     <Compile Include="Model\Reatraurant\RestaurantMenu.cs" />
+    <Compile Include="Model\Reatraurant\VM_MenuHeadings.cs" />
     <Compile Include="Model\Reatraurant\VM_RestaurantInvoice.cs" />
     <Compile Include="Model\RegionalSettings.cs" />
     <Compile Include="Model\Regions.cs" />
@@ -671,6 +678,7 @@
     <Compile Include="Repository\Implementation\DynamicPriceRepository.cs" />
     <Compile Include="Repository\Implementation\FloorRepository.cs" />
     <Compile Include="Repository\Implementation\GuestRepository.cs" />
+    <Compile Include="Repository\Implementation\HallRepository.cs" />
     <Compile Include="Repository\Implementation\HouseKeepingRepository.cs" />
     <Compile Include="Repository\Implementation\ImageRepository.cs" />
     <Compile Include="Repository\Implementation\IssueRepository.cs" />
@@ -715,6 +723,7 @@
     <Compile Include="Repository\Interface\IDynamicPrice.cs" />
     <Compile Include="Repository\Interface\IFloor.cs" />
     <Compile Include="Repository\Interface\IGuests.cs" />
+    <Compile Include="Repository\Interface\IHall.cs" />
     <Compile Include="Repository\Interface\IHouseKeeping.cs" />
     <Compile Include="Repository\Interface\IImage.cs" />
     <Compile Include="Repository\Interface\IIssueRegister.cs" />
@@ -1036,6 +1045,19 @@
     <Content Include="Views\Home\_PricePerNightV2.cshtml" />
     <Content Include="Views\Home\_PricePerRoomEditV2.cshtml" />
     <Content Include="Views\Home\_PricePerNightEditV2.cshtml" />
+    <Content Include="Views\Home\PrintBillView.cshtml" />
+    <Content Include="Views\Home\PrintBill.cshtml" />
+    <Content Include="Views\Home\RestaurantBFMenu.cshtml" />
+    <Content Include="Views\Home\PartyMenu.cshtml" />
+    <Content Include="Views\Home\RestaurantBuffetMenuV1.cshtml" />
+    <Content Include="Views\Home\BuffetMenuList.cshtml" />
+    <Content Include="Views\Home\EditBuffetMenu.cshtml" />
+    <Content Include="Views\Home\AddHall.cshtml" />
+    <Content Include="Views\Home\HallList.cshtml" />
+    <Content Include="Views\Home\EditHall.cshtml" />
+    <Content Include="Views\Home\HallBooking.cshtml" />
+    <Content Include="Views\Home\HallBookings.cshtml" />
+    <Content Include="Views\Home\EditHallBooking.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

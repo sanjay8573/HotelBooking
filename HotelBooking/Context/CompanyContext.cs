@@ -1,6 +1,7 @@
 ﻿
 using HotelBooking.Model;
 using HotelBooking.Model.DynamicPrice;
+using HotelBooking.Model.Hall;
 using HotelBooking.Model.Reatraurant;
 using HotelBooking.Model.Review;
 using HotelBooking.Model.SocialMedia;
@@ -114,7 +115,7 @@ namespace HotelBooking.Context
             set;
         }
 
-        public DbSet<HouseKeeping> HouseKeeping
+        public DbSet<HouseKeepingData> TBLHouseKeeping
         {
             get;
             set;
@@ -268,9 +269,43 @@ namespace HotelBooking.Context
             get;
             set;
         }
+        public DbSet<BuffetMenuDetails> BuffetMenuDetails
+        {
+            get;
+            set;
+        }
+        public DbSet<restaurantBuffetMenu> restaurantBuffetMenu
+        {
+            get;
+            set;
+        }
+        public DbSet<BuffetMenuItem> BuffetMenuItem
+        {
+            get;
+            set;
+        }
 
-
-
-
+        ////Hall
+        ///
+        public DbSet<HALL_PARTY_MASTER> Hall
+        {
+            get;
+            set;
+        }
+        public DbSet<Hall_Party_Time_Slot> HallTimeSlot
+        {
+            get;
+            set;
+        }
+        public DbSet<HallBooking> HallBooking
+        {
+            get;
+            set;
+        }
+        public DbSet<HallBookingDetails> HallBookingDetails
+        {
+            get;
+            set;
+        }
     }
 }

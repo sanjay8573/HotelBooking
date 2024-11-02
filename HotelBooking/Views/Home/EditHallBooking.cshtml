@@ -1,0 +1,350 @@
+﻿@model HotelBooking.Model.Hall.HallBooking
+@{
+    ViewBag.Title = "Edit Hall Booking";
+}
+@{
+    var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
+    var BFMItems = jss.Serialize(Model.HallBookingDetails);
+}
+<div class="row" id="EditBooking">
+    <div class="col-sm-12">
+        <div class="card widget-container" id="BookingFirstPage">
+            <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
+
+
+                <h3 style=" font-size: 18px; font-weight: 600; color: #003556; text-align: left; padding: 15px 0px 0px 15px;">Party Hall  Reservation</h3>
+
+
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
+                    <label for="edit-mail" class="form-required">Customer Name</label>
+                    <input type="text" id="txtCustomerName" class="full-width" value="@Model.CustomerName" placeholder="Customer Name " maxlength="100" runat="server">
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
+                    <label for="edit-mail" class="form-required">Customer Email</label>
+                    <input type="text" id="txtCustomerEmail" class="full-width" value="@Model.CustomerEmail" placeholder="Customer Email" maxlength="150" runat="server">
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
+                    <label for="edit-mail" class="form-required">Customer Phone</label>
+                    <input type="text" id="txtCustomerPhone" class="full-width" value="@Model.CustomerPhone" placeholder="Customer Phone Number" maxlength="15" runat="server">
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
+                    <label for="edit-mail" class="form-required">Number of Person</label>
+                    <input type="text" id="txtNPax" class="full-width" value="@Model.Number_Of_Person" placeholder="Number of Person" maxlength="15" runat="server">
+                </div>
+
+
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
+                    <label for="edit-mail" class="form-required">Select a Hall</label>
+                    <select name="SelHall" id="SelHall" class="full-width freetrial">
+                        @if (ViewBag.PartyHall != null)
+                        {
+                            foreach (var item in ViewBag.PartyHall)
+                            {
+                                if (item.Text != null)
+                                {
+                                    <option value="@item.Value" selected="@item.Selected">
+                                        @item.Text.Trim()
+                                    </option>
+
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
+                    <label for="edit-mail" class="form-required">Select a Slot</label>
+                    <select name="SelSlot" id="SelSlot" class="full-width freetrial">
+                        @if (ViewBag.Slots != null)
+                        {
+                            foreach (var item in ViewBag.Slots)
+                            {
+                                if (item.Text != null)
+                                {
+                                    <option value="@item.Value" selected="@item.Selected">
+                                        @item.Text.Trim()
+                                    </option>
+
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
+                    <label for="edit-mail" class="form-required">Select a Menu</label>
+                    <select name="SelBM" id="SelBM" class="full-width freetrial">
+                        @if (ViewBag.BuffetMenus != null)
+                        {
+                            foreach (var item in ViewBag.BuffetMenus)
+                            {
+                                if (item.Text != null)
+                                {
+                                    <option value="@item.Value" selected="@item.Selected">
+                                        @item.Text.Trim()
+                                    </option>
+
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+
+
+                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 p-0 pull-left">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
+                        <label for="edit-mail" class="form-required">Hall/Party on</label>
+                        <input type="text" id="HallBookingDate" value="@Model.BookingDate" class="full-width allinputgo  ValidateInput" placeholder="Hall Booking Date" autocomplete="off">
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
+                        <table class="table table-bordered" id="tblBFM">
+                            <thead>
+                                <tr>
+                                    <th bgcolor="#003556" class="clrwhit">Category</th>
+                                    <th bgcolor="#003556" class="clrwhit">Items</th>
+
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-right form-group">
+                    <label for="edit-mail" class="form-required">&nbsp;</label>
+                    <input type="button" name="SUBMIT" class="prev action-button full-width mg-0 " onclick="SaveHallBooking(this);" value="Reserve" runat="server">
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    let HallBookingDetails= '' || [];
+    $(document).ready(function () {
+        $("#SelBM").val('@Model.MenuId');
+
+        $("#SelSlot").val('@Model.SlotId');
+
+        $("#SelHall").val('@Model.HallId');
+
+
+
+
+
+        $("#SelBM").change(function () {
+            var selectedValue = $(this).val();
+            //alert("Menu Heading Selected");
+            getBuffetMenuDetails(selectedValue);
+        });
+        $("#SelBM").trigger('change');
+
+        $("#HallBookingDate").datepicker({
+            dateFormat: "mm-dd-yy",
+            duration: "fast",
+            minDate: 0,
+            disabledDates: [new Date()],
+
+        });
+    });
+    function getBuffetMenuDetails(menuId) {
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("getBuffetMenu", "Home")',
+
+            data: { buffetMenuId: menuId },
+
+            success: function (GLBuffetMenuDetails) {
+                var trItems = "";
+                //console.log("test"+GLBuffetMenuDetails);
+                GLBuffetMenuDetails.forEach((itm, itmIndex) => {
+
+                    trItems += ' <tr><th width = "20%" align = "left" BuffetMenuId="' + itm.BuffetMenuId + '" id="' + itm.CategoryId + '" opt="' + itm.MenuOption + '" valign = "middle" bgcolor = "#003556" class="clrwhit" > <a href="#">' + itm.BuffetMenuCategory + ' - Any (' + itm.MenuOption + ')' + '</a></th>';
+                    trItems += '<td><ul>';
+                    var itemIds = "'";
+                    var headingIds;
+                   
+                    itm.ItemDetails.forEach((itm1, itmIndex) => {
+                        itemIds = itemIds + itm1.ItemId + "-";
+                        headingIds = itm1.HeadingId;
+                        var isSelected = '';
+                        var isfound = isAlreadySelected(itm1.ItemId);
+                        if (isfound) {
+                            isSelected = "checked=checked";
+                        }
+                        console.log("Found " + isfound);
+                        trItems += '<li align="left" bfmItemid="' + itm1.BuffetMenuItemId + '" bfmid="' + itm1.BuffetMenuId + '" id="' + itm1.ItemId + '" hId="' + itm1.HeadingId + '" valign="middle">' + itm1.ItemName + '<input type="checkbox" ' + isSelected +' bfmItemid="' + itm1.BuffetMenuItemId + '" bfmid="' + itm1.BuffetMenuId + '" id="' + itm1.ItemId + '" hId="' + itm1.HeadingId + '" value="' + itm1.ItemName + '" name="' + itm.BuffetMenuId + '" onclick="checkSelection(this,' + itm.MenuOption + ');" /></li>';
+
+                    });
+                    itemIds = itemIds + "'"
+                    trItems += '</ul></td>';
+                   // trItems += '<td align="left" id="XXX" valign="middle" class="text-right"><a href="#" onclick="EditCategory(' + itm.MenuOption + ',' + itm.CategoryId + ',' + headingIds + ',' + itemIds + ');" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>';
+                    trItems += '</tr>';
+                });
+                $("#tblBFM tbody").empty();
+                $("#tblBFM tbody").append(trItems);
+
+
+                },
+                error: function () {
+
+                 console.log('A error');
+                }
+                });
+
+    }
+    function checkSelection(n, opt) {
+        var selectedItems = [];
+        $.each($("input[name='"+n.name+"']:checked"), function () {
+            selectedItems.push($(this).val());
+        });
+        //console.log("My favourite sports are: " + favorite.join(", "));
+        console.log("item selected: " + selectedItems.length +"   "+opt);
+        if (selectedItems.length > opt) {
+
+            $(n).prop('checked', false);
+            return false;
+        }
+
+    }
+    function isAlreadySelected(itemId) {
+        var itemsId = [];
+        var rtnVal = false;
+        //console.log(itemId);
+        var Arr = '@Model.HallBookingDetails';
+       
+        var ArrItems = Arr.split('$');
+        //console.log(ArrItems);
+        ArrItems.forEach((itm, itmIndex) => {
+            var itmArr = itm.split('#');
+            //console.log(itmArr);
+            var fItems = itmArr[1].split(',');
+            fItems.forEach((itm1, itmIndex) => {
+                itemsId.push(Number(itm1));
+
+            });
+        });
+        //console.log(itemsId);
+        var index = $.inArray(itemId, itemsId);
+
+        if (index !== -1) {
+            //console.log("Value found at index: " + index);
+            rtnVal = true;
+        } else {
+            //console.log("Value not found in the array.");
+            rtnVal = false;
+        }
+        return rtnVal;
+
+    }
+    function SaveHallBooking() {
+        const BranchId = '@ViewBag.BranchId';
+        const bDate = $("#HallBookingDate").val();
+        const cName = $("#txtCustomerName").val();
+        const cEmail = $("#txtCustomerEmail").val();
+        const cPhone = $("#txtCustomerPhone").val();
+        const nPax = $("#txtNPax").val();
+        const mId = $("#SelBM option:selected").val();
+        const mName = $("#SelBM option:selected").text().replace(/[\n\r]+/g, ' ').trim();;
+        const sId = $("#SelSlot option:selected").val();
+        const sName = $("#SelSlot option:selected").text().replace(/[\n\r]+/g, ' ').trim();;
+        const hId = $("#SelHall option:selected").val();
+        const hName = $("#SelHall option:selected").text().replace(/[\n\r]+/g, ' ').trim();;
+        var totAmt = 0;
+        var totTax = 0;
+        var gTot = 0;
+        var HallBooking = {
+            HallBookingId:@Model.HallBookingId,
+            CustomerName: cName,
+            CustomerEmail: cEmail,
+            CustomerPhone: cPhone,
+            Number_Of_Person: nPax,
+            MenuId: mId,
+            MenuName: mName,
+            SlotId: sId,
+            SlotName: sName,
+            HallId: hId,
+            HallName: hName,
+            TotalAmount: totAmt.toFixed(2),
+            TotalTax: totTax.toFixed(2),
+            PayableAmount: gTot.toFixed(2),
+            BranchId: BranchId,
+            isActive: true,
+            BookingDate: bDate,
+            HallBookingDetails: ''
+
+        };
+
+        var BuffetMenuDetails = [];
+
+        var selectedItems = '';
+        $("#tblBFM tbody> tr").each(function (idx) {
+
+            $(this).find('th').each(function (index) {
+                if (index == 0) {
+                    selectedItems += $(this).attr("id") + "#";
+
+                }
+            });
+            var Itms = "";
+            $(this).find('td').each(function (index) {
+                var $this = $(this);
+                var id = $this.attr("id");
+                if (id != 'XXX') {
+                    $(this).find("input[type=checkbox]:checked").each(function () {
+                        Itms += this.id + ",";
+                        //console.log("Testing..." + this.value);
+                    });
+
+                }
+
+
+            });
+            selectedItems += Itms.slice(0, -1) + "$";
+        });
+
+        //console.log(selectedItems);
+        HallBooking.HallBookingDetails = selectedItems.slice(0, -1);
+        console.log(HallBooking);
+        fetch('/Home/SaveHallBooking', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(HallBooking)
+        })
+            //.then(response => response.json())
+            .then(() => {
+                $(btn).find("span").remove();
+                $(btn).removeAttr("disabled");
+                $.toast({
+                    heading: 'Success',
+                    text: 'Booking Success ',
+                    icon: 'success',
+                    loader: false,        // Change it to false to disable loader
+                    position: 'top-right',
+                    loaderBg: '#9EC600'  // To change the background
+                });
+                //window.location.href = '/Home/Bookings/';
+
+            })
+            .catch(error => {
+                $.toast({
+                    autoDismiss: true,
+                    heading: 'Error',
+                    text: 'Error on Boooking',
+                    icon: 'warning',
+                    position: 'top-right',
+                    loader: false,        // Change it to false to disable loader
+                    loaderBg: '#9EC600'  // To change the background
+                });
+            });
+
+    }
+</script>

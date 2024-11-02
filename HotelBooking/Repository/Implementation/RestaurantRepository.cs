@@ -2,9 +2,11 @@
 using HotelBooking.Model;
 using HotelBooking.Model.Reatraurant;
 using HotelBooking.Repository.Interface;
+using Org.BouncyCastle.X509;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Web;
 using System.Xml;
 
@@ -384,6 +386,127 @@ namespace HotelBooking.Repository.Implementation
 
 
             return rtnVal;
+        }
+        public IEnumerable<BillingMaster> getCompletedOrders(int RetaurantId)
+        {
+            return _context.BillingMaster.Where(r => r.RestaurantId == RetaurantId && r.isPark == false).ToArray();
+        }
+        public BillingMaster GetdOrder(int OrderId)
+        {
+            BillingMaster BM= _context.BillingMaster.Where(o=>o.BillingId==OrderId).SingleOrDefault();
+            BM.BillingDetails=_context.BillingDetails.Where(b=>b.BillingMasterId==OrderId).ToList();
+            return BM;
+        }
+        public IEnumerable<VM_MenuHeadings> GetMenuHeadings(int BranchId)
+        {
+            IEnumerable<VM_MenuHeadings> vM_MenuHeadings = new List<VM_MenuHeadings>();
+            vM_MenuHeadings = from R in _context.Restaurant.Where(r => r.BranchId == BranchId).ToArray()
+                              join RM in _context.RestaurantMenu.ToArray()
+                              on R.RestaurantId equals RM.RestaurantId
+                              join RMH in _context.RestaurantMenuHeading.ToArray()
+                              on RM.RestaurantMenuId equals RMH.RestaurantMenuId
+                              
+                              select new VM_MenuHeadings
+                              {
+                                  RestaurantId = R.RestaurantId,
+                                  RestaurantMenuId = RM.RestaurantMenuId,
+                                  MenuHeadingId = RMH.MenuHeadingId,
+                                  MenuHeadingName= RMH.MenuHeadingName,
+                                  
+                              };
+            return vM_MenuHeadings;
+
+        }
+        public IEnumerable<RestaurantMenuItem> GetRestaurantMenuItems(int menuHeadingid)
+        {
+            return _context.RestaurantMenuItem.Where(m => m.MenuHeadingId == menuHeadingid).ToArray();
+        }
+        public bool SaveBuffetMenu(BuffetMenuMaster BuffetMenuMEntity)
+        {
+            bool rtnval = false;
+            var rm = _context.restaurantBuffetMenu.Find(BuffetMenuMEntity.BuffetMenu.RestaurantMenuId);
+            if (rm != null)
+            {
+                rm.RestaurantMenuName = BuffetMenuMEntity.BuffetMenu.RestaurantMenuName;
+                rm.isActive = BuffetMenuMEntity.BuffetMenu.isActive;
+                rm.MenuType = BuffetMenuMEntity.BuffetMenu.MenuType;
+                rm.PPCost = BuffetMenuMEntity.BuffetMenu.PPCost;
+                rm.isTaxInclusive = BuffetMenuMEntity.BuffetMenu.isTaxInclusive;
+                rm.Tax = BuffetMenuMEntity.BuffetMenu.Tax;
+                rm.TaxAmount = BuffetMenuMEntity.BuffetMenu.TaxAmount;
+                rm.TotalCost = BuffetMenuMEntity.BuffetMenu.TotalCost;
+
+            }
+            else
+            {
+                _context.restaurantBuffetMenu.Add(BuffetMenuMEntity.BuffetMenu);
+            }
+            _context.SaveChanges();
+            foreach (BuffetMenuDetails bmd in BuffetMenuMEntity.BuffetMenuDetails)
+            {
+                bmd.MenuId= BuffetMenuMEntity.BuffetMenu.RestaurantMenuId;
+                rtnval = AddUpdateBuffetMenu(bmd);
+            }
+
+            return rtnval;
+        }
+        private bool AddUpdateBuffetMenu(BuffetMenuDetails BuffetMenuDetailsEntity)
+        {
+            bool rtnVal=false;
+            var bm = _context.BuffetMenuDetails.Find(BuffetMenuDetailsEntity.BuffetMenuId);
+            if (bm != null) {
+                bm.MenuId = BuffetMenuDetailsEntity.MenuId;
+                bm.MenuHeadingId= BuffetMenuDetailsEntity.MenuHeadingId;
+                bm.MenuOption= BuffetMenuDetailsEntity.MenuOption;
+                bm.BuffetMenuCategory = BuffetMenuDetailsEntity.BuffetMenuCategory;
+                bm.CategoryId= BuffetMenuDetailsEntity.CategoryId;
+                bm.isActive = BuffetMenuDetailsEntity.isActive;
+
+            }
+            else
+            {
+                _context.BuffetMenuDetails.Add(BuffetMenuDetailsEntity);
+            }
+            _context.SaveChanges();
+            foreach (BuffetMenuItem bmi in BuffetMenuDetailsEntity.ItemDetails)
+            {
+                bmi.BuffetMenuId= BuffetMenuDetailsEntity.BuffetMenuId;
+                rtnVal = AddUpdateBuffetMenuItem(bmi);
+            }
+           
+           return rtnVal;
+        }
+        private bool AddUpdateBuffetMenuItem(BuffetMenuItem BuffetMenuItemEntity)
+        {
+            bool rtnVal = false;
+            var bmi = _context.BuffetMenuItem.Find(BuffetMenuItemEntity.BuffetMenuItemId);
+            if (bmi != null)
+            {
+            _context.BuffetMenuItem.Remove(bmi);
+            }
+            _context.BuffetMenuItem.Add(BuffetMenuItemEntity);
+            _context.SaveChanges();
+            return rtnVal;
+        }
+        public IEnumerable<restaurantBuffetMenu> GetAllBuffetMenu(int BranchId)
+        {
+            return  _context.restaurantBuffetMenu.Where(b=>b.BranchId==BranchId).ToList();
+
+            
+        }
+        public restaurantBuffetMenu GetBuffetMenu(int RestaurantMneuId)
+        {
+            return _context.restaurantBuffetMenu.Where(b => b.RestaurantMenuId == RestaurantMneuId).SingleOrDefault();
+        }
+        public IEnumerable<BuffetMenuDetails> GetBuffetMenuDetaiks(int buffeyMenuId)
+        {
+            IEnumerable<BuffetMenuDetails> bmd = _context.BuffetMenuDetails.Where(b => b.MenuId == buffeyMenuId).ToArray();
+
+            foreach(var b in bmd)
+            {
+                b.ItemDetails=_context.BuffetMenuItem.Where(b1=>b1.BuffetMenuId==b.BuffetMenuId).ToArray();
+            }
+            return bmd;
         }
     }
 }

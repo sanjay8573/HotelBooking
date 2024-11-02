@@ -1,0 +1,108 @@
+﻿@model HotelBooking.Model.Reatraurant.BillingMaster
+@{
+    ViewBag.Title = "Print Bill";
+}
+
+@{ 
+   
+}
+
+
+<head>
+    <meta charset="UTF-8">
+   
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <title>Customer Receipt</title>
+  
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bangers|Roboto">
+
+    <link rel="stylesheet" type="text/css" href="/css/INVstyle.min.css">
+ 
+</head>
+<body onload="PrintElem();">
+    <div style="text-align: -webkit-center;">
+        <div class="receipt" id="INVOICEDIV">
+
+
+            <div class="orderNo">Order# <span id="Order #">INV# @Model.BillingId</span>: <span id="Order Name"></span></div>
+            <div class="headerSubTitle">Thank you for your visit</div>
+            <div class="headerTitle">@ViewBag.RestaurantName</div>
+            <div class="headerSubTitle">@ViewBag.BranchAddress  Pincode :@ViewBag.BranchPinCode</div>
+            <div id="location"></div>
+            <div id="date">Phone :@ViewBag.BranchPhone1, @ViewBag.BranchPhone2  +'</div>
+            <div class="keepIt">***Keep your receipt***</div>
+            <div class="keepItBody">This is aelectronic receipt and signature is NOT  required.</div>
+            <hr>
+            <div class="items">
+
+                <div class="item">
+                    @{
+                        double totalAmount = 0;
+                        double totalTax = 0;
+                        double Grandtotal = 0;
+                        int i = 1;
+                    }
+                    @foreach (var m in Model.BillingDetails)
+                    {
+                        <div class="itemRow">
+                            <div class="itemColor">@i</div>
+                            <div class="itemData1">@m.ItemName</div>
+                            <div class="itemData2">@m.Quantity</div>
+                            <div class="itemData3">@m.Amount.ToString("0.00")</div>
+                            @{
+                                totalAmount = totalAmount + m.Amount;
+                                totalTax = totalTax + m.TaxAmount;
+                                Grandtotal = totalAmount + totalTax;
+                                i++;
+                            }
+                        </div>
+                    }
+
+
+                </div>
+                <div class="flex">
+                    <div class="totals">
+                        <div class="section">
+                            <div class="row">
+                                <div class="col1"></div> <div class="col1">Total :</div>
+                                <div class="col2"></div><div class="col3">@totalAmount.ToString("0.00")</div>
+                            </div>
+                        </div>
+                        <div class="section"><div class="row"><div class="col1">Tax :</div><div class="col2"></div><div class="col3">@totalTax.ToString("0.00")</div></div></div>
+                        <div class="section"><div class="row"><div class="col1">Amount to Paid :</div><div class="col2"></div><div class="col3">@Grandtotal.ToString("0.00")</div></div></div>
+                    </div>
+                </div>
+                <div class="footer"><div class="eta">Thank You</div><div class="printType">customer copy</div></div>
+            </div>
+
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="margin-top: 20px;">
+            <button type="button" id="btnClose" class="allbtnin full-width greenbg" onclick="location.href='@Url.Action("GetAllOrdersToPrintBill","Home")'"><i class="fa-backward"></i> Back</button>
+        </div>
+    </div>
+</body>
+<script>
+    function PrintElem() {
+        var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+        mywindow.document.write('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">');
+        mywindow.document.write('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
+        mywindow.document.write('<title>Customer Receipt</title>');
+        mywindow.document.write('<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bangers|Roboto">');
+        mywindow.document.write('<link rel="stylesheet" type="text/css" href="/css/INVstyle.min.css">');
+        mywindow.document.write('</head><body>');
+        mywindow.document.write('<img class="watermark" src="https://www.dropbox.com/s/mmf6y9rpibwy9tk/bronyhouse-logo-sm.svg?raw=1">');
+
+       
+        mywindow.document.write(document.getElementById("INVOICEDIV").innerHTML);
+        mywindow.document.write('</body></html>');
+
+        //mywindow.document.close(); // necessary for IE >= 10
+        //mywindow.focus(); // necessary for IE >= 10*/
+
+        mywindow.print();
+        mywindow.close();
+
+        return true;
+    }
+</script>

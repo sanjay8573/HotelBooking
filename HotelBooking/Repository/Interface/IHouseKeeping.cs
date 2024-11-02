@@ -9,8 +9,8 @@ namespace HotelBooking.Repository.Interface
 {
     internal interface IHouseKeeping
     {
-        IEnumerable<HouseKeeping> GetAll(int BramchId,int roomId);
-        bool addHouseKeeping(HouseKeeping houseKeepingEntity);
+        IEnumerable<HouseKeepingData> GetAll(int BramchId,int roomId);
+        bool addHouseKeeping(HouseKeepingData houseKeepingEntity);
         bool DeleteHouseKeeping(int houseKeepingid);
     }
 }
