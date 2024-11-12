@@ -16,5 +16,13 @@ namespace HotelBooking.Repository.Interface
         bool SaveHallBooking(HallBooking hallEntity);
         IEnumerable<HallBooking> GetHallBookings(int BranchId);
 
+        IEnumerable<HallBookingCost> GetHallBookingCost(int BranchId,int hallBookingId);
+        IEnumerable<HallBookingCost> GetHallBookingCostByHall(int BranchId, int hallId);
+        bool SaveHallBookingCost(HallBookingCost hallCostingEntity);
+        IEnumerable<HallBookingPayment> GetHallBookingPayment(int BranchId, int hallBookingId);
+        bool SaveHallBookingPayment(HallBookingPayment hallPaymentEntity);
+
+        IEnumerable<HallBooking> CheckHallAvailability(int HallId,DateTime bookingDate,int slotId);
+
     }
 }

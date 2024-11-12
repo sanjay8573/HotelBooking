@@ -1,12 +1,9 @@
 ﻿@model HotelBooking.Model.Hall.HallBooking
 @{
-    ViewBag.Title = "Edit Hall Booking";
+    ViewBag.Title = "Print Hall Booking";
 }
-@{
-    var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
-    var BFMItems = jss.Serialize(Model.HallBookingDetails);
-}
-<div class="row" id="EditBooking">
+
+<div class="row" id="PrintHallBooking">
     <div class="col-sm-12">
         <div class="card widget-container" id="BookingFirstPage">
             <form id="msform" runat="server" action="javascript:void(0)" method="get" style=" margin:0px auto;">
@@ -17,25 +14,23 @@
 
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Customer Name</label>
-                    <input type="text" id="txtCustomerName" class="full-width" value="@Model.CustomerName" placeholder="Customer Name " maxlength="100" runat="server">
+                    <input type="text" id="txtCustomerName" class="full-width" value="@Model.CustomerName" placeholder="Customer Name " readonly="readonly" maxlength="100" runat="server">
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Customer Email</label>
-                    <input type="text" id="txtCustomerEmail" class="full-width" value="@Model.CustomerEmail" placeholder="Customer Email" maxlength="150" runat="server">
+                    <input type="text" id="txtCustomerEmail" class="full-width" value="@Model.CustomerEmail" placeholder="Customer Email" readonly="readonly" maxlength="150" runat="server">
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Customer Phone</label>
-                    <input type="text" id="txtCustomerPhone" class="full-width" value="@Model.CustomerPhone" placeholder="Customer Phone Number" maxlength="15" runat="server">
+                    <input type="text" id="txtCustomerPhone" class="full-width" value="@Model.CustomerPhone" placeholder="Customer Phone Number" readonly="readonly" maxlength="15" runat="server">
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Number of Person</label>
-                    <input type="text" id="txtNPax" class="full-width" value="@Model.Number_Of_Person" placeholder="Number of Person" maxlength="15" runat="server">
+                    <input type="text" id="txtNPax" class="full-width" value="@Model.Number_Of_Person" placeholder="Number of Person" readonly="readonly" maxlength="15" runat="server">
                 </div>
-
-
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Select a Hall</label>
-                    <select name="SelHall" id="SelHall" class="full-width freetrial">
+                    <select name="SelHall" id="SelHall" disabled="disabled" class="full-width freetrial">
                         @if (ViewBag.PartyHall != null)
                         {
                             foreach (var item in ViewBag.PartyHall)
@@ -53,7 +48,7 @@
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Select a Slot</label>
-                    <select name="SelSlot" id="SelSlot" class="full-width freetrial">
+                    <select name="SelSlot" id="SelSlot" disabled="disabled" class="full-width freetrial">
                         @if (ViewBag.Slots != null)
                         {
                             foreach (var item in ViewBag.Slots)
@@ -71,7 +66,7 @@
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
                     <label for="edit-mail" class="form-required">Select a Menu</label>
-                    <select name="SelBM" id="SelBM" class="full-width freetrial">
+                    <select name="SelBM" id="SelBM" disabled="disabled" class="full-width freetrial">
                         @if (ViewBag.BuffetMenus != null)
                         {
                             foreach (var item in ViewBag.BuffetMenus)
@@ -89,10 +84,13 @@
                 </div>
 
 
+
+
+
                 <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 p-0 pull-left">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
                         <label for="edit-mail" class="form-required">Hall/Party on</label>
-                        <input type="text" id="HallBookingDate" value="@Model.BookingDate" class="full-width allinputgo  ValidateInput" placeholder="Hall Booking Date" autocomplete="off">
+                        <input type="text" id="HallBookingDate" readonly="readonly" value="@Model.BookingDate" class="full-width allinputgo  ValidateInput" placeholder="Hall Booking Date" autocomplete="off">
                     </div>
 
                 </div>
@@ -124,7 +122,7 @@
                                     <th bgcolor="#003556" width="5%" class="clrwhit">#</th>
                                     <th bgcolor="#003556" width="30%" class="clrwhit">Service Name</th>
                                     <th bgcolor="#003556" width="30%" class="clrwhit">Cost </th>
-                                    <th bgcolor="#003556" width="35%" class="clrwhit"><input type="button" name="btnAddPs" class="prev action-button full-width mg-0 " onclick="AddPS();" value="Add" runat="server"> </th>
+
 
                                 </tr>
 
@@ -133,19 +131,15 @@
                                 @foreach (var svc in Model.HallBookingCosting.Where(s => s.Status == "SVC"))
                                 {
                                     <tr>
-                                        <td bgcolor="#003556" width="5%" class="clrwhit">#</td>
-                                        <td bgcolor="#003556" width="30%" class="clrwhit">@svc.Description</td>
-                                        <td bgcolor="#003556" width="30%" class="clrwhit"><input type="text" id="txtCost" value="@svc.COST" style="text-align:right !important" class="full-width" placeholder="Cost" maxlength="15" runat="server"> </td>
-                                        <td bgcolor="#003556" width="35%" class="clrwhit"><input type="button" name="btnRemoveRow" class="prev action-button full-width mg-0 " onclick="RemovePS(this);" value="Remove" runat="server"></td>
+                                        <td width="5%" >#</td>
+                                        <td  width="30%" >@svc.Description</td>
+                                        <td  width="30%" ><input type="text" id="txtCost" value="@svc.COST" readonly="readonly" style="text-align:right !important" class="full-width" placeholder="Cost" maxlength="15" runat="server"> </td>
+
 
                                     </tr>
                                 }
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td bgcolor="#003556" width="35%" class="clrwhit"><input type="button" name="btnAddPsToCost" class="prev action-button full-width mg-0 " onclick="AddPStoCosting();" value="Add to cart" runat="server"> </td>
-                                </tr>
-                            </tfoot>
+
                         </table>
 
                     </div>
@@ -169,7 +163,7 @@
                             </thead>
                             <tbody>
 
-                               
+
                                 <tr>
                                     <td>#</td>
                                     <td align="left">Hall Rent</td>
@@ -190,11 +184,11 @@
                                     <td align="right" colspan="2">Total Cost</td>
                                     <td align="right"><span id="totalCostId"></span></td>
                                 </tr>
-                               
-                               
+
+
 
                             </tbody>
-                            
+
                         </table>
 
                     </div>
@@ -214,13 +208,13 @@
                                     <th bgcolor="#003556" class="clrwhit">Date</th>
                                     <th bgcolor="#003556" class="clrwhit">Description</th>
                                     <th bgcolor="#003556" class="clrwhit">Amount </th>
-                                    <th bgcolor="#003556" class="clrwhit"><input type="button" name="btnAddPay" class="prev action-button full-width mg-0 " onclick="AddPayment();" value="Add" runat="server">  </th>
+
 
                                 </tr>
 
                             </thead>
                             <tbody>
-                                                               
+
                                 @foreach (var pmt in Model.HallBookingPayment)
                                 {
                                     <tr id="@pmt.HallBookingPaymentId">
@@ -238,8 +232,8 @@
                                 <tr>
 
 
-                                    <td  colspan="3" align="right" >Balance Amount</td>
-                                    <td  align="right" ><span id="totBalId"></span></td>
+                                    <td colspan="3" align="right">Balance Amount</td>
+                                    <td align="right"><span id="totBalId"></span></td>
 
 
                                 </tr>
@@ -252,7 +246,7 @@
 
                 <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-right form-group">
                     <label for="edit-mail" class="form-required">&nbsp;</label>
-                    <input type="button" name="SUBMIT" class="prev action-button full-width mg-0 " onclick="SaveHallBooking(this);" value="Reserve" runat="server">
+                    <input type="button" name="SUBMIT" class="prev action-button full-width mg-0 " onclick="PrintHallBooking(this);" value="Print" runat="server">
                 </div>
 
             </form>
@@ -337,10 +331,10 @@
                         var isSelected = '';
                         var isfound = isAlreadySelected(itm1.ItemId);
                         if (isfound) {
-                            isSelected = "checked=checked";
+                            trItems += '<li align="left" bfmItemid="' + itm1.BuffetMenuItemId + '" bfmid="' + itm1.BuffetMenuId + '" id="' + itm1.ItemId + '" hId="' + itm1.HeadingId + '" valign="middle">' + itm1.ItemName + '</li>';
                         }
                         //console.log("Found " + isfound);
-                        trItems += '<li align="left" bfmItemid="' + itm1.BuffetMenuItemId + '" bfmid="' + itm1.BuffetMenuId + '" id="' + itm1.ItemId + '" hId="' + itm1.HeadingId + '" valign="middle">' + itm1.ItemName + '<input type="checkbox" ' + isSelected +' bfmItemid="' + itm1.BuffetMenuItemId + '" bfmid="' + itm1.BuffetMenuId + '" id="' + itm1.ItemId + '" hId="' + itm1.HeadingId + '" value="' + itm1.ItemName + '" name="' + itm.BuffetMenuId + '" onclick="checkSelection(this,' + itm.MenuOption + ');" /></li>';
+                       
 
                     });
                     itemIds = itemIds + "'"
@@ -603,7 +597,7 @@
             });
             HallBooking.HallBookingPayment.push(pmtDetail);
         });
-            
+
 
         console.log(HallBooking);
         fetch('/Home/SaveHallBooking', {

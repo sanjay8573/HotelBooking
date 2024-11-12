@@ -20,5 +20,6 @@ namespace HotelBooking.Model.Hall
         public int BranchId { get; set; }
         public bool isActive { get; set; }
         public bool isDeleted { get; set; }
+        public decimal RentCost { get; set; }
     }
 }

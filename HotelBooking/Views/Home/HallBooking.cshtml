@@ -11,96 +11,112 @@
 
                 <h3 style=" font-size: 18px; font-weight: 600; color: #003556; text-align: left; padding: 15px 0px 0px 15px;">Party Hall  Reservation</h3>
 
-
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
-                    <label for="edit-mail" class="form-required">Customer Name</label>
-                    <input type="text" id="txtCustomerName" class="full-width" placeholder="Customer Name " maxlength="100" runat="server">
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
-                    <label for="edit-mail" class="form-required">Customer Email</label>
-                    <input type="text" id="txtCustomerEmail" class="full-width" placeholder="Customer Email" maxlength="150" runat="server">
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
-                    <label for="edit-mail" class="form-required">Customer Phone</label>
-                    <input type="text" id="txtCustomerPhone" class="full-width" placeholder="Customer Phone Number" maxlength="15" runat="server">
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
-                    <label for="edit-mail" class="form-required">Number of Person</label>
-                    <input type="text" id="txtNPax" class="full-width" placeholder="Number of Person" maxlength="15" runat="server">
-                </div>
-
-
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
-                    <label for="edit-mail" class="form-required">Select a Hall</label>
-                    <select name="SelHall" id="SelHall" class="full-width freetrial">
-                        @if (ViewBag.PartyHall != null)
-                        {
-                            foreach (var item in ViewBag.PartyHall)
-                            {
-                                if (item.Text != null)
-                                {
-                                    <option value="@item.Value" selected="@item.Selected">
-                                        @item.Text.Trim()
-                                    </option>
-
-                                }
-                            }
-                        }
-                    </select>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
-                    <label for="edit-mail" class="form-required">Select a Slot</label>
-                    <select name="SelSlot" id="SelSlot" class="full-width freetrial">
-                        @if (ViewBag.Slots != null)
-                        {
-                            foreach (var item in ViewBag.Slots)
-                            {
-                                if (item.Text != null)
-                                {
-                                    <option value="@item.Value" selected="@item.Selected">
-                                        @item.Text.Trim()
-                                    </option>
-
-                                }
-                            }
-                        }
-                    </select>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pull-left">
-                    <label for="edit-mail" class="form-required">Select a Menu</label>
-                    <select name="SelBM" id="SelBM" class="full-width freetrial">
-                        @if (ViewBag.BuffetMenus != null)
-                        {
-                            foreach (var item in ViewBag.BuffetMenus)
-                            {
-                                if (item.Text != null)
-                                {
-                                    <option value="@item.Value" selected="@item.Selected">
-                                        @item.Text.Trim()
-                                    </option>
-
-                                }
-                            }
-                        }
-                    </select>
-                </div>
-
-
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 p-0 pull-left">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 pull-left">
-                        <label for="edit-mail" class="form-required">Hall/Party on</label>
-                        <input type="text" id="HallBookingDate" value="" class="full-width allinputgo  ValidateInput" placeholder="Hall Booking Date" autocomplete="off">
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-left">
+                        <label for="edit-mail" class="form-required">Customer Name</label>
+                        <input type="text" id="txtCustomerName" class="full-width" placeholder="Customer Name " maxlength="100" runat="server">
                     </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-left">
+                        <label for="edit-mail" class="form-required">Customer Email</label>
+                        <input type="text" id="txtCustomerEmail" class="full-width" placeholder="Customer Email" maxlength="150" runat="server">
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-left">
+                        <label for="edit-mail" class="form-required">Customer Phone</label>
+                        <input type="text" id="txtCustomerPhone" class="full-width" placeholder="Customer Phone Number" maxlength="15" runat="server">
+                    </div>
+                    <div class="col-lg-3 col-md-3  col-sm-3 col-xs-12 pull-left">
+                        <label for="edit-mail" class="form-required">Number of Person</label>
+                        <input type="text" id="txtNPax" class="full-width" placeholder="Number of Person" maxlength="15" runat="server">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 p-0 pull-left">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
+                            <label for="edit-mail" class="form-required">Hall/Party on</label>
+                            <input type="text" id="HallBookingDate" value="" class="full-width allinputgo  ValidateInput" placeholder="Hall Booking Date" autocomplete="off">
+                        </div>
+
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-left">
+                        <label for="edit-mail" class="form-required">Select a Hall</label>
+                        <select name="SelHall" id="SelHall" class="full-width freetrial">
+                            @if (ViewBag.PartyHall != null)
+                            {
+                                foreach (var item in ViewBag.PartyHall)
+                                {
+                                    if (item.Text != null)
+                                    {
+                                        <option value="@item.Value" selected="@item.Selected">
+                                            @item.Text.Trim()
+                                        </option>
+
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-left">
+                        <label for="edit-mail" class="form-required">Select a Slot</label>
+                        <select name="SelSlot" id="SelSlot" class="full-width freetrial">
+                            @if (ViewBag.Slots != null)
+                            {
+                                foreach (var item in ViewBag.Slots)
+                                {
+                                    if (item.Text != null)
+                                    {
+                                        <option value="@item.Value" selected="@item.Selected">
+                                            @item.Text.Trim()
+                                        </option>
+
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 pull-left">
+                        <label for="edit-mail" class="form-required">Select a Menu</label>
+                        <select name="SelBM" id="SelBM" class="full-width freetrial">
+                            @if (ViewBag.BuffetMenus != null)
+                            {
+                                foreach (var item in ViewBag.BuffetMenus)
+                                {
+                                    if (item.Text != null)
+                                    {
+                                        <option value="@item.Value" selected="@item.Selected">
+                                            @item.Text.Trim()
+                                        </option>
+
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+
+
 
                 </div>
                 <div class="row">
                     <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
-                        <table class="table table-bordered" id="tblBFM">
+                        <table class="table table-bordered" id="tblAvailibility" style="display:none !important">
+                            <thead>
+                                <tr>
+                                    <th bgcolor="#003556" class="clrwhit">Date</th>
+                                    <th bgcolor="#003556" class="clrwhit">Customer Name</th>
+                                    <th bgcolor="#003556" class="clrwhit">Slot </th>
+                                    <th bgcolor="#003556" class="clrwhit">Status </th>
+
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <table class="table table-bordered" id="tblBFM" style="display:none !important">
                             <thead>
                                 <tr>
                                     <th bgcolor="#003556" class="clrwhit">Category</th>
-                                    <th bgcolor="#003556" class="clrwhit">Items</th>
-                                  
+                                    <th bgcolor="#003556" class="clrwhit">Items  <input type="button" name="btnClose" class="prev action-button full-width mg-0 " onclick="closeMenuDiv();" value="Close" runat="server"></th>
+
                                 </tr>
 
                             </thead>
@@ -108,8 +124,90 @@
                             </tbody>
                         </table>
                     </div>
+
                 </div>
 
+                <div class="row">
+
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
+                        <table class="table table-bordered" id="tblPS">
+                            <thead>
+                                <tr>
+                                    <th bgcolor="#003556" width = "5%"  class="clrwhit">#</th>
+                                    <th bgcolor="#003556" width = "30%"  class="clrwhit">Service Name</th>
+                                    <th bgcolor="#003556" width = "30%"  class="clrwhit">Cost </th>
+                                    <th bgcolor="#003556" width = "35%"  class="clrwhit"><input type="button" name="btnAddPs" class="prev action-button full-width mg-0 " onclick="AddPS();" value="Add" runat="server"> </th>
+
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td bgcolor="#003556" width="35%" class="clrwhit"><input type="button" name="btnAddPsToCost" class="prev action-button full-width mg-0 " onclick="AddPStoCosting();" value="Add to cart" runat="server"> </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 table-responsive weblogtbl">
+                        <table class="table table-bordered" id="tblCosting">
+                            <thead>
+                                <tr>
+                                    <th bgcolor="#003556" class="clrwhit">#</th>
+                                    <th bgcolor="#003556" class="clrwhit">Description</th>
+                                    <th bgcolor="#003556" class="clrwhit">Amount </th>
+                                 
+                                </tr>
+
+                            </thead>
+                            <tbody>
+
+                                <tr>
+                                    <td bgcolor="#003556" style="color:#FFFFFF" align="center" colspan="3">Costing</td>
+                                </tr>
+                                <tr>
+                                    <td>#</td>
+                                    <td align="left">Hall Rent</td>
+                                    <td align="right"><span id="hRentCostId"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>#</td>
+                                    <td align="left">Food Costing</td>
+                                    <td align="right"><span id="fdCostingId">0.00</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#</td>
+                                    <td align="left">Addition Service</td>
+                                    <td align="right"><span id="fsvsostingId">0.00</span></td>
+                                </tr>
+                                <tr>
+                                  
+                                    <td align="right" colspan="2" >Total Cost</td>
+                                    <td align="right"><span id="totalCostId"></span></td>
+                                </tr>
+                                <tr>
+                                    <td bgcolor="#003556" align="center" style="color:#FFFFFF" colspan="3">Payment</td>
+                                </tr>
+                                <tr>
+                                    <td bgcolor="#003556" class="clrwhit">1</td>
+                                    <td bgcolor="#003556" class="clrwhit"><input type="text" id="txtPmtDesc" value="" class="full-width allinputgo  ValidateInput" placeholder="Description" autocomplete="off"></td>
+                                    <td bgcolor="#003556" class="clrwhit"><input type="text" style="text-align:right" id="txtPmtAmt" value="" class="full-width allinputgo  ValidateInput" placeholder="0.00" autocomplete="off"></td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
 
                 <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12 pull-right form-group">
                     <label for="edit-mail" class="form-required">&nbsp;</label>
@@ -124,9 +222,19 @@
     $(document).ready(function () {
 
         $("#SelBM").change(function () {
-            var selectedValue = $(this).val();
+            var ArrselectedValue = $(this).val().split("-");
+            var selectedValue = ArrselectedValue[0];
+            var mCost = ArrselectedValue[1];
             //alert("Menu Heading Selected");
-            getBuffetMenuDetails(selectedValue);
+            $("#fdCostingId").text('0.00');
+            if (selectedValue > 0) {
+                var nPax = $("#txtNPax").val();
+                var totalFoodCost = Number(mCost) * Number(nPax);
+                $("#fdCostingId").text(Number(totalFoodCost).toFixed(2));
+                $("#fdCostingId").trigger("change");
+                getBuffetMenuDetails(selectedValue);
+            }
+
         });
         $("#HallBookingDate").datepicker({
             dateFormat: "mm-dd-yy",
@@ -135,6 +243,37 @@
             disabledDates: [new Date()],
 
         });
+
+        $("#SelSlot").change(function () {
+            var selectedValue = $(this).val();
+            //alert("Menu Heading Selected");
+            if (selectedValue > 0) {
+               
+                CheckHallAvailability();
+            }
+
+        });
+        $("#SelHall").change(function () {
+            var ArrhId = $(this).val().split("-");;
+            //alert("Menu Heading Selected");
+            var HallRentCost = ArrhId[1];
+            if (HallRentCost >= 0) {
+                $("#hRentCostId").text(Number(HallRentCost).toFixed(2));
+                $("#hRentCostId").trigger("change");
+            }
+          
+            
+        });
+        $("#hRentCostId").change(function () {
+            CalCulateTotal();
+        });
+        $("#fsvsostingId").change(function () {
+            CalCulateTotal();
+        });
+        $("#fdCostingId").change(function () {
+            CalCulateTotal();
+        });
+        
     });
     function getBuffetMenuDetails(menuId) {
 
@@ -165,9 +304,10 @@
                     //trItems += '<td align="left" id="XXX" valign="middle" class="text-right"><a href="#" onclick="EditCategory(' + itm.MenuOption + ',' + itm.CategoryId + ',' + headingIds + ',' + itemIds + ');" class="editbtn"><i class="fa fa-edit"></i> Edit</a></td>';
                     trItems += '</tr>';
                 });
+                $("#tblBFM").css('display','block');
                 $("#tblBFM tbody").empty();
                 $("#tblBFM tbody").append(trItems);
-                   
+
 
                 },
                 error: function () {
@@ -175,7 +315,7 @@
                  console.log('A error');
                 }
         });
-        
+
     }
     function checkSelection(n, opt) {
         var selectedItems = [];
@@ -183,13 +323,13 @@
             selectedItems.push($(this).val());
         });
         //console.log("My favourite sports are: " + favorite.join(", "));
-        console.log("item selected: " + selectedItems.length +"   "+opt);
+        //console.log("item selected: " + selectedItems.length +"   "+opt);
         if (selectedItems.length > opt) {
-           
+
             $(n).prop('checked', false);
             return false;
         }
-         
+
     }
     function SaveHallBooking() {
         const BranchId = '@ViewBag.BranchId';
@@ -198,15 +338,32 @@
         const cEmail = $("#txtCustomerEmail").val();
         const cPhone = $("#txtCustomerPhone").val();
         const nPax = $("#txtNPax").val();
-        const mId = $("#SelBM option:selected").val();
-        const mName = $("#SelBM option:selected").text().replace(/[\n\r]+/g, ' ').trim();;
+        const ArrmId = $("#SelBM option:selected").val().split("-");
+        var mId = ArrmId[0];
+        var mCost = ArrmId[1];
+        const mName = $("#SelBM option:selected").text().replace(/[\n\r]+/g, ' ').trim();
         const sId = $("#SelSlot option:selected").val();
-        const sName = $("#SelSlot option:selected").text().replace(/[\n\r]+/g, ' ').trim();;
-        const hId = $("#SelHall option:selected").val();
-        const hName = $("#SelHall option:selected").text().replace(/[\n\r]+/g, ' ').trim();;
+        const sName = $("#SelSlot option:selected").text().replace(/[\n\r]+/g, ' ').trim();
+        const ArrhId = $("#SelHall option:selected").val().split("-");
+        var hId = ArrhId[0];
+        var HallRentCost = ArrhId[1];
+        const hName = $("#SelHall option:selected").text().replace(/[\n\r]+/g, ' ').trim();
         var totAmt = 0;
         var totTax = 0;
-        var gTot = 0;
+        var gTot = $("#totalCostId").text();
+        var pmtDesc = $("#txtPmtDesc").val();
+        var pmtAmt = $("#txtPmtAmt").val();
+        var balAmt = Number(gTot) - Number(pmtAmt);
+        var sts = 'HOLD';
+        if (balAmt <= 0) {
+            sts = 'CONFIRMED';
+        }
+        var currentDate = new Date();
+        var day = ("0" + currentDate.getDate()).slice(-2);
+        var month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
+        var year = currentDate.getFullYear();
+        var formattedDate = month + '-' + day + '-' + year;
+        console.log(formattedDate); // Outputs: dd-mm-yyyy
         var HallBooking = {
             CustomerName: cName,
             CustomerEmail: cEmail,
@@ -220,16 +377,22 @@
             HallName: hName,
             TotalAmount: totAmt.toFixed(2),
             TotalTax: totTax.toFixed(2),
-            PayableAmount: gTot.toFixed(2),
+            PayableAmount: Number(gTot).toFixed(2),
+            AdvanceAmount: Number(pmtAmt).toFixed(2),
+            BalanceAmount: Number(balAmt).toFixed(2),
             BranchId: BranchId,
             isActive: true,
             BookingDate: bDate,
-            HallBookingDetails: ''
+            HallBookingDetails: '',
+            DateCreate: formattedDate,
+            Status: sts,
+            HallBookingCosting: [],
+            HallBookingPayment:[]
 
         };
         var BuffetMenuDetails = [];
 
-       
+
 
 
             var selectedItems = '';
@@ -260,7 +423,99 @@
 
             //console.log(selectedItems);
             HallBooking.HallBookingDetails = selectedItems.slice(0, -1);
-            // HallBooking.HallBookingDetails = JSON.stringify(BuffetMenuDetails);
+        //Costing
+       
+        
+        var hCosting = {
+            HallBookingCostId: 0,
+            HallBookingId: 0,
+            HallId: Number(hId),
+            Description: hName,
+            DATE:bDate,
+            COST: Number(HallRentCost).toFixed(2),
+            OfferPrice: Number(HallRentCost).toFixed(2),
+            TAX:0.00,
+            TaxAmount:0.00,
+            Status: 'HALL',
+            BranchId: BranchId
+        }
+        
+        HallBooking.HallBookingCosting.push(hCosting);
+       
+        var foodCosting = {
+            HallBookingCostId: 0,
+            HallBookingId: 0,
+            HallId: Number(hId),
+            Description: mName,
+            DATE: bDate,
+            COST: Number(Number(mCost) * Number(nPax)).toFixed(2),
+            OfferPrice: mCost,
+            TAX: 0.00,
+            TaxAmount: 0.00,
+            Status: 'FOOD',
+            BranchId: BranchId
+            
+        }
+
+        HallBooking.HallBookingCosting.push(foodCosting);
+
+        $("#tblPS tbody> tr").each(function (idx) {
+
+            var svsCosting = {
+                HallBookingCostId: 0,
+                HallBookingId: 0,
+                HallId: Number(hId),
+                Description: mName,
+                DATE: bDate,
+                COST: mCost,
+                OfferPrice: mCost,
+                TAX: 0.00,
+                TaxAmount: 0.00,
+                Status: 'SVC',
+                BranchId: BranchId
+
+            }
+          
+            $(this).find('td').each(function (index) {
+                
+                if (index ==1) {
+                    $(this).find("input").each(function () {
+                        var txtDesc = $(this).val();
+                        console.log("Testing..." + txtDesc);
+                        svsCosting.Description = txtDesc;
+                    });
+
+                }
+                if (index == 2) {
+                    $(this).find("input").each(function () {
+                        var txtCost = $(this).val();
+                        console.log("Testing..." + txtCost);
+                        svsCosting.COST = Number(txtCost).toFixed(2);
+                        svsCosting.OfferPrice = Number(txtCost).toFixed(2);
+                    });
+
+                }
+
+
+            });
+            HallBooking.HallBookingCosting.push(svsCosting);
+        });
+        ///
+        //Paymeny
+        var pmtDetail = {
+            HallBookingPaymentId: 0,
+            HallBookingId: 0,
+            HallId: Number(hId),
+            Description: pmtDesc,
+            paymentDate: formattedDate,
+            Amount: Number(pmtAmt).toFixed(2),
+            BranchId: BranchId
+
+
+        }
+        HallBooking.HallBookingPayment.push(pmtDetail);
+        
+        //
             console.log(HallBooking);
             fetch('/Home/SaveHallBooking', {
                 method: 'POST',
@@ -297,6 +552,156 @@
                     });
                 });
 
+    }
+
+    function closeMenuDiv() {
+        $("#tblBFM").css('display', 'none');
+    }
+
+    function CheckHallAvailability() {
+        const BranchId = '@ViewBag.BranchId';
+        const bDate = $("#HallBookingDate").val();
+        const sId = $("#SelSlot option:selected").val();
+        const ArrhId = $("#SelHall option:selected").val().split("-");
+        var hId = ArrhId[0];
+        var _req = {
+            HallId: hId,
+            BookingDate: bDate,
+            SlotId: sId,
+            BranchId: BranchId
         }
-    
+
+    $.ajax({
+        type: "POST",
+        url: '@Url.Action("CheckHallAvailability", "Home")',
+
+        data: { req: _req },
+
+        success: function (rtnData) {
+            //console.log(rtnData); 
+            var AvlText = '';
+            var trItems = "";
+            if (rtnData.isAvailable == false || rtnData.isAvailable == 'false') {
+                AvlText = "<span style='color:red'>Hall is Already booked for selected date and slot</span>";
+                $("#SelBM").prop("disabled", true);
+            } else {
+                AvlText = "<span style='color:green'>Hall is Available</span>";
+                $("#SelBM").prop("disabled", false);
+            }
+            trItems += ' <tr><td colspan="5" width = "20%" align = "center"><b>' + AvlText +'</b></td><tr>';
+            rtnData.HallBooked.forEach(function (ele, inx) {
+               
+                var jsonDate = ele.BookingDate;
+                var timestamp = parseInt(jsonDate.replace(/\/Date\((\d+)\)\//, '$1'));
+                var date = new Date(timestamp);
+
+                // Format the date as needed, e.g., MM-DD-YYYY
+                var formattedDate = (date.getMonth() + 1) + '-' + date.getDate() + '-' + date.getFullYear();
+                trItems += ' <tr>';
+                trItems += '<td  width = "20%" align = "left">' + formattedDate + ' </td>';
+                trItems += '<td  width = "20%" align = "left">' + ele.CustomerName + ' </td>';
+                trItems += '<td  width = "20%" align = "left">' + ele.CustomerPhone + ' </td>';
+                trItems += '<td  width = "20%" align = "left">' + ele.SlotName + ' </td>';
+                trItems += '<td  width = "20%" align = "left">' + ele.Status + ' </td>';
+
+                trItems += '</tr>';
+
+            });
+            $("#tblAvailibility tbody").empty();
+            $("#tblAvailibility tbody").append(trItems);
+            $("#tblAvailibility").css('display', 'block');
+
+        },
+        error: function () {
+
+             console.log('A error');
+        }
+    });
+
+    }
+
+    function AddPS() {
+        var trItems = "";
+        var rowCount = $('#tblPS tbody tr').length;
+        //console.log(rowCount);
+        trItems += ' <tr><td width = "5%" align = "center">' + (Number(rowCount)+1) +'</td><td width = "30%" align = "left"> <input type="text" id="txSVCName" class="full-width" placeholder="Service Name" maxlength="15" runat="server"></td>';
+        trItems += ' <td width = "30%" align = "left"> <input type="text" id="txtCost"  class="full-width" placeholder="Cost" maxlength="15" runat="server"></td>';
+        trItems += ' <td> <input type="button" name="btnRemoveRow" class="prev action-button full-width mg-0 " onclick="RemovePS(this);" value="Remove" runat="server"></td></tr>';
+        $("#tblPS tbody").append(trItems); 
+    }
+    function RemovePS(tt) {
+        $(tt).closest("tr").remove();
+    }
+
+    function AddPStoCosting(tt) {
+        var totalServiceCost = 0;// Number($("#fsvsostingId").text());
+        console.log("totalServiceCost..." + totalServiceCost);
+        $("#fsvsostingId").text('');
+        $("#tblPS tbody > tr").each(function (idx) {
+
+            var itemCost = 0;
+
+            $(this).find('td').each(function (index) {
+
+                if (index == 2) {
+                    $(this).find("input").each(function () {
+                        itemCost = $(this).val();
+                        //console.log("Testing..." + itemCost);
+                        totalServiceCost += Number(itemCost);
+
+                    });
+
+                }
+
+
+            });
+            
+            
+
+           
+
+        });
+        //console.log("cost  :" + Number(totalServiceCost).toFixed(2));
+        $("#fsvsostingId").text(Number(totalServiceCost).toFixed(2));
+        $("#fdCostingId").trigger("change");
+       
+        
+
+    }
+
+    function CalCulateTotal() {
+        var totalCost = 0;
+       
+        $("#totalCostId").text('');
+        $("#tblCosting tbody > tr").each(function (idx) {
+
+            var itemCost = 0;
+
+            $(this).find('td').each(function (index) {
+
+                if (index == 2) {
+                    $(this).find("span").each(function () {
+                        itemCost = $(this).text();
+                        //console.log("Tot" + itemCost);
+                        totalCost += Number(itemCost);
+
+                    });
+
+                }
+
+
+            });
+
+
+
+
+
+        });
+        //console.log("Total cost  :" + Number(totalCost).toFixed(2));
+        $("#totalCostId").text(Number(totalCost).toFixed(2));
+
+
+
+
+    }
 </script>

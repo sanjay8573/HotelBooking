@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-sm-12">
         <div class="card widget-container">
-            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Bookings <small></small> <span class="heading-right"><a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Bookings</small> </span></div>
+            <div class="heading"> <i class="fa fa-bar-chart-o"></i>Hall Bookings <small></small> <span class="heading-right"><a href="/home"><i class="fa fa-dashboard"></i> Dashboard</a> <small>&#58; Bookings</small> </span></div>
             <div class="widget-content padded text-center">
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 pull-left">
@@ -40,7 +40,7 @@
                         <table class="table table-bordered">
                             <tbody>
                                 <tr style="background: #eaeeef;">
-                                    <td colspan="13" align="left" valign="middle"><div class="allheadingin">Bookings</div></td>
+                                    <td colspan="13" align="left" valign="middle"><div class="allheadingin">Hall Bookings</div></td>
                                 </tr>
                                 <tr class="trthbgclr">
                                     <th class="text-center">#</th>
@@ -48,12 +48,12 @@
                                     <th class="text-center">Customer Name</th>
                                     <th class="text-center">Customer Phone</th>
                                     <th class="text-center">Pax</th>
-                                   
+
                                     <th class="text-center">Booking Date</th>
                                     <th class="text-center">Booking Slot</th>
-                                    @*<th class="text-center">Payment Status</th>
-        <th class="text-center">Booking Status</th>*@
-                                    <th width="8%" colspan="3" align="center" valign="middle" bgcolor="#003556" class="text-center">Action</th>
+                                    @*<th class="text-center">Payment Status</th>*@
+                                    <th class="text-center">Booking Status</th>
+                                    <th width="22%" colspan="3" align="center" valign="middle" bgcolor="#003556" class="text-center">Action</th>
                                 </tr>
                                 @if (Model != null)
                                 {
@@ -69,15 +69,17 @@
 
                                             <td align="center" valign="middle">@bk.BookingDate</td>
                                             <td align="center" valign="middle">@bk.SlotName</td>
-
+                                            <td align="center" valign="middle">@bk.Status</td>
                                             <td align="center" valign="middle"><a href="@Url.Action("EditHallBooking","Home",new { @HallBookingId = bk.HallBookingId  })" class="closebtn deletebtn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Edit</a></td>
+                                            <td align="center" valign="middle"><a href="@Url.Action("PrintHallBooking","Home",new { @HallBookingId = bk.HallBookingId  })" class="closebtn deletebtn"><i class="fa fa-print" aria-hidden="true"></i>Print</a></td>
+                                            <td align="center" valign="middle"><a href="@Url.Action("CancellHallBooking","Home",new { @HallBookingId = bk.HallBookingId  })" class="closebtn deletebtn"><i class="fa fa-crosshairs" aria-hidden="true"></i>Cancell</a></td>
 
                                         </tr>
                                         i++;
                                     }
                                 }
                                 <tr>
-                                    <td colspan="9">
+                                    <td colspan="12">
                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                             <span class="float-left restextpagin">Showing Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount </span>
 

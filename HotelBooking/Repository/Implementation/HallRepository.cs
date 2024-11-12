@@ -2,6 +2,7 @@
 using HotelBooking.Model;
 using HotelBooking.Model.Hall;
 using HotelBooking.Repository.Interface;
+using Org.BouncyCastle.Asn1.Mozilla;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -86,9 +87,19 @@ namespace HotelBooking.Repository.Implementation
             }
             _context.SaveChanges();
 
-           
+            foreach(HallBookingCost hc in hallEntity.HallBookingCosting)
+            {
+                hc.HallBookingId = hallEntity.HallBookingId;
+                rtnVal=SaveHallBookingCost(hc);
+            }
+            foreach(HallBookingPayment hp in hallEntity.HallBookingPayment)
+            {
+                hp.HallBookingId=hallEntity.HallBookingId;
+                rtnVal = SaveHallBookingPayment(hp);
+            }
             return rtnVal;
         }
+        
         private bool DeleteAddMenuItems(HallBookingDetails hmdEntity)
         {
            bool  rtnVal = false;
@@ -100,9 +111,75 @@ namespace HotelBooking.Repository.Implementation
             _context.SaveChanges();
             return rtnVal;
         }
+        
         public IEnumerable<HallBooking> GetHallBookings(int BranchId)
         {
-            return _context.HallBooking.Where(b => b.BranchId == BranchId).ToArray();
+            IEnumerable<HallBooking> hlb= _context.HallBooking.Where(b => b.BranchId == BranchId).ToArray();
+           
+            return hlb;
+        }
+        
+        public IEnumerable<HallBookingCost> GetHallBookingCost(int BranchId, int hallBookingId)
+        {
+            return _context.HallBookingCost.Where(b=>b.HallBookingId == hallBookingId && b.BranchId== BranchId).ToArray();
+        }
+
+        public IEnumerable<HallBookingCost> GetHallBookingCostByHall(int BranchId, int hallId)
+        {
+            return _context.HallBookingCost.Where(b => b.HallId == hallId && b.BranchId == BranchId).ToArray();
+        }
+        
+        public bool SaveHallBookingCost(HallBookingCost hallCostingEntity)
+        {
+            bool rtnVal = false;
+            var tmp = _context.HallBookingCost.Find(hallCostingEntity.HallBookingCostId);
+            if (tmp != null)
+            {
+                tmp.COST= hallCostingEntity.COST;
+                tmp.DATE= hallCostingEntity.DATE;
+                tmp.TAX= hallCostingEntity.TAX;
+                tmp.TaxAmount = hallCostingEntity.TaxAmount;
+                rtnVal = true;
+            }
+            else
+            {
+                _context.HallBookingCost.Add(hallCostingEntity);
+                rtnVal = true;
+            }
+            
+            _context.SaveChanges();
+            return rtnVal;
+        }
+        
+        public IEnumerable<HallBookingPayment> GetHallBookingPayment(int BranchId, int hallBookingId)
+        {
+            return _context.HallBookingPayment.Where(b => b.BranchId == BranchId && b.HallBookingId == hallBookingId).ToArray();
+        }
+        
+        public bool SaveHallBookingPayment(HallBookingPayment hallPaymentEntity)
+        {
+            bool rtnVal = false;
+            var tmp = _context.HallBookingPayment.Find(hallPaymentEntity.HallBookingPaymentId);
+            if (tmp != null)
+            {
+                tmp.Amount = hallPaymentEntity.Amount;
+                tmp.paymentDate= hallPaymentEntity.paymentDate;
+              
+                rtnVal = true;
+            }
+            else
+            {
+                _context.HallBookingPayment.Add(hallPaymentEntity);
+                rtnVal = true;
+            }
+
+            _context.SaveChanges();
+            return rtnVal;
+        }
+
+        public IEnumerable<HallBooking> CheckHallAvailability(int HallId, DateTime bookingDate, int slotId)
+        {
+            return _context.HallBooking.Where(h => h.HallId == HallId && h.BookingDate == bookingDate && h.SlotId == slotId).ToArray();
         }
     }
 }

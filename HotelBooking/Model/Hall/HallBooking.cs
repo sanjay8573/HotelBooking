@@ -32,6 +32,12 @@ namespace HotelBooking.Model.Hall
         public bool isActive { get; set; }
         public bool isDeleted { get; set; }
         public DateTime BookingDate { get; set; }
+        public string Status { get; set; }
+
+        [NotMapped]
+        public IEnumerable<HallBookingCost> HallBookingCosting { get; set; }
+        [NotMapped]
+        public IEnumerable<HallBookingPayment> HallBookingPayment { get; set; }
 
 
 

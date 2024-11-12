@@ -582,6 +582,9 @@
     <Compile Include="Model\Floor.cs" />
     <Compile Include="Model\Guests.cs" />
     <Compile Include="Model\Hall\HallBooking.cs" />
+    <Compile Include="Model\Hall\HallBookingCheckRequest.cs" />
+    <Compile Include="Model\Hall\HallBookingCost.cs" />
+    <Compile Include="Model\Hall\HallBookingPayment.cs" />
     <Compile Include="Model\Hall\HALL_PARTY_MASTER.cs" />
     <Compile Include="Model\Hall\Hall_Party_Time_Slot.cs" />
     <Compile Include="Model\HouseKeeping.cs" />
@@ -1058,6 +1061,7 @@
     <Content Include="Views\Home\HallBooking.cshtml" />
     <Content Include="Views\Home\HallBookings.cshtml" />
     <Content Include="Views\Home\EditHallBooking.cshtml" />
+    <Content Include="Views\Home\PrintHallBooking.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -4431,6 +4431,7 @@ namespace HotelBooking.Controllers
 
         }
         #endregion
+        
         #region "---------- Manage Hall------------------"
         public ActionResult Hall()
         {
@@ -4523,7 +4524,7 @@ namespace HotelBooking.Controllers
             foreach (var item in bmLst)
             {
 
-                bmlitems.Add(new SelectListItem { Text = item.RestaurantMenuName.Trim()+"( "+item.TotalCost +" )", Value = item.RestaurantMenuId.ToString() });
+                bmlitems.Add(new SelectListItem { Text = item.RestaurantMenuName.Trim()+"( "+item.TotalCost +" )", Value = item.RestaurantMenuId.ToString()+"-"+item.PPCost.ToString() });
             }
             ViewBag.BuffetMenus = bmlitems;
 
@@ -4534,7 +4535,7 @@ namespace HotelBooking.Controllers
             foreach (var item in hlLst)
             {
 
-                hllitems.Add(new SelectListItem { Text = item.HallName.Trim() , Value = item.HALLID.ToString() });
+                hllitems.Add(new SelectListItem { Text = item.HallName.Trim() , Value = item.HALLID.ToString()+"-"+item.RentCost.ToString() });
             }
             ViewBag.PartyHall = hllitems;
             IEnumerable<Hall_Party_Time_Slot> hlSlotLst = _hc.GetHallTimings(branchId);
@@ -4603,6 +4604,11 @@ namespace HotelBooking.Controllers
 
 
             int branchId = int.Parse(Session["BranchId"].ToString());
+            HallController _hc = new HallController();
+
+            HallBooking hlb = _hc.GetHallBookings(branchId).Where(b => b.HallBookingId == HallBookingId).SingleOrDefault();
+            hlb.HallBookingCosting = _hc.GetHallBookingCost(branchId, hlb.HallBookingId);
+            hlb.HallBookingPayment = _hc.GetHallBookingPayment(branchId, hlb.HallBookingId);
             RestaurantController _rc = new RestaurantController();
             IEnumerable<restaurantBuffetMenu> bmLst = _rc.GetBuffetmenus(branchId);
 
@@ -4610,21 +4616,21 @@ namespace HotelBooking.Controllers
             bmlitems.Add(new SelectListItem { Text = "Select a Menu", Value = "0" });
             foreach (var item in bmLst)
             {
-
-                bmlitems.Add(new SelectListItem { Text = item.RestaurantMenuName.Trim() + "( " + item.TotalCost + " )", Value = item.RestaurantMenuId.ToString() });
+                bool sl = false;
+                if (item.RestaurantMenuId == hlb.MenuId) { sl = true; }
+                bmlitems.Add(new SelectListItem { Text = item.RestaurantMenuName.Trim() + "( " + item.TotalCost + " )", Value = item.RestaurantMenuId.ToString() + "-" + item.PPCost.ToString(),Selected=sl });
             }
             ViewBag.BuffetMenus = bmlitems;
 
-            HallController _hc = new HallController();
-
-            HallBooking hlb=_hc.GetHallBookings(branchId).Where(b=>b.HallBookingId== HallBookingId).SingleOrDefault();
+            
             IEnumerable<HALL_PARTY_MASTER> hlLst = _hc.GetAllHall(branchId);
             List<SelectListItem> hllitems = new List<SelectListItem>();
             hllitems.Add(new SelectListItem { Text = "Select a Party Hall", Value = "0" });
             foreach (var item in hlLst)
             {
-
-                hllitems.Add(new SelectListItem { Text = item.HallName.Trim(), Value = item.HALLID.ToString() });
+                bool sl = false;
+                if (item.HALLID == hlb.HallId) { sl = true; }
+                hllitems.Add(new SelectListItem { Text = item.HallName.Trim(), Value = item.HALLID.ToString() + "-" + item.RentCost.ToString(),Selected=sl });
             }
             ViewBag.PartyHall = hllitems;
             IEnumerable<Hall_Party_Time_Slot> hlSlotLst = _hc.GetHallTimings(branchId);
@@ -4642,6 +4648,66 @@ namespace HotelBooking.Controllers
            // ViewBag.SeletedMenu = bm;
 
             return View("EditHallBooking", hlb);
+        }
+        [HttpPost]
+        public JsonResult CheckHallAvailability(HallBookingCheckRequest req)
+        {
+
+            HallController _rc = new HallController();
+            
+            HallBookingCheckResponse bfmentity = _rc.CheckHallAvailability(req);
+          
+            return Json(bfmentity, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult PrintHallBooking(int HallBookingId)
+        {
+
+
+            int branchId = int.Parse(Session["BranchId"].ToString());
+            HallController _hc = new HallController();
+
+            HallBooking hlb = _hc.GetHallBookings(branchId).Where(b => b.HallBookingId == HallBookingId).SingleOrDefault();
+            hlb.HallBookingCosting = _hc.GetHallBookingCost(branchId, hlb.HallBookingId);
+            hlb.HallBookingPayment = _hc.GetHallBookingPayment(branchId, hlb.HallBookingId);
+            RestaurantController _rc = new RestaurantController();
+            IEnumerable<restaurantBuffetMenu> bmLst = _rc.GetBuffetmenus(branchId);
+
+            List<SelectListItem> bmlitems = new List<SelectListItem>();
+            bmlitems.Add(new SelectListItem { Text = "Select a Menu", Value = "0" });
+            foreach (var item in bmLst)
+            {
+                bool sl = false;
+                if (item.RestaurantMenuId == hlb.MenuId) { sl = true; }
+                bmlitems.Add(new SelectListItem { Text = item.RestaurantMenuName.Trim() + "( " + item.TotalCost + " )", Value = item.RestaurantMenuId.ToString() + "-" + item.PPCost.ToString(), Selected = sl });
+            }
+            ViewBag.BuffetMenus = bmlitems;
+
+
+            IEnumerable<HALL_PARTY_MASTER> hlLst = _hc.GetAllHall(branchId);
+            List<SelectListItem> hllitems = new List<SelectListItem>();
+            hllitems.Add(new SelectListItem { Text = "Select a Party Hall", Value = "0" });
+            foreach (var item in hlLst)
+            {
+                bool sl = false;
+                if (item.HALLID == hlb.HallId) { sl = true; }
+                hllitems.Add(new SelectListItem { Text = item.HallName.Trim(), Value = item.HALLID.ToString() + "-" + item.RentCost.ToString(), Selected = sl });
+            }
+            ViewBag.PartyHall = hllitems;
+            IEnumerable<Hall_Party_Time_Slot> hlSlotLst = _hc.GetHallTimings(branchId);
+            List<SelectListItem> hlslotlitems = new List<SelectListItem>();
+            hlslotlitems.Add(new SelectListItem { Text = "Select Slot for Party", Value = "0" });
+            foreach (var item in hlSlotLst)
+            {
+
+                hlslotlitems.Add(new SelectListItem { Text = item.SlotName.Trim(), Value = item.SlotId.ToString() });
+            }
+            ViewBag.Slots = hlslotlitems;
+            ViewBag.BranchId = branchId;
+            //var bm = JsonConvert.DeserializeObject<BuffetMenuDetails>(hlb.HallBookingDetails);
+
+            // ViewBag.SeletedMenu = bm;
+
+            return View("PrintHallBooking", hlb);
         }
         #endregion
     }

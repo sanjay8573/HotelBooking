@@ -307,5 +307,16 @@ namespace HotelBooking.Context
             get;
             set;
         }
+        public DbSet<HallBookingCost> HallBookingCost
+        {
+            get;
+            set;
+        }
+        public DbSet<HallBookingPayment> HallBookingPayment
+        {
+            get;
+            set;
+        }
+
     }
 }

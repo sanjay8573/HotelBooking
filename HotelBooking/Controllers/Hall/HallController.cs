@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Xml;
 
 namespace HotelBooking.Controllers.Hall
 {
@@ -58,6 +59,43 @@ namespace HotelBooking.Controllers.Hall
         public IEnumerable<HallBooking> GetHallBookings(int BranchId)
         {
             return _hall.GetHallBookings(BranchId);
+        }
+        [Route("api/Hall/GetHallBookingCost/{BranchId}/{hallBookingId}")]
+        [HttpGet]
+        public IEnumerable<HallBookingCost> GetHallBookingCost(int BranchId, int hallBookingId)
+        {
+            return _hall.GetHallBookingCost(BranchId, hallBookingId);
+        }
+        [Route("api/Hall/SaveHallBookingCost")]
+        [HttpPost]
+        public bool SaveHallBookingCost(HallBookingCost hallBookingcostEntity)
+        {
+            return _hall.SaveHallBookingCost(hallBookingcostEntity);
+        }
+
+        [Route("api/Hall/GetHallBookingPayment/{BranchId}/{hallBookingId}")]
+        [HttpGet]
+        public IEnumerable<HallBookingPayment> GetHallBookingPayment(int BranchId, int hallBookingId)
+        {
+            return _hall.GetHallBookingPayment(BranchId, hallBookingId);
+        }
+
+        [Route("api/Hall/CheckHallAvailability")]
+        [HttpGet]
+        public HallBookingCheckResponse CheckHallAvailability(HallBookingCheckRequest _req)
+        {
+            HallBookingCheckResponse _resp = new HallBookingCheckResponse();
+            _resp.HallBooked = _hall.CheckHallAvailability(_req.HallId, _req.BookingDate, _req.SlotId);
+            int confirmedCount = _resp.HallBooked.Where(b => b.Status.ToUpper() == "CONFIRMED").Count();
+            if (confirmedCount > 0)
+            {
+                _resp.isAvailable = false;
+            }
+            else
+            {
+                _resp.isAvailable = true;
+            }
+            return _resp;
         }
     }
 }
